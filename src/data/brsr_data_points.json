@@ -1,0 +1,903 @@
+{
+  "source": "ICAI Background Material on Sustainability & BRSR (Revised Edition 2024) + SEBI Circular SEBI/HO/CFD/CFD-PoD-1/P/CIR/2025/42 dated March 28, 2025",
+  "framework": "SEBI BRSR (Business Responsibility and Sustainability Reporting)",
+  "regulation": "SEBI (Listing Obligations and Disclosure Requirements) Regulations, 2015",
+  "applicability": "Top 1000 listed entities by market capitalization (BRSR); Top 150-1000 by glide path (BRSR Core assessment/assurance)",
+  "sections": {
+    "section_a": "General Disclosures",
+    "section_b": "Management and Process Disclosures",
+    "section_c": "Principle-wise Performance Disclosures"
+  },
+  "brsr_core_glide_path": [
+    {"fy": "2023-24", "scope": "Top 150 listed entities"},
+    {"fy": "2024-25", "scope": "Top 250 listed entities"},
+    {"fy": "2025-26", "scope": "Top 500 listed entities"},
+    {"fy": "2026-27", "scope": "Top 1000 listed entities"}
+  ],
+  "value_chain_esg_disclosure": {
+    "definition": "Top upstream and downstream partners individually comprising 2% or more of purchases and sales (by value). Entity may limit to 75% of purchases and sales.",
+    "voluntary_disclosure_from": "FY 2025-26 (top 250 listed entities)",
+    "voluntary_assessment_from": "FY 2026-27"
+  },
+  "principles": [
+    {
+      "id": "P1",
+      "name": "Businesses should conduct and govern themselves with integrity, and in a manner that is Ethical, Transparent and Accountable",
+      "sdg_alignment": "SDG 16 - Peace, Justice and Strong Institutions",
+      "essential_indicators": [
+        {
+          "id": "P1-E1",
+          "label": "Percentage coverage by training and awareness programmes on any of the principles during the financial year",
+          "unit": "percentage",
+          "measurement_guidance": "For each segment (Board of Directors, KMPs, Employees other than BoD & KMPs, Workers): disclose total number of training/awareness programmes held, topics/principles covered and impact, and percentage of persons in respective category covered.",
+          "page": 84
+        },
+        {
+          "id": "P1-E2",
+          "label": "Details of fines / penalties / punishment / award / compounding fees / settlement amount paid in proceedings (by the entity or by directors / KMPs) with regulators / law enforcement agencies / judicial institutions, in the financial year",
+          "unit": "INR (monetary); count (non-monetary)",
+          "measurement_guidance": "Disclose monetary (Penalty/Fine, Settlement, Compounding Fee) and non-monetary (Imprisonment, Punishment) actions with NGRBC Principle mapped, name of regulatory body, amount in INR, brief of case, and whether appeal preferred. Based on materiality per Regulation 30 of LODR.",
+          "page": 85
+        },
+        {
+          "id": "P1-E3",
+          "label": "Of the instances disclosed in Question 2 above, details of the Appeal / Revision preferred in cases where monetary or non-monetary action has been appealed",
+          "unit": null,
+          "measurement_guidance": "For each appealed case: provide case details and name of regulatory/enforcement agency/judicial institution.",
+          "page": 88
+        },
+        {
+          "id": "P1-E4",
+          "label": "Does the entity have an anti-corruption or anti-bribery policy? If yes, provide details in brief and if available, provide a web-link to the policy",
+          "unit": "Yes/No + narrative",
+          "measurement_guidance": "Disclose existence of policy, risk assessment procedures and internal controls, mechanism to deal with complaints on bribery/corruption, and coverage of trainings on anti-corruption issues.",
+          "page": 88
+        },
+        {
+          "id": "P1-E5",
+          "label": "Number of Directors / KMPs / employees / workers against whom disciplinary action was taken by any law enforcement agency for the charges of bribery / corruption",
+          "unit": "count",
+          "measurement_guidance": "Disclose count for Directors, KMPs, Employees, and Workers separately for current FY and previous FY.",
+          "page": 90
+        },
+        {
+          "id": "P1-E6",
+          "label": "Details of complaints regarding conflict of interest",
+          "unit": "count",
+          "measurement_guidance": "Number of complaints received in relation to issues of Conflict of Interest of Directors and KMPs separately, with remarks, for current and previous FY.",
+          "page": 90
+        },
+        {
+          "id": "P1-E7",
+          "label": "Provide details of any corrective action taken or underway on issues related to fines / penalties / action taken by regulators / law enforcement agencies / judicial institutions, on cases of corruption and conflicts of interest",
+          "unit": "narrative",
+          "measurement_guidance": "Describe corrective actions taken or underway related to fines, penalties, corruption cases, and conflicts of interest disclosed above.",
+          "page": 91
+        },
+        {
+          "id": "P1-E8",
+          "label": "Number of days of accounts payables",
+          "unit": "days",
+          "measurement_guidance": "Calculate as (Accounts payable * 365) / Cost of goods/services procured. Disclose for current and previous FY.",
+          "page": 91
+        },
+        {
+          "id": "P1-E9",
+          "label": "Open-ness of business - Provide details of concentration of purchases and sales with trading houses, dealers and related parties along-with loans and advances & investments, with related parties",
+          "unit": "percentage / count",
+          "measurement_guidance": "Disclose: Concentration of Purchases (purchases from trading houses as % of total, number of trading houses, purchases from top 10 as % of total from trading houses); Concentration of Sales (sales to dealers/distributors as % of total, number of dealers, sales to top 10 as %); Share of RPTs (purchases, sales, loans & advances, investments with related parties as % of totals).",
+          "page": 92
+        }
+      ],
+      "leadership_indicators": [
+        {
+          "id": "P1-L1",
+          "label": "Awareness programmes conducted for value chain partners on any of the principles during the financial year",
+          "unit": "count / percentage",
+          "measurement_guidance": "Total number of awareness programmes held, topics/principles covered, and percentage of value chain partners covered (by value of business done with such partners).",
+          "page": 93
+        },
+        {
+          "id": "P1-L2",
+          "label": "Does the entity have processes in place to avoid / manage conflict of interests involving members of the Board? (Yes/No) If yes, provide details of the same",
+          "unit": "Yes/No + narrative",
+          "measurement_guidance": "Disclose whether processes exist to ensure conflicts of interests involving Board members/KMPs are avoided or managed, with details of such processes.",
+          "page": 93
+        }
+      ]
+    },
+    {
+      "id": "P2",
+      "name": "Businesses should provide goods and services in a manner that is sustainable and safe",
+      "sdg_alignment": "SDG 12 - Responsible Consumption and Production",
+      "essential_indicators": [
+        {
+          "id": "P2-E1",
+          "label": "Percentage of R&D and capital expenditure (capex) investments in specific technologies to improve the environmental and social impacts of product and processes to total R&D and capex investments made by the entity, respectively",
+          "unit": "percentage",
+          "measurement_guidance": "Disclose R&D and Capex amounts/percentages for current and previous FY, with details of improvements in environmental and social impacts.",
+          "page": 95
+        },
+        {
+          "id": "P2-E2",
+          "label": "a. Does the entity have procedures in place for sustainable sourcing? (Yes/No) b. If yes, what percentage of inputs were sourced sustainably?",
+          "unit": "Yes/No + percentage",
+          "measurement_guidance": "Indicate proportion of inputs (by quantity or value) sourced from suppliers covered by sustainable sourcing programmes and/or certified to social and environmental standards (SA 8000, ISO 14001, OHSAS 18001, Rainforest Alliance, etc.).",
+          "page": 96
+        },
+        {
+          "id": "P2-E3",
+          "label": "Describe the processes in place to safely reclaim your products for reusing, recycling and disposing at the end of life, for (a) Plastics (including packaging) (b) E-waste (c) Hazardous waste and (d) other waste",
+          "unit": "narrative",
+          "measurement_guidance": "Describe reclaiming processes for each waste category. Reclaiming = collecting products and packaging at end of useful life for reuse, recycling, or safe disposal.",
+          "page": 97
+        },
+        {
+          "id": "P2-E4",
+          "label": "Whether Extended Producer Responsibility (EPR) is applicable to the entity's activities (Yes/No). If yes, whether the waste collection plan is in line with the Extended Producer Responsibility (EPR) plan submitted to Pollution Control Boards? If not, provide steps taken to address the same",
+          "unit": "Yes/No + narrative",
+          "measurement_guidance": "Disclose EPR applicability and compliance status with PCB-submitted plans under MoEFCC Uniform Framework for EPR.",
+          "page": 97
+        }
+      ],
+      "leadership_indicators": [
+        {
+          "id": "P2-L1",
+          "label": "Has the entity conducted Life Cycle Perspective / Assessments (LCA) for any of its products (for manufacturing industry) or for its services (for service industry)? If yes, provide details",
+          "unit": "Yes/No + details",
+          "measurement_guidance": "For each product/service with LCA: NIC Code, name, % of total turnover contributed, boundary for which LCA was conducted (cradle-to-grave/cradle-to-cradle/cradle-to-gate), whether conducted by independent external agency, and whether results communicated in public domain with web-link.",
+          "page": 99
+        },
+        {
+          "id": "P2-L2",
+          "label": "If there are any significant social or environmental concerns and/or risks arising from production or disposal of your products / services, as identified in the Life Cycle Perspective / Assessments (LCA) or through any other means, briefly describe the same along-with action taken to mitigate the same",
+          "unit": "narrative",
+          "measurement_guidance": "For each product/service: describe the risk/concern and action taken.",
+          "page": 99
+        },
+        {
+          "id": "P2-L3",
+          "label": "Percentage of recycled or reused input material to total material (by value) used in production (for manufacturing industry) or providing services (for service industry)",
+          "unit": "percentage",
+          "measurement_guidance": "For each category of input material: ((total recycled + re-used input material used) * 100) / (total input material used). May use total weight or total volume. Disclose for current and previous FY.",
+          "page": 101
+        },
+        {
+          "id": "P2-L4",
+          "label": "Of the products and packaging reclaimed at end of life of products, amount (in metric tonnes) reused, recycled, and safely disposed",
+          "unit": "metric tonnes",
+          "measurement_guidance": "For each category (Plastics including packaging, E-waste, Hazardous waste, Other waste): amount re-used, recycled, and safely disposed for current and previous FY.",
+          "page": 102
+        },
+        {
+          "id": "P2-L5",
+          "label": "Reclaimed products and their packaging materials (as percentage of products sold) for each product category",
+          "unit": "percentage",
+          "measurement_guidance": "Calculate as: (Products and packaging reclaimed within reporting period) / (Products sold within reporting period) for each product category.",
+          "page": 104
+        }
+      ]
+    },
+    {
+      "id": "P3",
+      "name": "Businesses should respect and promote the well-being of all employees, including those in their value chains",
+      "sdg_alignment": "SDG 3 - Good Health and Well-being; SDG 8 - Decent Work and Economic Growth",
+      "essential_indicators": [
+        {
+          "id": "P3-E1",
+          "label": "a. Details of measures for the well-being of employees b. Details of measures for the well-being of workers",
+          "unit": "count / percentage",
+          "measurement_guidance": "For employees and workers (permanent and other than permanent, by gender): total count, and number/percentage covered by Health Insurance, Accident Insurance, Maternity Benefits, Paternity Benefits, and Day Care Facilities.",
+          "page": 105
+        },
+        {
+          "id": "P3-E2",
+          "label": "Details of retirement benefits, for Current FY and Previous Financial Year",
+          "unit": "count / percentage / Yes/No",
+          "measurement_guidance": "For each benefit type (PF, Gratuity, ESI, Others): number of employees/workers covered as % of total, and whether deducted and deposited with the authority (Y/N/N.A.).",
+          "page": 106
+        },
+        {
+          "id": "P3-E3",
+          "label": "Accessibility of workplaces - Are the premises / offices of the entity accessible to differently abled employees and workers, as per the requirements of the Rights of Persons with Disabilities Act, 2016? If not, whether any steps are being taken by the entity in this regard",
+          "unit": "Yes/No + narrative",
+          "measurement_guidance": "Disclose accessibility status and steps taken to make workplaces accessible to all and/or compatible with assistive technology devices.",
+          "page": 107
+        },
+        {
+          "id": "P3-E4",
+          "label": "Does the entity have an equal opportunity policy as per the Rights of Persons with Disabilities Act, 2016? If so, provide a web-link to the policy",
+          "unit": "Yes/No + web-link",
+          "measurement_guidance": "Disclose existence of equal opportunity policy and provide web-link if available.",
+          "page": 107
+        },
+        {
+          "id": "P3-E5",
+          "label": "Return to work and retention rates of permanent employees and workers that took parental leave",
+          "unit": "percentage",
+          "measurement_guidance": "By gender (Male/Female/Other): Return to work rate = (employees who returned after parental leave / employees due to return) and Retention rate = (employees still employed 12 months after returning from parental leave / employees who returned).",
+          "page": 108
+        },
+        {
+          "id": "P3-E6",
+          "label": "Is there a mechanism available to receive and redress grievances for the following categories of employees and workers? If yes, then provide details of the mechanism in brief",
+          "unit": "Yes/No + narrative",
+          "measurement_guidance": "For each category (Permanent Workers, Other than Permanent Workers, Permanent Employees, Other than Permanent Employees): whether mechanism exists and brief details.",
+          "page": 109
+        },
+        {
+          "id": "P3-E7",
+          "label": "Membership of employees and workers in association(s) or Unions recognised by the listed entity",
+          "unit": "count / percentage",
+          "measurement_guidance": "For employees and workers (permanent and other than permanent, by gender): total count and number/percentage who are part of association(s) or Union. Disclose for current and previous FY.",
+          "page": 110
+        },
+        {
+          "id": "P3-E8",
+          "label": "Details of training given to employees and workers",
+          "unit": "count / percentage",
+          "measurement_guidance": "For employees and workers (permanent and other than permanent, by gender): total count, number/percentage trained on health and safety measures, and number/percentage trained on skill upgradation. Disclose for current and previous FY.",
+          "page": 111
+        },
+        {
+          "id": "P3-E9",
+          "label": "Details of performance and career development reviews of employees and workers",
+          "unit": "count / percentage",
+          "measurement_guidance": "For employees and workers (permanent and other than permanent, by gender): total count and number/percentage receiving performance and career development reviews. Disclose for current and previous FY.",
+          "page": 112
+        },
+        {
+          "id": "P3-E10",
+          "label": "Health and safety management system: a. Whether an occupational health and safety management system has been implemented (Y/N). If yes, coverage of such system b. What are the processes used to identify work-related hazards and assess risks on a routine and non-routine basis c. Whether you have processes for workers to report the work-related hazards d. Do the employees/workers of the entity have access to non-occupational medical and healthcare services? (Yes/No)",
+          "unit": "Yes/No + narrative",
+          "measurement_guidance": "Describe OHS management system, scope of coverage (employees, workers, activities, workplaces), hazard identification processes, worker reporting mechanisms, and access to healthcare services.",
+          "page": 113
+        },
+        {
+          "id": "P3-E11",
+          "label": "Details of safety related incidents, in the following format",
+          "unit": "count / rate",
+          "measurement_guidance": "For employees and workers separately: Lost Time Injury Frequency Rate (LTIFR) per one million-person hours worked, Total recordable work-related injuries, Number of fatalities, High consequence work-related injury or ill-health (excluding fatalities). Disclose for current and previous FY.",
+          "page": 114
+        },
+        {
+          "id": "P3-E12",
+          "label": "Describe the measures taken by the entity to ensure a safe and healthy workplace",
+          "unit": "narrative",
+          "measurement_guidance": "Describe measures to ensure safe and healthy workplace including policy, organizing, planning and implementation, evaluation and action for improvement.",
+          "page": 116
+        },
+        {
+          "id": "P3-E13",
+          "label": "Number of Complaints on the following made by employees and workers: Working Conditions, Health & Safety",
+          "unit": "count",
+          "measurement_guidance": "For Working Conditions and Health & Safety: number filed during year and number pending resolution at end of year, for current and previous FY.",
+          "page": 116
+        },
+        {
+          "id": "P3-E14",
+          "label": "Assessments for the year: Health and Safety Practices, Working Conditions",
+          "unit": "percentage",
+          "measurement_guidance": "Percentage of plants and offices assessed (by entity or statutory authorities or third parties) for Health and Safety Practices and Working Conditions.",
+          "page": 117
+        },
+        {
+          "id": "P3-E15",
+          "label": "Provide details of any corrective action taken or underway to address significant risks / concerns arising from the assessments at Question 14 above",
+          "unit": "narrative",
+          "measurement_guidance": "Describe corrective actions on significant risks/concerns from health, safety and working condition assessments.",
+          "page": 117
+        }
+      ],
+      "leadership_indicators": [
+        {
+          "id": "P3-L1",
+          "label": "Does the entity extend any life insurance or any compensatory package in the event of death of (A) Employees (Y/N) (B) Workers (Y/N)",
+          "unit": "Yes/No",
+          "measurement_guidance": "Disclose whether life insurance or compensatory packages are provided in the event of death for employees and workers.",
+          "page": 118
+        },
+        {
+          "id": "P3-L2",
+          "label": "Provide the measures undertaken by the entity to ensure that statutory dues have been deducted and deposited by the value chain partners",
+          "unit": "narrative",
+          "measurement_guidance": "Describe measures to ensure value chain partners comply with statutory dues (labor, employment, taxes, environmental protection).",
+          "page": 118
+        },
+        {
+          "id": "P3-L3",
+          "label": "Provide the number of employees / workers having suffered high consequence work-related injury / ill-health / fatalities (as reported in Q11 of Essential Indicators above), who have been rehabilitated and placed in suitable employment or whose family members have been placed in suitable employment",
+          "unit": "count",
+          "measurement_guidance": "For employees and workers: total number affected and number rehabilitated/placed in suitable employment (or family members placed). Disclose for current and previous FY.",
+          "page": 119
+        },
+        {
+          "id": "P3-L4",
+          "label": "Does the entity provide transition assistance programs to facilitate continued employability and the management of career endings resulting from retirement or termination of employment? (Yes/No)",
+          "unit": "Yes/No + narrative",
+          "measurement_guidance": "Disclose whether transition assistance programs exist (access to resources, support for finding new jobs, skill updates, financial management during transition).",
+          "page": 119
+        },
+        {
+          "id": "P3-L5",
+          "label": "Details on assessment of value chain partners",
+          "unit": "percentage",
+          "measurement_guidance": "Percentage of value chain partners (by value of business done) that were assessed on health and safety practices, working conditions.",
+          "page": 119
+        },
+        {
+          "id": "P3-L6",
+          "label": "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from the assessments at Question 5 above",
+          "unit": "narrative",
+          "measurement_guidance": "Describe corrective actions on value chain partner assessment findings.",
+          "page": 119
+        }
+      ]
+    },
+    {
+      "id": "P4",
+      "name": "Businesses should respect the interests of and be responsive to all its stakeholders",
+      "sdg_alignment": "SDG 17 - Partnerships for the Goals",
+      "essential_indicators": [
+        {
+          "id": "P4-E1",
+          "label": "Describe the processes for identifying key stakeholder groups of the entity",
+          "unit": "narrative",
+          "measurement_guidance": "Describe the process: identification of all potential stakeholders, prioritization based on interest/influence/impact, and grouping into key stakeholder groups.",
+          "page": 120
+        },
+        {
+          "id": "P4-E2",
+          "label": "List stakeholder groups identified as key for your entity and the frequency of engagement with each stakeholder group",
+          "unit": "narrative / tabular",
+          "measurement_guidance": "For each stakeholder group: whether identified as Vulnerable & Marginalized (Y/N), channels of communication (Email, SMS, Newspaper, etc.), frequency of engagement (Annually/Half yearly/Quarterly/others), and purpose and scope of engagement including key topics and concerns raised.",
+          "page": 121
+        }
+      ],
+      "leadership_indicators": [
+        {
+          "id": "P4-L1",
+          "label": "Provide the processes for consultation between stakeholders and the Board on economic, environmental, and social topics or if consultation is delegated, how is feedback from such consultations provided to the Board",
+          "unit": "narrative",
+          "measurement_guidance": "Describe processes for stakeholder consultation with the Board on ESG topics and feedback mechanisms.",
+          "page": 121
+        },
+        {
+          "id": "P4-L2",
+          "label": "Whether stakeholder consultation is used to support the identification and management of environmental, and social topics (Yes / No). If so, provide details of instances as to how the input received from stakeholders on these topics were incorporated into policies and activities of the entity",
+          "unit": "Yes/No + narrative",
+          "measurement_guidance": "Describe how stakeholder input on ESG topics is incorporated into policies and activities.",
+          "page": 121
+        },
+        {
+          "id": "P4-L3",
+          "label": "Provide details of instances of engagement with, and actions taken to, address the concerns of vulnerable / marginalized stakeholder groups",
+          "unit": "narrative",
+          "measurement_guidance": "Describe engagement instances with vulnerable/marginalized groups and actions taken to address their concerns.",
+          "page": 122
+        }
+      ]
+    },
+    {
+      "id": "P5",
+      "name": "Businesses should respect and promote human rights",
+      "sdg_alignment": "SDG 10 - Reduced Inequalities; SDG 16 - Peace, Justice and Strong Institutions",
+      "essential_indicators": [
+        {
+          "id": "P5-E1",
+          "label": "Employees and workers who have been provided training on human rights issues and policy(ies) of the entity, in the following format",
+          "unit": "count / percentage",
+          "measurement_guidance": "For employees and workers (permanent and other than permanent): total count and number/percentage trained on human rights issues. Disclose for current and previous FY.",
+          "page": 123
+        },
+        {
+          "id": "P5-E2",
+          "label": "Details of minimum wages paid to employees and workers, in the following format",
+          "unit": "count / percentage",
+          "measurement_guidance": "For employees and workers (permanent and other than permanent, by gender): total count, number/percentage earning equal to minimum wages, and number/percentage earning more than minimum wages. Disclose for current and previous FY.",
+          "page": 123
+        },
+        {
+          "id": "P5-E3",
+          "label": "Details of remuneration / salary / wages, in the following format",
+          "unit": "count / INR",
+          "measurement_guidance": "For each category (Board of Directors, KMPs, Employees other than BoD and KMP, Workers), by gender (Male/Female): number and median remuneration/salary/wages of respective category.",
+          "page": 124
+        },
+        {
+          "id": "P5-E4",
+          "label": "Do you have a focal point (Individual / Committee) responsible for addressing human rights impacts or issues caused or contributed to by the business? (Yes/No)",
+          "unit": "Yes/No",
+          "measurement_guidance": "Disclose whether a designated person or group exists with authority and resources to investigate and address human rights concerns.",
+          "page": 126
+        },
+        {
+          "id": "P5-E5",
+          "label": "Describe the internal mechanisms in place to redress grievances related to human rights issues",
+          "unit": "narrative",
+          "measurement_guidance": "Describe internal grievance mechanisms for human rights issues. Mechanisms should be accessible, fair, effective, and transparent.",
+          "page": 126
+        },
+        {
+          "id": "P5-E6",
+          "label": "Number of Complaints on the following made by employees and workers: Sexual Harassment, Discrimination at workplace, Child Labour, Forced Labour / Involuntary Labour, Wages, Other human rights related issues",
+          "unit": "count",
+          "measurement_guidance": "For each category: number filed during the year and number pending resolution at end of year, for current and previous FY.",
+          "page": 126
+        },
+        {
+          "id": "P5-E7",
+          "label": "Complaints filed under the Sexual Harassment of Women at Workplace (Prevention, Prohibition and Redressal) Act, 2013 (POSH)",
+          "unit": "count / percentage",
+          "measurement_guidance": "Total complaints reported under POSH Act, complaints as % of female employees/workers, and complaints upheld. Disclose for current and previous FY.",
+          "page": 127
+        },
+        {
+          "id": "P5-E8",
+          "label": "Mechanisms to prevent adverse consequences to the complainant in discrimination and harassment cases",
+          "unit": "narrative",
+          "measurement_guidance": "Describe mechanisms in place that are confidential, fair, and timely to prevent retaliation against complainants.",
+          "page": 127
+        },
+        {
+          "id": "P5-E9",
+          "label": "Do human rights requirements form part of your business agreements and contracts? (Yes/No)",
+          "unit": "Yes/No",
+          "measurement_guidance": "Disclose whether human rights requirements are incorporated into business agreements and contracts.",
+          "page": 127
+        },
+        {
+          "id": "P5-E10",
+          "label": "Assessments for the year",
+          "unit": "percentage",
+          "measurement_guidance": "Percentage of plants and offices assessed (by entity or statutory authorities or third parties) for: Child Labour, Forced/involuntary labour, Sexual Harassment, Discrimination at workplace, Wages.",
+          "page": 128
+        },
+        {
+          "id": "P5-E11",
+          "label": "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from the assessments at Question 10 above",
+          "unit": "narrative",
+          "measurement_guidance": "Describe corrective actions on significant human rights risks/concerns identified through assessments.",
+          "page": 128
+        }
+      ],
+      "leadership_indicators": [
+        {
+          "id": "P5-L1",
+          "label": "Details of a business process being modified / introduced as a result of addressing human rights grievances / complaints",
+          "unit": "narrative",
+          "measurement_guidance": "Describe how business processes have been modified or introduced in response to human rights grievances.",
+          "page": 128
+        },
+        {
+          "id": "P5-L2",
+          "label": "Details of the scope and coverage of any Human rights due diligence conducted",
+          "unit": "narrative",
+          "measurement_guidance": "Describe steps taken to identify and assess nature of actual and potential adverse human rights impacts from entity's activities.",
+          "page": 128
+        },
+        {
+          "id": "P5-L3",
+          "label": "Is the premise / office of the entity accessible to differently abled visitors, as per the requirements of the Rights of Persons with Disabilities Act, 2016?",
+          "unit": "Yes/No + narrative",
+          "measurement_guidance": "Disclose accessibility of premises for differently abled visitors and efforts taken to ensure equal access.",
+          "page": 128
+        },
+        {
+          "id": "P5-L4",
+          "label": "Details on assessment of value chain partners",
+          "unit": "percentage",
+          "measurement_guidance": "Percentage of value chain partners (by value of business done) assessed on: Sexual Harassment, Discrimination at workplace, Child Labour, Forced Labour/Involuntary Labour, Wages, Others.",
+          "page": 128
+        },
+        {
+          "id": "P5-L5",
+          "label": "Provide details of any corrective actions taken or underway to address significant risks / concerns arising from the assessments at Question 4 above",
+          "unit": "narrative",
+          "measurement_guidance": "Describe corrective actions on human rights issues identified in value chain partner assessments.",
+          "page": 128
+        }
+      ]
+    },
+    {
+      "id": "P6",
+      "name": "Businesses should respect and make efforts to protect and restore the environment",
+      "sdg_alignment": "SDG 6 - Clean Water; SDG 7 - Affordable and Clean Energy; SDG 13 - Climate Action; SDG 14 - Life Below Water; SDG 15 - Life on Land",
+      "essential_indicators": [
+        {
+          "id": "P6-E1",
+          "label": "Details of total energy consumption (in Joules or multiples) and energy intensity, in the following format",
+          "unit": "Joules (or GJ) / ratio",
+          "measurement_guidance": "Total electricity consumption (A), Total fuel consumption (B), Energy consumption through other sources (C), Total energy consumption (A+B+C), Energy intensity per rupee of turnover (Total energy consumption / Turnover in Rupees), Energy intensity (optional - entity may select relevant metric). Disclose for current and previous FY. Indicate if independent assessment/assurance carried out.",
+          "page": 130
+        },
+        {
+          "id": "P6-E2",
+          "label": "Does the entity have any sites / facilities identified as designated consumers (DCs) under the Performance, Achieve and Trade (PAT) Scheme of the Government of India? (Y/N) If yes, disclose whether targets set under the PAT scheme have been achieved. In case targets have not been achieved, provide the remedial action taken, if any",
+          "unit": "Yes/No + narrative",
+          "measurement_guidance": "Disclose PAT scheme designation and target achievement status.",
+          "page": 131
+        },
+        {
+          "id": "P6-E3",
+          "label": "Provide details of the following disclosures related to water, in the following format",
+          "unit": "kilolitres / ratio",
+          "measurement_guidance": "Water withdrawal by source (Surface water, Groundwater, Third party water, Seawater/desalinated water, Others), Total volume of water withdrawal, Total volume of water consumption, Water intensity per rupee of turnover, Water intensity (optional). Disclose for current and previous FY. Indicate if independent assessment/assurance carried out.",
+          "page": 131
+        },
+        {
+          "id": "P6-E4",
+          "label": "Provide the following details related to water discharged",
+          "unit": "kilolitres",
+          "measurement_guidance": "Water discharge by destination and level of treatment: To Surface water, To Groundwater, To Seawater, Sent to third parties, Others - each with breakdown of No treatment vs With treatment (specify level). Total water discharged. Disclose for current and previous FY.",
+          "page": 132
+        },
+        {
+          "id": "P6-E5",
+          "label": "Has the entity implemented a mechanism for Zero Liquid Discharge? If yes, provide details of its coverage and implementation",
+          "unit": "Yes/No + narrative",
+          "measurement_guidance": "Disclose ZLD system implementation, coverage, and details of advanced waste-water treatment technologies used.",
+          "page": 133
+        },
+        {
+          "id": "P6-E6",
+          "label": "Please provide details of air emissions (other than GHG emissions) by the entity, in the following format",
+          "unit": "entity-specified unit",
+          "measurement_guidance": "For each parameter (NOx, SOx, Particulate Matter, Persistent organic pollutants, Volatile organic compounds, Hazardous air pollutants, Others): specify unit and disclose for current and previous FY. Indicate if independent assessment/assurance carried out.",
+          "page": 133
+        },
+        {
+          "id": "P6-E7",
+          "label": "Provide details of greenhouse gas emissions (Scope 1 and Scope 2 emissions) & its intensity, in the following format",
+          "unit": "metric tonnes CO2 equivalent / ratio",
+          "measurement_guidance": "Total Scope 1 emissions (with break-up of CO2, CH4, N2O, HFCs, PFCs, SF6, NF3 if available), Total Scope 2 emissions (same break-up), Total Scope 1 and 2 emissions per rupee of turnover, Total Scope 1 and 2 emission intensity (optional metric). Exclude GHG trades. Disclose standards/methodologies/GWP rates used. Indicate if independent assessment/assurance carried out.",
+          "page": 134
+        },
+        {
+          "id": "P6-E8",
+          "label": "Does the entity have any project related to reducing Green House Gas emission? If yes, then provide details",
+          "unit": "Yes/No + narrative",
+          "measurement_guidance": "Brief description of each GHG reduction project including goals, objectives, progress, and expected greenhouse gas reductions (if quantifiable).",
+          "page": 136
+        },
+        {
+          "id": "P6-E9",
+          "label": "Provide details related to waste management by the entity, in the following format",
+          "unit": "metric tonnes",
+          "measurement_guidance": "Total waste generated by category: Plastic waste, E-waste, Bio-medical waste, Construction and demolition waste, Battery waste, Radioactive waste, Other hazardous waste, Other non-hazardous waste. For each category: waste recovered through recycling, re-using, other recovery operations. For each category: waste disposed by incineration, landfilling, other disposal operations. Disclose for current and previous FY. Indicate if independent assessment/assurance carried out.",
+          "page": 136
+        },
+        {
+          "id": "P6-E10",
+          "label": "Briefly describe the waste management practices adopted in your establishments. Describe the strategy adopted by your company to reduce usage of hazardous and toxic chemicals in your products and processes and the practices adopted to manage such wastes",
+          "unit": "narrative",
+          "measurement_guidance": "Describe activities leading to significant waste impacts, actions taken (improving material selection, using recycled/renewable materials, substituting hazardous inputs), and third-party waste management oversight.",
+          "page": 138
+        },
+        {
+          "id": "P6-E11",
+          "label": "If the entity has operations/offices in/around ecologically sensitive areas (such as national parks, wildlife sanctuaries, biosphere reserves, wetlands, biodiversity hotspots, forests, coastal regulation zones etc.) where environmental approvals / clearances are required, please specify details",
+          "unit": "tabular",
+          "measurement_guidance": "For each location: Location of operations/offices, Type of operation, Whether conditions of environmental approval/clearance are being complied with (Y/N), reasons for non-compliance and corrective action.",
+          "page": 138
+        },
+        {
+          "id": "P6-E12",
+          "label": "Details of environmental impact assessments of projects undertaken by the entity based on applicable laws, in the current financial year",
+          "unit": "tabular",
+          "measurement_guidance": "Name and brief details of project, EIA Notification No., Date, Whether conducted by independent external agency (Y/N), Results communicated in public domain (Y/N), Relevant web link.",
+          "page": 139
+        },
+        {
+          "id": "P6-E13",
+          "label": "Is the entity compliant with the applicable environmental law/ regulations/ guidelines in India, such as the Water (Prevention and Control of Pollution) Act, Air (Prevention and Control of Pollution) Act, Environment protection act and rules thereunder (Y/N). If not, provide details of all such non-compliances",
+          "unit": "Yes/No + tabular",
+          "measurement_guidance": "If non-compliant: specify the law/regulation not complied with, details of non-compliance, fines/penalties/action by regulatory agencies, and corrective action taken.",
+          "page": 139
+        }
+      ],
+      "leadership_indicators": [
+        {
+          "id": "P6-L1",
+          "label": "Water withdrawal, consumption, and discharge in areas of water stress (in kilolitres)",
+          "unit": "kilolitres / ratio",
+          "measurement_guidance": "For each facility/plant in areas of water stress: Name of area, Nature of operations, Water withdrawal by source (Surface/Ground/Third party/Seawater/Others), Total withdrawal, Total consumption, Water intensity per rupee of turnover, Water intensity (optional). Water discharge by destination and treatment level (same structure as P6-E4). Areas of water stress = inability to meet human/ecological demand, or classified as over-exploited/critical by Central Groundwater Board.",
+          "page": 140
+        },
+        {
+          "id": "P6-L2",
+          "label": "Please provide details of total Scope 3 emissions & its intensity, in the following format",
+          "unit": "metric tonnes CO2 equivalent / ratio",
+          "measurement_guidance": "Total Scope 3 emissions (with optional break-up of CO2, CH4, N2O, HFCs, PFCs, SF6, NF3), Total Scope 3 emissions per rupee of turnover, Total Scope 3 emission intensity (optional metric). Scope 3 = indirect emissions outside organization (upstream: purchased goods, capital goods, transportation, business travel; downstream: transportation, processing, end-of-life treatment). Exclude GHG trades. Indicate if independent assessment/assurance carried out.",
+          "page": 141
+        },
+        {
+          "id": "P6-L3",
+          "label": "With respect to the ecologically sensitive areas reported at Question 11 of Essential Indicators above, provide details of significant direct & indirect impact of the entity on biodiversity in such areas along-with prevention and remediation activities",
+          "unit": "narrative",
+          "measurement_guidance": "Report impact of operations on integrity of ecologically sensitive areas (changes to ecological features, structures, functions; impact on habitat, population levels, species).",
+          "page": 142
+        },
+        {
+          "id": "P6-L4",
+          "label": "If the entity has undertaken any specific initiatives or used innovative technology or solutions to improve resource efficiency, or reduce impact due to emissions / effluent discharge / waste generated, please provide details of the same as well as outcome of such initiatives",
+          "unit": "narrative / tabular",
+          "measurement_guidance": "For each initiative: description (with web-link if any), details, and outcome. Also provide narrative explanation of performance on resource efficiency, emissions, effluent discharge, and waste generation.",
+          "page": 142
+        },
+        {
+          "id": "P6-L5",
+          "label": "Does the entity have a business continuity and disaster management plan? Give details in 100 words / web link",
+          "unit": "Yes/No + narrative / web-link",
+          "measurement_guidance": "Disclose existence and details of business continuity and disaster management plan. May provide link to full plan on website.",
+          "page": 142
+        },
+        {
+          "id": "P6-L6",
+          "label": "Disclose any significant adverse impact to the environment, arising from the value chain of the entity. What mitigation or adaptation measures have been taken by the entity in this regard",
+          "unit": "narrative",
+          "measurement_guidance": "Describe significant adverse environmental impacts from value chain (own operations, suppliers, customers) and mitigation/adaptation measures.",
+          "page": 143
+        },
+        {
+          "id": "P6-L7",
+          "label": "Percentage of value chain partners (by value of business done with such partners) that were assessed for environmental impacts",
+          "unit": "percentage",
+          "measurement_guidance": "Percentage of value chain partners assessed for environmental impacts by value of business done.",
+          "page": 143
+        },
+        {
+          "id": "P6-L8",
+          "label": "How many Green Credits have been generated or procured: a. By the listed entity b. By the top ten (in terms of value of purchases and sales, respectively) value chain partners",
+          "unit": "count (Green Credits)",
+          "measurement_guidance": "Number of Green Credits generated or procured by the listed entity and by top 10 value chain partners (by purchase and sales value). Introduced by SEBI Circular dated March 28, 2025, applicable from FY 2024-25 onwards.",
+          "page": "SEBI Circular March 2025, Page 1",
+          "amendment_source": "SEBI/HO/CFD/CFD-PoD-1/P/CIR/2025/42"
+        }
+      ]
+    },
+    {
+      "id": "P7",
+      "name": "Businesses, when engaging in influencing public and regulatory policy, should do so in a manner that is responsible and transparent",
+      "sdg_alignment": "SDG 16 - Peace, Justice and Strong Institutions",
+      "essential_indicators": [
+        {
+          "id": "P7-E1",
+          "label": "a. Number of affiliations with trade and industry chambers / associations b. List the top 10 trade and industry chambers / associations (determined based on the total members of such body) the entity is a member of / affiliated to",
+          "unit": "count / list",
+          "measurement_guidance": "For each of the top 10: Name of the trade/industry chamber/association, and Reach (State/National).",
+          "page": 143
+        },
+        {
+          "id": "P7-E2",
+          "label": "Provide details of corrective action taken or underway on any issues related to anti-competitive conduct by the entity, based on adverse orders from regulatory authorities",
+          "unit": "narrative / tabular",
+          "measurement_guidance": "For each case: Name of authority, Brief of the case, Corrective action taken.",
+          "page": 144
+        }
+      ],
+      "leadership_indicators": [
+        {
+          "id": "P7-L1",
+          "label": "Details of public policy positions advocated by the entity",
+          "unit": "tabular",
+          "measurement_guidance": "For each public policy position: Public policy advocated, Method resorted for advocacy, Whether information available in public domain (Y/N), Frequency of review by Board (Annually/Half yearly/Quarterly/Others), Web link if available.",
+          "page": 144
+        }
+      ]
+    },
+    {
+      "id": "P8",
+      "name": "Businesses should promote inclusive growth and equitable development",
+      "sdg_alignment": "SDG 1 - No Poverty; SDG 10 - Reduced Inequalities; SDG 17 - Partnerships for the Goals",
+      "essential_indicators": [
+        {
+          "id": "P8-E1",
+          "label": "Details of Social Impact Assessments (SIA) of projects undertaken by the entity based on applicable laws, in the current financial year",
+          "unit": "tabular",
+          "measurement_guidance": "For each project: Name and brief details, SIA Notification No., Date of notification, Whether conducted by independent external agency (Y/N), Results communicated in public domain (Y/N), Relevant web link. Applicable per Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act, 2013.",
+          "page": 146
+        },
+        {
+          "id": "P8-E2",
+          "label": "Provide information on project(s) for which ongoing Rehabilitation and Resettlement (R&R) is being undertaken by your entity",
+          "unit": "tabular / count / INR",
+          "measurement_guidance": "For each project: Name, State, District, Number of Project Affected Families (PAFs), % of PAFs covered by R&R, Amount paid to PAFs in the FY (in INR).",
+          "page": 146
+        },
+        {
+          "id": "P8-E3",
+          "label": "Describe the mechanisms to receive and redress grievances of the community",
+          "unit": "narrative",
+          "measurement_guidance": "Describe mechanisms for local communities (persons/groups living and/or working in areas impacted by entity's operations) to raise and resolve grievances.",
+          "page": 146
+        },
+        {
+          "id": "P8-E4",
+          "label": "Percentage of input material (inputs to total inputs by value) sourced from suppliers",
+          "unit": "percentage",
+          "measurement_guidance": "Disclose: Directly sourced from MSMEs/small producers, and Sourced directly from within the district and neighboring districts. Small producers = owner is a worker, includes self-help groups, home-based workers, cooperatives, producer companies. Disclose for current and previous FY.",
+          "page": 146
+        },
+        {
+          "id": "P8-E5",
+          "label": "Job creation in smaller towns - Disclose wages paid to persons employed (including employees or workers employed on a permanent or non-permanent / on contract basis) in the following locations, as % of total wage cost",
+          "unit": "percentage",
+          "measurement_guidance": "Wages paid as % of total wage cost by location: Rural, Semi-urban, Urban, Metropolitan (as per RBI Classification System). Disclose for current and previous FY.",
+          "page": 147
+        }
+      ],
+      "leadership_indicators": [
+        {
+          "id": "P8-L1",
+          "label": "Provide details of actions taken to mitigate any negative social impacts identified in the Social Impact Assessments (Reference: Question 1 of Essential Indicators above)",
+          "unit": "narrative / tabular",
+          "measurement_guidance": "For each negative social impact identified: details of the impact and corrective action taken.",
+          "page": 147
+        },
+        {
+          "id": "P8-L2",
+          "label": "Provide the following information on CSR projects undertaken by your entity in designated aspirational districts as identified by government bodies",
+          "unit": "tabular / INR",
+          "measurement_guidance": "For each CSR project in aspirational districts: State, Aspirational District, Amount spent (in INR). Refer to NITI Aayog Transformation of Aspirational Districts programme.",
+          "page": 148
+        },
+        {
+          "id": "P8-L3",
+          "label": "a. Do you have a preferential procurement policy where you give preference to purchase from suppliers comprising marginalized / vulnerable groups? (Yes/No) b. From which marginalized / vulnerable groups do you procure? c. What percentage of total procurement (by value) does it constitute?",
+          "unit": "Yes/No + percentage",
+          "measurement_guidance": "Disclose existence of preferential procurement policy, target groups, and percentage of total procurement from marginalized/vulnerable groups.",
+          "page": 148
+        },
+        {
+          "id": "P8-L4",
+          "label": "Details of the benefits derived and shared from the intellectual properties owned or acquired by your entity (in the current financial year), based on traditional knowledge",
+          "unit": "tabular / Yes/No",
+          "measurement_guidance": "For each IP based on traditional knowledge: description, Owned/Acquired (Y/N), Benefit shared (Y/N), Basis of calculating benefit share (per Access to Biological Resources and Associated Knowledge and Benefits Sharing Regulations, 2014).",
+          "page": 148
+        },
+        {
+          "id": "P8-L5",
+          "label": "Details of corrective actions taken or underway, based on any adverse order in intellectual property related disputes wherein usage of traditional knowledge is involved",
+          "unit": "narrative / tabular",
+          "measurement_guidance": "For each case: Name of Authority, Brief of the case, Corrective action taken.",
+          "page": 149
+        },
+        {
+          "id": "P8-L6",
+          "label": "Details of beneficiaries of CSR Projects",
+          "unit": "count / percentage",
+          "measurement_guidance": "For each CSR Project: Name, Number of persons benefitted, Percentage of beneficiaries from vulnerable and marginalized groups.",
+          "page": 149
+        }
+      ]
+    },
+    {
+      "id": "P9",
+      "name": "Businesses should engage with and provide value to their consumers in a responsible manner",
+      "sdg_alignment": "SDG 12 - Responsible Consumption and Production",
+      "essential_indicators": [
+        {
+          "id": "P9-E1",
+          "label": "Describe the mechanisms in place to receive and respond to consumer complaints and feedback",
+          "unit": "narrative",
+          "measurement_guidance": "Describe multiple channels for complaints/feedback, acknowledgment process, investigation process, response timelines, and resolution process.",
+          "page": 150
+        },
+        {
+          "id": "P9-E2",
+          "label": "Turnover of products and / services as a percentage of turnover from all products / service that carry information about: Environmental and social parameters relevant to the product, Safe and responsible usage, Recycling and/or safe disposal",
+          "unit": "percentage",
+          "measurement_guidance": "For top products/services accounting for 90% of turnover: percentage of turnover from products carrying information about each category. Disclose whether information is provided on product label, manual, or website.",
+          "page": 151
+        },
+        {
+          "id": "P9-E3",
+          "label": "Number of consumer complaints in respect of the following: Data privacy, Advertising, Cyber-security, Delivery of essential services, Restrictive Trade Practices, Unfair Trade Practices, Quality Complaints",
+          "unit": "count",
+          "measurement_guidance": "For each category: number received during the year, number pending resolution at end of year, and remarks. Disclose for current and previous FY.",
+          "page": 151
+        },
+        {
+          "id": "P9-E4",
+          "label": "Details of instances of product recalls on account of safety issues",
+          "unit": "count + narrative",
+          "measurement_guidance": "Number and reasons for: Voluntary recalls, Forced recalls.",
+          "page": 152
+        },
+        {
+          "id": "P9-E5",
+          "label": "Does the entity have a framework / policy on cyber security and risks related to data privacy? (Yes/No) If available, provide a web-link of the policy",
+          "unit": "Yes/No + web-link",
+          "measurement_guidance": "Disclose existence of cyber security and data privacy framework/policy and provide web-link.",
+          "page": 152
+        },
+        {
+          "id": "P9-E6",
+          "label": "Provide details of any corrective actions taken or underway on issues relating to advertising, and delivery of essential services; cyber security and data privacy of customers; re-occurrence of instances of product recalls; penalty / action taken by regulatory authorities on safety of products / services",
+          "unit": "narrative",
+          "measurement_guidance": "Describe corrective actions for each area: advertising practices, delivery of essential services, cyber security incidents/data breaches, product recall prevention, and regulatory actions on product safety.",
+          "page": 152
+        },
+        {
+          "id": "P9-E7",
+          "label": "Provide the following information relating to data breaches: a. Number of instances of data breaches b. Percentage of data breaches involving personally identifiable information of customers c. Impact, if any, of the data breaches",
+          "unit": "count / percentage / narrative",
+          "measurement_guidance": "Disclose number of data breach instances, percentage involving PII, and impact assessment.",
+          "page": 153
+        }
+      ],
+      "leadership_indicators": [
+        {
+          "id": "P9-L1",
+          "label": "Channels / platforms where information on products and services of the entity can be accessed (provide web link, if available)",
+          "unit": "narrative / web-link",
+          "measurement_guidance": "Describe channels/platforms (websites, mobile apps, help desks, call centers, etc.) and provide web links if available.",
+          "page": 153
+        },
+        {
+          "id": "P9-L2",
+          "label": "Steps taken to inform and educate consumers about safe and responsible usage of products and/or services",
+          "unit": "narrative",
+          "measurement_guidance": "Describe target audience identification, safety/responsibility guidelines developed, channels used, accessibility of guidelines, staff training, and monitoring/update processes.",
+          "page": 153
+        },
+        {
+          "id": "P9-L3",
+          "label": "Mechanisms in place to inform consumers of any risk of disruption / discontinuation of essential services",
+          "unit": "narrative",
+          "measurement_guidance": "Describe mechanisms ensuring consumers have adequate notice of potential disruptions to essential services.",
+          "page": 154
+        },
+        {
+          "id": "P9-L4",
+          "label": "Does the entity display product information on the product over and above what is mandated as per local laws? (Yes/No/Not Applicable) If yes, provide details in brief. Did your entity carry out any survey with regard to consumer satisfaction relating to the major products / services of the entity, significant locations of operation of the entity or the entity as a whole? (Yes/No)",
+          "unit": "Yes/No + narrative",
+          "measurement_guidance": "Disclose additional voluntary product information displayed and whether consumer satisfaction surveys were conducted for major products/services.",
+          "page": 154
+        }
+      ]
+    }
+  ],
+  "section_a_general_disclosures": [
+    {"id": "SA-1 to SA-13", "label": "Details of the listed entity (CIN, name, year of incorporation, registered office, corporate address, email, telephone, website, FY, stock exchanges, paid-up capital, contact person for BRSR, reporting boundary)", "page": 65},
+    {"id": "SA-14", "label": "Name of assessment or assurance provider", "page": "SEBI Circular March 2025, Page 3", "amendment": true},
+    {"id": "SA-15", "label": "Type of assessment of assurance obtained", "page": "SEBI Circular March 2025, Page 3", "amendment": true},
+    {"id": "SA-16 to SA-18", "label": "Products/Services: top 5 products/services by turnover, products/services sold outside India, key brands", "page": 66},
+    {"id": "SA-19", "label": "Operations: number and location of plants, offices, markets served", "page": 67},
+    {"id": "SA-20 to SA-21", "label": "Employees and Workers: details by type (permanent/other than permanent/casual), by gender, differently abled, participation of women at Board level", "page": 69},
+    {"id": "SA-22", "label": "Turnover rate for permanent employees and workers (3-year trend, by gender)", "page": 72},
+    {"id": "SA-23", "label": "Holding, subsidiary and associate companies / joint ventures and their participation in BR initiatives", "page": 72},
+    {"id": "SA-24", "label": "CSR Details: applicability per Section 135, turnover, net worth", "page": 74},
+    {"id": "SA-25", "label": "Complaints/Grievances on any of the principles (P1-P9): by stakeholder group, with grievance redressal mechanism status", "page": 75},
+    {"id": "SA-26", "label": "Overview of material responsible business conduct issues: material issue, risk/opportunity, rationale, approach to adapt/mitigate, financial implications", "page": 76}
+  ],
+  "section_b_management_process_disclosures": [
+    {"id": "SB-1", "label": "Whether entity's policies cover each principle and core elements of NGRBCs (Yes/No), Board approval, web links"},
+    {"id": "SB-2", "label": "Whether the entity has translated the policy into procedures (Yes/No)"},
+    {"id": "SB-3", "label": "Do the enlisted policies extend to value chain partners? (Yes/No)"},
+    {"id": "SB-4", "label": "Name of national and international codes/certifications/labels/standards adopted and mapped to each principle"},
+    {"id": "SB-5", "label": "Specific commitments, goals, and targets set by the entity with defined timelines"},
+    {"id": "SB-6", "label": "Performance against commitments, goals, and targets with reasons for non-achievement"},
+    {"id": "SB-7", "label": "Statement by director responsible for BR report highlighting ESG challenges, targets and achievements"},
+    {"id": "SB-8", "label": "Details of highest authority responsible for implementation and oversight of BR policies"},
+    {"id": "SB-9", "label": "Does the entity have a specified Committee of the Board / Director responsible for decision making on sustainability related issues? (Yes/No)"},
+    {"id": "SB-10", "label": "Details of Review of NGRBCs by the Company (who reviewed, frequency) for performance against policies and statutory compliance"},
+    {"id": "SB-11", "label": "Has the entity carried out independent assessment / evaluation of its policies by an external agency? (Yes/No)"},
+    {"id": "SB-12", "label": "If not all Principles covered by a policy, reasons to be stated"}
+  ],
+  "summary_statistics": {
+    "total_principles": 9,
+    "total_essential_indicators": 72,
+    "total_leadership_indicators": 40,
+    "total_disclosure_datapoints": 112,
+    "section_a_datapoints": 26,
+    "section_b_datapoints": 12,
+    "march_2025_amendments": {
+      "new_indicators": ["P6-L8 (Green Credits)"],
+      "modified_terminology": "Assessment or Assurance (replaces Assurance only)",
+      "value_chain_threshold": "2% of purchases/sales (may limit to 75% coverage)",
+      "value_chain_deferral": "Voluntary from FY 2025-26 (disclosure), FY 2026-27 (assessment/assurance)"
+    }
+  }
+}

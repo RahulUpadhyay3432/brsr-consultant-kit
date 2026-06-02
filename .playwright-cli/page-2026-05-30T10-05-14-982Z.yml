@@ -1,0 +1,116 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e5]:
+          - img [ref=e7]
+          - generic [ref=e9]:
+            - heading "BRSR Consultant Kit" [level=1] [ref=e10]
+            - paragraph [ref=e11]: Free BRSR Readiness Report Generator
+        - generic [ref=e12]: No data stored · No login required
+    - main [ref=e13]:
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - generic [ref=e18]: Free Tool · ESG Consultants · India
+          - heading "Generate your client's BRSR Readiness Report in 30 seconds." [level=2] [ref=e19]:
+            - text: Generate your client's
+            - text: BRSR Readiness Report
+            - text: in 30 seconds.
+          - paragraph [ref=e20]: Fill in your client's details below. Get a data collection checklist with gap analysis, pre-populated materiality assessment, and cross-framework mappings — ready to use.
+        - generic [ref=e22]:
+          - generic [ref=e23]:
+            - generic [ref=e24]: Client Company Name
+            - textbox "e.g., Acme Industries Ltd." [ref=e25]: Apex Textiles Ltd
+          - generic [ref=e26]:
+            - generic [ref=e27]: Industry *
+            - combobox [ref=e28] [cursor=pointer]:
+              - option "Textile & Apparel" [selected]
+              - option "Food & Beverage"
+              - option "Cement"
+              - option "Steel & Metals"
+              - option "Pharmaceuticals"
+              - option "IT Services"
+              - option "Chemicals"
+              - option "Automotive"
+              - option "Power & Energy"
+              - option "Construction"
+              - option "Other"
+          - generic [ref=e29]:
+            - generic [ref=e30]: Company Size & Listing Status *
+            - generic [ref=e31]:
+              - generic [ref=e32] [cursor=pointer]:
+                - radio "Listed — Top 1000 by market cap" [checked] [ref=e33]
+                - generic [ref=e36]: Listed — Top 1000 by market cap
+              - generic [ref=e37] [cursor=pointer]:
+                - radio "Listed — Outside top 1000" [ref=e38]
+                - generic [ref=e40]: Listed — Outside top 1000
+              - generic [ref=e41] [cursor=pointer]:
+                - radio "Unlisted — Supplier to listed company" [ref=e42]
+                - generic [ref=e44]: Unlisted — Supplier to listed company
+              - generic [ref=e45] [cursor=pointer]:
+                - radio "Unlisted — Not in value chain" [ref=e46]
+                - generic [ref=e48]: Unlisted — Not in value chain
+          - generic [ref=e49]:
+            - generic [ref=e50]: Reporting Maturity *
+            - generic [ref=e51]:
+              - generic [ref=e52] [cursor=pointer]:
+                - radio "First-time filing" [checked] [ref=e53]
+                - generic [ref=e54]: First-time filing
+              - generic [ref=e55] [cursor=pointer]:
+                - radio "1–2 years of filing" [ref=e56]
+                - generic [ref=e57]: 1–2 years of filing
+              - generic [ref=e58] [cursor=pointer]:
+                - radio "3+ years — improving quality" [ref=e59]
+                - generic [ref=e60]: 3+ years — improving quality
+          - generic [ref=e61]:
+            - generic [ref=e62]: Export Markets
+            - generic [ref=e63]:
+              - button "EU" [ref=e64] [cursor=pointer]
+              - button "USA" [active] [ref=e65] [cursor=pointer]
+              - button "UK" [ref=e66] [cursor=pointer]
+              - button "Middle East" [ref=e67] [cursor=pointer]
+              - button "Southeast Asia" [ref=e68] [cursor=pointer]
+              - button "None" [ref=e69] [cursor=pointer]
+            - paragraph [ref=e70]: Affects materiality scoring for CBAM, CSDDD, and trade-linked ESG requirements
+          - generic [ref=e71]:
+            - generic [ref=e72]: Existing Compliance Filings
+            - paragraph [ref=e73]: ⭐ Most important field — every filing you select shows which BRSR fields are already documented in those reports, so you don't have to collect that data from scratch.
+            - generic [ref=e74]:
+              - button "PCB (CTE/CTO)" [ref=e75] [cursor=pointer]
+              - button "ZLD" [ref=e76] [cursor=pointer]
+              - button "Hazardous Waste" [ref=e77] [cursor=pointer]
+              - button "EPR Registration" [ref=e78] [cursor=pointer]
+              - button "Factory Act" [ref=e79] [cursor=pointer]
+              - button "PAT Scheme" [ref=e80] [cursor=pointer]
+              - button "None" [ref=e81] [cursor=pointer]
+            - paragraph [ref=e82]: Select all filings your client currently files — the tool will show what's already tracked vs what's new
+          - button "Generate BRSR Readiness Report" [ref=e83] [cursor=pointer]:
+            - text: Generate BRSR Readiness Report
+            - img [ref=e84]
+        - generic [ref=e86]:
+          - generic [ref=e89]:
+            - generic [ref=e90]: 📋
+            - generic [ref=e91]:
+              - heading "Data Collection Checklist" [level=3] [ref=e92]
+              - paragraph [ref=e93]: All BRSR data points with gap analysis — what's already tracked through existing filings vs what needs collecting fresh
+          - generic [ref=e96]:
+            - generic [ref=e97]: ◎
+            - generic [ref=e98]:
+              - heading "Materiality Assessment" [level=3] [ref=e99]
+              - paragraph [ref=e100]: Pre-populated material topics for your client's industry with an interactive 2-axis scoring chart
+          - generic [ref=e103]:
+            - generic [ref=e104]: 🔗
+            - generic [ref=e105]:
+              - heading "Cross-Framework Mapper" [level=3] [ref=e106]
+              - paragraph [ref=e107]: BRSR to GRI, TCFD, and IFRS S1/S2 mapping table — collect data once and report across all frameworks
+    - contentinfo [ref=e108]:
+      - generic [ref=e109]:
+        - paragraph [ref=e110]:
+          - text: Built by
+          - link "Rahul Upadhyay" [ref=e111] [cursor=pointer]:
+            - /url: https://www.linkedin.com/in/rahul-upadhyay26/
+          - text: ·
+          - link "rahulu626@gmail.com" [ref=e112] [cursor=pointer]:
+            - /url: mailto:rahulu626@gmail.com
+        - paragraph [ref=e113]: Data from ICAI BRSR 2024 · SEBI Circulars · MoEFCC Rules
+  - alert [ref=e114]

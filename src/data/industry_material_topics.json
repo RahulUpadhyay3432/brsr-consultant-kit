@@ -1,0 +1,744 @@
+{
+  "metadata": {
+    "source": "Bilancia Group ESG Compliance Guide (Apr 2026) + domain knowledge",
+    "brsr_principles_key": {
+      "P1": "Ethics, Transparency & Accountability",
+      "P2": "Sustainable & Safe Products/Services",
+      "P3": "Employee Wellbeing & Safety",
+      "P4": "Stakeholder Engagement",
+      "P5": "Human Rights",
+      "P6": "Environment",
+      "P7": "Responsible Policy Advocacy",
+      "P8": "Inclusive Growth",
+      "P9": "Consumer Responsibility"
+    },
+    "note": "Topics marked [from_guide] are directly extracted or inferred from the Bilancia document. Others are generated from domain knowledge."
+  },
+  "industries": {
+    "textile_and_apparel": {
+      "environment": [
+        {
+          "topic": "Water consumption in wet processing (dyeing, finishing, washing)",
+          "brsr_principles": ["P6"],
+          "why_material": "Textiles are among the most water-intensive industries; CCTS obligations now cover textiles (notified Jan 2026), making water-linked emissions intensity a compliance metric. [from_guide]"
+        },
+        {
+          "topic": "GHG emissions intensity per unit output",
+          "brsr_principles": ["P6"],
+          "why_material": "Textiles are one of seven CCTS-obligated sectors with legally binding intensity targets for FY 2026-27, requiring digital MRV systems and near-real-time tracking. [from_guide]"
+        },
+        {
+          "topic": "Effluent discharge and chemical pollution (ZLD compliance)",
+          "brsr_principles": ["P6"],
+          "why_material": "Textile wet processing generates high-BOD effluent with dyes, heavy metals, and formaldehyde; state PCBs (especially Gujarat, Tamil Nadu) mandate CEMS and ZLD for large units."
+        },
+        {
+          "topic": "Hazardous chemical management (ZDHC/MRSL compliance)",
+          "brsr_principles": ["P2", "P6"],
+          "why_material": "International buyers increasingly require ZDHC Manufacturing Restricted Substances List compliance; chemical inputs directly affect worker health and downstream water quality."
+        },
+        {
+          "topic": "Microfibre and plastic pollution from synthetic textiles",
+          "brsr_principles": ["P2", "P6"],
+          "why_material": "Synthetic fabric washing releases microplastics into waterways; emerging regulatory attention under EPR and EU textile strategy creates future compliance exposure."
+        },
+        {
+          "topic": "Energy mix and coal dependency in processing units",
+          "brsr_principles": ["P6"],
+          "why_material": "Many Indian textile clusters (Tirupur, Surat, Ahmedabad) rely on coal-fired boilers; CCTS intensity targets require demonstrable fuel switching or efficiency gains. [from_guide]"
+        },
+        {
+          "topic": "CBAM exposure for EU-bound textile exports",
+          "brsr_principles": ["P6"],
+          "why_material": "While textiles are not yet in CBAM's product scope, the EU is evaluating scope expansion; high-carbon textile value chains face future trade-cost risk. [from_guide]"
+        }
+      ],
+      "social": [
+        {
+          "topic": "Fair wages and contract labour practices",
+          "brsr_principles": ["P3", "P5"],
+          "why_material": "Textile industry has high prevalence of piece-rate and contract workers, particularly in garment manufacturing; wage theft and sub-minimum-wage violations are systemic risks flagged by international audits."
+        },
+        {
+          "topic": "Occupational health and safety (dust, chemical exposure, fire safety)",
+          "brsr_principles": ["P3"],
+          "why_material": "Workers in spinning, dyeing, and garment units face respiratory hazards from cotton dust and chemical fumes; fire and building safety remain critical after global supply chain scrutiny."
+        },
+        {
+          "topic": "Gender equity and prevention of workplace harassment",
+          "brsr_principles": ["P3", "P5"],
+          "why_material": "Women constitute 60-70% of garment workforce; POSH compliance, equal pay, and maternity benefits are material for BRSR workforce diversity disclosures and buyer audits."
+        },
+        {
+          "topic": "Child labour and forced labour in supply chain (spinning, ginning)",
+          "brsr_principles": ["P5"],
+          "why_material": "Upstream cotton ginning and spinning stages have documented child labour risks; BRSR value chain disclosure and CSDDD (even post-Omnibus) require due diligence. [from_guide]"
+        },
+        {
+          "topic": "Community impact near textile clusters (water access, pollution)",
+          "brsr_principles": ["P4", "P8"],
+          "why_material": "Textile hubs often share groundwater with surrounding communities; effluent contamination of local water bodies creates direct community health and livelihood impact."
+        }
+      ],
+      "governance": [
+        {
+          "topic": "CCTS compliance readiness and MRV system implementation",
+          "brsr_principles": ["P1", "P7"],
+          "why_material": "As a newly obligated CCTS sector, textile companies need board-level oversight of emissions measurement, reporting, and verification infrastructure before H2 2026 trading starts. [from_guide]"
+        },
+        {
+          "topic": "Supply chain traceability and transparency",
+          "brsr_principles": ["P1", "P2"],
+          "why_material": "Multi-tier textile supply chains (farm-to-garment) require traceability systems for fibre origin, chemical inputs, and labour conditions to meet BRSR value chain and buyer audit requirements."
+        },
+        {
+          "topic": "ESG data quality and BRSR Core assurance readiness",
+          "brsr_principles": ["P1"],
+          "why_material": "BRSR Core mandatory assurance expanding to top 500 (FY 2025-26) and top 1000 (FY 2026-27) means textile companies must move beyond spreadsheet-based ESG data to auditable systems. [from_guide]"
+        }
+      ]
+    },
+    "food_and_beverage": {
+      "environment": [
+        {
+          "topic": "Water stewardship and consumption intensity",
+          "brsr_principles": ["P6"],
+          "why_material": "F&B is among the highest water-consuming sectors; beverage production, cleaning, and agricultural supply chains create water stress in already depleted Indian basins."
+        },
+        {
+          "topic": "Food waste and organic waste management",
+          "brsr_principles": ["P6"],
+          "why_material": "Processing losses, cold chain gaps, and distribution waste contribute to landfill methane; EPR for packaging and SWM Rules 2016 mandate waste segregation and processing."
+        },
+        {
+          "topic": "Scope 1 & 2 GHG emissions (refrigeration, thermal processing, logistics)",
+          "brsr_principles": ["P6"],
+          "why_material": "Cold chain refrigerants (HFCs), boiler fuel, and fleet operations are significant emission sources; BRSR Core requires verified intensity ratios for listed entities. [from_guide]"
+        },
+        {
+          "topic": "Scope 3 emissions from agricultural supply chain",
+          "brsr_principles": ["P6"],
+          "why_material": "Agricultural inputs (fertilizer use, livestock, land-use change) often dominate F&B carbon footprints; BRSR value chain disclosure requires baseline data from top suppliers. [from_guide]"
+        },
+        {
+          "topic": "Packaging sustainability and EPR compliance",
+          "brsr_principles": ["P2", "P6"],
+          "why_material": "Plastic Waste Management Rules and EPR obligations require F&B companies to ensure collection and recycling of packaging; FMCG faces high brand-reputation risk on single-use plastic."
+        },
+        {
+          "topic": "Sustainable sourcing and deforestation-free supply chains",
+          "brsr_principles": ["P6", "P2"],
+          "why_material": "Palm oil, soy, cocoa, and coffee supply chains carry deforestation risk; EU Deforestation Regulation compliance is required for companies exporting to or sourcing from the EU."
+        }
+      ],
+      "social": [
+        {
+          "topic": "Farmer livelihoods and fair procurement practices",
+          "brsr_principles": ["P5", "P8"],
+          "why_material": "Direct sourcing from smallholder farmers creates dependency; fair pricing, contract transparency, and minimum support commitments are material for social license and BRSR Principle 8."
+        },
+        {
+          "topic": "Nutritional quality and responsible marketing",
+          "brsr_principles": ["P9"],
+          "why_material": "FSSAI regulations on labelling, HFSS food marketing restrictions (especially to children), and front-of-pack labelling requirements make product responsibility a core ESG topic."
+        },
+        {
+          "topic": "Worker safety in processing and cold storage facilities",
+          "brsr_principles": ["P3"],
+          "why_material": "Ammonia leaks, confined space hazards, knife/machinery injuries, and heat stress in production facilities are persistent OHS risks requiring safety management systems."
+        },
+        {
+          "topic": "Contract and seasonal labour welfare",
+          "brsr_principles": ["P3", "P5"],
+          "why_material": "F&B processing relies heavily on seasonal and contract labour with gaps in PF coverage, housing, and working conditions; BRSR requires disclosure of permanent vs. non-permanent workforce metrics."
+        }
+      ],
+      "governance": [
+        {
+          "topic": "Food safety and quality management systems",
+          "brsr_principles": ["P2", "P9"],
+          "why_material": "FSSAI compliance, HACCP/ISO 22000 certification, and recall management are foundational governance mechanisms; product safety failures carry regulatory, legal, and reputational consequences."
+        },
+        {
+          "topic": "Supply chain ESG data collection from MSME suppliers",
+          "brsr_principles": ["P1", "P4"],
+          "why_material": "Most F&B supply chain partners are MSMEs with no ESG reporting infrastructure; listed companies must build supplier capability for BRSR value chain disclosure. [from_guide]"
+        },
+        {
+          "topic": "Anti-corruption in procurement and distribution",
+          "brsr_principles": ["P1"],
+          "why_material": "Large-scale procurement networks and distribution systems create corruption risk; BRSR Principle 1 requires disclosure of anti-bribery policies and related incidents."
+        }
+      ]
+    },
+    "cement": {
+      "environment": [
+        {
+          "topic": "GHG emissions intensity per tonne of cement (process + combustion)",
+          "brsr_principles": ["P6"],
+          "why_material": "Cement is a CCTS-obligated sector with intensity targets ranging from 0.85% to 7.6% depending on OPC vs PPC, with FY 2024 as baseline year. Calcination process emissions are inherent and hard to abate. [from_guide]"
+        },
+        {
+          "topic": "Alternative fuel and raw material (AFR) substitution rate",
+          "brsr_principles": ["P6"],
+          "why_material": "Low-carbon cement from kilns using alternative fuels commands a market margin; AFR rate directly impacts CCTS compliance position and CBAM cost for EU-bound exports. [from_guide]"
+        },
+        {
+          "topic": "CBAM exposure for EU cement exports",
+          "brsr_principles": ["P6"],
+          "why_material": "Cement is one of six products in CBAM's definitive phase (Jan 2026); exporters face carbon costs based on embedded emissions gap vs EU producers, with first declaration due Sep 2027. [from_guide]"
+        },
+        {
+          "topic": "Particulate matter and air quality (kiln emissions, fugitive dust)",
+          "brsr_principles": ["P6"],
+          "why_material": "CEMS mandates from state PCBs (Maharashtra, Gujarat) require real-time monitoring of PM, SO2, NOx; community health impacts near cement plants drive regulatory and social license risk. [from_guide]"
+        },
+        {
+          "topic": "Water consumption and groundwater impact in limestone mining",
+          "brsr_principles": ["P6"],
+          "why_material": "Mining operations in water-stressed regions create groundwater depletion risk; BRSR requires water withdrawal intensity disclosure with assurance."
+        },
+        {
+          "topic": "Biodiversity and land rehabilitation at mining sites",
+          "brsr_principles": ["P6"],
+          "why_material": "Large-scale limestone quarrying causes habitat destruction; mine closure plans and progressive rehabilitation are material for environmental clearance and BRSR Principle 6 leadership indicators."
+        },
+        {
+          "topic": "Clinker-to-cement ratio optimisation",
+          "brsr_principles": ["P6"],
+          "why_material": "Blended cements (PPC, PSC) lower clinker factor and directly reduce emissions intensity; this is the primary lever for CCTS target achievement in the first compliance cycle."
+        }
+      ],
+      "social": [
+        {
+          "topic": "Community displacement and resettlement from mining",
+          "brsr_principles": ["P4", "P5", "P8"],
+          "why_material": "Limestone mining requires land acquisition that often displaces communities; R&R compliance, livelihood restoration, and free prior informed consent are material human rights topics."
+        },
+        {
+          "topic": "Occupational health (silicosis, dust exposure, heat stress)",
+          "brsr_principles": ["P3"],
+          "why_material": "Cement workers face chronic silicosis risk from silica dust, kiln-area heat stress, and noise exposure; OHS incident rates and health surveillance programmes are key BRSR P3 metrics."
+        },
+        {
+          "topic": "Local employment and community development around plant sites",
+          "brsr_principles": ["P8"],
+          "why_material": "Cement plants are typically in rural/semi-urban areas where they are the primary employer; local hiring, skill development, and CSR spend impact are material for social license."
+        }
+      ],
+      "governance": [
+        {
+          "topic": "CCTS MRV infrastructure and compliance trading readiness",
+          "brsr_principles": ["P1"],
+          "why_material": "Cement entities need digital MRV systems before compliance trading starts in H2 2026; board-level oversight required for CCC banking, buying, or selling decisions. [from_guide]"
+        },
+        {
+          "topic": "BRSR Core assurance data integrity",
+          "brsr_principles": ["P1"],
+          "why_material": "First-year BRSR Core assurance exposed measurement boundary inconsistencies and calculation errors across listed companies; cement firms need audit-trail-ready data systems. [from_guide]"
+        },
+        {
+          "topic": "ESG steering committee with board-level reporting",
+          "brsr_principles": ["P1"],
+          "why_material": "Guide recommends creating ESG steering committee with finance, operations, procurement, legal, and sustainability representation, reporting to board quarterly. [from_guide]"
+        }
+      ]
+    },
+    "steel_and_metals": {
+      "environment": [
+        {
+          "topic": "GHG emissions intensity per tonne of crude steel",
+          "brsr_principles": ["P6"],
+          "why_material": "India's steel sector emits ~2.5 tCO2/tonne vs EU average of 1.5-1.8 tCO2/tonne; this gap drives CBAM exposure of €56-80 per tonne exported. Iron and steel CCTS targets are pending notification. [from_guide]"
+        },
+        {
+          "topic": "CBAM financial exposure for EU-bound steel and aluminium",
+          "brsr_principles": ["P6"],
+          "why_material": "Indian steel/aluminium exports to EU dropped 24.4% YoY in FY 2024-25 on CBAM anticipation; mid-sized exporters face €3-4M/year in carbon costs. ISO 14065 verification is the only path to avoid punitive default values. [from_guide]"
+        },
+        {
+          "topic": "CCTS compliance for aluminium sector",
+          "brsr_principles": ["P6"],
+          "why_material": "Aluminium is CCTS-obligated with intensity targets of 1.9% to 7.06% reduction; coal-based aluminium smelters are the most exposed to both CCTS and CBAM costs. [from_guide]"
+        },
+        {
+          "topic": "Air emissions (SO2, NOx, PM from blast furnaces and smelters)",
+          "brsr_principles": ["P6"],
+          "why_material": "Steel and metals facilities face CEMS mandates from state pollution boards; Maharashtra, Gujarat, and Odisha have progressively tightened real-time monitoring requirements. [from_guide]"
+        },
+        {
+          "topic": "Slag, fly ash, and solid waste management",
+          "brsr_principles": ["P6"],
+          "why_material": "Steel production generates large volumes of slag and red mud (aluminium); circular economy utilisation rates are a key BRSR metric and drive both waste costs and revenue from by-products."
+        },
+        {
+          "topic": "Water consumption and thermal discharge in cooling operations",
+          "brsr_principles": ["P6"],
+          "why_material": "Integrated steel plants are among the largest industrial water consumers; thermal discharge into rivers affects aquatic ecosystems and faces ZLD mandates in water-stressed regions."
+        },
+        {
+          "topic": "Shift from blast furnace to electric arc furnace / recycled metal",
+          "brsr_principles": ["P6"],
+          "why_material": "Recycled aluminium with verified emissions data is approaching price parity with primary metal in certain segments; EAF shift and scrap-based production are key decarbonisation levers. [from_guide]"
+        }
+      ],
+      "social": [
+        {
+          "topic": "Worker safety in high-hazard operations (molten metal, confined spaces)",
+          "brsr_principles": ["P3"],
+          "why_material": "Steel and metals operations carry extreme OHS risks from molten metal handling, gas exposure, and heavy equipment; fatality and lost-time injury rates are closely tracked BRSR metrics."
+        },
+        {
+          "topic": "Land acquisition and indigenous community rights in mining belts",
+          "brsr_principles": ["P5", "P8"],
+          "why_material": "Iron ore and bauxite mining in Odisha, Jharkhand, and Chhattisgarh often involves tribal communities; FPIC, forest rights compliance, and displacement are high-materiality human rights issues."
+        },
+        {
+          "topic": "Contract labour welfare in mines and plants",
+          "brsr_principles": ["P3", "P5"],
+          "why_material": "High proportion of contract workers in mines and ancillary operations face disparities in wages, safety provisions, and social security; BRSR requires disaggregated workforce metrics."
+        }
+      ],
+      "governance": [
+        {
+          "topic": "CBAM verification and emissions data management",
+          "brsr_principles": ["P1"],
+          "why_material": "Companies must get plant-level verified emissions reports from ISO 14065-accredited verifiers; capacity crunch expected by mid-2026 among Bureau Veritas, TUV, DNV, and SGS India. [from_guide]"
+        },
+        {
+          "topic": "CCTS-CBAM interplay strategy (Article 9 deductions)",
+          "brsr_principles": ["P1", "P7"],
+          "why_material": "CBAM Article 9 allows deduction for domestic carbon prices paid; engaging with CCTS is now a trade competitiveness question, not just domestic compliance. Board must own this strategic decision. [from_guide]"
+        },
+        {
+          "topic": "Transition planning and capital allocation for decarbonisation",
+          "brsr_principles": ["P1"],
+          "why_material": "Banks and investors are pushing transition plans into loan documentation; capital allocation for green hydrogen DRI, EAF conversion, and renewable energy requires board-level governance. [from_guide]"
+        }
+      ]
+    },
+    "pharmaceuticals": {
+      "environment": [
+        {
+          "topic": "Active pharmaceutical ingredient (API) effluent and antibiotic contamination",
+          "brsr_principles": ["P6"],
+          "why_material": "API manufacturing discharges (especially from Hyderabad, Baddi, Vapi clusters) contribute to antimicrobial resistance in waterways; regulatory scrutiny on ZLD and effluent quality is intensifying."
+        },
+        {
+          "topic": "Solvent use, VOC emissions, and hazardous waste from synthesis",
+          "brsr_principles": ["P6"],
+          "why_material": "Chemical synthesis generates significant hazardous waste and volatile organic compound emissions; state PCB compliance, TSDF utilisation, and waste minimisation are core environmental metrics."
+        },
+        {
+          "topic": "GHG emissions from energy-intensive API manufacturing",
+          "brsr_principles": ["P6"],
+          "why_material": "Batch chemical processing, clean rooms, and HVAC systems drive high energy consumption; BRSR Core requires Scope 1 and 2 intensity disclosure with third-party assurance. [from_guide]"
+        },
+        {
+          "topic": "Water consumption in formulation and API processes",
+          "brsr_principles": ["P6"],
+          "why_material": "Pharmaceutical manufacturing requires high-purity water (WFI, purified water) with significant intake-to-output ratios; water-stressed locations face regulatory restrictions."
+        },
+        {
+          "topic": "Packaging waste and EPR for pharma packaging",
+          "brsr_principles": ["P6"],
+          "why_material": "Blister packs, glass vials, and multi-layer packaging generate post-consumer waste; EPR obligations under Plastic Waste Management Rules require collection and recycling commitments."
+        }
+      ],
+      "social": [
+        {
+          "topic": "Access to affordable medicines and equitable pricing",
+          "brsr_principles": ["P8", "P9"],
+          "why_material": "India's role as 'pharmacy of the world' makes drug affordability a core social responsibility; DPCO price controls, voluntary licensing, and tiered pricing are material topics."
+        },
+        {
+          "topic": "Clinical trial ethics and patient safety",
+          "brsr_principles": ["P5", "P9"],
+          "why_material": "CDSCO regulations require informed consent, compensation for adverse events, and ethics committee oversight; clinical trial governance is a high-stakes human rights and product responsibility issue."
+        },
+        {
+          "topic": "Worker health and safety in chemical processing environments",
+          "brsr_principles": ["P3"],
+          "why_material": "Workers face chemical exposure, solvent vapour inhalation, and dust hazards in API manufacturing; occupational health monitoring and PPE compliance are critical BRSR metrics."
+        },
+        {
+          "topic": "Community health impact near manufacturing clusters",
+          "brsr_principles": ["P4", "P8"],
+          "why_material": "Pharma clusters in Hyderabad, Baddi, and Ankleshwar have documented community health impacts from effluent and air emissions; social license depends on verifiable pollution control."
+        }
+      ],
+      "governance": [
+        {
+          "topic": "Product quality and regulatory compliance (WHO-GMP, USFDA)",
+          "brsr_principles": ["P2", "P9"],
+          "why_material": "Import bans and FDA warning letters carry massive financial and reputational impact; quality governance systems are material for market access and investor confidence."
+        },
+        {
+          "topic": "Anti-bribery and anti-corruption in procurement and distribution",
+          "brsr_principles": ["P1"],
+          "why_material": "Pharmaceutical industry faces endemic corruption risk in tendering, hospital procurement, and distributor relationships; BRSR Principle 1 requires anti-corruption policy and incident disclosure."
+        },
+        {
+          "topic": "ESG data systems and BRSR Core assurance readiness",
+          "brsr_principles": ["P1"],
+          "why_material": "Listed pharma companies face expanding BRSR assurance obligations; many still track environmental data on spreadsheets that fail audit scrutiny. [from_guide]"
+        }
+      ]
+    },
+    "it_services": {
+      "environment": [
+        {
+          "topic": "Energy consumption in data centres and office campuses",
+          "brsr_principles": ["P6"],
+          "why_material": "Data centres and large office campuses are primary energy consumers; PUE (Power Usage Effectiveness), renewable energy procurement, and RE100 commitments are key metrics for BRSR and client RFPs."
+        },
+        {
+          "topic": "Scope 2 emissions and renewable energy procurement",
+          "brsr_principles": ["P6"],
+          "why_material": "IT services companies have high Scope 2 footprints from purchased electricity; open-access solar/wind PPAs and green tariffs are the primary decarbonisation lever."
+        },
+        {
+          "topic": "Scope 3 emissions from employee commute and business travel",
+          "brsr_principles": ["P6"],
+          "why_material": "For IT companies, Scope 3 (especially employee commute and air travel) often exceeds Scope 1+2; BRSR value chain disclosure and SBTi commitments require Scope 3 tracking."
+        },
+        {
+          "topic": "E-waste management from IT hardware lifecycle",
+          "brsr_principles": ["P6"],
+          "why_material": "Large IT campuses generate significant e-waste from servers, laptops, and networking equipment; E-Waste Management Rules 2022 require channelisation through authorised recyclers."
+        },
+        {
+          "topic": "Water consumption in campuses and cooling systems",
+          "brsr_principles": ["P6"],
+          "why_material": "Bengaluru, Hyderabad, and Pune IT corridors face acute water stress; campus water harvesting, STP recycling, and net-zero-water targets are material for BRSR and local compliance. [from_guide context: Karnataka water regulations]"
+        }
+      ],
+      "social": [
+        {
+          "topic": "Diversity, equity, and inclusion (gender, disability, LGBTQ+)",
+          "brsr_principles": ["P3", "P5"],
+          "why_material": "IT industry is a bellwether for workforce diversity; BRSR requires disaggregated workforce data by gender, disability status, and category. Gender pay gap and women in leadership are tracked by ESG raters."
+        },
+        {
+          "topic": "Employee wellbeing and mental health",
+          "brsr_principles": ["P3"],
+          "why_material": "High-attrition IT industry faces burnout, long hours, and mental health challenges; employee wellbeing programmes and attrition metrics are material for talent retention and BRSR reporting."
+        },
+        {
+          "topic": "Skilling, reskilling, and career development",
+          "brsr_principles": ["P3", "P8"],
+          "why_material": "Rapid technology shifts (AI, cloud) require continuous upskilling; training hours per employee and skill development investments are BRSR metrics and competitive differentiators."
+        },
+        {
+          "topic": "Data privacy and responsible AI deployment",
+          "brsr_principles": ["P9"],
+          "why_material": "DPDP Act 2023 compliance, client data protection, and ethical AI use are core consumer responsibility topics; data breaches carry regulatory penalties and reputational damage."
+        },
+        {
+          "topic": "Talent attraction on climate credibility",
+          "brsr_principles": ["P3", "P4"],
+          "why_material": "Engineering and MBA graduates in their 20s are filtering employers on climate credibility; thin sustainability claims directly impact talent pipeline quality. [from_guide]"
+        }
+      ],
+      "governance": [
+        {
+          "topic": "Cybersecurity governance and incident response",
+          "brsr_principles": ["P1", "P9"],
+          "why_material": "IT services handle client-critical systems and data; cybersecurity governance, SOC 2 compliance, and breach disclosure are foundational governance topics with direct revenue impact."
+        },
+        {
+          "topic": "ESG disclosure alignment with global frameworks (GRI, SASB, CDP)",
+          "brsr_principles": ["P1"],
+          "why_material": "Large IT firms report to multiple frameworks for global clients and investors; BRSR-ISSB alignment and double materiality assessment readiness are governance priorities. [from_guide]"
+        },
+        {
+          "topic": "Responsible tax practices and transfer pricing transparency",
+          "brsr_principles": ["P1"],
+          "why_material": "Global IT services firms face scrutiny on tax structures across jurisdictions; country-by-country tax disclosure and anti-avoidance policies are material for BRSR Principle 1."
+        }
+      ]
+    },
+    "chemicals": {
+      "environment": [
+        {
+          "topic": "GHG emissions intensity from energy-intensive chemical processes",
+          "brsr_principles": ["P6"],
+          "why_material": "Chlor-alkali is CCTS-obligated with intensity targets of 1.32% to 4.53%; petrochemicals notified in Jan 2026. Both sectors face legally binding emissions reduction trajectories to 2030. [from_guide]"
+        },
+        {
+          "topic": "Hazardous waste generation and disposal",
+          "brsr_principles": ["P6"],
+          "why_material": "Chemical manufacturing generates category-diverse hazardous waste requiring TSDF disposal; Gujarat and Maharashtra GPCB/MPCB actively enforce HW rules with real-time tracking."
+        },
+        {
+          "topic": "Air emissions (VOCs, toxic gases, particulate matter)",
+          "brsr_principles": ["P6"],
+          "why_material": "Chemical clusters (Vapi, Ankleshwar, Chembur) face CEMS mandates and ambient air quality scrutiny; MPCB/GPCB enforce emission thresholds with closure powers. [from_guide]"
+        },
+        {
+          "topic": "Industrial effluent quality and ZLD compliance",
+          "brsr_principles": ["P6"],
+          "why_material": "Chemical effluent with heavy metals, acids, and persistent pollutants poses groundwater contamination risk; CETP and ZLD compliance are regulatory prerequisites for operating licences."
+        },
+        {
+          "topic": "Process safety and chemical accident prevention",
+          "brsr_principles": ["P2", "P6"],
+          "why_material": "Chemical process safety failures cause environmental catastrophe; PESO, MSIHC Rules, and BRSR require disclosure of major accident prevention policies and near-miss reporting."
+        },
+        {
+          "topic": "CBAM exposure for EU-bound fertiliser and hydrogen exports",
+          "brsr_principles": ["P6"],
+          "why_material": "Fertilisers and hydrogen are in CBAM's definitive phase; Indian exporters must provide ISO 14065-verified plant-level emissions or face default values 30-80% above actuals. [from_guide]"
+        }
+      ],
+      "social": [
+        {
+          "topic": "Occupational health and toxic exposure management",
+          "brsr_principles": ["P3"],
+          "why_material": "Chemical workers face chronic exposure to carcinogens, respiratory irritants, and skin sensitisers; occupational disease monitoring, biological exposure indices, and PPE protocols are critical."
+        },
+        {
+          "topic": "Community safety and emergency response (Bhopal Protocol)",
+          "brsr_principles": ["P4", "P8"],
+          "why_material": "Chemical facilities near populated areas carry community catastrophe risk; on-site/off-site emergency plans, community awareness programmes, and mock drills are regulatory requirements."
+        },
+        {
+          "topic": "Contract and migrant worker welfare in chemical plants",
+          "brsr_principles": ["P3", "P5"],
+          "why_material": "Chemical plants rely on contract labour for hazardous operations (tank cleaning, maintenance shutdowns); safety training, health monitoring, and wage parity are material social risks."
+        }
+      ],
+      "governance": [
+        {
+          "topic": "CCTS compliance MRV and carbon credit trading strategy",
+          "brsr_principles": ["P1"],
+          "why_material": "Chlor-alkali and petrochemicals entities must build digital MRV infrastructure before H2 2026 trading; board-level strategy needed for CCC banking vs buying vs selling. [from_guide]"
+        },
+        {
+          "topic": "Product stewardship and chemical safety data management",
+          "brsr_principles": ["P2", "P9"],
+          "why_material": "GHS-compliant SDS, REACH compliance for EU exports, and responsible downstream use monitoring are governance requirements affecting market access and liability."
+        },
+        {
+          "topic": "Regulatory compliance across multiple state pollution control regimes",
+          "brsr_principles": ["P1"],
+          "why_material": "Chemicals companies operating across Maharashtra, Gujarat, and other states face three different CEMS thresholds, environmental clearance regimes, and reporting obligations. [from_guide]"
+        }
+      ]
+    },
+    "automotive": {
+      "environment": [
+        {
+          "topic": "GHG emissions from manufacturing (paint shops, foundries, machining)",
+          "brsr_principles": ["P6"],
+          "why_material": "Automotive OEMs have energy-intensive paint, welding, and casting operations; Scope 1 and 2 intensity reduction is a BRSR Core metric and a prerequisite for EU market access."
+        },
+        {
+          "topic": "Scope 3 product-use emissions and EV transition",
+          "brsr_principles": ["P2", "P6"],
+          "why_material": "ICE vehicle emissions dominate automotive Scope 3; the shift to EVs, CAFE norms compliance, and product lifecycle carbon footprint are strategic and regulatory imperatives."
+        },
+        {
+          "topic": "Supply chain decarbonisation (steel, aluminium, plastics)",
+          "brsr_principles": ["P6"],
+          "why_material": "Automotive supply chains consume CBAM-exposed materials (steel, aluminium); OEMs face cost pass-through and must track embedded carbon across Tier 1-2-3 suppliers. [from_guide]"
+        },
+        {
+          "topic": "VOC emissions from paint and coating operations",
+          "brsr_principles": ["P6"],
+          "why_material": "Paint shops are the highest VOC emitters in automotive plants; state PCB CEMS mandates and NAAQS compliance drive investment in water-based and powder coating alternatives."
+        },
+        {
+          "topic": "End-of-life vehicle and battery waste management",
+          "brsr_principles": ["P2", "P6"],
+          "why_material": "Battery Waste Management Rules 2022 and upcoming ELV recycling regulations require OEMs to establish collection and recycling infrastructure; EPR obligations are expanding."
+        },
+        {
+          "topic": "Water consumption in manufacturing and machining",
+          "brsr_principles": ["P6"],
+          "why_material": "Automotive plants in Chennai, Pune, and Gurugram water-stressed clusters face withdrawal restrictions; ZLD mandates and water recycling rates are key BRSR metrics."
+        }
+      ],
+      "social": [
+        {
+          "topic": "Worker safety in press shops, foundries, and assembly lines",
+          "brsr_principles": ["P3"],
+          "why_material": "Automotive manufacturing carries ergonomic, crush, and thermal hazards; lost-time injury rates, fatality ratios, and safety training hours are core BRSR Principle 3 metrics."
+        },
+        {
+          "topic": "Just transition for ICE workforce during EV shift",
+          "brsr_principles": ["P3", "P8"],
+          "why_material": "EV transition threatens livelihoods across ICE component manufacturing clusters (Pune, Chennai, Rajkot); reskilling programmes and supplier transition support are material social concerns."
+        },
+        {
+          "topic": "Consumer safety (vehicle safety ratings, recall management)",
+          "brsr_principles": ["P9"],
+          "why_material": "BNCAP crash safety ratings and mandatory recall policies create product responsibility obligations; timely disclosure of defects is a BRSR Principle 9 requirement."
+        },
+        {
+          "topic": "Conflict mineral sourcing (cobalt, lithium, rare earths)",
+          "brsr_principles": ["P5"],
+          "why_material": "EV battery supply chains carry human rights risks in cobalt and lithium mining; CSDDD and OECD due diligence guidelines require traceability and responsible sourcing. [from_guide]"
+        }
+      ],
+      "governance": [
+        {
+          "topic": "BRSR value chain ESG data from tiered supplier base",
+          "brsr_principles": ["P1", "P4"],
+          "why_material": "Automotive OEMs with 200+ MSME suppliers must collect ESG metrics from top 10 value chain partners; supplier capability-building is the recommended approach for BRSR compliance. [from_guide]"
+        },
+        {
+          "topic": "EV transition governance and capital allocation",
+          "brsr_principles": ["P1"],
+          "why_material": "Board-level oversight of ICE-to-EV transition plans, R&D allocation, and stranded asset risk requires integrated ESG and financial governance."
+        },
+        {
+          "topic": "Product lifecycle assessment and carbon labelling governance",
+          "brsr_principles": ["P2"],
+          "why_material": "Growing demand for product carbon footprints from fleet buyers and regulators requires LCA governance frameworks, verified data, and transparent methodology disclosure."
+        }
+      ]
+    },
+    "power_and_energy": {
+      "environment": [
+        {
+          "topic": "GHG emissions from thermal power generation (coal, gas)",
+          "brsr_principles": ["P6"],
+          "why_material": "Power sector is the largest industrial emitter; CCTS architecture is designed around intensity targets with trajectory to India's NDC of 47% emissions intensity reduction below 2005 levels by 2035. [from_guide]"
+        },
+        {
+          "topic": "Renewable energy capacity addition and grid integration",
+          "brsr_principles": ["P6"],
+          "why_material": "RE capacity is core to India's NDC and net-zero-2070 pathway; RPO compliance, hybrid project development, and storage integration are material decarbonisation metrics. [from_guide]"
+        },
+        {
+          "topic": "Fly ash and coal combustion residual management",
+          "brsr_principles": ["P6"],
+          "why_material": "Thermal plants generate massive fly ash volumes; MOEFCC mandates 100% utilisation with progressive targets, creating compliance risk for plants below thresholds."
+        },
+        {
+          "topic": "Water consumption in thermal power cooling",
+          "brsr_principles": ["P6"],
+          "why_material": "Once-through and evaporative cooling systems consume billions of litres; water withdrawal restrictions in stressed basins drive transition to air-cooled condensers and dry cooling."
+        },
+        {
+          "topic": "Air emissions (SO2, NOx, PM, mercury) from coal combustion",
+          "brsr_principles": ["P6"],
+          "why_material": "MOEFCC emission norms for thermal plants mandate FGD, SCR/SNCR, and ESP upgrades; compliance deadlines have been extended but penalties for non-compliance are tightening."
+        },
+        {
+          "topic": "Land use impact from solar/wind projects and transmission corridors",
+          "brsr_principles": ["P6"],
+          "why_material": "Large-scale RE deployment requires significant land; impact on agricultural land, pastoral commons, and wildlife corridors creates environmental and social materiality."
+        }
+      ],
+      "social": [
+        {
+          "topic": "Energy access and affordability (last-mile electrification)",
+          "brsr_principles": ["P8"],
+          "why_material": "Power utilities serve rural and underserved populations; tariff structures, connection rates, and supply reliability in low-income areas are core inclusive growth metrics."
+        },
+        {
+          "topic": "Just transition for coal-dependent communities and workers",
+          "brsr_principles": ["P3", "P5", "P8"],
+          "why_material": "Coal plant and mine closures affect livelihoods in Jharkhand, Chhattisgarh, and Odisha; reskilling, alternative livelihood, and community transition plans are emerging ESG requirements."
+        },
+        {
+          "topic": "Occupational safety in power generation and transmission",
+          "brsr_principles": ["P3"],
+          "why_material": "Electrocution, boiler accidents, and confined space hazards create high-risk working conditions; safety management systems and incident disclosure are critical BRSR metrics."
+        }
+      ],
+      "governance": [
+        {
+          "topic": "Carbon credit generation and CCTS trading strategy",
+          "brsr_principles": ["P1"],
+          "why_material": "Power exchanges (IEX, PXIL) will host CCC trading with CERC as regulator; energy companies need board-level strategy for credit banking, trading, and voluntary offset participation. [from_guide]"
+        },
+        {
+          "topic": "Transition planning and stranded asset risk disclosure",
+          "brsr_principles": ["P1"],
+          "why_material": "RBI's climate disclosure framework (pending finalisation) will require banks to assess transition risk in power sector lending; energy companies must disclose transition plans and asset impairment risk. [from_guide]"
+        },
+        {
+          "topic": "Green bond and sustainability-linked bond governance",
+          "brsr_principles": ["P1"],
+          "why_material": "SEBI's ESG debt securities framework (June 2025) mandates third-party pre- and post-issuance review and KPI tracking for green bonds issued by energy companies. [from_guide]"
+        }
+      ]
+    },
+    "construction": {
+      "environment": [
+        {
+          "topic": "Embodied carbon in construction materials (cement, steel, aluminium)",
+          "brsr_principles": ["P6"],
+          "why_material": "Construction consumes over 50% of India's cement and significant steel; CCTS-obligated material suppliers will pass carbon costs through, making embodied carbon a material cost and ESG metric. [from_guide]"
+        },
+        {
+          "topic": "Construction and demolition waste management",
+          "brsr_principles": ["P6"],
+          "why_material": "C&D Waste Management Rules 2016 mandate segregation and recycling; most Indian cities have less than 5% C&D waste processing capacity, creating compliance and environmental risk."
+        },
+        {
+          "topic": "Dust and air pollution from construction sites",
+          "brsr_principles": ["P6"],
+          "why_material": "CPCB and state PCB guidelines mandate dust suppression, anti-smog measures, and CEMS for large sites; Graded Response Action Plan in Delhi-NCR triggers construction bans during high-AQI periods."
+        },
+        {
+          "topic": "Water consumption and groundwater depletion during construction",
+          "brsr_principles": ["P6"],
+          "why_material": "Construction projects in water-stressed zones consume large volumes for curing and dust suppression; environmental clearance conditions mandate rainwater harvesting and STP installation."
+        },
+        {
+          "topic": "Operational energy efficiency and green building certification",
+          "brsr_principles": ["P2", "P6"],
+          "why_material": "ECBC compliance, IGBC/GRIHA ratings, and net-zero building design determine lifecycle energy performance; green buildings command 5-15% rental premium in commercial segments."
+        },
+        {
+          "topic": "Biodiversity and habitat impact from greenfield development",
+          "brsr_principles": ["P6"],
+          "why_material": "Large infrastructure and township projects face CRZ, forest clearance, and wildlife corridor restrictions; compensatory afforestation and biodiversity management plans are EIA conditions."
+        }
+      ],
+      "social": [
+        {
+          "topic": "Migrant worker welfare (housing, wages, health, safety)",
+          "brsr_principles": ["P3", "P5"],
+          "why_material": "Construction employs 55+ million workers, mostly migrant, with high informality; BOCW Act compliance, on-site housing quality, wage timeliness, and accident prevention are critical social risks."
+        },
+        {
+          "topic": "Occupational safety (fall protection, structural collapse, electrical hazards)",
+          "brsr_principles": ["P3"],
+          "why_material": "Construction is India's deadliest sector by occupational fatalities; safety management systems, incident reporting, and training hours are high-materiality BRSR metrics."
+        },
+        {
+          "topic": "Community displacement and rehabilitation (infrastructure projects)",
+          "brsr_principles": ["P4", "P5", "P8"],
+          "why_material": "Highway, dam, and urban redevelopment projects involve large-scale displacement; RFCTLARR Act compliance, livelihood restoration, and grievance redressal are material human rights topics."
+        },
+        {
+          "topic": "Affordable housing delivery and urban inclusion",
+          "brsr_principles": ["P8"],
+          "why_material": "PMAY and affordable housing schemes create social impact metrics for listed developers; housing for EWS/LIG segments aligns with BRSR Principle 8 inclusive growth indicators."
+        }
+      ],
+      "governance": [
+        {
+          "topic": "Environmental clearance and regulatory compliance across states",
+          "brsr_principles": ["P1"],
+          "why_material": "Construction projects face different environmental clearance regimes, RERA compliance, and pollution control norms across states; multi-state operations multiply compliance overhead. [from_guide]"
+        },
+        {
+          "topic": "Anti-corruption in land acquisition and approvals",
+          "brsr_principles": ["P1"],
+          "why_material": "Real estate and infrastructure development face endemic corruption risk in land acquisition, regulatory approvals, and government contracting; BRSR Principle 1 requires anti-bribery disclosure."
+        },
+        {
+          "topic": "ESG integration in project financing and green bond issuance",
+          "brsr_principles": ["P1"],
+          "why_material": "ESG-credible construction companies will access capital 50-150 bps cheaper by 2027; green bonds for certified projects require SEBI-compliant third-party review and KPI tracking. [from_guide]"
+        }
+      ]
+    }
+  }
+}

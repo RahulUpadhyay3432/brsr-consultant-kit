@@ -3,25 +3,205 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand tokens */
+  --brand-500: #00d4a4;
+  --brand-800: #00745a;
+  --forest:    #111111;
+
+  /* Custom easing */
+  --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  /* Apple SF Pro on Mac/iOS, Geist on Windows (loaded locally), then system-ui */
+  font-family: -apple-system, BlinkMacSystemFont, var(--font-geist-sans), 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Display font — editorial headings only (Georgia: ships with every OS, no network fetch) */
+.font-display {
+  font-family: 'Georgia', 'Times New Roman', serif;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  /* Warm off-white canvas — not the cold stone-50 default */
+  background-color: #F7F6F2;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/* Background: only the atmospheric glow, no grid lines */
+.bg-grid {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 212, 164, 0.07) 0%, transparent 65%);
+}
+
+/* Hairline accent at the top — 1px, intentional */
+body::before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, var(--brand-500) 0%, #111111 55%);
+  z-index: 200;
+  pointer-events: none;
+}
+
+/* Status badges */
+.badge-tracked {
+  @apply bg-emerald-50 text-emerald-700 border border-emerald-200;
+}
+.badge-partial {
+  @apply bg-amber-50 text-amber-700 border border-amber-200;
+}
+.badge-new {
+  @apply bg-rose-50 text-rose-700 border border-rose-200;
+}
+
+/* Pressable: physical press feedback on all interactive elements */
+.pressable {
+  transition:
+    transform 120ms var(--ease-out),
+    background-color 140ms ease,
+    border-color 140ms ease,
+    color 140ms ease,
+    box-shadow 140ms ease,
+    opacity 180ms ease;
+}
+/* Anticipation — element lifts slightly before press */
+.pressable:hover {
+  transform: translateY(-1px);
+}
+/* Active press — drops back through rest position */
+.pressable:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* Spring chip — for toggle/select chips (export markets, filings, type pills)
+   Uses elastic easing so selection feels snappy and alive */
+.chip-spring {
+  transition:
+    transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease,
+    box-shadow 120ms ease;
+}
+.chip-spring:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+.chip-spring:active {
+  transform: scale(0.91);
+}
+
+/* Checkmark draw — SVG path animates in with stroke-dashoffset trick */
+@keyframes checkDraw {
+  from { stroke-dashoffset: 24; opacity: 0; }
+  to   { stroke-dashoffset: 0;  opacity: 1; }
+}
+.check-path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: checkDraw 240ms cubic-bezier(0.23, 1, 0.32, 1) 40ms both;
+}
+
+/* Collected row — smooth fade when item is marked done */
+@keyframes rowCollect {
+  from { background-color: rgba(16, 185, 129, 0.08); }
+  to   { background-color: transparent; }
+}
+.row-collect-flash {
+  animation: rowCollect 600ms ease-out both;
+}
+
+/* ══ Motion Design System ═══════════════════════════════════════════════════
+   Personality  : Corporate — professional, decisive, 0–3 % overshoot max
+   Signature    : MD3 default cubic-bezier(0.2, 0, 0, 1)
+   Duration set : 160 ms quick / 280 ms standard / 420 ms slow
+   Entrance dir : from below — signals arrival, forward progress
+   ══════════════════════════════════════════════════════════════════════════ */
+:root {
+  --m-enter: cubic-bezier(0.2, 0, 0, 1);   /* snappy landing, MD3 default   */
+  --m-exit:  cubic-bezier(0.3, 0, 1, 1);   /* clean departure, MD3 accel    */
+  --m-t1: 160ms;   /* quick  — micro feedback, badges                        */
+  --m-t2: 280ms;   /* standard — cards, sections                             */
+  --m-t3: 420ms;   /* slow — hero, page-level reveals                        */
+}
+
+/* Primary entrance: 16 px lift + fade */
+@keyframes fadeUpSm {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* Hero entrance: 22 px lift for the large heading — more drama */
+@keyframes fadeUpLg {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* Card entrance: scale + lift — Paper material (1.0× duration, 3 % overshoot) */
+@keyframes cardReveal {
+  from { opacity: 0; transform: translateY(20px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* Utility classes — apply animationDelay via inline style for stagger */
+.anim-up-sm  { animation: fadeUpSm   var(--m-t1) var(--m-enter) both; }
+.anim-up-md  { animation: fadeUpSm   var(--m-t2) var(--m-enter) both; }
+.anim-up-hero{ animation: fadeUpLg   var(--m-t3) var(--m-enter) both; }
+.anim-card   { animation: cardReveal var(--m-t2) var(--m-enter) both; }
+
+/* Tab content: fade + slight lift on mount */
+.tab-fade {
+  animation: tabFade 220ms var(--m-enter) both;
+}
+@keyframes tabFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+/* Expanded panel */
+.panel-expand {
+  animation: panelExpand 160ms var(--ease-out) both;
+}
+@keyframes panelExpand {
+  from { opacity: 0; transform: translateY(-3px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* Stagger list items */
+.stagger-item {
+  animation: staggerIn 220ms var(--ease-out) both;
+}
+@keyframes staggerIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+.tab-transition {
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+/* Scrollbar — minimal */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+/* Print */
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
