@@ -107,6 +107,7 @@ function generateChecklist(formData: IntakeFormData): ChecklistItem[] {
         status: overlap ? overlap.coverage : "new_data_needed",
         source_filing: overlap?.source,
         gap_note: overlap?.gap,
+        page: indicator.page,
       });
     }
 
@@ -125,6 +126,7 @@ function generateChecklist(formData: IntakeFormData): ChecklistItem[] {
           status: overlap ? overlap.coverage : "new_data_needed",
           source_filing: overlap?.source,
           gap_note: overlap?.gap,
+          page: indicator.page,
         });
       }
     }

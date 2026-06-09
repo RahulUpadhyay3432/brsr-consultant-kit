@@ -63,6 +63,19 @@ function plain(label: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+// ─── SEBI source references ──────────────────────────────────────────────────
+// SEBI does not publish per-field deep links — every Section-C principle
+// disclosure is defined in one canonical document: the updated BRSR Format
+// (Annexure II, Jul 2023). We link there and cite the ICAI Background Material
+// page (already in the data) for true per-field granularity.
+const SEBI_BRSR_FORMAT_URL =
+  "https://www.sebi.gov.in/sebi_data/commondocs/jul-2023/Annexure_II-Updated-BRSR_p.PDF";
+
+// Map "P6" → "6" for a principle-specific link label
+function principleNumber(principle: string): string {
+  return principle.replace(/^P/i, "");
+}
+
 type StatusKey = keyof typeof STATUS_META;
 type TypeKey   = "all" | "essential" | "leadership";
 
@@ -709,6 +722,34 @@ function DisclosureRow({
                 SEBI language
               </p>
               <p className="text-xs text-stone-500 leading-relaxed italic">{item.label}</p>
+            </div>
+
+            {/* SEBI source — link to the official BRSR Format + page citation */}
+            <div className="border-t border-stone-200 pt-3">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-1.5">
+                SEBI source
+              </p>
+              <a
+                href={SEBI_BRSR_FORMAT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-medium text-brand-700
+                  bg-brand-50 border border-brand-100 px-2.5 py-1 rounded-md
+                  hover:bg-brand-100 hover:border-brand-200 transition-colors pressable"
+              >
+                <svg aria-hidden="true" className="w-3 h-3 flex-shrink-0" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2.5" y="1.5" width="8" height="12" rx="1" />
+                  <path d="M5 5h3M5 7.5h3M5 10h2" />
+                </svg>
+                SEBI BRSR Format — Principle {principleNumber(item.principle)}
+                <svg aria-hidden="true" className="w-2.5 h-2.5 flex-shrink-0 opacity-70" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5.5 3h6.5v6.5M12 3L4 11" />
+                </svg>
+              </a>
+              <p className="text-[10px] text-stone-400 mt-1.5 leading-relaxed">
+                Official SEBI disclosure format (Annexure II, 2023).
+                {item.page ? <> Cross-reference: ICAI Background Material, p.{item.page}.</> : null}
+              </p>
             </div>
 
             {/* Unit */}

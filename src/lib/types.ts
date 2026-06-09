@@ -71,6 +71,7 @@ export interface ChecklistItem {
   status: "already_tracked" | "partially_tracked" | "new_data_needed";
   source_filing?: string;
   gap_note?: string;
+  page?: number | string; // ICAI Background Material page reference for SEBI source citation
 }
 
 // Materiality topic with scoring
