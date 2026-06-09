@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import type { ChecklistItem } from "@/lib/types";
+import { extractPdfText } from "@/lib/pdf-extract";
+import { detectDisclosures, type DetectionResult, type DisclosureMatch } from "@/lib/report-extractor";
 import bestPracticesData from "@/data/best_practices.json";
 
 // Principle-level best practices (India + International). Looked up by principle.
@@ -107,6 +109,60 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
   const [collectedIds,  setCollectedIds]  = useState<Set<string>>(new Set());
   const [hideCollected, setHideCollected] = useState(false);
 
+  // ── Upload last year's report — client-side detection of documented fields ──
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [detection,    setDetection]    = useState<DetectionResult | null>(null);
+  const [uploadStatus, setUploadStatus] = useState<"idle" | "processing" | "done" | "error">("idle");
+  const [uploadInfo,   setUploadInfo]   = useState<{ fileName: string; pageCount: number } | null>(null);
+  const [uploadError,  setUploadError]  = useState<string>("");
+  const [showOnlyDetected, setShowOnlyDetected] = useState(false);
+
+  const detectedSet = useMemo(
+    () => new Set(detection?.detectedIds ?? []),
+    [detection]
+  );
+  // Only count detections that correspond to fields actually in this report.
+  const detectedInReport = useMemo(
+    () => items.filter(i => detectedSet.has(i.id)).length,
+    [items, detectedSet]
+  );
+
+  async function handleFile(file: File) {
+    setUploadStatus("processing");
+    setUploadError("");
+    try {
+      const { text, pageCount } = await extractPdfText(file);
+      if (!text.trim()) {
+        setUploadStatus("error");
+        setUploadError("Couldn't read any text from this PDF — it may be a scanned image. Try a text-based PDF.");
+        return;
+      }
+      setDetection(detectDisclosures(text));
+      setUploadInfo({ fileName: file.name, pageCount });
+      setUploadStatus("done");
+    } catch {
+      setUploadStatus("error");
+      setUploadError("Something went wrong reading that file. Please try another PDF.");
+    }
+  }
+
+  function clearUpload() {
+    setDetection(null);
+    setUploadInfo(null);
+    setUploadStatus("idle");
+    setUploadError("");
+    setShowOnlyDetected(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  function markAllDetectedCollected() {
+    setCollectedIds(prev => {
+      const next = new Set(prev);
+      for (const i of items) if (detectedSet.has(i.id)) next.add(i.id);
+      return next;
+    });
+  }
+
   function toggleCollected(id: string) {
     setCollectedIds(prev => {
       const next = new Set(prev);
@@ -150,9 +206,10 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
       if (typeFilter !== "all"      && item.indicator_type !== typeFilter)       return false;
       if (q && !item.label.toLowerCase().includes(q) && !item.id.toLowerCase().includes(q)) return false;
       if (hideCollected && collectedIds.has(item.id))                           return false;
+      if (showOnlyDetected && !detectedSet.has(item.id))                        return false;
       return true;
     });
-  }, [items, statusFilter, principleFilter, typeFilter, search, hideCollected, collectedIds]);
+  }, [items, statusFilter, principleFilter, typeFilter, search, hideCollected, collectedIds, showOnlyDetected, detectedSet]);
 
   const grouped = useMemo(() => {
     const groups: Record<string, ChecklistItem[]> = {};
@@ -206,6 +263,133 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
           </p>
         </div>
       </div>
+    </div>
+
+    {/* ── Upload last year's report — client-side, privacy-safe ─────────── */}
+    <div className="bg-white border border-indigo-200 rounded-xl p-4">
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="application/pdf,.pdf"
+        className="hidden"
+        onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
+      />
+
+      {uploadStatus !== "done" ? (
+        <div className="flex items-start gap-3">
+          <div className="w-9 h-9 bg-indigo-50 rounded-lg border border-indigo-100 flex items-center justify-center flex-shrink-0">
+            <svg className="w-4 h-4 text-indigo-600" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M7.5 10V2.5M5 5l2.5-2.5L10 5" />
+              <path d="M2.5 9.5v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-2" />
+            </svg>
+          </div>
+          <div className="min-w-0 flex-1">
+            <h3 className="text-sm font-semibold text-stone-800">
+              Save time — upload last year's BRSR report
+            </h3>
+            <p className="text-xs text-stone-500 mt-1 leading-relaxed">
+              We'll scan it <strong className="text-stone-700">entirely in your browser</strong> and flag the
+              disclosures (policies, management systems, recurring metrics) that already appear documented — so you
+              can focus on what's genuinely new.
+              <span className="inline-flex items-center gap-1 text-emerald-700 font-medium ml-1">
+                <svg className="w-3 h-3" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                  <path d="M7.5 1.5l5 2v3.5c0 3-2.2 5-5 6.5-2.8-1.5-5-3.5-5-6.5V3.5z" />
+                </svg>
+                The file never leaves your device.
+              </span>
+            </p>
+            <div className="mt-2.5 flex items-center gap-2 flex-wrap">
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploadStatus === "processing"}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold
+                  bg-indigo-600 text-white hover:bg-indigo-700 pressable transition-colors
+                  disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {uploadStatus === "processing" ? (
+                  <>
+                    <svg className="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" aria-hidden="true">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Reading PDF…
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                      <path d="M7.5 10V2.5M5 5l2.5-2.5L10 5M2.5 9.5v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    Choose PDF
+                  </>
+                )}
+              </button>
+              <span className="text-[10px] text-stone-400">Text-based PDF · processed locally · nothing uploaded</span>
+            </div>
+            {uploadStatus === "error" && (
+              <p className="mt-2 text-xs text-rose-600 leading-relaxed">{uploadError}</p>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-start gap-3">
+          <div className="w-9 h-9 bg-emerald-50 rounded-lg border border-emerald-100 flex items-center justify-center flex-shrink-0">
+            <svg className="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path className="check-path" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <div className="min-w-0 flex-1">
+            <h3 className="text-sm font-semibold text-stone-800">
+              {detectedInReport > 0
+                ? <>Found <span className="text-emerald-700">{detectedInReport}</span> disclosure{detectedInReport === 1 ? "" : "s"} already documented in last year's report</>
+                : <>No recurring disclosures detected automatically</>}
+            </h3>
+            <p className="text-xs text-stone-500 mt-1 leading-relaxed">
+              Scanned <span className="font-medium text-stone-600">{uploadInfo?.fileName}</span> ({uploadInfo?.pageCount} pages) locally.
+              {detectedInReport > 0
+                ? <> These fields show a <span className="font-medium text-indigo-700">Last year</span> tag — expand one to see the matched text, confirm it's still current, then mark it collected.</>
+                : <> The PDF may be image-based, or use different wording. You can still work through the checklist normally.</>}
+            </p>
+            <div className="mt-2.5 flex items-center gap-2 flex-wrap">
+              {detectedInReport > 0 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setShowOnlyDetected(v => !v)}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border pressable transition-colors ${
+                      showOnlyDetected
+                        ? "bg-indigo-600 text-white border-indigo-600"
+                        : "bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100"
+                    }`}
+                  >
+                    {showOnlyDetected ? "Showing found only" : "Show found only"}
+                    <span className={showOnlyDetected ? "text-white/80" : "text-indigo-500"}>({detectedInReport})</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={markAllDetectedCollected}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium
+                      bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 pressable transition-colors"
+                  >
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Mark all {detectedInReport} as collected
+                  </button>
+                </>
+              )}
+              <button
+                type="button"
+                onClick={clearUpload}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium
+                  text-stone-500 hover:text-stone-700 hover:bg-stone-100 pressable transition-colors"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
 
     {/* ── Checklist ─────────────────────────────────────────────────────── */}
@@ -481,6 +665,7 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
                 onCollapse={() => toggleSection(principle)}
                 collectedIds={collectedIds}
                 onToggleCollected={toggleCollected}
+                matches={detection?.matches ?? null}
               />
             ))
           )}
@@ -543,7 +728,7 @@ function NavItem({
 
 // ─── Principle section ─────────────────────────────────────────────────────────
 function PrincipleSection({
-  principle, items, expandedId, onToggle, isFirst, collapsed, onCollapse, collectedIds, onToggleCollected,
+  principle, items, expandedId, onToggle, isFirst, collapsed, onCollapse, collectedIds, onToggleCollected, matches,
 }: {
   principle: string;
   items: ChecklistItem[];
@@ -554,6 +739,7 @@ function PrincipleSection({
   onCollapse: () => void;
   collectedIds: Set<string>;
   onToggleCollected: (id: string) => void;
+  matches: Record<string, DisclosureMatch> | null;
 }) {
   const info = PRINCIPLES[principle];
   const collectedCount = items.filter(i => collectedIds.has(i.id)).length;
@@ -608,6 +794,7 @@ function PrincipleSection({
               onToggle={() => onToggle(item.id)}
               isCollected={collectedIds.has(item.id)}
               onToggleCollected={() => onToggleCollected(item.id)}
+              detectedMatch={matches?.[item.id] ?? null}
             />
           ))}
         </div>
@@ -618,7 +805,7 @@ function PrincipleSection({
 
 // ─── Single disclosure row ─────────────────────────────────────────────────────
 function DisclosureRow({
-  item, isOdd, expanded, onToggle, isCollected, onToggleCollected,
+  item, isOdd, expanded, onToggle, isCollected, onToggleCollected, detectedMatch,
 }: {
   item: ChecklistItem;
   isOdd: boolean;
@@ -626,9 +813,11 @@ function DisclosureRow({
   onToggle: () => void;
   isCollected: boolean;
   onToggleCollected: () => void;
+  detectedMatch?: DisclosureMatch | null;
 }) {
   const s = STATUS_META[item.status as StatusKey];
   const isNA = item.status === "not_applicable";
+  const isDetected = !!detectedMatch && !isNA;
 
   return (
     <div className={`border-b border-stone-200 transition-colors duration-300
@@ -659,7 +848,19 @@ function DisclosureRow({
                 Missing: {item.gap_note}
               </p>
             )}
-            <p className="text-[10px] text-stone-400 mt-0.5 font-mono">{item.id}</p>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <p className="text-[10px] text-stone-400 font-mono">{item.id}</p>
+              {isDetected && !isCollected && (
+                <span className="inline-flex items-center gap-1 text-[9px] font-semibold text-indigo-700
+                  bg-indigo-50 border border-indigo-100 px-1.5 py-0.5 rounded-full leading-none">
+                  <svg className="w-2.5 h-2.5" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                    <path d="M7.5 4v3.5l2 1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="7.5" cy="7.5" r="5.5" />
+                  </svg>
+                  Last year
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -721,6 +922,32 @@ function DisclosureRow({
                   industrial effluent, product end-of-life reclaim, or project EIAs). Pure
                   service-sector entities normally report it as <span className="font-medium">"Not applicable"</span> in their BRSR.
                   Confirm with your client — switch <span className="font-medium">Business Type</span> to Product/Manufacturing if any of these apply.
+                </p>
+              </div>
+            )}
+
+            {/* Detected in uploaded report — consultant confirms */}
+            {isDetected && detectedMatch && (
+              <div className="bg-indigo-50 border border-indigo-100 rounded-md px-3 py-2.5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-indigo-700 mb-1 flex items-center gap-1.5">
+                  <svg className="w-3 h-3" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                    <path d="M7.5 4v3.5l2 1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="7.5" cy="7.5" r="5.5" />
+                  </svg>
+                  Found in last year's report
+                </p>
+                <p className="text-xs text-stone-600 leading-relaxed">
+                  Matched: {detectedMatch.keywords.map((k, i) => (
+                    <span key={i} className="inline-block font-medium text-indigo-700 bg-white border border-indigo-100 px-1.5 py-0.5 rounded mr-1 mb-1">
+                      {k}
+                    </span>
+                  ))}
+                </p>
+                <p className="text-[11px] text-stone-500 italic leading-relaxed mt-1 border-l-2 border-indigo-200 pl-2">
+                  {detectedMatch.snippet}
+                </p>
+                <p className="text-[10px] text-stone-400 mt-1.5 leading-relaxed">
+                  Detected from text — verify last year's disclosure is still accurate before reusing it, then mark it collected below.
                 </p>
               </div>
             )}
