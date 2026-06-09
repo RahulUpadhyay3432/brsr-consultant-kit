@@ -101,6 +101,7 @@ export default function CompanyAutocomplete({ value, onChange, onPick }: Props) 
         placeholder="Start typing, e.g. Tata Steel…"
         role="combobox"
         aria-expanded={showList}
+        aria-controls="company-autocomplete-list"
         aria-autocomplete="list"
         autoComplete="off"
         className="w-full px-4 py-3 rounded-lg border border-stone-200 bg-white text-stone-900
@@ -109,6 +110,7 @@ export default function CompanyAutocomplete({ value, onChange, onPick }: Props) 
       />
       {showList && (
         <ul
+          id="company-autocomplete-list"
           role="listbox"
           className="absolute z-30 mt-1 w-full max-h-72 overflow-auto rounded-lg border border-stone-200
             bg-white shadow-lg py-1"
