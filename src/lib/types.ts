@@ -1,11 +1,16 @@
 export interface IntakeFormData {
   companyName: string;
   industry: IndustryType;
+  sector: SectorType;
   companySize: CompanySize;
   reportingMaturity: ReportingMaturity;
   exportMarkets: ExportMarket[];
   existingFilings: ExistingFiling[];
 }
+
+// Whether the client's operations are manufacturing/product-based or service-based.
+// Drives suppression of manufacturing-only BRSR disclosures for service firms.
+export type SectorType = "manufacturing" | "services";
 
 export type IndustryType =
   | "textile_and_apparel"
@@ -68,7 +73,7 @@ export interface ChecklistItem {
   unit: string | null;
   measurement_guidance: string;
   indicator_type: "essential" | "leadership";
-  status: "already_tracked" | "partially_tracked" | "new_data_needed";
+  status: "already_tracked" | "partially_tracked" | "new_data_needed" | "not_applicable";
   source_filing?: string;
   gap_note?: string;
   page?: number | string; // ICAI Background Material page reference for SEBI source citation
@@ -112,6 +117,7 @@ export interface ReportOutput {
     alreadyTracked: number;
     partiallyTracked: number;
     newDataNeeded: number;
+    notApplicable: number;
     materialTopicsCount: number;
     frameworkMappingsCount: number;
   };
@@ -130,6 +136,20 @@ export const INDUSTRY_LABELS: Record<IndustryType, string> = {
   construction: "Construction",
   other: "Other",
 };
+
+export const SECTOR_LABELS: Record<SectorType, string> = {
+  manufacturing: "Product / Manufacturing",
+  services: "Services",
+};
+
+// Industries that are service-based by default. Everything else defaults to
+// manufacturing. The user can override via the sector toggle (e.g. a service
+// firm filed under "Other").
+const SERVICE_INDUSTRIES = new Set<IndustryType>(["it_services"]);
+
+export function inferDefaultSector(industry: IndustryType): SectorType {
+  return SERVICE_INDUSTRIES.has(industry) ? "services" : "manufacturing";
+}
 
 export const COMPANY_SIZE_LABELS: Record<CompanySize, string> = {
   listed_top_1000: "Listed — Top 1000 by market cap",

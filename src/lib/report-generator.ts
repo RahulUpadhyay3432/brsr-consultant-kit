@@ -52,6 +52,26 @@ const FILING_MAP: Record<string, string[]> = {
   none: [],
 };
 
+// BRSR disclosures that are genuinely manufacturing/product-specific and do not
+// apply to pure service-sector firms (IT, BFSI, consulting, etc.). For service
+// clients these are marked "not_applicable" instead of being flagged as gaps —
+// UNLESS an existing filing already covers it (real evidence wins).
+// Deliberately conservative: energy, water withdrawal, GHG, waste/e-waste, LCA
+// and recycled-input all stay applicable since service firms have those too.
+const MANUFACTURING_ONLY = new Set<string>([
+  "P2-E3",  // Reclaim processes for products at end of life (needs a physical product)
+  "P2-E4",  // EPR applicability (product waste streams)
+  "P2-L4",  // Products/packaging reclaimed at end of life
+  "P2-L5",  // Reclaimed products as % of products sold
+  "P6-E2",  // PAT designated-consumer status (industrial energy scheme)
+  "P6-E4",  // Water discharge by destination/treatment (industrial effluent)
+  "P6-E5",  // Zero Liquid Discharge
+  "P6-E6",  // Air emissions NOx/SOx/PM/VOC (stack emissions)
+  "P6-E11", // Operations in ecologically sensitive areas requiring clearances
+  "P6-E12", // Environmental Impact Assessments of projects
+  "P6-L3",  // Biodiversity impact in ecologically sensitive areas
+]);
+
 export function generateReport(formData: IntakeFormData): ReportOutput {
   const checklist = generateChecklist(formData);
   const materialityTopics = generateMaterialityTopics(formData);
@@ -60,6 +80,7 @@ export function generateReport(formData: IntakeFormData): ReportOutput {
   const alreadyTracked = checklist.filter((i) => i.status === "already_tracked").length;
   const partiallyTracked = checklist.filter((i) => i.status === "partially_tracked").length;
   const newDataNeeded = checklist.filter((i) => i.status === "new_data_needed").length;
+  const notApplicable = checklist.filter((i) => i.status === "not_applicable").length;
 
   return {
     companyName: formData.companyName || "Your Client",
@@ -74,6 +95,7 @@ export function generateReport(formData: IntakeFormData): ReportOutput {
       alreadyTracked,
       partiallyTracked,
       newDataNeeded,
+      notApplicable,
       materialTopicsCount: materialityTopics.length,
       frameworkMappingsCount: frameworkMappings.length,
     },
@@ -91,6 +113,17 @@ function generateChecklist(formData: IntakeFormData): ChecklistItem[] {
 
   // Get all tracked metrics from selected filings
   const trackedMetrics = getTrackedMetrics(formData.existingFilings);
+  const isServiceSector = formData.sector === "services";
+
+  // Resolve a field's status. A filing overlap (real evidence) always wins.
+  // Otherwise, manufacturing-only fields are "not_applicable" for service firms,
+  // and everything else that's uncovered is a fresh-collect gap.
+  function resolveStatus(indicatorId: string): ChecklistItem["status"] {
+    const overlap = findOverlap(indicatorId, trackedMetrics);
+    if (overlap) return overlap.coverage;
+    if (isServiceSector && MANUFACTURING_ONLY.has(indicatorId)) return "not_applicable";
+    return "new_data_needed";
+  }
 
   for (const principle of principles) {
     // Essential indicators — always included
@@ -104,7 +137,7 @@ function generateChecklist(formData: IntakeFormData): ChecklistItem[] {
         unit: indicator.unit,
         measurement_guidance: indicator.measurement_guidance,
         indicator_type: "essential",
-        status: overlap ? overlap.coverage : "new_data_needed",
+        status: resolveStatus(indicator.id),
         source_filing: overlap?.source,
         gap_note: overlap?.gap,
         page: indicator.page,
@@ -123,7 +156,7 @@ function generateChecklist(formData: IntakeFormData): ChecklistItem[] {
           unit: indicator.unit,
           measurement_guidance: indicator.measurement_guidance,
           indicator_type: "leadership",
-          status: overlap ? overlap.coverage : "new_data_needed",
+          status: resolveStatus(indicator.id),
           source_filing: overlap?.source,
           gap_note: overlap?.gap,
           page: indicator.page,

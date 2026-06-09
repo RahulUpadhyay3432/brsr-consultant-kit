@@ -4,6 +4,7 @@ import { useState } from "react";
 import type {
   IntakeFormData,
   IndustryType,
+  SectorType,
   CompanySize,
   ReportingMaturity,
   ExportMarket,
@@ -11,9 +12,11 @@ import type {
 } from "@/lib/types";
 import {
   INDUSTRY_LABELS,
+  SECTOR_LABELS,
   COMPANY_SIZE_LABELS,
   MATURITY_LABELS,
   FILING_LABELS,
+  inferDefaultSector,
 } from "@/lib/types";
 
 interface IntakeFormProps {
@@ -27,6 +30,7 @@ export default function IntakeForm({ onSubmit, isLoading }: IntakeFormProps) {
   const [formData, setFormData] = useState<IntakeFormData>({
     companyName: "",
     industry: "textile_and_apparel",
+    sector: inferDefaultSector("textile_and_apparel"),
     companySize: "listed_top_1000",
     reportingMaturity: "first_time",
     exportMarkets: [],
@@ -94,7 +98,12 @@ export default function IntakeForm({ onSubmit, isLoading }: IntakeFormProps) {
         </label>
         <select
           value={formData.industry}
-          onChange={(e) => setFormData(p => ({ ...p, industry: e.target.value as IndustryType }))}
+          onChange={(e) => {
+            const industry = e.target.value as IndustryType;
+            // Smart-default the sector toggle from the chosen industry; the user
+            // can still override it below.
+            setFormData(p => ({ ...p, industry, sector: inferDefaultSector(industry) }));
+          }}
           className="w-full px-4 py-3 rounded-lg border border-stone-200 bg-white text-stone-900
             focus:outline-none focus:ring-2 focus:ring-brand-500/60 focus:border-brand-500
             transition-[border-color,box-shadow] duration-150 appearance-none cursor-pointer"
@@ -108,6 +117,40 @@ export default function IntakeForm({ onSubmit, isLoading }: IntakeFormProps) {
             <option key={key} value={key}>{label}</option>
           ))}
         </select>
+      </div>
+
+      {/* ── Business Type (sector) ───────────────────────────────────────── */}
+      <div>
+        <label className="block text-sm font-medium text-stone-700 mb-3">
+          Business Type <span className="text-rose-400">*</span>
+        </label>
+        <div className="grid grid-cols-2 gap-2">
+          {(Object.entries(SECTOR_LABELS) as [SectorType, string][]).map(([key, label]) => (
+            <label
+              key={key}
+              className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg border cursor-pointer pressable text-center ${
+                formData.sector === key
+                  ? "border-brand-500 bg-brand-50/50 ring-1 ring-brand-500/20"
+                  : "border-stone-200 bg-white hover:border-stone-300"
+              }`}
+            >
+              <input
+                type="radio"
+                name="sector"
+                value={key}
+                checked={formData.sector === key}
+                onChange={(e) => setFormData((p) => ({ ...p, sector: e.target.value as SectorType }))}
+                className="sr-only"
+              />
+              <span className="text-sm text-stone-700">{label}</span>
+            </label>
+          ))}
+        </div>
+        <p className="mt-1.5 text-xs text-stone-500">
+          Service-sector clients skip manufacturing-only disclosures (air emissions, effluent
+          discharge, product-reclaim, EIAs) — we mark those <span className="font-medium text-stone-600">Not applicable</span>.
+          Pre-set from your industry; change it if needed.
+        </p>
       </div>
 
       {/* ── Company Size ──────────────────────────────────────────────────── */}

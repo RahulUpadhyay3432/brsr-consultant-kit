@@ -61,9 +61,10 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
   const [activeTab, setActiveTab] = useState<TabId>("checklist");
 
   const industryLabel = INDUSTRY_LABELS[report.industry as IndustryType] || report.industry;
-  const { alreadyTracked, partiallyTracked, newDataNeeded, totalDataPoints } = report.summary;
+  const { alreadyTracked, partiallyTracked, newDataNeeded, notApplicable, totalDataPoints } = report.summary;
   const alreadySourced = alreadyTracked + partiallyTracked;
   const noFilings = alreadySourced === 0;
+  const applicableFields = totalDataPoints - notApplicable;
 
   return (
     <div className="space-y-5 w-full">
@@ -111,8 +112,12 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
               {report.companyName || "this company"}
             </strong>{" "}
             to report on{" "}
-            <span className="font-semibold text-stone-700">{totalDataPoints} disclosure fields</span>{" "}
-            across 9 business responsibility principles.
+            <span className="font-semibold text-stone-700">{applicableFields} disclosure fields</span>{" "}
+            across 9 business responsibility principles
+            {notApplicable > 0 && (
+              <> — we marked <span className="font-semibold text-slate-500">{notApplicable}</span> manufacturing-only
+              disclosures <span className="font-medium text-slate-500">Not applicable</span> for this service-sector client</>
+            )}.
           </p>
         </div>
 
@@ -129,7 +134,7 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
 
               {noFilings ? (
                 <span className="text-xs font-medium text-amber-700">
-                  No filings selected — all {totalDataPoints} fields showing as collect fresh
+                  No filings selected — {newDataNeeded} fields showing as collect fresh
                 </span>
               ) : (
                 /* Filing chips sit inline on the right — source of the numbers below */
@@ -184,6 +189,20 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
               </p>
             </div>
           </div>
+
+          {/* Not-applicable strip — service-sector clients skip manufacturing-only fields */}
+          {notApplicable > 0 && (
+            <div className="px-6 py-2.5 border-t border-stone-200 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-slate-300 flex-shrink-0" />
+              <p className="text-xs text-stone-500 leading-snug">
+                <span className="font-semibold text-slate-500 tabular-nums">{notApplicable}</span>{" "}
+                manufacturing-only disclosures marked{" "}
+                <span className="font-medium text-slate-500">Not applicable</span>{" "}
+                for this service-sector client — open the Action Plan and filter by{" "}
+                <span className="font-medium">Not applicable</span> to review them.
+              </p>
+            </div>
+          )}
 
           {/* Amber alert — shown below columns when no filings selected */}
           {noFilings && (

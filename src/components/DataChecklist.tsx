@@ -39,6 +39,13 @@ const STATUS_META = {
     label: "Collect fresh",
     short: "Collect",
   },
+  not_applicable: {
+    dot:   "bg-slate-300",
+    text:  "text-slate-400",
+    bg:    "bg-slate-50",
+    label: "Not applicable",
+    short: "N/A",
+  },
 } as const;
 
 // Trim regulatory boilerplate so labels read naturally
@@ -118,6 +125,7 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
     already_tracked:   items.filter(i => i.status === "already_tracked").length,
     partially_tracked: items.filter(i => i.status === "partially_tracked").length,
     new_data_needed:   items.filter(i => i.status === "new_data_needed").length,
+    not_applicable:    items.filter(i => i.status === "not_applicable").length,
   }), [items]);
 
   const principleCounts = useMemo(() => {
@@ -227,7 +235,12 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
             active={statusFilter === "all" && principleFilter === "all"}
             onClick={() => { setStatusFilter("all"); setPrincipleFilter("all"); }}
           />
-          {(["already_tracked", "partially_tracked", "new_data_needed"] as StatusKey[]).map(s => (
+          {([
+            "already_tracked",
+            "partially_tracked",
+            "new_data_needed",
+            ...(statusCounts.not_applicable > 0 ? ["not_applicable" as const] : []),
+          ] as StatusKey[]).map(s => (
             <NavItem
               key={s}
               dot={STATUS_META[s].dot}
@@ -298,14 +311,19 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
         {/* Mobile status chips */}
         <div className="md:hidden px-3 py-2.5 border-b border-stone-100">
           <div className="flex gap-1.5 overflow-x-auto pb-0.5" style={{ scrollbarWidth: "none" }}>
-            {(["all", "already_tracked", "partially_tracked", "new_data_needed"] as const).map((key) => {
+            {([
+              "all", "already_tracked", "partially_tracked", "new_data_needed",
+              ...(statusCounts.not_applicable > 0 ? ["not_applicable" as const] : []),
+            ] as const).map((key) => {
               const meta = key === "all"
                 ? { label: "All", count: statusCounts.all, dot: null }
                 : key === "already_tracked"
                 ? { label: "Ready to pull",       count: statusCounts.already_tracked,   dot: "bg-emerald-500" }
                 : key === "partially_tracked"
                 ? { label: "Needs verification",  count: statusCounts.partially_tracked, dot: "bg-amber-400"   }
-                : { label: "Collect fresh",        count: statusCounts.new_data_needed,   dot: "bg-stone-400"   };
+                : key === "new_data_needed"
+                ? { label: "Collect fresh",        count: statusCounts.new_data_needed,   dot: "bg-stone-400"   }
+                : { label: "Not applicable",       count: statusCounts.not_applicable,    dot: "bg-slate-300"   };
               const isActive = key === "all"
                 ? statusFilter === "all" && principleFilter === "all"
                 : statusFilter === key;
@@ -604,10 +622,11 @@ function DisclosureRow({
   onToggleCollected: () => void;
 }) {
   const s = STATUS_META[item.status as StatusKey];
+  const isNA = item.status === "not_applicable";
 
   return (
     <div className={`border-b border-stone-200 transition-colors duration-300
-      ${isCollected ? "bg-stone-100/60" : isOdd ? "bg-stone-50/60" : "bg-white"}`}>
+      ${isCollected ? "bg-stone-100/60" : isNA ? "bg-slate-50/40" : isOdd ? "bg-stone-50/60" : "bg-white"}`}>
 
       {/* Main row */}
       <button
@@ -622,6 +641,8 @@ function DisclosureRow({
             <p className={`text-sm leading-snug line-clamp-2 group-hover:text-stone-900
               ${isCollected
                 ? "line-through text-stone-400"
+                : isNA
+                ? "text-slate-400"
                 : "text-stone-800"
               }`}>
               {plain(item.label)}
@@ -682,6 +703,21 @@ function DisclosureRow({
       <div className="min-h-0">
         <div className="px-4 pb-4" style={{ paddingLeft: "calc(1rem + 22px)" }}>
           <div className="bg-stone-50 border border-stone-200 rounded-lg p-3 space-y-3">
+
+            {/* Not-applicable explainer — service-sector clients skip this */}
+            {isNA && (
+              <div className="bg-slate-100 border border-slate-200 rounded-md px-3 py-2.5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-600 mb-1">
+                  Why not applicable?
+                </p>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  This is a manufacturing/product-specific disclosure (e.g. stack air emissions,
+                  industrial effluent, product end-of-life reclaim, or project EIAs). Pure
+                  service-sector entities normally report it as <span className="font-medium">"Not applicable"</span> in their BRSR.
+                  Confirm with your client — switch <span className="font-medium">Business Type</span> to Product/Manufacturing if any of these apply.
+                </p>
+              </div>
+            )}
 
             {/* Source filing — shown when data comes from an existing compliance report */}
             {item.source_filing && (
@@ -760,6 +796,7 @@ function DisclosureRow({
             )}
 
             {/* ── Mark as collected ──────────────────────────────────────── */}
+            {!isNA && (
             <div className="border-t border-stone-200 pt-3 flex items-center justify-between gap-3">
               <p className="text-[10px] text-stone-400 leading-relaxed">
                 {isCollected
@@ -793,6 +830,7 @@ function DisclosureRow({
                 )}
               </button>
             </div>
+            )}
 
           </div>
         </div>
