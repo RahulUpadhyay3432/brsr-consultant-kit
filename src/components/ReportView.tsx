@@ -6,6 +6,7 @@ import { INDUSTRY_LABELS, FILING_LABELS, type IndustryType, type ExistingFiling 
 import DataChecklist from "./DataChecklist";
 import MaterialityMatrix from "./MaterialityMatrix";
 import FrameworkMapper from "./FrameworkMapper";
+import EsgRatingsMapper from "./EsgRatingsMapper";
 
 interface ReportViewProps {
   report: ReportOutput;
@@ -280,6 +281,9 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
       {/* ── Advanced: International Framework Mapping ─────────────────────── */}
       <AdvancedFrameworks mappings={report.frameworkMappings} />
 
+      {/* ── Advanced: ESG Ratings Alignment (MSCI & DJSI) ────────────────── */}
+      <EsgRatingsSection />
+
       {/* ── Save as PDF CTA — bottom of report, before the page footer ───── */}
       <div className="mt-6 bg-forest rounded-xl px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 no-print">
         <div>
@@ -362,6 +366,62 @@ function AdvancedFrameworks({ mappings }: { mappings: FrameworkMapping[] }) {
         <div className="min-h-0">
           <div className="border-t border-stone-100 p-5">
             <FrameworkMapper mappings={mappings} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Advanced: ESG Ratings Alignment (MSCI & DJSI) ────────────────────────────
+function EsgRatingsSection() {
+  const [open, setOpen] = useState(false); // closed by default — keeps the report scannable
+
+  return (
+    <div className="border border-stone-200 rounded-xl overflow-hidden no-print">
+      {/* Collapsed header */}
+      <button
+        onClick={() => setOpen(v => !v)}
+        className="w-full px-5 py-4 flex items-center justify-between gap-4
+          bg-white hover:bg-stone-50 transition-colors text-left pressable"
+        aria-expanded={open}
+      >
+        <div>
+          <p className="text-sm font-semibold text-stone-700">
+            ESG Ratings Alignment — MSCI &amp; DJSI
+          </p>
+          <p className="text-xs text-stone-400 mt-0.5">
+            See how this BRSR data also feeds your client's MSCI ESG Rating and S&amp;P CSA / DJSI submission
+          </p>
+        </div>
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <div className="hidden sm:flex items-center gap-2">
+            <span className="text-[10px] font-semibold text-violet-700 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">
+              MSCI
+            </span>
+            <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full">
+              DJSI
+            </span>
+          </div>
+          <svg
+            aria-hidden="true"
+            className={`w-4 h-4 text-stone-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </button>
+
+      {/* Expandable content */}
+      <div
+        className={`grid overflow-hidden transition-[grid-template-rows] duration-300
+          ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+        style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
+      >
+        <div className="min-h-0">
+          <div className="border-t border-stone-100 p-5">
+            <EsgRatingsMapper />
           </div>
         </div>
       </div>

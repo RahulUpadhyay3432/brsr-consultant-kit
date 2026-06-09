@@ -1,0 +1,96 @@
+{
+  "source": "Crosswalk authored by BRSR Consultant Kit from the MSCI ESG Ratings Key Issue Framework (10 themes / 35 Key Issues across 3 pillars) and the S&P Global Corporate Sustainability Assessment (CSA), which underpins the Dow Jones Sustainability Indices (DJSI). Mapped at the BRSR principle level — the granularity at which these ratings actually assess companies.",
+  "ratings": {
+    "msci": {
+      "name": "MSCI ESG Ratings",
+      "what": "A risk-based rating (CCC to AAA) measuring a company's resilience to financially material ESG risks. Built from 35 Key Issues; 7–15 are scored per sub-industry."
+    },
+    "djsi": {
+      "name": "S&P Global CSA / DJSI",
+      "what": "A best-in-class score from the annual Corporate Sustainability Assessment (CSA); the top performers per industry enter the Dow Jones Sustainability Indices."
+    }
+  },
+  "mappings": [
+    {
+      "brsr_principle": "P1",
+      "principle_name": "Ethics, Transparency & Accountability",
+      "msci_pillar": "Governance",
+      "msci_key_issues": ["Business Ethics", "Corporate Governance", "Tax Transparency"],
+      "djsi_dimension": "Governance & Economic",
+      "djsi_criteria": ["Corporate Governance", "Codes of Business Conduct", "Risk & Crisis Management", "Tax Strategy"],
+      "note": "BRSR P1 anti-bribery, board oversight and penalty disclosures feed the Governance pillar that MSCI scores for every company."
+    },
+    {
+      "brsr_principle": "P2",
+      "principle_name": "Sustainable & Safe Goods and Services",
+      "msci_pillar": "Environmental / Social",
+      "msci_key_issues": ["Product Carbon Footprint", "Opportunities in Clean Tech", "Packaging Material & Waste", "Raw Material Sourcing"],
+      "djsi_dimension": "Environmental",
+      "djsi_criteria": ["Product Stewardship", "Operational Eco-Efficiency", "Supply Chain Management"],
+      "note": "LCA, recycled-input and EPR data support MSCI product-impact issues and the CSA Product Stewardship criterion."
+    },
+    {
+      "brsr_principle": "P3",
+      "principle_name": "Employee Wellbeing & Safety",
+      "msci_pillar": "Social",
+      "msci_key_issues": ["Labor Management", "Health & Safety", "Human Capital Development"],
+      "djsi_dimension": "Social",
+      "djsi_criteria": ["Occupational Health & Safety", "Human Capital Development", "Talent Attraction & Retention", "Labor Practice Indicators"],
+      "note": "BRSR P3 safety, benefits and training metrics map almost one-to-one to the CSA Human Capital criteria."
+    },
+    {
+      "brsr_principle": "P4",
+      "principle_name": "Stakeholder Engagement",
+      "msci_pillar": "Social",
+      "msci_key_issues": ["Community Relations"],
+      "djsi_dimension": "Governance & Economic",
+      "djsi_criteria": ["Materiality", "Stakeholder Engagement", "Customer Relationship Management"],
+      "note": "Structured stakeholder identification and materiality underpin the CSA Materiality criterion that gates much of the assessment."
+    },
+    {
+      "brsr_principle": "P5",
+      "principle_name": "Human Rights",
+      "msci_pillar": "Social",
+      "msci_key_issues": ["Supply Chain Labor Standards", "Controversial Sourcing", "Labor Management"],
+      "djsi_dimension": "Social",
+      "djsi_criteria": ["Human Rights", "Labor Practice Indicators", "Supply Chain Management"],
+      "note": "BRSR P5 human-rights due diligence and supplier audits feed MSCI supply-chain issues and the CSA Human Rights criterion."
+    },
+    {
+      "brsr_principle": "P6",
+      "principle_name": "Environment",
+      "msci_pillar": "Environmental",
+      "msci_key_issues": ["Carbon Emissions", "Water Stress", "Toxic Emissions & Waste", "Electronic Waste", "Biodiversity & Land Use", "Opportunities in Renewable Energy"],
+      "djsi_dimension": "Environmental",
+      "djsi_criteria": ["Climate Strategy", "Operational Eco-Efficiency", "Water Related Risks", "Biodiversity", "Environmental Policy & Management System"],
+      "note": "The richest overlap: BRSR P6 energy, GHG, water and waste data directly drive both MSCI's Climate/Natural-Capital themes and the CSA Environmental dimension."
+    },
+    {
+      "brsr_principle": "P7",
+      "principle_name": "Policy Advocacy",
+      "msci_pillar": "Governance",
+      "msci_key_issues": ["Business Ethics (Corporate Behavior)"],
+      "djsi_dimension": "Governance & Economic",
+      "djsi_criteria": ["Policy Influence"],
+      "note": "BRSR P7 trade-association and advocacy disclosures map to the CSA Policy Influence criterion — increasingly scrutinised for climate-policy alignment."
+    },
+    {
+      "brsr_principle": "P8",
+      "principle_name": "Inclusive Growth & Equitable Development",
+      "msci_pillar": "Social",
+      "msci_key_issues": ["Community Relations", "Access to Finance / Health Care / Communications"],
+      "djsi_dimension": "Social",
+      "djsi_criteria": ["Social Impacts on Communities", "Corporate Citizenship & Philanthropy"],
+      "note": "CSR, local employment and community-impact data support MSCI social-opportunity issues and the CSA community criteria."
+    },
+    {
+      "brsr_principle": "P9",
+      "principle_name": "Consumer Responsibility",
+      "msci_pillar": "Social",
+      "msci_key_issues": ["Privacy & Data Security", "Product Safety & Quality", "Chemical Safety"],
+      "djsi_dimension": "Governance & Economic",
+      "djsi_criteria": ["Information Security / Cybersecurity", "Customer Relationship Management", "Product Stewardship"],
+      "note": "BRSR P9 data-privacy, product-safety and grievance disclosures feed MSCI Product-Liability issues and the CSA cyber & customer criteria."
+    }
+  ]
+}
