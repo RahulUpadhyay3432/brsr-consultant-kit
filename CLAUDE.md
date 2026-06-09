@@ -8,21 +8,25 @@ Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUp
 
 ## The Report Outputs
 
-After the intake form is submitted, `ReportView` shows a header (client identity + gap-analysis stats) and **two tabs**, with a third output as an always-open accordion below them:
+After the intake form is submitted, `ReportView` shows a header (client identity + gap-analysis stats) and **two tabs**, with two more outputs as accordions below them:
 
-1. **Action Plan (BRSR Data Collection Checklist)** — Tab 1. All BRSR disclosure fields (P1–P9, Essential + Leadership), grouped by principle in collapsible sections. The UI surfaces **108 fields**. Each field has a status, auto-derived by cross-referencing the client's selected compliance filings:
+1. **Action Plan (BRSR Data Collection Checklist)** — Tab 1. All BRSR disclosure fields (P1–P9, Essential + Leadership), grouped by principle in collapsible sections. The UI surfaces **108 fields**. Each field has a status:
    - `already_tracked` → **"Ready to pull"** (emerald) — data exists in an existing filing
    - `partially_tracked` → **"Needs verification"** (amber) — partially covered, one piece missing; the collapsed row shows an inline `Missing: …` note
    - `new_data_needed` → **"Collect fresh"** (stone) — not in any filing
-   Filterable by status, principle, and indicator type (Essential/Leadership), plus search. Expandable rows show "Pull from" (source filing), the gap, "How to collect?" guidance, verbatim SEBI language, and unit. Consultants can **"Mark as collected"** to track progress (animated checkmark), with a "Hide collected" toggle. There is **no Source column** — source is shown inside the expanded panel.
-2. **Materiality Assessment** — Tab 2. Pre-populated material ESG topics for the client's industry, shown as a **clean card grid grouped by Environment / Social / Governance**. Each card shows the topic, why it's material, and the BRSR principles it maps to. (Note: the earlier interactive SVG scatter plot with 1–5 scoring was **removed** — do not reintroduce it.)
-3. **International Framework Mapping** — Below the tabs, **not a tab**. An always-open `AdvancedFrameworks` accordion in `ReportView.tsx` wrapping `FrameworkMapper`. BRSR ↔ GRI ↔ TCFD ↔ IFRS S1/S2 mapping table (~68 mappings) with GRI/TCFD/IFRS count chips in the header, expandable rows, and framework/TCFD-pillar filtering.
+   - `not_applicable` → **"Not applicable"** (slate) — manufacturing-only disclosure suppressed for **service-sector** clients (see below); excluded from gap stats
+   Filterable by status, principle, and indicator type (Essential/Leadership), plus search. **Expanded rows** show, in order: a "Found in last year's report" block (if a PDF was uploaded — see Upload feature), "Pull from" (source filing), the gap, "How to collect?" guidance, **Best practices** (India + International, per principle), verbatim **SEBI language**, **SEBI source** (link to the official BRSR Format PDF + ICAI page citation), and unit. Consultants can **"Mark as collected"** (animated checkmark) with a "Hide collected" toggle. No Source column — source lives in the expanded panel.
+   - **Upload last year's report** (privacy-safe, client-side): a card at the top of this tab lets the consultant upload last year's BRSR/policy PDF. pdf.js extracts the text **in the browser** (file never leaves the device), keyword heuristics flag already-documented disclosures with a **"Last year"** badge + matched-text snippet, plus a "show found only" filter and "mark all detected as collected".
+2. **Suggested Materiality** — Tab 2. A **suggested shortlist** of material ESG topics for the client's industry, as a card grid grouped by Environment / Social / Governance. Each card shows the topic, why it's material, and the BRSR principles it maps to. **Framed as a starting point, not a finished assessment** — there is a prominent disclaimer that a BRSR-compliant materiality assessment requires a stakeholder-engagement process. (The earlier interactive SVG scatter plot with 1–5 scoring was **removed** — do not reintroduce it. Do not re-inflate the "assessment" claim.)
+3. **International Framework Mapping** — Accordion below the tabs (not a tab). `AdvancedFrameworks` in `ReportView.tsx` wrapping `FrameworkMapper`. BRSR ↔ GRI ↔ TCFD ↔ IFRS S1/S2 mapping table (~68 mappings) with count chips, expandable rows, framework/TCFD-pillar filtering. Open by default.
+4. **ESG Ratings Alignment — MSCI & DJSI** — Second accordion below the framework mapper (`EsgRatingsSection` → `EsgRatingsMapper`). Principle-level crosswalk mapping each BRSR principle to MSCI ESG Key Issues (violet) and S&P Global CSA / DJSI criteria (amber). Closed by default to keep the report scannable.
 
 ## Tech Stack
 
 - Next.js 14 (App Router, TypeScript, Tailwind CSS)
 - No component library (custom components)
 - No database, no auth, no backend — all report generation is client-side from pre-extracted JSON knowledge base files
+- **Client-side PDF extraction**: `pdfjs-dist` (v4). Used only for the "upload last year's report" feature; dynamically imported so it stays out of the main bundle. The worker is served as a static file from `/public/pdf.worker.min.mjs` (a prebuild step copies it from node_modules — see below).
 - Analytics: Google Analytics 4 (`G-GJBBQ6YPZL`) via `@next/third-parties/google`, plus `@vercel/analytics`
 - Deployed on Vercel free tier (static)
 
@@ -38,43 +42,48 @@ This dev machine has an SSL cert issue (`UNABLE_TO_VERIFY_LEAF_SIGNATURE` on out
 
 These are local-only issues — builds on Vercel's servers succeed. Standard loop: `npx next build` → commit/push → `$env:NODE_TLS_REJECT_UNAUTHORIZED="0"; vercel --prod --yes`.
 
+**pdf.js worker gotcha**: pdfjs-dist v4 ships an ESM `.mjs` worker that webpack/Terser can't process via `new URL(...)`. The fix is to serve it as a static `/public/pdf.worker.min.mjs` and set `GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs"`. `scripts/copy-pdf-worker.mjs` runs as the `prebuild` npm script to keep the public copy in sync with the pinned package version (a committed copy is the fallback if the copy ever fails).
+
 ## Compliance Chat
 
 A separate RAG chatbot (Python, on Hugging Face Spaces, trained on BRSR/CBAM/CCTS regs) is linked via a **"Compliance Chat ↗" button in the header** (`page.tsx`) that opens in a new tab: https://huggingface.co/spaces/sherlockwatson221/climate-compliance — Python can't deploy on Vercel, so native integration (Railway backend + React chat UI) is a planned V2 item.
 
-## Intake Form Fields
+## Intake Form Fields (in `IntakeForm.tsx`)
 
-1. Client company name (text, optional)
-2. Industry (dropdown): Textile & Apparel, Food & Beverage, Cement, Steel & Metals, Pharmaceuticals, IT Services, Chemicals, Automotive, Power & Energy, Construction, Other
-3. Company size (radio): Listed top 1000 | Listed outside top 1000 | Unlisted supplier to listed company | Unlisted not in value chain
-4. Reporting maturity (radio): First-time filing | 1-2 years | 3+ years improving
-5. Export markets (multi-select chips): EU, USA, UK, Middle East, Southeast Asia, None
-6. Existing compliance filings (multi-select chips): PCB (CTE/CTO), ZLD, Hazardous Waste, EPR Registration, Factory Act, PAT Scheme, None
-7. Primary processes (free text, optional)
+1. **Client company name** — autocomplete typeahead (`CompanyAutocomplete` + `companies.json`). Typing filters ~150 Indian listed companies; picking one fills the name and **auto-selects its industry + business type** (overridable). Free text allowed for any company. Optional.
+2. **Industry** (dropdown): Textile & Apparel, Food & Beverage, Cement, Steel & Metals, Pharmaceuticals, IT Services, Chemicals, Automotive, Power & Energy, Construction, Other
+3. **Business Type** (radio): Product/Manufacturing | Services. Smart-defaulted from the industry via `inferDefaultSector()` (it_services → services; all else → manufacturing) and overridable. Drives the `not_applicable` suppression of manufacturing-only disclosures.
+4. **Company size** (radio): Listed top 1000 | Listed outside top 1000 | Unlisted supplier to listed company | Unlisted not in value chain
+5. **Reporting maturity** (radio): First-time filing | 1-2 years | 3+ years improving
+6. **Export markets** (multi-select chips): EU, USA, UK, Middle East, Southeast Asia, None
+7. **Existing compliance filings** (multi-select chips): PCB (CTE/CTO), ZLD, Hazardous Waste, EPR Registration, Factory Act, PAT Scheme, None
 
-## Knowledge Base — 4 JSON Files in `src/data/`
+## Knowledge Base — JSON files in `src/data/`
 
 ### `brsr_data_points.json`
-
 - Source: ICAI Background Material on BRSR (Revised Edition 2024) + SEBI March 2025 amendments
-- Structure: `{ principles: [{ id: "P1", essential_indicators: [{id, label, unit, measurement_guidance}], leadership_indicators: [...] }], section_a_general_disclosures: [...], section_b_management_process_disclosures: [...] }`
-- 9 Principles, 72 essential indicators, 40 leadership indicators = 112 data points in the file (the generated checklist surfaces 108 to users)
+- Structure: `{ principles: [{ id, essential_indicators: [{id, label, unit, measurement_guidance, page}], leadership_indicators: [...] }], section_a_…, section_b_… }`
+- 9 Principles, 72 essential + 40 leadership = 112 data points (checklist surfaces 108). `page` = ICAI Background Material page, surfaced as the SEBI source citation.
 
 ### `compliance_overlaps.json`
-
 - Maps existing compliance filings to BRSR fields they already cover
-- **Inconsistent nesting**: `e_waste_rules_2022` is under `filings.e_waste_rules_2022`, while `plastic_waste_epr_2022`, `hazardous_waste_2016`, `ghg_intensity_2025` are at root level
-- Each filing has `data_already_tracked: [{ metric, maps_to_brsr_id, maps_to_brsr_label, coverage: "full"|"partial"|"supplementary", gap }]`
+- **Inconsistent nesting**: `e_waste_rules_2022` is under `filings.e_waste_rules_2022`; `plastic_waste_epr_2022`, `hazardous_waste_2016`, `ghg_intensity_2025` are at root level
+- Each filing: `data_already_tracked: [{ metric, maps_to_brsr_id, maps_to_brsr_label, coverage, gap }]`
 
 ### `industry_material_topics.json`
-
-- 10 industries (no "other" — that's handled with generic fallback in code)
-- Structure: `{ industries: { textile_and_apparel: { environment: [{topic, brsr_principles, why_material}], social: [...], governance: [...] } } }`
+- 10 industries (no "other" — generic fallback in code). `{ industries: { <industry>: { environment: [{topic, brsr_principles, why_material}], social, governance } } }`
 
 ### `framework_mappings.json`
+- 68 BRSR ↔ GRI ↔ TCFD ↔ IFRS S1/S2 crosswalk mappings. `{ mappings: [{ brsr_id, brsr_label, brsr_section, gri_standard, gri_label, tcfd_pillar, tcfd_detail, ifrs_reference, notes }] }`
 
-- 68 BRSR ↔ GRI ↔ TCFD ↔ IFRS S1/S2 crosswalk mappings
-- Structure: `{ mappings: [{ brsr_id, brsr_label, brsr_section, gri_standard, gri_label, tcfd_pillar, tcfd_detail, ifrs_reference, notes }] }`
+### `best_practices.json`
+- Per-principle India + International best practices (named standards: SBTi, ISO 14001/45001/37001/27001/20400, ZLD, UNGPs, DPDP Act, GHG Protocol, AA1000, SROI…). `{ best_practices: { P1: { name, india: [...], international: [...] }, … } }`. Imported directly in `DataChecklist`, keyed by principle.
+
+### `esg_ratings_mapping.json`
+- Principle-level BRSR → MSCI Key Issues + S&P CSA/DJSI criteria crosswalk. `{ ratings: {...}, mappings: [{ brsr_principle, principle_name, msci_pillar, msci_key_issues, djsi_dimension, djsi_criteria, note }] }`. Imported directly in `EsgRatingsMapper`.
+
+### `companies.json`
+- ~150 curated Indian listed companies (BRSR filers). `{ companies: [{ name, industry, sector }] }`. `industry: "other"` for banks/NBFCs/insurers/telecom/retail/diversified that don't map to the 11 industries. Powers the company-name autocomplete + industry/sector auto-fill.
 
 ## File Structure
 
@@ -84,54 +93,68 @@ src/
 │   ├── fonts/          # Geist fonts (local — GeistVF.woff, GeistMonoVF.woff)
 │   ├── globals.css     # Tailwind + brand tokens, badges, motion system, micro-interactions
 │   ├── layout.tsx      # Root layout — metadata + GA4 + Vercel Analytics
-│   └── page.tsx        # Main page — toggles IntakeForm/ReportView; header has Compliance Chat button
+│   └── page.tsx        # Main page — toggles IntakeForm/ReportView; header has Compliance Chat button + "No data stored" badge
 ├── components/
-│   ├── IntakeForm.tsx        # 7-field structured form
-│   ├── ReportView.tsx        # Container: header stats + 2 tabs + AdvancedFrameworks accordion
-│   ├── DataChecklist.tsx     # Tab 1: checklist with gap analysis + "Mark as collected"
-│   ├── MaterialityMatrix.tsx # Tab 2: E/S/G card grid (no scatter plot)
-│   └── FrameworkMapper.tsx   # Cross-framework mapping (rendered inside AdvancedFrameworks)
+│   ├── IntakeForm.tsx          # Structured intake form (company autocomplete, business-type toggle, etc.)
+│   ├── CompanyAutocomplete.tsx # Typeahead for company name → auto-fills industry + sector
+│   ├── ReportView.tsx          # Container: header stats + 2 tabs + 2 accordions
+│   ├── DataChecklist.tsx       # Tab 1: checklist, gap analysis, upload-to-detect, best practices, SEBI source, mark-as-collected
+│   ├── MaterialityMatrix.tsx   # Tab 2: "Suggested Materiality" E/S/G card grid + disclaimer (no scatter plot)
+│   ├── FrameworkMapper.tsx     # GRI/TCFD/IFRS crosswalk (inside AdvancedFrameworks)
+│   └── EsgRatingsMapper.tsx    # MSCI/DJSI ratings alignment (inside EsgRatingsSection)
 ├── data/
 │   ├── brsr_data_points.json
 │   ├── compliance_overlaps.json
 │   ├── framework_mappings.json
-│   └── industry_material_topics.json
+│   ├── industry_material_topics.json
+│   ├── best_practices.json
+│   ├── esg_ratings_mapping.json
+│   └── companies.json
 └── lib/
-    ├── types.ts          # All TypeScript interfaces, enums, label maps
-    └── report-generator.ts # Core logic: processes form data against JSON files
+    ├── types.ts            # All TS interfaces, enums, label maps, inferDefaultSector()
+    ├── report-generator.ts # Core logic: form data → checklist / materiality / framework mappings
+    ├── pdf-extract.ts      # Client-side pdf.js text extraction (dynamic import)
+    └── report-extractor.ts # Keyword detection of documented disclosures from extracted text
+public/pdf.worker.min.mjs   # pdf.js worker (served statically; kept in sync by scripts/copy-pdf-worker.mjs)
+scripts/copy-pdf-worker.mjs # prebuild: copies the worker from node_modules → public
 ```
 
 ## Core Logic Flow (in `report-generator.ts`)
 
-1. Takes IntakeFormData from the form
-2. **Checklist generation**: Iterates all BRSR principles/indicators. Shows leadership indicators only for listed companies or 3+ year maturity. Cross-references selected compliance filings against `compliance_overlaps.json` to set each field's status (`already_tracked` / `partially_tracked` / `new_data_needed`). Filing-to-JSON-key mapping handles the user's selected filings → actual JSON keys.
-3. **Materiality topics**: Looks up industry in `industry_material_topics.json`. For "other" industry, returns a generic set of universal topics. (Scoring metadata may exist but the UI no longer renders a scored chart — it's a card grid.)
-4. **Framework mappings**: Returns all 68 mappings from `framework_mappings.json`. UI handles filtering.
+1. Takes `IntakeFormData` from the form.
+2. **Checklist generation**: Iterates all BRSR principles/indicators. Leadership indicators only for listed companies or 3+ year maturity. Status resolution per field (`resolveStatus`): a compliance-filing overlap (real evidence) wins → `already_tracked`/`partially_tracked`; else if the client is **services** and the indicator is in `MANUFACTURING_ONLY` → `not_applicable`; else `new_data_needed`. Threads `page` through for the SEBI citation. `MANUFACTURING_ONLY` = P2-E3, P2-E4, P2-L4, P2-L5, P6-E2, P6-E4, P6-E5, P6-E6, P6-E11, P6-E12, P6-L3.
+3. **Materiality topics**: Looks up industry in `industry_material_topics.json`; generic fallback for "other". (Scoring metadata may exist but the UI renders a card grid, not a chart.)
+4. **Framework mappings**: Returns all 68; UI filters.
+- **Best practices** and **ESG ratings** are static and imported directly in their components (`DataChecklist` / `EsgRatingsMapper`), not routed through `report-generator`.
 
 ## Design System
 
 - Notion/Linear aesthetic — clean, minimal, professional
-- Brand tokens (globals.css): `--brand-500: #00d4a4`, `--brand-800: #00745a`, `--forest: #111111` (near-black, used for logo + primary buttons)
-- Background: warm off-white `#F7F6F2` with a subtle atmospheric glow (`.bg-grid`), 1.5px brand-gradient hairline at the top
-- Status badges: emerald (Ready to pull), amber (Needs verification), rose/stone (Collect fresh)
-- Framework badges: blue (GRI), violet (TCFD), emerald (IFRS)
+- Brand tokens (globals.css): `--brand-500: #00d4a4`, `--brand-800: #00745a`, `--forest: #111111` (near-black, logo + primary buttons)
+- Background: warm off-white `#F7F6F2` with subtle glow (`.bg-grid`), 1.5px brand-gradient hairline on top
+- Status badges: emerald (Ready to pull), amber (Needs verification), stone (Collect fresh), slate (Not applicable)
+- Framework badges: blue (GRI), violet (TCFD/MSCI), emerald (IFRS), amber (DJSI); indigo for the "Last year" upload tag
 - Fonts: Geist Sans (local) for body, Georgia for `.font-display` headings
-- **Motion system** (Corporate personality, `cubic-bezier(0.2,0,0,1)`, 160/280/420ms): classes `.anim-up-sm`, `.anim-up-md`, `.anim-up-hero`, `.anim-card` for staggered entrance/reveal choreography
-- **Micro-interactions**: `.pressable` (hover lift + active press), `.chip-spring` (elastic toggle chips), `.check-path` (SVG checkmark draw). All respect `prefers-reduced-motion`.
+- **Motion system** (`cubic-bezier(0.2,0,0,1)`, 160/280/420ms): `.anim-up-sm`, `.anim-up-md`, `.anim-up-hero`, `.anim-card`
+- **Micro-interactions**: `.pressable`, `.chip-spring`, `.check-path`. All respect `prefers-reduced-motion`.
 - Tab icons are inline SVGs (no emoji)
 
 ## Footer
 
-"Built by Rahul Upadhyay" with:
+"Built by Rahul Upadhyay" — LinkedIn: https://www.linkedin.com/in/rahul-upadhyay-a7aa12207/ · Email: rahulu626@gmail.com
 
-- LinkedIn: https://www.linkedin.com/in/rahul-upadhyay-a7aa12207/
-- Email: rahulu626@gmail.com
+## Roadmap
 
-## Roadmap (validated by real consultant feedback — prioritized)
+The originally-validated top-5 consultant requests are now **shipped** (1–4 + materiality reframe + upload + autocomplete):
 
-1. **SEBI source links** per gap field (quick win — add a `sebi_url` and render in expanded panel)
-2. **Product vs. service-sector differentiation** — suppress manufacturing-only disclosures for IT/service clients in `report-generator.ts` (confirmed logic gap)
-3. **Best practices by sector** — suggest Indian/international best practices per gap
-4. **MSCI + DJSI rating mapping** — extend the framework mapper
-5. **Embedded data collection + calculation** (GHG Scope 1/2/3, energy/water intensity) — gated: only build once 3+ consultants independently confirm the need
-- Also on Rahul's own roadmap: client-facing data request export, CBAM module (EU exporters), AI-assisted gap analysis from an uploaded compliance document, native Compliance Chat integration.
+- ✅ **SEBI source links** — link to the official SEBI BRSR Format PDF + ICAI page, in each expanded row.
+- ✅ **Product vs. service-sector differentiation** — Business Type toggle + `not_applicable` status for manufacturing-only disclosures.
+- ✅ **Best practices by principle** — India + International, in each expanded row.
+- ✅ **MSCI + DJSI rating mapping** — the ESG Ratings Alignment accordion.
+- ✅ **Suggested Materiality reframe** — honest "starting point" framing + disclaimer.
+- ✅ **Upload last year's report** — client-side PDF detection of already-documented disclosures.
+- ✅ **Company-name autocomplete** — typeahead + industry/sector auto-fill.
+
+**Next big candidate — Embedded data collection + calculation** (GHG Scope 1/2/3, energy/water intensity): turns the tool from a *preparation checklist* into a *reporting workflow tool*. **NOT built yet** — 2 independent consultant signals so far (gate was ~3). Recommended MVP: GHG Scope 1 & 2 + intensity calculators embedded in the P6 fields (BRSR Core), client-side, with transparently-cited India emission factors (CEA grid factor, IPCC/GHG-Protocol fuel factors) — accuracy + annual upkeep of factors is the real catch. Then expand to Scope 3.
+
+Also on Rahul's own roadmap: peer/competitor benchmarking (gated on sourcing real cited BRSR data), client-facing data-request export, CBAM module (EU exporters), native Compliance Chat integration.
