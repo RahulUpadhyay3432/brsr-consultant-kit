@@ -12,6 +12,8 @@ Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUp
 
 **Next up (NOT built yet):** embedded **GHG Scope 1 & 2 + energy/water intensity calculator** in the P6 rows (cited India emission factors) — proposed, awaiting go-ahead. Then: peer/competitor benchmarking (needs real cited data), CBAM module, client data-request export.
 
+**Key docs:** `docs/PRODUCT.md` (product principles + IA + ship-gate) · `docs/DECISIONS.md` (the *why* behind each feature, from consultant feedback — read before changing things).
+
 > Maintenance note for Claude: keep this block + the rest of CLAUDE.md current as features ship, and keep `[memory]/consultant-feedback-roadmap.md` in sync. This file is auto-loaded each session, so it is the primary way a new chat learns the current state.
 
 ## The Report Outputs
