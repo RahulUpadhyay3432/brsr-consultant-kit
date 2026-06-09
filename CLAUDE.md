@@ -26,6 +26,7 @@ After the intake form is submitted, `ReportView` shows a header (client identity
 - Next.js 14 (App Router, TypeScript, Tailwind CSS)
 - No component library (custom components)
 - No database, no auth, no backend — all report generation is client-side from pre-extracted JSON knowledge base files
+- **Session persistence** via `localStorage` (`src/lib/storage.ts`): the report restores on refresh (intake form is persisted + regenerated in `page.tsx`); collected items + upload detection persist (in `useChecklistState`); "New report" clears the session. Still 100% on-device.
 - **Client-side PDF extraction**: `pdfjs-dist` (v4). Used only for the "upload last year's report" feature; dynamically imported so it stays out of the main bundle. The worker is served as a static file from `/public/pdf.worker.min.mjs` (a prebuild step copies it from node_modules — see below).
 - Analytics: Google Analytics 4 (`G-GJBBQ6YPZL`) via `@next/third-parties/google`, plus `@vercel/analytics`
 - Deployed on Vercel free tier (static)
@@ -98,7 +99,14 @@ src/
 │   ├── IntakeForm.tsx          # Structured intake form (company autocomplete, business-type toggle, etc.)
 │   ├── CompanyAutocomplete.tsx # Typeahead for company name → auto-fills industry + sector
 │   ├── ReportView.tsx          # Container: header stats + 2 tabs + 2 accordions
-│   ├── DataChecklist.tsx       # Tab 1: checklist, gap analysis, upload-to-detect, best practices, SEBI source, mark-as-collected
+│   ├── DataChecklist.tsx       # Tab 1 CONTAINER — composes the checklist/ module below
+│   ├── checklist/              # Decomposed Action Plan (was a 1,118-line DataChecklist)
+│   │   ├── constants.ts        #   PRINCIPLES, STATUS_META, plain(), SEBI consts, BEST_PRACTICES
+│   │   ├── useChecklistState.ts#   All state (filters/collected/upload/detection) + localStorage persistence
+│   │   ├── UploadCard.tsx      #   "Upload last year's report" card (presentational)
+│   │   ├── DisclosureRow.tsx   #   A row + expanded panel (field-level features slot in here)
+│   │   ├── PrincipleSection.tsx#   Collapsible principle group
+│   │   └── NavItem.tsx         #   Sidebar filter item
 │   ├── MaterialityMatrix.tsx   # Tab 2: "Suggested Materiality" E/S/G card grid + disclaimer (no scatter plot)
 │   ├── FrameworkMapper.tsx     # GRI/TCFD/IFRS crosswalk (inside AdvancedFrameworks)
 │   └── EsgRatingsMapper.tsx    # MSCI/DJSI ratings alignment (inside EsgRatingsSection)
@@ -114,7 +122,8 @@ src/
     ├── types.ts            # All TS interfaces, enums, label maps, inferDefaultSector()
     ├── report-generator.ts # Core logic: form data → checklist / materiality / framework mappings
     ├── pdf-extract.ts      # Client-side pdf.js text extraction (dynamic import)
-    └── report-extractor.ts # Keyword detection of documented disclosures from extracted text
+    ├── report-extractor.ts # Keyword detection of documented disclosures from extracted text
+    └── storage.ts          # SSR-safe localStorage helpers (session persistence)
 public/pdf.worker.min.mjs   # pdf.js worker (served statically; kept in sync by scripts/copy-pdf-worker.mjs)
 scripts/copy-pdf-worker.mjs # prebuild: copies the worker from node_modules → public
 ```
