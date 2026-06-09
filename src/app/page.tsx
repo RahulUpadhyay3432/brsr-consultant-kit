@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import type { IntakeFormData, ReportOutput } from "@/lib/types";
 import { generateReport } from "@/lib/report-generator";
+import { loadJSON, saveJSON, removeKey, STORAGE_KEYS } from "@/lib/storage";
 import IntakeForm from "@/components/IntakeForm";
 import ReportView from "@/components/ReportView";
 
@@ -10,11 +11,25 @@ export default function Home() {
   const [report, setReport] = useState<ReportOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Restore the last report on load so a refresh doesn't lose the consultant's
+  // work. The intake form is persisted (not the report) and regenerated here.
+  // If a stored form is malformed (e.g. an older schema), drop the session.
+  useEffect(() => {
+    try {
+      const savedForm = loadJSON<IntakeFormData | null>(STORAGE_KEYS.form, null);
+      if (savedForm) setReport(generateReport(savedForm));
+    } catch {
+      removeKey(STORAGE_KEYS.form);
+      removeKey(STORAGE_KEYS.checklist);
+    }
+  }, []);
+
   const handleSubmit = useCallback((formData: IntakeFormData) => {
     setIsLoading(true);
     setTimeout(() => {
       try {
         const result = generateReport(formData);
+        saveJSON(STORAGE_KEYS.form, formData);
         setReport(result);
         window.scrollTo({ top: 0, behavior: "instant" });
       } catch (err) {
@@ -28,6 +43,9 @@ export default function Home() {
 
   const handleBack = () => {
     setReport(null);
+    // New report → clear the persisted session (form + checklist working state).
+    removeKey(STORAGE_KEYS.form);
+    removeKey(STORAGE_KEYS.checklist);
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 

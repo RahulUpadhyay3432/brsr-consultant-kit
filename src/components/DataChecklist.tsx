@@ -1,233 +1,15 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
 import type { ChecklistItem } from "@/lib/types";
-import { extractPdfText } from "@/lib/pdf-extract";
-import { detectDisclosures, type DetectionResult, type DisclosureMatch } from "@/lib/report-extractor";
-import bestPracticesData from "@/data/best_practices.json";
-
-// Principle-level best practices (India + International). Looked up by principle.
-const BEST_PRACTICES = (bestPracticesData as {
-  best_practices: Record<string, { name: string; india: string[]; international: string[] }>;
-}).best_practices;
-
-// ─── Principle metadata ────────────────────────────────────────────────────────
-const PRINCIPLES: Record<string, { name: string; color: string; bg: string; border: string }> = {
-  P1: { name: "Ethics & Transparency",   color: "text-violet-700", bg: "bg-violet-50",  border: "border-violet-200" },
-  P2: { name: "Products & Services",     color: "text-blue-700",   bg: "bg-blue-50",    border: "border-blue-200"   },
-  P3: { name: "Employee Wellbeing",      color: "text-sky-700",    bg: "bg-sky-50",     border: "border-sky-200"    },
-  P4: { name: "Stakeholder Engagement",  color: "text-teal-700",   bg: "bg-teal-50",    border: "border-teal-200"   },
-  P5: { name: "Human Rights",            color: "text-rose-700",   bg: "bg-rose-50",    border: "border-rose-200"   },
-  P6: { name: "Environment",             color: "text-emerald-700",bg: "bg-emerald-50", border: "border-emerald-200"},
-  P7: { name: "Policy & Advocacy",       color: "text-amber-700",  bg: "bg-amber-50",   border: "border-amber-200"  },
-  P8: { name: "Inclusive Growth",        color: "text-orange-700", bg: "bg-orange-50",  border: "border-orange-200" },
-  P9: { name: "Consumer Responsibility", color: "text-pink-700",   bg: "bg-pink-50",    border: "border-pink-200"   },
-};
-
-// ─── Status metadata ───────────────────────────────────────────────────────────
-const STATUS_META = {
-  already_tracked: {
-    dot:   "bg-emerald-500",
-    text:  "text-emerald-700",
-    bg:    "bg-emerald-50",
-    label: "Ready to pull",
-    short: "Ready",
-  },
-  partially_tracked: {
-    dot:   "bg-amber-400",
-    text:  "text-amber-700",
-    bg:    "bg-amber-50",
-    label: "Needs verification",
-    short: "Verify",
-  },
-  new_data_needed: {
-    dot:   "bg-stone-400",
-    text:  "text-stone-600",
-    bg:    "bg-stone-50",
-    label: "Collect fresh",
-    short: "Collect",
-  },
-  not_applicable: {
-    dot:   "bg-slate-300",
-    text:  "text-slate-400",
-    bg:    "bg-slate-50",
-    label: "Not applicable",
-    short: "N/A",
-  },
-} as const;
-
-// Trim regulatory boilerplate so labels read naturally
-function plain(label: string): string {
-  const s = label
-    .replace(/[\?.]?\s*[Ii]f yes[,.]?[\s\S]*/i, "")
-    .replace(/\s*\(Yes\/No[^)]*\)/g, "")
-    .replace(/^Does the entity have an?\s+/i, "")
-    .replace(/^Whether the entity\s+/i, "")
-    .replace(/^Provide details (of |related to |on )?/i, "")
-    .replace(/^Details of /i, "")
-    .replace(/^Describe the /i, "")
-    .replace(/^Please provide details (of |on )?/i, "")
-    .replace(/^Is the entity /i, "")
-    // Strip leading sub-question marker e.g. "A. " "a. " "1. "
-    .replace(/^[A-Za-z0-9]\.\s+/, "")
-    // Split on em-dash, semicolon, or a new lettered sub-question "? b. "
-    .split(/\s+[—–]\s+|\s*;\s+/)[0]
-    .replace(/\?\s+[a-zA-Z]\.\s[\s\S]*/, "?")  // "...sourcing? b. Also..." → "...sourcing?"
-    .trim()
-    .replace(/\s+/g, " ");
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
-// ─── SEBI source references ──────────────────────────────────────────────────
-// SEBI does not publish per-field deep links — every Section-C principle
-// disclosure is defined in one canonical document: the updated BRSR Format
-// (Annexure II, Jul 2023). We link there and cite the ICAI Background Material
-// page (already in the data) for true per-field granularity.
-const SEBI_BRSR_FORMAT_URL =
-  "https://www.sebi.gov.in/sebi_data/commondocs/jul-2023/Annexure_II-Updated-BRSR_p.PDF";
-
-// Map "P6" → "6" for a principle-specific link label
-function principleNumber(principle: string): string {
-  return principle.replace(/^P/i, "");
-}
-
-type StatusKey = keyof typeof STATUS_META;
-type TypeKey   = "all" | "essential" | "leadership";
+import { PRINCIPLES, STATUS_META, type StatusKey, type TypeKey } from "./checklist/constants";
+import { useChecklistState } from "./checklist/useChecklistState";
+import NavItem from "./checklist/NavItem";
+import UploadCard from "./checklist/UploadCard";
+import PrincipleSection from "./checklist/PrincipleSection";
 
 // ─── Main component ────────────────────────────────────────────────────────────
 export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
-  const [statusFilter,      setStatusFilter]      = useState<StatusKey | "all">("all");
-  const [principleFilter,   setPrincipleFilter]   = useState<string>("all");
-  const [typeFilter,        setTypeFilter]        = useState<TypeKey>("all");
-  const [search,            setSearch]            = useState("");
-  const [expandedId,        setExpandedId]        = useState<string | null>(null);
-  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(
-    () => new Set(Object.keys(PRINCIPLES))
-  );
-
-  // ── Collected state — consultant marks data they've already gathered ────────
-  const [collectedIds,  setCollectedIds]  = useState<Set<string>>(new Set());
-  const [hideCollected, setHideCollected] = useState(false);
-
-  // ── Upload last year's report — client-side detection of documented fields ──
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [detection,    setDetection]    = useState<DetectionResult | null>(null);
-  const [uploadStatus, setUploadStatus] = useState<"idle" | "processing" | "done" | "error">("idle");
-  const [uploadInfo,   setUploadInfo]   = useState<{ fileName: string; pageCount: number } | null>(null);
-  const [uploadError,  setUploadError]  = useState<string>("");
-  const [showOnlyDetected, setShowOnlyDetected] = useState(false);
-
-  const detectedSet = useMemo(
-    () => new Set(detection?.detectedIds ?? []),
-    [detection]
-  );
-  // Only count detections that correspond to fields actually in this report.
-  const detectedInReport = useMemo(
-    () => items.filter(i => detectedSet.has(i.id)).length,
-    [items, detectedSet]
-  );
-
-  async function handleFile(file: File) {
-    setUploadStatus("processing");
-    setUploadError("");
-    try {
-      const { text, pageCount } = await extractPdfText(file);
-      if (!text.trim()) {
-        setUploadStatus("error");
-        setUploadError("Couldn't read any text from this PDF — it may be a scanned image. Try a text-based PDF.");
-        return;
-      }
-      setDetection(detectDisclosures(text));
-      setUploadInfo({ fileName: file.name, pageCount });
-      setUploadStatus("done");
-    } catch {
-      setUploadStatus("error");
-      setUploadError("Something went wrong reading that file. Please try another PDF.");
-    }
-  }
-
-  function clearUpload() {
-    setDetection(null);
-    setUploadInfo(null);
-    setUploadStatus("idle");
-    setUploadError("");
-    setShowOnlyDetected(false);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  }
-
-  function markAllDetectedCollected() {
-    setCollectedIds(prev => {
-      const next = new Set(prev);
-      for (const i of items) if (detectedSet.has(i.id)) next.add(i.id);
-      return next;
-    });
-  }
-
-  function toggleCollected(id: string) {
-    setCollectedIds(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }
-
-  function toggleSection(principle: string) {
-    setCollapsedSections(prev => {
-      const next = new Set(prev);
-      if (next.has(principle)) next.delete(principle);
-      else { next.add(principle); setExpandedId(null); }
-      return next;
-    });
-  }
-
-  // ── Sidebar counts ────────────────────────────────────────────────────────
-  const statusCounts = useMemo(() => ({
-    all:               items.length,
-    already_tracked:   items.filter(i => i.status === "already_tracked").length,
-    partially_tracked: items.filter(i => i.status === "partially_tracked").length,
-    new_data_needed:   items.filter(i => i.status === "new_data_needed").length,
-    not_applicable:    items.filter(i => i.status === "not_applicable").length,
-  }), [items]);
-
-  const principleCounts = useMemo(() => {
-    const base = statusFilter === "all" ? items : items.filter(i => i.status === statusFilter);
-    const counts: Record<string, number> = {};
-    for (const item of base) counts[item.principle] = (counts[item.principle] || 0) + 1;
-    return counts;
-  }, [items, statusFilter]);
-
-  // ── Filtered items ────────────────────────────────────────────────────────
-  const filtered = useMemo(() => {
-    const q = search.toLowerCase().trim();
-    return items.filter(item => {
-      if (statusFilter !== "all"    && item.status         !== statusFilter)    return false;
-      if (principleFilter !== "all" && item.principle      !== principleFilter) return false;
-      if (typeFilter !== "all"      && item.indicator_type !== typeFilter)       return false;
-      if (q && !item.label.toLowerCase().includes(q) && !item.id.toLowerCase().includes(q)) return false;
-      if (hideCollected && collectedIds.has(item.id))                           return false;
-      if (showOnlyDetected && !detectedSet.has(item.id))                        return false;
-      return true;
-    });
-  }, [items, statusFilter, principleFilter, typeFilter, search, hideCollected, collectedIds, showOnlyDetected, detectedSet]);
-
-  const grouped = useMemo(() => {
-    const groups: Record<string, ChecklistItem[]> = {};
-    for (const item of filtered) {
-      if (!groups[item.principle]) groups[item.principle] = [];
-      groups[item.principle].push(item);
-    }
-    return groups;
-  }, [filtered]);
-
-  const principleKeys = Object.keys(grouped).sort();
-
-  function clearFilters() {
-    setStatusFilter("all");
-    setPrincipleFilter("all");
-    setTypeFilter("all");
-    setSearch("");
-  }
+  const c = useChecklistState(items);
 
   return (
     <div className="space-y-4">
@@ -266,131 +48,18 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
     </div>
 
     {/* ── Upload last year's report — client-side, privacy-safe ─────────── */}
-    <div className="bg-white border border-indigo-200 rounded-xl p-4">
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="application/pdf,.pdf"
-        className="hidden"
-        onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
-      />
-
-      {uploadStatus !== "done" ? (
-        <div className="flex items-start gap-3">
-          <div className="w-9 h-9 bg-indigo-50 rounded-lg border border-indigo-100 flex items-center justify-center flex-shrink-0">
-            <svg className="w-4 h-4 text-indigo-600" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M7.5 10V2.5M5 5l2.5-2.5L10 5" />
-              <path d="M2.5 9.5v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-2" />
-            </svg>
-          </div>
-          <div className="min-w-0 flex-1">
-            <h3 className="text-sm font-semibold text-stone-800">
-              Save time — upload last year's BRSR report
-            </h3>
-            <p className="text-xs text-stone-500 mt-1 leading-relaxed">
-              We'll scan it <strong className="text-stone-700">entirely in your browser</strong> and flag the
-              disclosures (policies, management systems, recurring metrics) that already appear documented — so you
-              can focus on what's genuinely new.
-              <span className="inline-flex items-center gap-1 text-emerald-700 font-medium ml-1">
-                <svg className="w-3 h-3" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                  <path d="M7.5 1.5l5 2v3.5c0 3-2.2 5-5 6.5-2.8-1.5-5-3.5-5-6.5V3.5z" />
-                </svg>
-                The file never leaves your device.
-              </span>
-            </p>
-            <div className="mt-2.5 flex items-center gap-2 flex-wrap">
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploadStatus === "processing"}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold
-                  bg-indigo-600 text-white hover:bg-indigo-700 pressable transition-colors
-                  disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                {uploadStatus === "processing" ? (
-                  <>
-                    <svg className="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" aria-hidden="true">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                    </svg>
-                    Reading PDF…
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-3.5 h-3.5" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                      <path d="M7.5 10V2.5M5 5l2.5-2.5L10 5M2.5 9.5v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    Choose PDF
-                  </>
-                )}
-              </button>
-              <span className="text-[10px] text-stone-400">Text-based PDF · processed locally · nothing uploaded</span>
-            </div>
-            {uploadStatus === "error" && (
-              <p className="mt-2 text-xs text-rose-600 leading-relaxed">{uploadError}</p>
-            )}
-          </div>
-        </div>
-      ) : (
-        <div className="flex items-start gap-3">
-          <div className="w-9 h-9 bg-emerald-50 rounded-lg border border-emerald-100 flex items-center justify-center flex-shrink-0">
-            <svg className="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path className="check-path" d="M5 13l4 4L19 7" />
-            </svg>
-          </div>
-          <div className="min-w-0 flex-1">
-            <h3 className="text-sm font-semibold text-stone-800">
-              {detectedInReport > 0
-                ? <>Found <span className="text-emerald-700">{detectedInReport}</span> disclosure{detectedInReport === 1 ? "" : "s"} already documented in last year's report</>
-                : <>No recurring disclosures detected automatically</>}
-            </h3>
-            <p className="text-xs text-stone-500 mt-1 leading-relaxed">
-              Scanned <span className="font-medium text-stone-600">{uploadInfo?.fileName}</span> ({uploadInfo?.pageCount} pages) locally.
-              {detectedInReport > 0
-                ? <> These fields show a <span className="font-medium text-indigo-700">Last year</span> tag — expand one to see the matched text, confirm it's still current, then mark it collected.</>
-                : <> The PDF may be image-based, or use different wording. You can still work through the checklist normally.</>}
-            </p>
-            <div className="mt-2.5 flex items-center gap-2 flex-wrap">
-              {detectedInReport > 0 && (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => setShowOnlyDetected(v => !v)}
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border pressable transition-colors ${
-                      showOnlyDetected
-                        ? "bg-indigo-600 text-white border-indigo-600"
-                        : "bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100"
-                    }`}
-                  >
-                    {showOnlyDetected ? "Showing found only" : "Show found only"}
-                    <span className={showOnlyDetected ? "text-white/80" : "text-indigo-500"}>({detectedInReport})</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={markAllDetectedCollected}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium
-                      bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 pressable transition-colors"
-                  >
-                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                    Mark all {detectedInReport} as collected
-                  </button>
-                </>
-              )}
-              <button
-                type="button"
-                onClick={clearUpload}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium
-                  text-stone-500 hover:text-stone-700 hover:bg-stone-100 pressable transition-colors"
-              >
-                Clear
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+    <UploadCard
+      fileInputRef={c.fileInputRef}
+      uploadStatus={c.uploadStatus}
+      uploadInfo={c.uploadInfo}
+      uploadError={c.uploadError}
+      detectedInReport={c.detectedInReport}
+      showOnlyDetected={c.showOnlyDetected}
+      onFile={c.handleFile}
+      onToggleShowOnlyDetected={() => c.setShowOnlyDetected(v => !v)}
+      onMarkAllDetected={c.markAllDetectedCollected}
+      onClear={c.clearUpload}
+    />
 
     {/* ── Checklist ─────────────────────────────────────────────────────── */}
     <div className="border border-stone-200 rounded-xl overflow-hidden bg-white">
@@ -407,9 +76,9 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
           <p className="text-[10px] text-stone-500 mt-0.5 leading-snug">
             Filter by status or topic below
           </p>
-          {collectedIds.size > 0 && (
+          {c.collectedIds.size > 0 && (
             <p className="text-[10px] text-emerald-700 font-medium mt-1">
-              {collectedIds.size} marked as collected
+              {c.collectedIds.size} marked as collected
             </p>
           )}
         </div>
@@ -421,24 +90,24 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
           </p>
           <NavItem
             label="All disclosures"
-            count={statusCounts.all}
-            active={statusFilter === "all" && principleFilter === "all"}
-            onClick={() => { setStatusFilter("all"); setPrincipleFilter("all"); }}
+            count={c.statusCounts.all}
+            active={c.statusFilter === "all" && c.principleFilter === "all"}
+            onClick={() => { c.setStatusFilter("all"); c.setPrincipleFilter("all"); }}
           />
           {([
             "already_tracked",
             "partially_tracked",
             "new_data_needed",
-            ...(statusCounts.not_applicable > 0 ? ["not_applicable" as const] : []),
+            ...(c.statusCounts.not_applicable > 0 ? ["not_applicable" as const] : []),
           ] as StatusKey[]).map(s => (
             <NavItem
               key={s}
               dot={STATUS_META[s].dot}
               label={STATUS_META[s].label}
-              count={statusCounts[s]}
-              active={statusFilter === s}
-              onClick={() => { setStatusFilter(s); setPrincipleFilter("all"); }}
-              dimmed={statusCounts[s] === 0}
+              count={c.statusCounts[s]}
+              active={c.statusFilter === s}
+              onClick={() => { c.setStatusFilter(s); c.setPrincipleFilter("all"); }}
+              dimmed={c.statusCounts[s] === 0}
             />
           ))}
         </div>
@@ -457,14 +126,14 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
           </div>
           <div className="flex flex-col border-t border-stone-100">
             {Object.entries(PRINCIPLES).map(([key, info]) => {
-              const count = principleCounts[key] ?? 0;
-              const isActive = principleFilter === key;
+              const count = c.principleCounts[key] ?? 0;
+              const isActive = c.principleFilter === key;
               const isDimmed = count === 0;
               return (
                 <button
                   key={key}
                   disabled={isDimmed && !isActive}
-                  onClick={() => setPrincipleFilter(principleFilter === key ? "all" : key)}
+                  onClick={() => c.setPrincipleFilter(c.principleFilter === key ? "all" : key)}
                   className={`w-full flex items-center justify-between gap-2 px-4 py-2.5
                     border-b border-stone-100 text-left transition-colors pressable
                     ${isActive
@@ -503,28 +172,28 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
           <div className="flex gap-1.5 overflow-x-auto pb-0.5" style={{ scrollbarWidth: "none" }}>
             {([
               "all", "already_tracked", "partially_tracked", "new_data_needed",
-              ...(statusCounts.not_applicable > 0 ? ["not_applicable" as const] : []),
+              ...(c.statusCounts.not_applicable > 0 ? ["not_applicable" as const] : []),
             ] as const).map((key) => {
               const meta = key === "all"
-                ? { label: "All", count: statusCounts.all, dot: null }
+                ? { label: "All", count: c.statusCounts.all, dot: null }
                 : key === "already_tracked"
-                ? { label: "Ready to pull",       count: statusCounts.already_tracked,   dot: "bg-emerald-500" }
+                ? { label: "Ready to pull",       count: c.statusCounts.already_tracked,   dot: "bg-emerald-500" }
                 : key === "partially_tracked"
-                ? { label: "Needs verification",  count: statusCounts.partially_tracked, dot: "bg-amber-400"   }
+                ? { label: "Needs verification",  count: c.statusCounts.partially_tracked, dot: "bg-amber-400"   }
                 : key === "new_data_needed"
-                ? { label: "Collect fresh",        count: statusCounts.new_data_needed,   dot: "bg-stone-400"   }
-                : { label: "Not applicable",       count: statusCounts.not_applicable,    dot: "bg-slate-300"   };
+                ? { label: "Collect fresh",        count: c.statusCounts.new_data_needed,   dot: "bg-stone-400"   }
+                : { label: "Not applicable",       count: c.statusCounts.not_applicable,    dot: "bg-slate-300"   };
               const isActive = key === "all"
-                ? statusFilter === "all" && principleFilter === "all"
-                : statusFilter === key;
+                ? c.statusFilter === "all" && c.principleFilter === "all"
+                : c.statusFilter === key;
               const isDimmed = key !== "all" && meta.count === 0;
               return (
                 <button
                   key={key}
                   disabled={isDimmed}
                   onClick={() => {
-                    if (key === "all") { setStatusFilter("all"); setPrincipleFilter("all"); }
-                    else setStatusFilter(key);
+                    if (key === "all") { c.setStatusFilter("all"); c.setPrincipleFilter("all"); }
+                    else c.setStatusFilter(key);
                   }}
                   className={`flex items-center gap-1 px-2.5 py-1 rounded-full border text-xs font-medium flex-shrink-0 whitespace-nowrap
                     ${isActive
@@ -557,14 +226,14 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
             <input
               type="text"
               placeholder="Search disclosures…"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
+              value={c.search}
+              onChange={e => c.setSearch(e.target.value)}
               className="w-full pl-8 pr-3 py-1.5 text-xs border border-stone-200 rounded-md
                 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/60 focus:border-brand-500
                 transition-[border-color,box-shadow] placeholder:text-stone-400"
             />
-            {search && (
-              <button onClick={() => setSearch("")}
+            {c.search && (
+              <button onClick={() => c.setSearch("")}
                 className="absolute right-2 top-1/2 -translate-y-1/2 text-stone-300 hover:text-stone-500">
                 <svg aria-hidden="true" className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -578,9 +247,9 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
             {(["all", "essential", "leadership"] as TypeKey[]).map(t => (
               <button
                 key={t}
-                onClick={() => setTypeFilter(t)}
+                onClick={() => c.setTypeFilter(t)}
                 className={`px-2.5 py-1.5 text-xs font-medium chip-spring
-                  ${typeFilter === t ? "bg-forest text-white" : "bg-white text-stone-500 hover:bg-stone-50"}`}
+                  ${c.typeFilter === t ? "bg-forest text-white" : "bg-white text-stone-500 hover:bg-stone-50"}`}
               >
                 {t === "all" ? "All" : t === "essential" ? "Essential" : "Leadership"}
               </button>
@@ -588,12 +257,12 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
           </div>
 
           {/* Hide collected toggle — only shown when some items are collected */}
-          {collectedIds.size > 0 && (
+          {c.collectedIds.size > 0 && (
             <button
-              onClick={() => setHideCollected(v => !v)}
+              onClick={() => c.setHideCollected(v => !v)}
               className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium border flex-shrink-0
                 transition-colors pressable ${
-                  hideCollected
+                  c.hideCollected
                     ? "bg-emerald-600 text-white border-emerald-600"
                     : "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
                 }`}
@@ -601,24 +270,24 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
               <svg aria-hidden="true" className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
-              {hideCollected ? "Showing all" : "Hide collected"}
-              <span className={`tabular-nums ${hideCollected ? "text-white/80" : "text-emerald-600"}`}>
-                ({collectedIds.size})
+              {c.hideCollected ? "Showing all" : "Hide collected"}
+              <span className={`tabular-nums ${c.hideCollected ? "text-white/80" : "text-emerald-600"}`}>
+                ({c.collectedIds.size})
               </span>
             </button>
           )}
 
           {/* Result count */}
           <span className="text-xs text-stone-500 ml-auto tabular-nums flex-shrink-0">
-            {filtered.length === items.length
+            {c.filtered.length === items.length
               ? <><span className="font-medium">{items.length}</span> <span className="text-stone-400">disclosures</span></>
-              : <><span className="font-medium">{filtered.length}</span> <span className="text-stone-400">of {items.length} shown</span></>
+              : <><span className="font-medium">{c.filtered.length}</span> <span className="text-stone-400">of {items.length} shown</span></>
             }
           </span>
         </div>
 
         {/* No filings warning — above column headers */}
-        {statusCounts.already_tracked === 0 && statusCounts.partially_tracked === 0 && statusFilter === "all" && (
+        {c.statusCounts.already_tracked === 0 && c.statusCounts.partially_tracked === 0 && c.statusFilter === "all" && (
           <div className="mx-4 mt-3 mb-0 bg-amber-50 border border-amber-200 rounded-lg px-3 py-3 flex items-start gap-2.5">
             <svg className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M8 2a4 4 0 0 1 2.83 6.83L10 10H6l-.83-1.17A4 4 0 0 1 8 2z" />
@@ -644,28 +313,28 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
 
         {/* Table body */}
         <div className="flex-1 overflow-y-auto">
-          {filtered.length === 0 ? (
+          {c.filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <p className="text-stone-400 text-sm mb-2">No items match your filters.</p>
-              <button onClick={clearFilters}
+              <button onClick={c.clearFilters}
                 className="text-xs text-teal-600 hover:underline font-medium">
                 Clear all filters
               </button>
             </div>
           ) : (
-            principleKeys.map((principle, idx) => (
+            c.principleKeys.map((principle, idx) => (
               <PrincipleSection
                 key={principle}
                 principle={principle}
-                items={grouped[principle]}
-                expandedId={expandedId}
-                onToggle={id => setExpandedId(expandedId === id ? null : id)}
+                items={c.grouped[principle]}
+                expandedId={c.expandedId}
+                onToggle={c.toggleExpanded}
                 isFirst={idx === 0}
-                collapsed={collapsedSections.has(principle)}
-                onCollapse={() => toggleSection(principle)}
-                collectedIds={collectedIds}
-                onToggleCollected={toggleCollected}
-                matches={detection?.matches ?? null}
+                collapsed={c.collapsedSections.has(principle)}
+                onCollapse={() => c.toggleSection(principle)}
+                collectedIds={c.collectedIds}
+                onToggleCollected={c.toggleCollected}
+                matches={c.detection?.matches ?? null}
               />
             ))
           )}
@@ -674,445 +343,6 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
     </div>
     </div>
 
-    </div>
-  );
-}
-
-// ─── Sidebar nav item ──────────────────────────────────────────────────────────
-function NavItem({
-  label, sublabel, count, dot, active, dimmed, onClick,
-}: {
-  label: string;
-  sublabel?: string;
-  count: number;
-  dot?: string;
-  active?: boolean;
-  dimmed?: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      disabled={dimmed && !active}
-      className={`w-full flex items-center justify-between gap-2 px-2 py-1.5 rounded-md
-        text-left transition-colors mb-0.5 pressable
-        ${active
-          ? "bg-forest text-white"
-          : dimmed
-          ? "text-stone-300 cursor-default"
-          : "hover:bg-stone-100"
-        }`}
-    >
-      <div className="flex items-center gap-1.5 min-w-0">
-        {dot && <span className={`w-2 h-2 rounded-full flex-shrink-0 ${dot}`} />}
-        <div className="min-w-0 flex items-baseline gap-1">
-          {sublabel && (
-            <span className={`text-[10px] font-bold font-mono flex-shrink-0
-              ${active ? "text-white/70" : dimmed ? "text-stone-300" : "text-stone-400"}`}>
-              {sublabel}
-            </span>
-          )}
-          <p className={`text-[12px] font-medium truncate leading-tight
-            ${active ? "text-white" : dimmed ? "text-stone-300" : "text-stone-700"}`}>
-            {label}
-          </p>
-        </div>
-      </div>
-      <span className={`text-[11px] tabular-nums flex-shrink-0 whitespace-nowrap
-        ${active ? "text-white/75" : dimmed ? "text-stone-300" : "text-stone-500"}`}>
-        {sublabel ? `${count} fields` : count}
-      </span>
-    </button>
-  );
-}
-
-// ─── Principle section ─────────────────────────────────────────────────────────
-function PrincipleSection({
-  principle, items, expandedId, onToggle, isFirst, collapsed, onCollapse, collectedIds, onToggleCollected, matches,
-}: {
-  principle: string;
-  items: ChecklistItem[];
-  expandedId: string | null;
-  onToggle: (id: string) => void;
-  isFirst?: boolean;
-  collapsed?: boolean;
-  onCollapse: () => void;
-  collectedIds: Set<string>;
-  onToggleCollected: (id: string) => void;
-  matches: Record<string, DisclosureMatch> | null;
-}) {
-  const info = PRINCIPLES[principle];
-  const collectedCount = items.filter(i => collectedIds.has(i.id)).length;
-
-  return (
-    <div className={isFirst ? "" : "border-t-2 border-stone-200"}>
-      <button
-        onClick={onCollapse}
-        aria-expanded={!collapsed}
-        className="w-full flex items-center gap-2 px-4 py-2.5 bg-stone-100 border-b border-stone-200
-          sticky top-0 z-10 hover:bg-stone-150 transition-colors text-left group pressable"
-      >
-        <span className={`text-[11px] font-bold font-mono px-2 py-0.5 rounded
-          ${info?.bg ?? "bg-stone-200"} ${info?.color ?? "text-stone-700"} border ${info?.border ?? "border-stone-300"}`}>
-          {principle}
-        </span>
-        <span className="text-sm font-semibold text-stone-700 group-hover:text-stone-900">
-          {info?.name ?? principle}
-        </span>
-        <div className="ml-auto flex items-center gap-2">
-          {collectedCount > 0 && (
-            <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full">
-              {collectedCount} collected
-            </span>
-          )}
-          <span className="text-xs text-stone-500 tabular-nums font-medium">
-            {items.length} {items.length === 1 ? "item" : "items"}
-          </span>
-          <svg
-            aria-hidden="true"
-            className={`w-4 h-4 text-stone-400 transition-transform duration-200 flex-shrink-0
-              ${collapsed ? "-rotate-90" : ""}`}
-            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-      </button>
-
-      <div
-        className={`grid overflow-hidden transition-[grid-template-rows] duration-200
-          ${collapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]"}`}
-        style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
-      >
-        <div className="min-h-0">
-          {items.map((item, idx) => (
-            <DisclosureRow
-              key={item.id}
-              item={item}
-              isOdd={idx % 2 === 1}
-              expanded={expandedId === item.id}
-              onToggle={() => onToggle(item.id)}
-              isCollected={collectedIds.has(item.id)}
-              onToggleCollected={() => onToggleCollected(item.id)}
-              detectedMatch={matches?.[item.id] ?? null}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Single disclosure row ─────────────────────────────────────────────────────
-function DisclosureRow({
-  item, isOdd, expanded, onToggle, isCollected, onToggleCollected, detectedMatch,
-}: {
-  item: ChecklistItem;
-  isOdd: boolean;
-  expanded: boolean;
-  onToggle: () => void;
-  isCollected: boolean;
-  onToggleCollected: () => void;
-  detectedMatch?: DisclosureMatch | null;
-}) {
-  const s = STATUS_META[item.status as StatusKey];
-  const isNA = item.status === "not_applicable";
-  const isDetected = !!detectedMatch && !isNA;
-
-  return (
-    <div className={`border-b border-stone-200 transition-colors duration-300
-      ${isCollected ? "bg-stone-100/60" : isNA ? "bg-slate-50/40" : isOdd ? "bg-stone-50/60" : "bg-white"}`}>
-
-      {/* Main row */}
-      <button
-        onClick={onToggle}
-        aria-expanded={expanded}
-        className="w-full flex items-start px-4 py-3 gap-3 hover:bg-stone-50/70 transition-colors text-left group"
-      >
-        {/* Disclosure label + ID */}
-        <div className="flex items-start gap-2 flex-1 min-w-0">
-          <span className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ${isCollected ? "bg-emerald-400" : s.dot}`} />
-          <div className="min-w-0">
-            <p className={`text-sm leading-snug line-clamp-2 group-hover:text-stone-900
-              ${isCollected
-                ? "line-through text-stone-400"
-                : isNA
-                ? "text-slate-400"
-                : "text-stone-800"
-              }`}>
-              {plain(item.label)}
-            </p>
-            {/* Inline gap hint — only for partially tracked, not collected */}
-            {item.status === "partially_tracked" && item.gap_note && !isCollected && (
-              <p className="text-[10px] text-amber-600 mt-0.5 line-clamp-1 leading-snug">
-                Missing: {item.gap_note}
-              </p>
-            )}
-            <div className="flex items-center gap-1.5 mt-0.5">
-              <p className="text-[10px] text-stone-400 font-mono">{item.id}</p>
-              {isDetected && !isCollected && (
-                <span className="inline-flex items-center gap-1 text-[9px] font-semibold text-indigo-700
-                  bg-indigo-50 border border-indigo-100 px-1.5 py-0.5 rounded-full leading-none">
-                  <svg className="w-2.5 h-2.5" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-                    <path d="M7.5 4v3.5l2 1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <circle cx="7.5" cy="7.5" r="5.5" />
-                  </svg>
-                  Last year
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Indicator type — desktop only */}
-        <div className="hidden md:flex items-start pt-0.5 w-[90px] flex-shrink-0">
-          <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded
-            ${isCollected
-              ? "text-stone-400 bg-stone-100 border border-stone-200"
-              : item.indicator_type === "essential"
-              ? "text-blue-700 bg-blue-50 border border-blue-100"
-              : "text-violet-700 bg-violet-50 border border-violet-100"
-            }`}>
-            {item.indicator_type === "essential" ? "Essential" : "Leadership"}
-          </span>
-        </div>
-
-        {/* Status + expand chevron */}
-        <div className="flex items-center gap-1.5 w-[145px] flex-shrink-0">
-          {isCollected ? (
-            <span className="flex items-center gap-1 text-xs font-medium text-emerald-600 truncate">
-              <svg key="row-checked" aria-hidden="true" className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
-                <path className="check-path" d="M5 13l4 4L19 7" />
-              </svg>
-              Collected
-            </span>
-          ) : (
-            <span className={`text-xs font-medium ${s.text}`}>
-              {s.label}
-            </span>
-          )}
-          <svg
-            aria-hidden="true"
-            className={`w-3.5 h-3.5 text-stone-400 ml-auto flex-shrink-0
-              transition-transform duration-150 ${expanded ? "rotate-180" : ""}`}
-            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-      </button>
-
-      {/* Expanded detail panel */}
-      <div
-        className={`grid overflow-hidden transition-[grid-template-rows] duration-200
-          ${expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
-        style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
-      >
-      <div className="min-h-0">
-        <div className="px-4 pb-4" style={{ paddingLeft: "calc(1rem + 22px)" }}>
-          <div className="bg-stone-50 border border-stone-200 rounded-lg p-3 space-y-3">
-
-            {/* Not-applicable explainer — service-sector clients skip this */}
-            {isNA && (
-              <div className="bg-slate-100 border border-slate-200 rounded-md px-3 py-2.5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-600 mb-1">
-                  Why not applicable?
-                </p>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  This is a manufacturing/product-specific disclosure (e.g. stack air emissions,
-                  industrial effluent, product end-of-life reclaim, or project EIAs). Pure
-                  service-sector entities normally report it as <span className="font-medium">"Not applicable"</span> in their BRSR.
-                  Confirm with your client — switch <span className="font-medium">Business Type</span> to Product/Manufacturing if any of these apply.
-                </p>
-              </div>
-            )}
-
-            {/* Detected in uploaded report — consultant confirms */}
-            {isDetected && detectedMatch && (
-              <div className="bg-indigo-50 border border-indigo-100 rounded-md px-3 py-2.5">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-indigo-700 mb-1 flex items-center gap-1.5">
-                  <svg className="w-3 h-3" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-                    <path d="M7.5 4v3.5l2 1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <circle cx="7.5" cy="7.5" r="5.5" />
-                  </svg>
-                  Found in last year's report
-                </p>
-                <p className="text-xs text-stone-600 leading-relaxed">
-                  Matched: {detectedMatch.keywords.map((k, i) => (
-                    <span key={i} className="inline-block font-medium text-indigo-700 bg-white border border-indigo-100 px-1.5 py-0.5 rounded mr-1 mb-1">
-                      {k}
-                    </span>
-                  ))}
-                </p>
-                <p className="text-[11px] text-stone-500 italic leading-relaxed mt-1 border-l-2 border-indigo-200 pl-2">
-                  {detectedMatch.snippet}
-                </p>
-                <p className="text-[10px] text-stone-400 mt-1.5 leading-relaxed">
-                  Detected from text — verify last year's disclosure is still accurate before reusing it, then mark it collected below.
-                </p>
-              </div>
-            )}
-
-            {/* Source filing — shown when data comes from an existing compliance report */}
-            {item.source_filing && (
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-1">
-                  Pull from
-                </p>
-                <span className="inline-flex items-center text-xs font-medium text-stone-700
-                  bg-stone-100 border border-stone-200 px-2 py-0.5 rounded">
-                  {item.source_filing}
-                </span>
-              </div>
-            )}
-
-            {/* Gap note */}
-            {item.gap_note && (
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-1">
-                  Gap — what's missing
-                </p>
-                <p className="text-xs text-stone-600 leading-relaxed">{item.gap_note}</p>
-              </div>
-            )}
-
-            {/* Measurement guidance */}
-            {item.measurement_guidance && (
-              <div className={item.gap_note ? "border-t border-stone-200 pt-3" : ""}>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-1">
-                  How to collect?
-                </p>
-                <p className="text-xs text-stone-600 leading-relaxed">{item.measurement_guidance}</p>
-              </div>
-            )}
-
-            {/* Best practices — principle-level, India + International. Hidden for N/A. */}
-            {!isNA && BEST_PRACTICES[item.principle] && (
-              <div className="border-t border-stone-200 pt-3">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-2">
-                  Best practices
-                  <span className="font-normal text-stone-400 normal-case tracking-normal">
-                    {" "}— how leaders address {item.principle} ({BEST_PRACTICES[item.principle].name})
-                  </span>
-                </p>
-                <div className="space-y-2.5">
-                  {BEST_PRACTICES[item.principle].india.length > 0 && (
-                    <div>
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded mb-1.5">
-                        India
-                      </span>
-                      <ul className="space-y-1.5">
-                        {BEST_PRACTICES[item.principle].india.map((bp, i) => (
-                          <li key={`in-${i}`} className="flex gap-1.5 text-xs text-stone-600 leading-relaxed">
-                            <span className="mt-1.5 w-1 h-1 rounded-full bg-emerald-400 flex-shrink-0" />
-                            <span>{bp}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {BEST_PRACTICES[item.principle].international.length > 0 && (
-                    <div>
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-1.5 py-0.5 rounded mb-1.5">
-                        International
-                      </span>
-                      <ul className="space-y-1.5">
-                        {BEST_PRACTICES[item.principle].international.map((bp, i) => (
-                          <li key={`int-${i}`} className="flex gap-1.5 text-xs text-stone-600 leading-relaxed">
-                            <span className="mt-1.5 w-1 h-1 rounded-full bg-blue-400 flex-shrink-0" />
-                            <span>{bp}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* SEBI verbatim */}
-            <div className={item.measurement_guidance || item.gap_note ? "border-t border-stone-200 pt-3" : ""}>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-1">
-                SEBI language
-              </p>
-              <p className="text-xs text-stone-500 leading-relaxed italic">{item.label}</p>
-            </div>
-
-            {/* SEBI source — link to the official BRSR Format + page citation */}
-            <div className="border-t border-stone-200 pt-3">
-              <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-1.5">
-                SEBI source
-              </p>
-              <a
-                href={SEBI_BRSR_FORMAT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-medium text-brand-700
-                  bg-brand-50 border border-brand-100 px-2.5 py-1 rounded-md
-                  hover:bg-brand-100 hover:border-brand-200 transition-colors pressable"
-              >
-                <svg aria-hidden="true" className="w-3 h-3 flex-shrink-0" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2.5" y="1.5" width="8" height="12" rx="1" />
-                  <path d="M5 5h3M5 7.5h3M5 10h2" />
-                </svg>
-                SEBI BRSR Format — Principle {principleNumber(item.principle)}
-                <svg aria-hidden="true" className="w-2.5 h-2.5 flex-shrink-0 opacity-70" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5.5 3h6.5v6.5M12 3L4 11" />
-                </svg>
-              </a>
-              <p className="text-[10px] text-stone-400 mt-1.5 leading-relaxed">
-                Official SEBI disclosure format (Annexure II, 2023).
-                {item.page ? <> Cross-reference: ICAI Background Material, p.{item.page}.</> : null}
-              </p>
-            </div>
-
-            {/* Unit */}
-            {item.unit && (
-              <p className="text-[10px] text-stone-400 border-t border-stone-200 pt-2">
-                Unit: <span className="font-medium text-stone-500">{item.unit}</span>
-              </p>
-            )}
-
-            {/* ── Mark as collected ──────────────────────────────────────── */}
-            {!isNA && (
-            <div className="border-t border-stone-200 pt-3 flex items-center justify-between gap-3">
-              <p className="text-[10px] text-stone-400 leading-relaxed">
-                {isCollected
-                  ? "You've marked this data as collected."
-                  : "Already have this data? Mark it as collected to track your progress."}
-              </p>
-              <button
-                onClick={onToggleCollected}
-                className={`flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg
-                  text-xs font-semibold pressable transition-colors ${
-                    isCollected
-                      ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200"
-                      : "bg-white border border-stone-200 text-stone-600 hover:border-stone-300 hover:bg-stone-50"
-                  }`}
-              >
-                {isCollected ? (
-                  <>
-                    {/* Checkmark draws in — key forces remount so animation fires on each collect */}
-                    <svg key="checked" aria-hidden="true" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
-                      <path className="check-path" d="M5 13l4 4L19 7" />
-                    </svg>
-                    Collected — undo
-                  </>
-                ) : (
-                  <>
-                    <svg key="unchecked" aria-hidden="true" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-                      <circle cx="12" cy="12" r="9" />
-                    </svg>
-                    Mark as collected
-                  </>
-                )}
-              </button>
-            </div>
-            )}
-
-          </div>
-        </div>
-      </div>
-      </div>
     </div>
   );
 }

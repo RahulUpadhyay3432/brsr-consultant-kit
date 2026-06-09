@@ -1,0 +1,322 @@
+// A single disclosure row with its expanded detail panel. Field-level features
+// (detected-in-last-year, best practices, SEBI source, and future calculators)
+// render inside the expanded panel.
+import type { ChecklistItem } from "@/lib/types";
+import type { DisclosureMatch } from "@/lib/report-extractor";
+import {
+  STATUS_META, type StatusKey, plain, BEST_PRACTICES,
+  SEBI_BRSR_FORMAT_URL, principleNumber,
+} from "./constants";
+
+export default function DisclosureRow({
+  item, isOdd, expanded, onToggle, isCollected, onToggleCollected, detectedMatch,
+}: {
+  item: ChecklistItem;
+  isOdd: boolean;
+  expanded: boolean;
+  onToggle: () => void;
+  isCollected: boolean;
+  onToggleCollected: () => void;
+  detectedMatch?: DisclosureMatch | null;
+}) {
+  const s = STATUS_META[item.status as StatusKey];
+  const isNA = item.status === "not_applicable";
+  const isDetected = !!detectedMatch && !isNA;
+
+  return (
+    <div className={`border-b border-stone-200 transition-colors duration-300
+      ${isCollected ? "bg-stone-100/60" : isNA ? "bg-slate-50/40" : isOdd ? "bg-stone-50/60" : "bg-white"}`}>
+
+      {/* Main row */}
+      <button
+        onClick={onToggle}
+        aria-expanded={expanded}
+        className="w-full flex items-start px-4 py-3 gap-3 hover:bg-stone-50/70 transition-colors text-left group"
+      >
+        {/* Disclosure label + ID */}
+        <div className="flex items-start gap-2 flex-1 min-w-0">
+          <span className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ${isCollected ? "bg-emerald-400" : s.dot}`} />
+          <div className="min-w-0">
+            <p className={`text-sm leading-snug line-clamp-2 group-hover:text-stone-900
+              ${isCollected
+                ? "line-through text-stone-400"
+                : isNA
+                ? "text-slate-400"
+                : "text-stone-800"
+              }`}>
+              {plain(item.label)}
+            </p>
+            {/* Inline gap hint — only for partially tracked, not collected */}
+            {item.status === "partially_tracked" && item.gap_note && !isCollected && (
+              <p className="text-[10px] text-amber-600 mt-0.5 line-clamp-1 leading-snug">
+                Missing: {item.gap_note}
+              </p>
+            )}
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <p className="text-[10px] text-stone-400 font-mono">{item.id}</p>
+              {isDetected && !isCollected && (
+                <span className="inline-flex items-center gap-1 text-[9px] font-semibold text-indigo-700
+                  bg-indigo-50 border border-indigo-100 px-1.5 py-0.5 rounded-full leading-none">
+                  <svg className="w-2.5 h-2.5" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                    <path d="M7.5 4v3.5l2 1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="7.5" cy="7.5" r="5.5" />
+                  </svg>
+                  Last year
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Indicator type — desktop only */}
+        <div className="hidden md:flex items-start pt-0.5 w-[90px] flex-shrink-0">
+          <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded
+            ${isCollected
+              ? "text-stone-400 bg-stone-100 border border-stone-200"
+              : item.indicator_type === "essential"
+              ? "text-blue-700 bg-blue-50 border border-blue-100"
+              : "text-violet-700 bg-violet-50 border border-violet-100"
+            }`}>
+            {item.indicator_type === "essential" ? "Essential" : "Leadership"}
+          </span>
+        </div>
+
+        {/* Status + expand chevron */}
+        <div className="flex items-center gap-1.5 w-[145px] flex-shrink-0">
+          {isCollected ? (
+            <span className="flex items-center gap-1 text-xs font-medium text-emerald-600 truncate">
+              <svg key="row-checked" aria-hidden="true" className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                <path className="check-path" d="M5 13l4 4L19 7" />
+              </svg>
+              Collected
+            </span>
+          ) : (
+            <span className={`text-xs font-medium ${s.text}`}>
+              {s.label}
+            </span>
+          )}
+          <svg
+            aria-hidden="true"
+            className={`w-3.5 h-3.5 text-stone-400 ml-auto flex-shrink-0
+              transition-transform duration-150 ${expanded ? "rotate-180" : ""}`}
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </button>
+
+      {/* Expanded detail panel */}
+      <div
+        className={`grid overflow-hidden transition-[grid-template-rows] duration-200
+          ${expanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+        style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
+      >
+      <div className="min-h-0">
+        <div className="px-4 pb-4" style={{ paddingLeft: "calc(1rem + 22px)" }}>
+          <div className="bg-stone-50 border border-stone-200 rounded-lg p-3 space-y-3">
+
+            {/* Not-applicable explainer — service-sector clients skip this */}
+            {isNA && (
+              <div className="bg-slate-100 border border-slate-200 rounded-md px-3 py-2.5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-slate-600 mb-1">
+                  Why not applicable?
+                </p>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  This is a manufacturing/product-specific disclosure (e.g. stack air emissions,
+                  industrial effluent, product end-of-life reclaim, or project EIAs). Pure
+                  service-sector entities normally report it as <span className="font-medium">"Not applicable"</span> in their BRSR.
+                  Confirm with your client — switch <span className="font-medium">Business Type</span> to Product/Manufacturing if any of these apply.
+                </p>
+              </div>
+            )}
+
+            {/* Detected in uploaded report — consultant confirms */}
+            {isDetected && detectedMatch && (
+              <div className="bg-indigo-50 border border-indigo-100 rounded-md px-3 py-2.5">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-indigo-700 mb-1 flex items-center gap-1.5">
+                  <svg className="w-3 h-3" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+                    <path d="M7.5 4v3.5l2 1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="7.5" cy="7.5" r="5.5" />
+                  </svg>
+                  Found in last year's report
+                </p>
+                <p className="text-xs text-stone-600 leading-relaxed">
+                  Matched: {detectedMatch.keywords.map((k, i) => (
+                    <span key={i} className="inline-block font-medium text-indigo-700 bg-white border border-indigo-100 px-1.5 py-0.5 rounded mr-1 mb-1">
+                      {k}
+                    </span>
+                  ))}
+                </p>
+                <p className="text-[11px] text-stone-500 italic leading-relaxed mt-1 border-l-2 border-indigo-200 pl-2">
+                  {detectedMatch.snippet}
+                </p>
+                <p className="text-[10px] text-stone-400 mt-1.5 leading-relaxed">
+                  Detected from text — verify last year's disclosure is still accurate before reusing it, then mark it collected below.
+                </p>
+              </div>
+            )}
+
+            {/* Source filing — shown when data comes from an existing compliance report */}
+            {item.source_filing && (
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-1">
+                  Pull from
+                </p>
+                <span className="inline-flex items-center text-xs font-medium text-stone-700
+                  bg-stone-100 border border-stone-200 px-2 py-0.5 rounded">
+                  {item.source_filing}
+                </span>
+              </div>
+            )}
+
+            {/* Gap note */}
+            {item.gap_note && (
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-1">
+                  Gap — what's missing
+                </p>
+                <p className="text-xs text-stone-600 leading-relaxed">{item.gap_note}</p>
+              </div>
+            )}
+
+            {/* Measurement guidance */}
+            {item.measurement_guidance && (
+              <div className={item.gap_note ? "border-t border-stone-200 pt-3" : ""}>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-1">
+                  How to collect?
+                </p>
+                <p className="text-xs text-stone-600 leading-relaxed">{item.measurement_guidance}</p>
+              </div>
+            )}
+
+            {/* Best practices — principle-level, India + International. Hidden for N/A. */}
+            {!isNA && BEST_PRACTICES[item.principle] && (
+              <div className="border-t border-stone-200 pt-3">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-2">
+                  Best practices
+                  <span className="font-normal text-stone-400 normal-case tracking-normal">
+                    {" "}— how leaders address {item.principle} ({BEST_PRACTICES[item.principle].name})
+                  </span>
+                </p>
+                <div className="space-y-2.5">
+                  {BEST_PRACTICES[item.principle].india.length > 0 && (
+                    <div>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded mb-1.5">
+                        India
+                      </span>
+                      <ul className="space-y-1.5">
+                        {BEST_PRACTICES[item.principle].india.map((bp, i) => (
+                          <li key={`in-${i}`} className="flex gap-1.5 text-xs text-stone-600 leading-relaxed">
+                            <span className="mt-1.5 w-1 h-1 rounded-full bg-emerald-400 flex-shrink-0" />
+                            <span>{bp}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {BEST_PRACTICES[item.principle].international.length > 0 && (
+                    <div>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-1.5 py-0.5 rounded mb-1.5">
+                        International
+                      </span>
+                      <ul className="space-y-1.5">
+                        {BEST_PRACTICES[item.principle].international.map((bp, i) => (
+                          <li key={`int-${i}`} className="flex gap-1.5 text-xs text-stone-600 leading-relaxed">
+                            <span className="mt-1.5 w-1 h-1 rounded-full bg-blue-400 flex-shrink-0" />
+                            <span>{bp}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* SEBI verbatim */}
+            <div className={item.measurement_guidance || item.gap_note ? "border-t border-stone-200 pt-3" : ""}>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-1">
+                SEBI language
+              </p>
+              <p className="text-xs text-stone-500 leading-relaxed italic">{item.label}</p>
+            </div>
+
+            {/* SEBI source — link to the official BRSR Format + page citation */}
+            <div className="border-t border-stone-200 pt-3">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-1.5">
+                SEBI source
+              </p>
+              <a
+                href={SEBI_BRSR_FORMAT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-medium text-brand-700
+                  bg-brand-50 border border-brand-100 px-2.5 py-1 rounded-md
+                  hover:bg-brand-100 hover:border-brand-200 transition-colors pressable"
+              >
+                <svg aria-hidden="true" className="w-3 h-3 flex-shrink-0" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2.5" y="1.5" width="8" height="12" rx="1" />
+                  <path d="M5 5h3M5 7.5h3M5 10h2" />
+                </svg>
+                SEBI BRSR Format — Principle {principleNumber(item.principle)}
+                <svg aria-hidden="true" className="w-2.5 h-2.5 flex-shrink-0 opacity-70" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5.5 3h6.5v6.5M12 3L4 11" />
+                </svg>
+              </a>
+              <p className="text-[10px] text-stone-400 mt-1.5 leading-relaxed">
+                Official SEBI disclosure format (Annexure II, 2023).
+                {item.page ? <> Cross-reference: ICAI Background Material, p.{item.page}.</> : null}
+              </p>
+            </div>
+
+            {/* Unit */}
+            {item.unit && (
+              <p className="text-[10px] text-stone-400 border-t border-stone-200 pt-2">
+                Unit: <span className="font-medium text-stone-500">{item.unit}</span>
+              </p>
+            )}
+
+            {/* ── Mark as collected ──────────────────────────────────────── */}
+            {!isNA && (
+            <div className="border-t border-stone-200 pt-3 flex items-center justify-between gap-3">
+              <p className="text-[10px] text-stone-400 leading-relaxed">
+                {isCollected
+                  ? "You've marked this data as collected."
+                  : "Already have this data? Mark it as collected to track your progress."}
+              </p>
+              <button
+                onClick={onToggleCollected}
+                className={`flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg
+                  text-xs font-semibold pressable transition-colors ${
+                    isCollected
+                      ? "bg-emerald-100 text-emerald-700 hover:bg-emerald-200"
+                      : "bg-white border border-stone-200 text-stone-600 hover:border-stone-300 hover:bg-stone-50"
+                  }`}
+              >
+                {isCollected ? (
+                  <>
+                    {/* Checkmark draws in — key forces remount so animation fires on each collect */}
+                    <svg key="checked" aria-hidden="true" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                      <path className="check-path" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Collected — undo
+                  </>
+                ) : (
+                  <>
+                    <svg key="unchecked" aria-hidden="true" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+                      <circle cx="12" cy="12" r="9" />
+                    </svg>
+                    Mark as collected
+                  </>
+                )}
+              </button>
+            </div>
+            )}
+
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  );
+}
