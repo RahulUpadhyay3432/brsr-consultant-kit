@@ -2,6 +2,12 @@
 
 import { useState, useMemo } from "react";
 import type { ChecklistItem } from "@/lib/types";
+import bestPracticesData from "@/data/best_practices.json";
+
+// Principle-level best practices (India + International). Looked up by principle.
+const BEST_PRACTICES = (bestPracticesData as {
+  best_practices: Record<string, { name: string; india: string[]; international: string[] }>;
+}).best_practices;
 
 // ─── Principle metadata ────────────────────────────────────────────────────────
 const PRINCIPLES: Record<string, { name: string; color: string; bg: string; border: string }> = {
@@ -749,6 +755,50 @@ function DisclosureRow({
                   How to collect?
                 </p>
                 <p className="text-xs text-stone-600 leading-relaxed">{item.measurement_guidance}</p>
+              </div>
+            )}
+
+            {/* Best practices — principle-level, India + International. Hidden for N/A. */}
+            {!isNA && BEST_PRACTICES[item.principle] && (
+              <div className="border-t border-stone-200 pt-3">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-800 mb-2">
+                  Best practices
+                  <span className="font-normal text-stone-400 normal-case tracking-normal">
+                    {" "}— how leaders address {item.principle} ({BEST_PRACTICES[item.principle].name})
+                  </span>
+                </p>
+                <div className="space-y-2.5">
+                  {BEST_PRACTICES[item.principle].india.length > 0 && (
+                    <div>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded mb-1.5">
+                        India
+                      </span>
+                      <ul className="space-y-1.5">
+                        {BEST_PRACTICES[item.principle].india.map((bp, i) => (
+                          <li key={`in-${i}`} className="flex gap-1.5 text-xs text-stone-600 leading-relaxed">
+                            <span className="mt-1.5 w-1 h-1 rounded-full bg-emerald-400 flex-shrink-0" />
+                            <span>{bp}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {BEST_PRACTICES[item.principle].international.length > 0 && (
+                    <div>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-1.5 py-0.5 rounded mb-1.5">
+                        International
+                      </span>
+                      <ul className="space-y-1.5">
+                        {BEST_PRACTICES[item.principle].international.map((bp, i) => (
+                          <li key={`int-${i}`} className="flex gap-1.5 text-xs text-stone-600 leading-relaxed">
+                            <span className="mt-1.5 w-1 h-1 rounded-full bg-blue-400 flex-shrink-0" />
+                            <span>{bp}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 

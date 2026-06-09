@@ -1,0 +1,106 @@
+{
+  "source": "Curated by BRSR Consultant Kit from recognised Indian regulations and international ESG standards. Principle-level guidance to help consultants suggest practical, credible solutions for each disclosure gap.",
+  "note": "Best practices are mapped at the BRSR principle level — the most accurate granularity, since leading-practice for a topic (e.g. GHG accounting) is broadly consistent across sectors. Sector-specific nuance is handled in the Materiality Assessment.",
+  "best_practices": {
+    "P1": {
+      "name": "Ethics, Transparency & Accountability",
+      "india": [
+        "Adopt a board-approved Code of Conduct and a whistle-blower / vigil mechanism (Companies Act 2013 §177 + SEBI LODR Reg. 22) and publish both on the company website.",
+        "Constitute the Risk Management and Stakeholders' Relationship Committees mandated for the top 1000 listed entities, with documented charters and meeting records.",
+        "Track and disclose anti-corruption training coverage by employee category — as Tata and Infosys do — rather than a simple Yes/No."
+      ],
+      "international": [
+        "Certify the anti-bribery programme to ISO 37001 (Anti-Bribery Management Systems) and align with UN Global Compact Principle 10.",
+        "Benchmark disclosure against Transparency International's Business Principles for Countering Bribery and publish a standalone Business Ethics report."
+      ]
+    },
+    "P2": {
+      "name": "Sustainable & Safe Goods and Services",
+      "india": [
+        "Conduct Life Cycle Assessments per ISO 14040/14044 for flagship products and pursue BIS Eco-Mark or CII GreenPro certification.",
+        "Align packaging and product take-back with the EPR plan filed with the Pollution Control Board; set a recycled-content target."
+      ],
+      "international": [
+        "Apply circular-design principles (Ellen MacArthur Foundation) and pursue Cradle-to-Cradle Certified® where relevant.",
+        "Adopt a Sustainable Procurement policy to ISO 20400 and set time-bound sustainable-sourcing percentage targets."
+      ]
+    },
+    "P3": {
+      "name": "Employee Wellbeing & Safety",
+      "india": [
+        "Implement an ISO 45001 occupational health & safety management system and ensure POSH Act Internal Committees are constituted and reported.",
+        "Disclose Lost Time Injury Frequency Rate (LTIFR) and safety-training coverage, not just incident counts."
+      ],
+      "international": [
+        "Commit to the ILO core labour standards and a living-wage benchmark (e.g. Fair Wage Network / Anker methodology).",
+        "Run structured engagement and wellbeing programmes and validate with an external survey (e.g. Great Place to Work)."
+      ]
+    },
+    "P4": {
+      "name": "Stakeholder Engagement",
+      "india": [
+        "Maintain a stakeholder register that explicitly identifies vulnerable and marginalised groups, and document consultations feeding CSR planning.",
+        "Operate a published grievance-redressal mechanism with turnaround-time metrics."
+      ],
+      "international": [
+        "Use the AA1000 Stakeholder Engagement Standard for structured, inclusive engagement.",
+        "Conduct a double-materiality assessment (impact + financial) to prioritise topics, in line with GRI 3 and ESRS."
+      ]
+    },
+    "P5": {
+      "name": "Human Rights",
+      "india": [
+        "Adopt a Human Rights Policy covering child / forced labour, non-discrimination and freedom of association, and cascade it through a Supplier Code of Conduct.",
+        "Ensure documented compliance with POSH, Minimum Wages and Contract Labour regulations, with an accessible grievance channel."
+      ],
+      "international": [
+        "Run human-rights due diligence per the UN Guiding Principles on Business & Human Rights (UNGPs) and the OECD Guidelines.",
+        "Prepare for the EU Corporate Sustainability Due Diligence Directive (CSDDD) with supply-chain human-rights audits."
+      ]
+    },
+    "P6": {
+      "name": "Environment",
+      "india": [
+        "Implement Zero Liquid Discharge, rainwater harvesting and rooftop solar / renewable PPAs; meet PAT scheme energy-saving targets.",
+        "Set a board-approved energy- and water-intensity reduction roadmap with annual milestones."
+      ],
+      "international": [
+        "Measure Scope 1, 2 and 3 emissions to the GHG Protocol and set validated Science Based Targets (SBTi).",
+        "Operate an ISO 14001 environmental management system and disclose through CDP (Climate / Water).",
+        "Move waste up the hierarchy — recycling, co-processing and circular-economy diversion from landfill."
+      ]
+    },
+    "P7": {
+      "name": "Policy Advocacy",
+      "india": [
+        "Disclose all trade-association and industry-body memberships and the public-policy positions advocated through them."
+      ],
+      "international": [
+        "Ensure lobbying and advocacy are consistent with the Paris Agreement and net-zero commitments (benchmarked against InfluenceMap-style criteria).",
+        "Adopt a Responsible Climate Policy Engagement framework and review trade-body alignment annually."
+      ]
+    },
+    "P8": {
+      "name": "Inclusive Growth & Equitable Development",
+      "india": [
+        "Align CSR spend (Companies Act §135) to the SDGs and conduct Social Impact Assessments for major projects.",
+        "Prioritise local procurement and employment, and report beneficiary outcomes — not just rupees spent."
+      ],
+      "international": [
+        "Quantify community programmes using Social Return on Investment (SROI) or the B Impact Assessment.",
+        "Adopt the principle of Free, Prior and Informed Consent (FPIC) where projects affect local communities."
+      ]
+    },
+    "P9": {
+      "name": "Consumer Responsibility",
+      "india": [
+        "Build data-privacy controls for the Digital Personal Data Protection (DPDP) Act 2023 and comply with the Consumer Protection Act 2019, including transparent labelling.",
+        "Operate a customer grievance-redressal system and disclose resolution rates."
+      ],
+      "international": [
+        "Certify information security to ISO/IEC 27001 and adopt privacy-by-design.",
+        "Run a product-safety / stewardship management system and track customer-satisfaction metrics."
+      ]
+    }
+  }
+}
