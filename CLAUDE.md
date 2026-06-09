@@ -6,6 +6,14 @@ A free web tool for independent ESG consultants in India who prepare BRSR (Busin
 
 Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUpadhyay3432/brsr-consultant-kit
 
+## Project Status — last updated 2026-06-10
+
+**Shipped & live** (all deployed to production): SEBI source links per disclosure · service-sector differentiation (Business Type toggle + `not_applicable` status) · per-principle best practices · MSCI/DJSI ESG Ratings Alignment section · "Suggested Materiality" reframe + disclaimer · upload-last-year's-report client-side detection · company-name autocomplete with industry/sector auto-fill · **localStorage session persistence** (report + collected + detection survive refresh) · **DataChecklist decomposed** into the `checklist/` module (was 1,118 lines). Product North Star doc at `docs/PRODUCT.md` gates new features.
+
+**Next up (NOT built yet):** embedded **GHG Scope 1 & 2 + energy/water intensity calculator** in the P6 rows (cited India emission factors) — proposed, awaiting go-ahead. Then: peer/competitor benchmarking (needs real cited data), CBAM module, client data-request export.
+
+> Maintenance note for Claude: keep this block + the rest of CLAUDE.md current as features ship, and keep `[memory]/consultant-feedback-roadmap.md` in sync. This file is auto-loaded each session, so it is the primary way a new chat learns the current state.
+
 ## The Report Outputs
 
 After the intake form is submitted, `ReportView` shows a header (client identity + gap-analysis stats) and **two tabs**, with two more outputs as accordions below them:
