@@ -52,10 +52,29 @@ export default function Home() {
             </span>
           </button>
 
-          {/* Trust signal — green dot + text */}
-          <div className="hidden sm:flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
-            <span className="text-[11px] text-stone-400 tracking-tight">No data stored</span>
+          {/* Right side — Compliance Chat + trust signal */}
+          <div className="flex items-center gap-3">
+            <a
+              href="https://huggingface.co/spaces/sherlockwatson221/climate-compliance"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                border border-stone-200 bg-white text-[12px] font-medium text-stone-600
+                hover:border-brand-400 hover:text-brand-700 hover:bg-brand-50
+                transition-colors pressable shadow-sm"
+            >
+              <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              </svg>
+              <span className="hidden sm:inline">Compliance Chat</span>
+              <svg className="w-2.5 h-2.5 text-stone-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+            <div className="hidden sm:flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
+              <span className="text-[11px] text-stone-400 tracking-tight">No data stored</span>
+            </div>
           </div>
         </div>
         {/* Hairline separator — much subtler than border-b */}

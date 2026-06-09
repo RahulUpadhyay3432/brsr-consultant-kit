@@ -2,22 +2,45 @@
 
 ## What This Is
 
-A free web tool for independent ESG consultants in India who prepare BRSR (Business Responsibility and Sustainability Reporting) reports for their clients. Consultant fills a structured intake form → tool generates 3 outputs instantly.
+A free web tool for independent ESG consultants in India who prepare BRSR (Business Responsibility and Sustainability Reporting) reports for their clients. Consultant fills a structured intake form → tool generates a client-specific BRSR readiness report instantly, entirely client-side.
 
-## The 3 Outputs
+Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUpadhyay3432/brsr-consultant-kit
 
-1. **BRSR Data Collection Checklist** — All BRSR disclosure fields (P1-P9, Essential + Leadership indicators) with gap analysis showing what the client already tracks through existing compliance filings vs what's additionally needed. Status badges: "Tracked" / "Partial" / "New". Filterable by principle, indicator type, status. Expandable rows showing measurement guidance, source filing, and gap notes.
-2. **Materiality Assessment Template** — Pre-populated material ESG topics for the client's industry. Interactive SVG scatter plot (Importance to Stakeholders × Impact on Business). Editable 1-5 score buttons per topic that update the chart in real time. Color-coded by category (environment/social/governance).
-3. **Cross-Framework Mapper** — BRSR ↔ GRI ↔ TCFD ↔ IFRS S1/S2 mapping table (~68 mappings). Expandable rows with detailed comparison notes. Filterable by framework and TCFD pillar.
+## The Report Outputs
+
+After the intake form is submitted, `ReportView` shows a header (client identity + gap-analysis stats) and **two tabs**, with a third output as an always-open accordion below them:
+
+1. **Action Plan (BRSR Data Collection Checklist)** — Tab 1. All BRSR disclosure fields (P1–P9, Essential + Leadership), grouped by principle in collapsible sections. The UI surfaces **108 fields**. Each field has a status, auto-derived by cross-referencing the client's selected compliance filings:
+   - `already_tracked` → **"Ready to pull"** (emerald) — data exists in an existing filing
+   - `partially_tracked` → **"Needs verification"** (amber) — partially covered, one piece missing; the collapsed row shows an inline `Missing: …` note
+   - `new_data_needed` → **"Collect fresh"** (stone) — not in any filing
+   Filterable by status, principle, and indicator type (Essential/Leadership), plus search. Expandable rows show "Pull from" (source filing), the gap, "How to collect?" guidance, verbatim SEBI language, and unit. Consultants can **"Mark as collected"** to track progress (animated checkmark), with a "Hide collected" toggle. There is **no Source column** — source is shown inside the expanded panel.
+2. **Materiality Assessment** — Tab 2. Pre-populated material ESG topics for the client's industry, shown as a **clean card grid grouped by Environment / Social / Governance**. Each card shows the topic, why it's material, and the BRSR principles it maps to. (Note: the earlier interactive SVG scatter plot with 1–5 scoring was **removed** — do not reintroduce it.)
+3. **International Framework Mapping** — Below the tabs, **not a tab**. An always-open `AdvancedFrameworks` accordion in `ReportView.tsx` wrapping `FrameworkMapper`. BRSR ↔ GRI ↔ TCFD ↔ IFRS S1/S2 mapping table (~68 mappings) with GRI/TCFD/IFRS count chips in the header, expandable rows, and framework/TCFD-pillar filtering.
 
 ## Tech Stack
 
 - Next.js 14 (App Router, TypeScript, Tailwind CSS)
 - No component library (custom components)
-- No database, no auth, no backend API calls in v1
-- All report generation is client-side using pre-extracted JSON knowledge base files
-- localStorage caching (keyed by form input hash)
-- Deployment target: Vercel free tier
+- No database, no auth, no backend — all report generation is client-side from pre-extracted JSON knowledge base files
+- Analytics: Google Analytics 4 (`G-GJBBQ6YPZL`) via `@next/third-parties/google`, plus `@vercel/analytics`
+- Deployed on Vercel free tier (static)
+
+## Deployment & Local-Machine Constraints (IMPORTANT)
+
+This dev machine has an SSL cert issue (`UNABLE_TO_VERIFY_LEAF_SIGNATURE` on outbound HTTPS). Two consequences:
+
+1. **Vercel CLI must run with the TLS check disabled** (PowerShell):
+   ```powershell
+   $env:NODE_TLS_REJECT_UNAUTHORIZED = "0"; vercel --prod --yes
+   ```
+2. **Do not use `next/font/google`** — it fetches at build time and fails the same way (caused an internal server error). Fonts are local only: Geist via `next/font/local`; the display font is **Georgia** set directly in `.font-display` in globals.css.
+
+These are local-only issues — builds on Vercel's servers succeed. Standard loop: `npx next build` → commit/push → `$env:NODE_TLS_REJECT_UNAUTHORIZED="0"; vercel --prod --yes`.
+
+## Compliance Chat
+
+A separate RAG chatbot (Python, on Hugging Face Spaces, trained on BRSR/CBAM/CCTS regs) is linked via a **"Compliance Chat ↗" button in the header** (`page.tsx`) that opens in a new tab: https://huggingface.co/spaces/sherlockwatson221/climate-compliance — Python can't deploy on Vercel, so native integration (Railway backend + React chat UI) is a planned V2 item.
 
 ## Intake Form Fields
 
@@ -35,7 +58,7 @@ A free web tool for independent ESG consultants in India who prepare BRSR (Busin
 
 - Source: ICAI Background Material on BRSR (Revised Edition 2024) + SEBI March 2025 amendments
 - Structure: `{ principles: [{ id: "P1", essential_indicators: [{id, label, unit, measurement_guidance}], leadership_indicators: [...] }], section_a_general_disclosures: [...], section_b_management_process_disclosures: [...] }`
-- 9 Principles, 72 essential indicators, 40 leadership indicators = 112 total
+- 9 Principles, 72 essential indicators, 40 leadership indicators = 112 data points in the file (the generated checklist surfaces 108 to users)
 
 ### `compliance_overlaps.json`
 
@@ -58,16 +81,16 @@ A free web tool for independent ESG consultants in India who prepare BRSR (Busin
 ```
 src/
 ├── app/
-│   ├── fonts/          # Geist fonts (from create-next-app)
-│   ├── globals.css     # Tailwind + custom styles (brand colors, badges, grid bg)
-│   ├── layout.tsx      # Root layout with metadata
-│   └── page.tsx        # Main page — toggles between IntakeForm and ReportView
+│   ├── fonts/          # Geist fonts (local — GeistVF.woff, GeistMonoVF.woff)
+│   ├── globals.css     # Tailwind + brand tokens, badges, motion system, micro-interactions
+│   ├── layout.tsx      # Root layout — metadata + GA4 + Vercel Analytics
+│   └── page.tsx        # Main page — toggles IntakeForm/ReportView; header has Compliance Chat button
 ├── components/
-│   ├── IntakeForm.tsx   # 7-field structured form
-│   ├── ReportView.tsx   # Container with 3 tabs + header with stats
-│   ├── DataChecklist.tsx    # Output 1: checklist with gap analysis
-│   ├── MaterialityMatrix.tsx # Output 2: scatter plot + editable table
-│   └── FrameworkMapper.tsx   # Output 3: cross-framework mapping
+│   ├── IntakeForm.tsx        # 7-field structured form
+│   ├── ReportView.tsx        # Container: header stats + 2 tabs + AdvancedFrameworks accordion
+│   ├── DataChecklist.tsx     # Tab 1: checklist with gap analysis + "Mark as collected"
+│   ├── MaterialityMatrix.tsx # Tab 2: E/S/G card grid (no scatter plot)
+│   └── FrameworkMapper.tsx   # Cross-framework mapping (rendered inside AdvancedFrameworks)
 ├── data/
 │   ├── brsr_data_points.json
 │   ├── compliance_overlaps.json
@@ -81,30 +104,34 @@ src/
 ## Core Logic Flow (in `report-generator.ts`)
 
 1. Takes IntakeFormData from the form
-2. **Checklist generation**: Iterates all BRSR principles/indicators. Shows leadership indicators only for listed companies or 3+ year maturity. Cross-references selected compliance filings against `compliance_overlaps.json` to find which BRSR fields are already tracked (full/partial). Filing-to-JSON-key mapping handles the user's selected filings → actual JSON keys.
-3. **Materiality topics**: Looks up industry in `industry_material_topics.json`. For "other" industry, returns a generic set of 11 universal topics. Auto-scores stakeholder importance and business impact based on industry position, export markets (EU bumps environmental scores), and listing status.
+2. **Checklist generation**: Iterates all BRSR principles/indicators. Shows leadership indicators only for listed companies or 3+ year maturity. Cross-references selected compliance filings against `compliance_overlaps.json` to set each field's status (`already_tracked` / `partially_tracked` / `new_data_needed`). Filing-to-JSON-key mapping handles the user's selected filings → actual JSON keys.
+3. **Materiality topics**: Looks up industry in `industry_material_topics.json`. For "other" industry, returns a generic set of universal topics. (Scoring metadata may exist but the UI no longer renders a scored chart — it's a card grid.)
 4. **Framework mappings**: Returns all 68 mappings from `framework_mappings.json`. UI handles filtering.
 
 ## Design System
 
 - Notion/Linear aesthetic — clean, minimal, professional
-- Deep teal/forest green primary: `forest: #1a3a34`, brand palette from teal-50 to teal-900
-- Background: stone-50 with subtle CSS grid pattern
-- Status badges: emerald (tracked), amber (partial), rose (new)
+- Brand tokens (globals.css): `--brand-500: #00d4a4`, `--brand-800: #00745a`, `--forest: #111111` (near-black, used for logo + primary buttons)
+- Background: warm off-white `#F7F6F2` with a subtle atmospheric glow (`.bg-grid`), 1.5px brand-gradient hairline at the top
+- Status badges: emerald (Ready to pull), amber (Needs verification), rose/stone (Collect fresh)
 - Framework badges: blue (GRI), violet (TCFD), emerald (IFRS)
-- Font: Geist Sans (from Next.js)
-- No emojis in UI except tab icons (📋, ◎, 🔗)
+- Fonts: Geist Sans (local) for body, Georgia for `.font-display` headings
+- **Motion system** (Corporate personality, `cubic-bezier(0.2,0,0,1)`, 160/280/420ms): classes `.anim-up-sm`, `.anim-up-md`, `.anim-up-hero`, `.anim-card` for staggered entrance/reveal choreography
+- **Micro-interactions**: `.pressable` (hover lift + active press), `.chip-spring` (elastic toggle chips), `.check-path` (SVG checkmark draw). All respect `prefers-reduced-motion`.
+- Tab icons are inline SVGs (no emoji)
 
 ## Footer
 
 "Built by Rahul Upadhyay" with:
 
-- LinkedIn: https://www.linkedin.com/in/rahul-upadhyay26/
+- LinkedIn: https://www.linkedin.com/in/rahul-upadhyay-a7aa12207/
 - Email: rahulu626@gmail.com
 
-## Future (not in v1)
+## Roadmap (validated by real consultant feedback — prioritized)
 
-- Gemini API integration for enhanced gap analysis and "Other" industry handling
-- PDF export of reports
-- CBAM module, CCTS module
-- Document upload for gap analysis against previous year's BRSR
+1. **SEBI source links** per gap field (quick win — add a `sebi_url` and render in expanded panel)
+2. **Product vs. service-sector differentiation** — suppress manufacturing-only disclosures for IT/service clients in `report-generator.ts` (confirmed logic gap)
+3. **Best practices by sector** — suggest Indian/international best practices per gap
+4. **MSCI + DJSI rating mapping** — extend the framework mapper
+5. **Embedded data collection + calculation** (GHG Scope 1/2/3, energy/water intensity) — gated: only build once 3+ consultants independently confirm the need
+- Also on Rahul's own roadmap: client-facing data request export, CBAM module (EU exporters), AI-assisted gap analysis from an uploaded compliance document, native Compliance Chat integration.
