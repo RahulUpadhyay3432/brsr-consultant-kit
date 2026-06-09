@@ -2,10 +2,12 @@
 import type { ChecklistItem } from "@/lib/types";
 import type { DisclosureMatch } from "@/lib/report-extractor";
 import { PRINCIPLES } from "./constants";
+import type { CalcInputs } from "@/lib/emissions-calculator";
 import DisclosureRow from "./DisclosureRow";
 
 export default function PrincipleSection({
-  principle, items, expandedId, onToggle, isFirst, collapsed, onCollapse, collectedIds, onToggleCollected, matches,
+  principle, items, expandedId, onToggle, isFirst, collapsed, onCollapse,
+  collectedIds, onToggleCollected, matches, calcInputs, onCalcChange,
 }: {
   principle: string;
   items: ChecklistItem[];
@@ -17,6 +19,8 @@ export default function PrincipleSection({
   collectedIds: Set<string>;
   onToggleCollected: (id: string) => void;
   matches: Record<string, DisclosureMatch> | null;
+  calcInputs: CalcInputs;
+  onCalcChange: (key: keyof CalcInputs, value: string) => void;
 }) {
   const info = PRINCIPLES[principle];
   const collectedCount = items.filter(i => collectedIds.has(i.id)).length;
@@ -72,6 +76,8 @@ export default function PrincipleSection({
               isCollected={collectedIds.has(item.id)}
               onToggleCollected={() => onToggleCollected(item.id)}
               detectedMatch={matches?.[item.id] ?? null}
+              calcInputs={calcInputs}
+              onCalcChange={onCalcChange}
             />
           ))}
         </div>

@@ -8,12 +8,14 @@ import { detectDisclosures, type DetectionResult } from "@/lib/report-extractor"
 import { loadJSON, saveJSON, STORAGE_KEYS } from "@/lib/storage";
 import { PRINCIPLES, type StatusKey, type TypeKey } from "./constants";
 import type { UploadStatus } from "./UploadCard";
+import { type CalcInputs, DEFAULT_CALC_INPUTS } from "@/lib/emissions-calculator";
 
 interface ChecklistPersist {
   collectedIds: string[];
   detection: DetectionResult | null;
   uploadInfo: { fileName: string; pageCount: number } | null;
   showOnlyDetected: boolean;
+  calcInputs?: CalcInputs;
 }
 
 export function useChecklistState(items: ChecklistItem[]) {
@@ -25,6 +27,13 @@ export function useChecklistState(items: ChecklistItem[]) {
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(
     () => new Set(Object.keys(PRINCIPLES))
   );
+
+  // ── Calculator inputs — shared across P6-E1, P6-E7, P6-E3 rows ─────────────
+  const [calcInputs, setCalcInputs] = useState<CalcInputs>(DEFAULT_CALC_INPUTS);
+
+  function setCalcInput(key: keyof CalcInputs, value: string) {
+    setCalcInputs(prev => ({ ...prev, [key]: value }));
+  }
 
   // ── Collected state — consultant marks data they've already gathered ────────
   const [collectedIds,  setCollectedIds]  = useState<Set<string>>(new Set());
@@ -47,6 +56,7 @@ export function useChecklistState(items: ChecklistItem[]) {
       setDetection(saved.detection ?? null);
       setUploadInfo(saved.uploadInfo ?? null);
       setShowOnlyDetected(!!saved.showOnlyDetected);
+      if (saved.calcInputs) setCalcInputs(saved.calcInputs);
       if (saved.detection || saved.uploadInfo) setUploadStatus("done");
     }
     setHydrated(true);
@@ -59,8 +69,9 @@ export function useChecklistState(items: ChecklistItem[]) {
       detection,
       uploadInfo,
       showOnlyDetected,
+      calcInputs,
     } satisfies ChecklistPersist);
-  }, [hydrated, collectedIds, detection, uploadInfo, showOnlyDetected]);
+  }, [hydrated, collectedIds, detection, uploadInfo, showOnlyDetected, calcInputs]);
 
   const detectedSet = useMemo(
     () => new Set(detection?.detectedIds ?? []),
@@ -189,6 +200,8 @@ export function useChecklistState(items: ChecklistItem[]) {
     fileInputRef, detection, uploadStatus, uploadInfo, uploadError,
     showOnlyDetected, setShowOnlyDetected, handleFile, clearUpload,
     detectedSet, detectedInReport,
+    // calculator inputs (shared across P6-E1 / P6-E7 / P6-E3)
+    calcInputs, setCalcInput,
     // derived
     statusCounts, principleCounts, filtered, grouped, principleKeys,
   };

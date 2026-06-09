@@ -335,6 +335,8 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
                 collectedIds={c.collectedIds}
                 onToggleCollected={c.toggleCollected}
                 matches={c.detection?.matches ?? null}
+                calcInputs={c.calcInputs}
+                onCalcChange={c.setCalcInput}
               />
             ))
           )}

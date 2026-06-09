@@ -8,9 +8,9 @@ Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUp
 
 ## Project Status — last updated 2026-06-10
 
-**Shipped & live** (all deployed to production): SEBI source links per disclosure · service-sector differentiation (Business Type toggle + `not_applicable` status) · per-principle best practices · MSCI/DJSI ESG Ratings Alignment section · "Suggested Materiality" reframe + disclaimer · upload-last-year's-report client-side detection · company-name autocomplete with industry/sector auto-fill · **localStorage session persistence** (report + collected + detection survive refresh) · **DataChecklist decomposed** into the `checklist/` module (was 1,118 lines). Product North Star doc at `docs/PRODUCT.md` gates new features.
+**Shipped & live** (all deployed to production): SEBI source links per disclosure · service-sector differentiation (Business Type toggle + `not_applicable` status) · per-principle best practices · MSCI/DJSI ESG Ratings Alignment section · "Suggested Materiality" reframe + disclaimer · upload-last-year's-report client-side detection · company-name autocomplete with industry/sector auto-fill · **localStorage session persistence** (report + collected + detection survive refresh) · **DataChecklist decomposed** into the `checklist/` module (was 1,118 lines) · **embedded GHG Scope 1 & 2 + energy + water intensity calculators** in P6 rows (P6-E1, P6-E7, P6-E3) with cited India emission factors. Product North Star doc at `docs/PRODUCT.md` gates new features.
 
-**Next up (NOT built yet):** embedded **GHG Scope 1 & 2 + energy/water intensity calculator** in the P6 rows (cited India emission factors) — proposed, awaiting go-ahead. Then: peer/competitor benchmarking (needs real cited data), CBAM module, client data-request export.
+**Next up:** peer/competitor benchmarking (gated on sourcing real cited BRSR data by sector), CBAM module, client data-request export, native Compliance Chat integration.
 
 **Key docs:** `docs/PRODUCT.md` (product principles + IA + ship-gate) · `docs/DECISIONS.md` (the *why* behind each feature, from consultant feedback — read before changing things).
 
@@ -173,7 +173,8 @@ The originally-validated top-5 consultant requests are now **shipped** (1–4 + 
 - ✅ **Suggested Materiality reframe** — honest "starting point" framing + disclaimer.
 - ✅ **Upload last year's report** — client-side PDF detection of already-documented disclosures.
 - ✅ **Company-name autocomplete** — typeahead + industry/sector auto-fill.
+- ✅ **Embedded GHG + energy + water calculators** — Scope 1 & 2 + intensity inside P6-E1, P6-E7, P6-E3 rows. CEA grid factor, IPCC/GHG-Protocol fuel factors, all cited. Inputs persist via localStorage. Shared state: fuel inputs entered in P6-E7 carry over to P6-E1 and vice versa. Scope 3 is next.
 
-**Next big candidate — Embedded data collection + calculation** (GHG Scope 1/2/3, energy/water intensity): turns the tool from a *preparation checklist* into a *reporting workflow tool*. **NOT built yet** — 2 independent consultant signals so far (gate was ~3). Recommended MVP: GHG Scope 1 & 2 + intensity calculators embedded in the P6 fields (BRSR Core), client-side, with transparently-cited India emission factors (CEA grid factor, IPCC/GHG-Protocol fuel factors) — accuracy + annual upkeep of factors is the real catch. Then expand to Scope 3.
+**Roadmap:** peer/competitor benchmarking (gated on sourcing real cited BRSR data), Scope 3 calculator expansion, client data-request export, CBAM module (EU exporters), native Compliance Chat integration.
 
-Also on Rahul's own roadmap: peer/competitor benchmarking (gated on sourcing real cited BRSR data), client-facing data-request export, CBAM module (EU exporters), native Compliance Chat integration.
+**Calculator files:** `src/data/emission_factors.json` (factors + citations) · `src/lib/emissions-calculator.ts` (pure calc functions) · `src/components/checklist/EmissionsCalculator.tsx` (UI, ~280 lines). `CalcInputs` is stored in `useChecklistState` and persisted under the existing `session.checklist` localStorage key.

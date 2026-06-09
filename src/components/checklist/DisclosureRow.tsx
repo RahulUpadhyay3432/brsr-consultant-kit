@@ -1,5 +1,5 @@
 // A single disclosure row with its expanded detail panel. Field-level features
-// (detected-in-last-year, best practices, SEBI source, and future calculators)
+// (detected-in-last-year, best practices, SEBI source, and calculators)
 // render inside the expanded panel.
 import type { ChecklistItem } from "@/lib/types";
 import type { DisclosureMatch } from "@/lib/report-extractor";
@@ -7,9 +7,19 @@ import {
   STATUS_META, type StatusKey, plain, BEST_PRACTICES,
   SEBI_BRSR_FORMAT_URL, principleNumber,
 } from "./constants";
+import type { CalcInputs } from "@/lib/emissions-calculator";
+import EmissionsCalculator from "./EmissionsCalculator";
+
+// Fields that get an embedded calculator, and which mode each uses.
+const CALC_MODES: Partial<Record<string, "energy" | "ghg" | "water">> = {
+  "P6-E1": "energy",
+  "P6-E7": "ghg",
+  "P6-E3": "water",
+};
 
 export default function DisclosureRow({
   item, isOdd, expanded, onToggle, isCollected, onToggleCollected, detectedMatch,
+  calcInputs, onCalcChange,
 }: {
   item: ChecklistItem;
   isOdd: boolean;
@@ -18,6 +28,8 @@ export default function DisclosureRow({
   isCollected: boolean;
   onToggleCollected: () => void;
   detectedMatch?: DisclosureMatch | null;
+  calcInputs: CalcInputs;
+  onCalcChange: (key: keyof CalcInputs, value: string) => void;
 }) {
   const s = STATUS_META[item.status as StatusKey];
   const isNA = item.status === "not_applicable";
@@ -186,6 +198,17 @@ export default function DisclosureRow({
                   How to collect?
                 </p>
                 <p className="text-xs text-stone-600 leading-relaxed">{item.measurement_guidance}</p>
+              </div>
+            )}
+
+            {/* Embedded calculator — energy (P6-E1), GHG (P6-E7), water (P6-E3) */}
+            {!isNA && CALC_MODES[item.id] && (
+              <div className={item.measurement_guidance || item.gap_note ? "border-t border-stone-200 pt-3" : ""}>
+                <EmissionsCalculator
+                  mode={CALC_MODES[item.id]!}
+                  inputs={calcInputs}
+                  onChange={onCalcChange}
+                />
               </div>
             )}
 
