@@ -21,8 +21,8 @@ const TABS = [
   },
   {
     id: "materiality",
-    label: "Materiality Assessment",
-    hint: "Pre-populated material ESG topics for your client's industry — required by SEBI as part of BRSR Section A. Walk through this list with your client to finalise their materiality disclosure.",
+    label: "Suggested Materiality",
+    hint: "A suggested shortlist of material ESG topics for your client's industry — a starting point for the stakeholder-driven materiality process, not a finished assessment.",
   },
 ] as const;
 

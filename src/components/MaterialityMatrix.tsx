@@ -74,21 +74,36 @@ export default function MaterialityMatrix({ topics }: MaterialityMatrixProps) {
           </div>
           <div>
             <h3 className="text-sm font-semibold text-stone-800">
-              Materiality Assessment — pre-populated for your client's industry
+              Suggested Material Topics — a starting point for your client's industry
             </h3>
             <p className="text-xs text-stone-500 mt-1 leading-relaxed">
               SEBI's BRSR requires companies to identify which ESG topics are{" "}
               <strong className="text-stone-700">material</strong> — topics that significantly
               affect the company or matter to its stakeholders (investors, employees, communities,
-              regulators). The list below is pre-populated based on your client's industry.
+              regulators). The topics below are a <strong className="text-stone-700">suggested shortlist</strong>{" "}
+              for your client's industry — a head-start, not a finished assessment.
             </p>
             <p className="text-[11px] text-stone-500 mt-2">
-              <strong className="text-stone-600">How to use this:</strong> Walk through this list with your client
-              in a meeting. Cross off topics that genuinely don't apply, add any sector-specific
-              ones you know of, then use this as the materiality disclosure in their BRSR Section A.
+              <strong className="text-stone-600">How to use this:</strong> Use it to open the conversation
+              with your client. Cross off what doesn't apply, add what's missing, and prioritise together —
+              then run it through their actual stakeholder process to arrive at the final materiality disclosure.
             </p>
           </div>
         </div>
+      </div>
+
+      {/* ── Honest disclaimer — this is suggested, not a completed assessment ── */}
+      <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex items-start gap-2.5">
+        <svg className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M8 1.5l6.5 11.5h-13L8 1.5z" />
+          <path d="M8 6.5v3M8 11.5h.01" />
+        </svg>
+        <p className="text-xs text-amber-800 leading-relaxed">
+          <strong>This is a suggested starting list, not a completed materiality assessment.</strong>{" "}
+          A BRSR-compliant assessment comes from a structured stakeholder-engagement process, and
+          priorities differ between companies even within the same sector. Treat this as a prompt to
+          kick off that process — not a substitute for it.
+        </p>
       </div>
 
       {/* ── Category filter ───────────────────────────────────────────────── */}
