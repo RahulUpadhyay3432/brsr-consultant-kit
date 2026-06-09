@@ -118,7 +118,7 @@ export default function Home() {
                 style={{ animationDelay: "180ms" }}
               >
                 Fill in a few details below. Get a gap-analysis checklist,
-                pre-populated materiality assessment, and cross-framework
+                suggested material topics, and cross-framework
                 mappings — all ready for your client meeting.
               </p>
             </div>
@@ -143,8 +143,8 @@ export default function Home() {
                 },
                 {
                   icon: <IconScatter />, accent: "text-brand-700", accentBg: "bg-brand-50",
-                  title: "Materiality Assessment",
-                  description: "Pre-populated ESG topics for your client's industry with an interactive two-axis scoring chart.",
+                  title: "Suggested Materiality",
+                  description: "Suggested ESG material topics for your client's industry — a starting point for the stakeholder-driven materiality process.",
                   delay: "460ms",
                 },
                 {

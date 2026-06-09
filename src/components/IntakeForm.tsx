@@ -18,6 +18,7 @@ import {
   FILING_LABELS,
   inferDefaultSector,
 } from "@/lib/types";
+import CompanyAutocomplete from "./CompanyAutocomplete";
 
 interface IntakeFormProps {
   onSubmit: (data: IntakeFormData) => void;
@@ -80,15 +81,14 @@ export default function IntakeForm({ onSubmit, isLoading }: IntakeFormProps) {
         <label className="block text-sm font-medium text-stone-700 mb-2">
           Client Company Name
         </label>
-        <input
-          type="text"
+        <CompanyAutocomplete
           value={formData.companyName}
-          onChange={(e) => setFormData((p) => ({ ...p, companyName: e.target.value }))}
-          placeholder="e.g., Acme Industries Ltd."
-          className="w-full px-4 py-3 rounded-lg border border-stone-200 bg-white text-stone-900
-            placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-brand-500/60
-            focus:border-brand-500 transition-[border-color,box-shadow] duration-150"
+          onChange={(name) => setFormData((p) => ({ ...p, companyName: name }))}
+          onPick={(c) => setFormData((p) => ({ ...p, companyName: c.name, industry: c.industry, sector: c.sector }))}
         />
+        <p className="mt-1.5 text-xs text-stone-500">
+          Pick a listed company to auto-fill its industry &amp; business type — or just type any name.
+        </p>
       </div>
 
       {/* ── Industry ─────────────────────────────────────────────────────── */}
