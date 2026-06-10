@@ -24,10 +24,10 @@ function Field({
 }: { label: string; unit: string; value: string; onChange: (v: string) => void }) {
   return (
     <div>
-      <label className="block text-[10px] font-semibold text-stone-600 uppercase tracking-[0.08em] mb-1">
+      <label className="block text-[11px] font-semibold text-stone-600 uppercase tracking-[0.08em] mb-1.5">
         {label}
       </label>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1.5">
         <input
           type="number"
           min="0"
@@ -35,11 +35,11 @@ function Field({
           value={value}
           onChange={e => onChange(e.target.value)}
           placeholder="0"
-          className="flex-1 min-w-0 px-2 py-1.5 text-xs font-mono border border-stone-200 rounded
+          className="flex-1 min-w-0 px-2.5 py-2 text-sm font-mono border border-stone-200 rounded
             bg-white focus:outline-none focus:ring-1 focus:ring-emerald-400 focus:border-emerald-400
             transition-[border-color,box-shadow] placeholder:text-stone-300"
         />
-        <span className="text-[10px] text-stone-400 whitespace-nowrap min-w-[30px] text-right">{unit}</span>
+        <span className="text-[11px] text-stone-400 whitespace-nowrap min-w-[32px] text-right">{unit}</span>
       </div>
     </div>
   );
@@ -51,11 +51,11 @@ function ResultRow({ label, value, unit, bold, muted, indent }: {
 }) {
   return (
     <div className={`flex items-baseline justify-between gap-2 ${indent ? "pl-3" : ""}`}>
-      <span className={`text-xs leading-relaxed ${muted ? "text-stone-400" : bold ? "text-stone-800 font-semibold" : "text-stone-600"}`}>
+      <span className={`text-[13px] leading-relaxed ${muted ? "text-stone-400" : bold ? "text-stone-800 font-semibold" : "text-stone-600"}`}>
         {label}
       </span>
-      <span className={`text-xs font-mono tabular-nums whitespace-nowrap ${muted ? "text-stone-400" : bold ? "text-stone-800 font-semibold" : "text-stone-700"}`}>
-        {value} <span className={`font-sans ${bold ? "font-normal text-stone-500" : "text-stone-400"} text-[10px]`}>{unit}</span>
+      <span className={`text-[13px] font-mono tabular-nums whitespace-nowrap ${muted ? "text-stone-400" : bold ? "text-stone-800 font-semibold" : "text-stone-700"}`}>
+        {value} <span className={`font-sans ${bold ? "font-normal text-stone-500" : "text-stone-400"} text-[11px]`}>{unit}</span>
       </span>
     </div>
   );
@@ -108,10 +108,10 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] font-semibold text-emerald-800 leading-snug">{TITLES[mode]}</p>
-          <p className="text-[9px] text-emerald-700/70 leading-snug hidden sm:block">{DESCRIPTIONS[mode]}</p>
+          <p className="text-[12px] font-semibold text-emerald-800 leading-snug">{TITLES[mode]}</p>
+          <p className="text-[11px] text-emerald-700/70 leading-snug hidden sm:block">{DESCRIPTIONS[mode]}</p>
         </div>
-        <span className="text-[9px] font-semibold text-emerald-700 bg-white border border-emerald-200 px-1.5 py-0.5 rounded-full flex-shrink-0">
+        <span className="text-[10px] font-semibold text-emerald-700 bg-white border border-emerald-200 px-1.5 py-0.5 rounded-full flex-shrink-0">
           Calculator
         </span>
       </div>
@@ -121,7 +121,7 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
         {/* ── Electricity inputs (energy + ghg modes) ──────────────────────── */}
         {showEnergyInputs && (
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-500 mb-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-stone-500 mb-2">
               Electricity
             </p>
             <div className="grid grid-cols-2 gap-2">
@@ -134,7 +134,7 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
         {/* ── Fuel inputs (energy + ghg modes) ─────────────────────────────── */}
         {showEnergyInputs && (
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-500 mb-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-stone-500 mb-2">
               Fuels <span className="text-stone-400 normal-case tracking-normal font-normal">— enter quantities for fuels used (leave others blank)</span>
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -151,7 +151,7 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
         {/* ── Water source inputs ───────────────────────────────────────────── */}
         {mode === "water" && (
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-500 mb-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-stone-500 mb-2">
               Water withdrawal by source
             </p>
             <div className="grid grid-cols-2 gap-2">
@@ -165,25 +165,25 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
 
         {/* ── Turnover (intensity denominator, shared across all modes) ──────── */}
         <div>
-          <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-500 mb-2">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-stone-500 mb-2">
             Annual turnover <span className="text-stone-400 normal-case tracking-normal font-normal">— optional, for intensity</span>
           </p>
           <div className="max-w-[200px]">
             <Field label="Turnover" unit="₹ crore" value={inputs.turnover_crore} onChange={set("turnover_crore")} />
           </div>
-          <p className="text-[9px] text-stone-400 mt-1">
+          <p className="text-[10px] text-stone-400 mt-1">
             Shared across energy, GHG, and water intensity calculations — enter once.
           </p>
         </div>
 
         {/* ── Results ──────────────────────────────────────────────────────── */}
         <div className="border-t border-stone-200 pt-3">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-stone-700 mb-2">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-stone-700 mb-2">
             Results
           </p>
 
           {!hasAnyInput ? (
-            <p className="text-xs text-stone-400 italic">
+            <p className="text-[13px] text-stone-400 italic">
               Enter quantities above to calculate your BRSR figures.
             </p>
           ) : (
@@ -208,7 +208,7 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
                     {energy.intensity_per_crore !== null && (
                       <div>
                         <ResultRow label="Energy intensity" value={fmtIntensity(energy.intensity_per_crore)} unit="GJ / ₹ crore" />
-                        <p className="text-[9px] text-stone-400 pl-0 mt-0.5 leading-snug">
+                        <p className="text-[10px] text-stone-400 pl-0 mt-0.5 leading-snug">
                           BRSR table asks "per rupee of turnover": {perInrStr(energy.intensity_per_crore)} GJ/INR
                         </p>
                       </div>
@@ -233,7 +233,7 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
                   )}
                   <div>
                     <ResultRow label="Scope 2 (grid electricity)" value={fmtNum(ghg.scope2_tco2e, 2)} unit="tCO₂e" />
-                    <p className="text-[9px] text-stone-400 pl-0 mt-0.5 leading-snug">
+                    <p className="text-[10px] text-stone-400 pl-0 mt-0.5 leading-snug">
                       Factor: {factorsData.scope2_grid.factor_display} — {factorsData.scope2_grid.source_short}
                     </p>
                   </div>
@@ -242,7 +242,7 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
                     {ghg.intensity_per_crore !== null && (
                       <div>
                         <ResultRow label="GHG intensity" value={fmtIntensity(ghg.intensity_per_crore, 4)} unit="tCO₂e / ₹ crore" />
-                        <p className="text-[9px] text-stone-400 mt-0.5 leading-snug">
+                        <p className="text-[10px] text-stone-400 mt-0.5 leading-snug">
                           BRSR table asks "per rupee of turnover": {perInrStr(ghg.intensity_per_crore)} tCO₂e/INR
                         </p>
                       </div>
@@ -263,7 +263,7 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
                     {water.intensity_per_crore !== null && (
                       <div>
                         <ResultRow label="Water intensity" value={fmtIntensity(water.intensity_per_crore, 2)} unit="kL / ₹ crore" />
-                        <p className="text-[9px] text-stone-400 mt-0.5 leading-snug">
+                        <p className="text-[10px] text-stone-400 mt-0.5 leading-snug">
                           BRSR table asks "per rupee of turnover": {perInrStr(water.intensity_per_crore)} kL/INR
                         </p>
                       </div>
@@ -277,7 +277,7 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
         </div>
 
         {/* ── Methodology footnote ─────────────────────────────────────────── */}
-        <div className="text-[9px] text-stone-400 leading-relaxed space-y-0.5 border-t border-stone-100 pt-2">
+        <div className="text-[10px] text-stone-400 leading-relaxed space-y-0.5 border-t border-stone-100 pt-2">
           {showEnergyInputs && (
             <>
               <p>

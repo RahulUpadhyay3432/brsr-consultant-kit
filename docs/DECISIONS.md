@@ -43,6 +43,14 @@ Across consultants: the **materiality feature**, **navigation/UI** ("10/10"), **
 ### 7. Company-name autocomplete
 **Asked:** make the company field a searchable dropdown. **Built:** typeahead over ~150 Indian listed companies; picking one also auto-fills industry + business type (overridable).
 
+### 8. Embedded GHG / energy / water calculators
+**Asked (2 independent consultant signals):** the tool stopped at "what to collect" but didn't help *compute* the BRSR Core numbers. **Built:** calculators inside the expanded rows of P6-E1 (energy, GJ + intensity), P6-E7 (GHG Scope 1 & 2, tCO₂e + intensity), and P6-E3 (water, kL + intensity) — progressive disclosure, no new tab (per `PRODUCT.md` §4 + the worked example in its appendix).
+**Key decisions:** (a) **shared input state** — fuel/electricity entered in P6-E7 carry into P6-E1 and vice versa (same `CalcInputs`), and one turnover field drives all three intensities; enter once. (b) **Every factor cited and dated in-UI**: CEA CO₂ Baseline DB v19.0 (FY 2022-23, 0.717 kgCO₂/kWh) for grid Scope 2; IPCC 2006 Vol.2 + GHG Protocol for 6 fuels. A wrong factor mis-states a client's emissions, so accuracy is a correctness bug and the annual factor refresh is flagged. (c) **Inputs persist** via the existing `session.checklist` localStorage key. Scope 3 is the planned next step.
+
+### 9. UX calibration pass — width, type scale, density (design audit)
+**Reported:** wasted side-margins on a wide desktop, expanded-row text too small for accuracy-focused consultants reading in concentrated focus, and 108-field overwhelm. **Audited** with the `impeccable` design skill (product register): the deterministic slop-detector came back **clean** — the build wasn't "AI-looking," it was *miscalibrated*. **Fixed three dials, surgically:** (1) report container 1152→**1360px**, intake column 768→**880px** (kept narrow on purpose — a form stretched full-width reads worse); (2) expanded-panel reading text 12→**14px**, section labels 10→**11px**, footnotes 9→**11px** (calculator included); (3) folded the verbatim SEBI language + source + unit into a collapsed native `<details>` ("SEBI reference") so the open row leads with *action*, not regulatory boilerplate.
+**Key decision:** recalibrate, don't redesign — the navigation/UI consultants rated "10/10" stays intact. Verified via computed-style assertions (1360px / 14px / details-collapsed) + browser screenshots, not by eye alone.
+
 ---
 
 ## Architecture decisions
@@ -55,6 +63,6 @@ Across consultants: the **materiality feature**, **navigation/UI** ("10/10"), **
 
 ## Not built yet (intentionally)
 
-- **Embedded GHG / data-collection calculator** — the strongest next candidate (2 independent consultant signals). Recommended MVP: GHG Scope 1 & 2 + energy/water intensity in the P6 rows, client-side, with **transparently-cited India emission factors** (CEA grid factor, IPCC/GHG-Protocol fuel factors); accuracy + annual upkeep of factors is the real catch. Then Scope 3. *Awaiting go-ahead.*
+- **Scope 3 calculator** — extend the embedded calculators (now live for Scope 1 & 2 + energy + water) to Scope 3 categories. Needs more input scaffolding (purchased goods, travel, transport) and is harder to make accurate.
 - **Peer/competitor benchmarking** — high value but **gated on sourcing real, cited past BRSR data** by sector. No fabricated numbers.
 - **CBAM module** (EU exporters), **client data-request export**, native Compliance Chat integration — on the longer roadmap.

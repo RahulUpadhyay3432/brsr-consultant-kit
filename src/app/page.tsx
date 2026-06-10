@@ -54,7 +54,7 @@ export default function Home() {
 
       {/* ── Header ─────────────────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 no-print bg-[#F7F6F2]/85 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-5 sm:px-6 h-13 flex items-center justify-between">
+        <div className="max-w-[1360px] mx-auto px-4 sm:px-8 h-13 flex items-center justify-between">
 
           {/* Wordmark + mark — clicking returns to home */}
           <button
@@ -100,9 +100,9 @@ export default function Home() {
       </header>
 
       {/* ── Main Content ────────────────────────────────────────────────── */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-8 py-12">
+      <main className="max-w-[1360px] mx-auto px-4 sm:px-8 py-12">
         {!report ? (
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-[880px] mx-auto">
 
             {/* ── Hero ──────────────────────────────────────────────────── */}
             <div className="mb-10 pt-6">
@@ -188,7 +188,7 @@ export default function Home() {
 
       {/* ── Footer ──────────────────────────────────────────────────────── */}
       <footer className="mt-20 no-print">
-        <div className="max-w-6xl mx-auto px-5 sm:px-8 py-6 border-t border-black/[0.07]
+        <div className="max-w-[1360px] mx-auto px-4 sm:px-8 py-6 border-t border-black/[0.07]
           flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-[11px] text-stone-400">
             Built by{" "}
