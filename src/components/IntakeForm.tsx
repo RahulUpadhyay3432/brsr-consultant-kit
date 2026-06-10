@@ -13,7 +13,6 @@ import type {
 import {
   INDUSTRY_LABELS,
   SECTOR_LABELS,
-  COMPANY_SIZE_LABELS,
   MATURITY_LABELS,
   FILING_LABELS,
   inferDefaultSector,
@@ -26,6 +25,14 @@ interface IntakeFormProps {
 }
 
 const EXPORT_MARKETS: ExportMarket[] = ["EU", "USA", "UK", "Middle East", "Southeast Asia", "None"];
+
+// Company-size options as cards (title + one-line context) for a 2×2 grid.
+const SIZE_OPTIONS: { key: CompanySize; title: string; sub: string }[] = [
+  { key: "listed_top_1000",             title: "Listed · Top 1000",         sub: "By market cap — BRSR mandatory" },
+  { key: "listed_outside_1000",         title: "Listed · Outside top 1000", sub: "Voluntary / phased-in" },
+  { key: "unlisted_supplier",           title: "Unlisted supplier",         sub: "In a listed company's value chain" },
+  { key: "unlisted_not_in_value_chain", title: "Unlisted",                  sub: "Not in a listed value chain" },
+];
 
 export default function IntakeForm({ onSubmit, isLoading }: IntakeFormProps) {
   const [formData, setFormData] = useState<IntakeFormData>({
@@ -84,10 +91,18 @@ export default function IntakeForm({ onSubmit, isLoading }: IntakeFormProps) {
         <CompanyAutocomplete
           value={formData.companyName}
           onChange={(name) => setFormData((p) => ({ ...p, companyName: name }))}
-          onPick={(c) => setFormData((p) => ({ ...p, companyName: c.name, industry: c.industry, sector: c.sector }))}
+          onPick={(c) => setFormData((p) => ({
+            ...p,
+            companyName: c.name,
+            industry: c.industry,
+            sector: c.sector,
+            // Curated companies are large listed BRSR filers — default to Top 1000
+            // (overridable below).
+            companySize: "listed_top_1000",
+          }))}
         />
         <p className="mt-1.5 text-xs text-stone-500">
-          Pick a listed company to auto-fill its industry &amp; business type — or just type any name.
+          Pick a listed company to auto-fill its industry, business type &amp; listing status — or just type any name.
         </p>
       </div>
 
@@ -153,39 +168,43 @@ export default function IntakeForm({ onSubmit, isLoading }: IntakeFormProps) {
         </p>
       </div>
 
-      {/* ── Company Size ──────────────────────────────────────────────────── */}
+      {/* ── Company Size & Listing — 2×2 card grid ───────────────────────── */}
       <div>
         <label className="block text-sm font-medium text-stone-700 mb-3">
           Company Size & Listing Status <span className="text-rose-400">*</span>
         </label>
-        <div className="space-y-2">
-          {Object.entries(COMPANY_SIZE_LABELS).map(([key, label]) => (
-            <label
-              key={key}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg border cursor-pointer pressable ${
-                formData.companySize === key
-                  ? "border-brand-500 bg-brand-50/50 ring-1 ring-brand-500/20"
-                  : "border-stone-200 bg-white hover:border-stone-300"
-              }`}
-            >
-              <input
-                type="radio"
-                name="companySize"
-                value={key}
-                checked={formData.companySize === key}
-                onChange={(e) => setFormData((p) => ({ ...p, companySize: e.target.value as CompanySize }))}
-                className="sr-only"
-              />
-              <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                formData.companySize === key ? "border-brand-600" : "border-stone-300"
-              }`}>
-                {formData.companySize === key && (
-                  <div className="w-2 h-2 rounded-full bg-brand-600" />
-                )}
-              </div>
-              <span className="text-sm text-stone-700">{label}</span>
-            </label>
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {SIZE_OPTIONS.map((opt) => {
+            const selected = formData.companySize === opt.key;
+            return (
+              <label
+                key={opt.key}
+                className={`relative flex items-start gap-2.5 px-3.5 py-3 rounded-lg border cursor-pointer pressable transition-colors ${
+                  selected
+                    ? "border-brand-500 bg-brand-50/50 ring-1 ring-brand-500/20"
+                    : "border-stone-200 bg-white hover:border-stone-300"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="companySize"
+                  value={opt.key}
+                  checked={selected}
+                  onChange={(e) => setFormData((p) => ({ ...p, companySize: e.target.value as CompanySize }))}
+                  className="sr-only"
+                />
+                <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                  selected ? "border-brand-600" : "border-stone-300"
+                }`}>
+                  {selected && <div className="w-2 h-2 rounded-full bg-brand-600" />}
+                </div>
+                <div className="min-w-0">
+                  <span className="block text-[13px] font-medium text-stone-800 leading-snug">{opt.title}</span>
+                  <span className="block text-[11px] text-stone-400 mt-0.5 leading-snug">{opt.sub}</span>
+                </div>
+              </label>
+            );
+          })}
         </div>
       </div>
 
