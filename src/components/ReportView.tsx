@@ -24,6 +24,11 @@ const TABS = [
     label: "Suggested Materiality",
     hint: "A suggested shortlist of material ESG topics for your client's industry — a starting point for the stakeholder-driven materiality process, not a finished assessment.",
   },
+  {
+    id: "alignment",
+    label: "Alignment",
+    hint: "How your BRSR data maps to GRI, TCFD, and IFRS S1/S2 — and to MSCI & DJSI ESG ratings. Collect the data once, report it across every framework.",
+  },
 ] as const;
 
 // SVG tab icons — no emojis, consistent stroke weight
@@ -43,7 +48,7 @@ function TabIcon({ id, className }: { id: string; className?: string }) {
       <circle cx="11.5" cy="8.5" r="1" />
     </svg>
   );
-  if (id === "framework") return (
+  if (id === "framework" || id === "alignment") return (
     <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
       <circle cx="2.5" cy="7.5" r="1.5" />
       <circle cx="12.5" cy="3" r="1.5" />
@@ -241,8 +246,8 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
         </div>
       </div>
 
-      {/* ── What's in this report — 2 output cards ──────────────────────── */}
-      <div role="tablist" aria-label="Report outputs" className="grid grid-cols-1 sm:grid-cols-2 gap-3 no-print anim-up-md" style={{ animationDelay: "160ms" }}>
+      {/* ── What's in this report — output workspaces ───────────────────── */}
+      <div role="tablist" aria-label="Report outputs" className="grid grid-cols-1 sm:grid-cols-3 gap-3 no-print anim-up-md" style={{ animationDelay: "160ms" }}>
         {TABS.map(tab => (
           <button
             key={tab.id}
@@ -276,13 +281,8 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
       <div key={activeTab} role="tabpanel" id={`${activeTab}-panel`} className="tab-fade">
         {activeTab === "checklist"   && <DataChecklist items={report.checklist} />}
         {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} />}
+        {activeTab === "alignment"   && <AlignmentWorkspace mappings={report.frameworkMappings} />}
       </div>
-
-      {/* ── Advanced: International Framework Mapping ─────────────────────── */}
-      <AdvancedFrameworks mappings={report.frameworkMappings} />
-
-      {/* ── Advanced: ESG Ratings Alignment (MSCI & DJSI) ────────────────── */}
-      <EsgRatingsSection />
 
       {/* ── Save as PDF CTA — bottom of report, before the page footer ───── */}
       <div className="mt-6 bg-forest rounded-xl px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 no-print">
@@ -309,122 +309,66 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
   );
 }
 
-// ─── Advanced: International Framework Mapping ────────────────────────────────
-function AdvancedFrameworks({ mappings }: { mappings: FrameworkMapping[] }) {
-  const [open, setOpen] = useState(true); // open by default — consultants with international clients need this
-
+// ─── Alignment workspace — Reporting frameworks + ESG ratings, in one tab ─────
+// Replaces the two stacked accordions (PRODUCT.md §4): one consistent nav model,
+// ratings is a peer of frameworks instead of buried below a long table.
+function AlignmentWorkspace({ mappings }: { mappings: FrameworkMapping[] }) {
   const withGRI  = mappings.filter(m => m.gri_standard   && m.gri_standard   !== "—").length;
   const withTCFD = mappings.filter(m => m.tcfd_pillar     && m.tcfd_pillar    !== "—").length;
   const withIFRS = mappings.filter(m => m.ifrs_reference  && m.ifrs_reference !== "—").length;
 
   return (
-    <div className="border border-stone-200 rounded-xl overflow-hidden no-print">
-      {/* Collapsed header */}
-      <button
-        onClick={() => setOpen(v => !v)}
-        className="w-full px-5 py-4 flex items-center justify-between gap-4
-          bg-white hover:bg-stone-50 transition-colors text-left pressable"
-        aria-expanded={open}
-      >
-        <div>
-          <p className="text-sm font-semibold text-stone-700">
-            International Framework Mapping
-          </p>
-          <p className="text-xs text-stone-400 mt-0.5">
-            Only relevant if your client reports to GRI, TCFD, or IFRS S1/S2
-          </p>
-        </div>
-        <div className="flex items-center gap-3 flex-shrink-0">
-          {/* Framework counts — hint at what's inside */}
-          <div className="hidden sm:flex items-center gap-2">
-            <span className="text-[10px] font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full">
+    <div className="space-y-5">
+
+      {/* Reporting frameworks — GRI / TCFD / IFRS */}
+      <section className="bg-white rounded-xl border border-stone-200 overflow-hidden">
+        <div className="px-5 py-4 border-b border-stone-100 flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h3 className="text-[15px] font-semibold text-stone-800">Reporting frameworks</h3>
+            <p className="text-[13px] text-stone-500 mt-0.5 leading-relaxed">
+              How each BRSR disclosure maps to GRI, TCFD, and IFRS S1/S2 — collect once, report across all of them.
+            </p>
+          </div>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full">
               GRI {withGRI}
             </span>
-            <span className="text-[10px] font-semibold text-violet-700 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">
+            <span className="text-[11px] font-semibold text-violet-700 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">
               TCFD {withTCFD}
             </span>
-            <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">
+            <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">
               IFRS {withIFRS}
             </span>
           </div>
-          <svg
-            aria-hidden="true"
-            className={`w-4 h-4 text-stone-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
         </div>
-      </button>
+        <div className="p-5">
+          <FrameworkMapper mappings={mappings} />
+        </div>
+      </section>
 
-      {/* Expandable content */}
-      <div
-        className={`grid overflow-hidden transition-[grid-template-rows] duration-300
-          ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
-        style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
-      >
-        <div className="min-h-0">
-          <div className="border-t border-stone-100 p-5">
-            <FrameworkMapper mappings={mappings} />
+      {/* ESG ratings alignment — MSCI / DJSI */}
+      <section className="bg-white rounded-xl border border-stone-200 overflow-hidden">
+        <div className="px-5 py-4 border-b border-stone-100 flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h3 className="text-[15px] font-semibold text-stone-800">ESG ratings alignment</h3>
+            <p className="text-[13px] text-stone-500 mt-0.5 leading-relaxed">
+              How this same BRSR data feeds your client's MSCI ESG Rating and S&amp;P CSA / DJSI submission.
+            </p>
           </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─── Advanced: ESG Ratings Alignment (MSCI & DJSI) ────────────────────────────
-function EsgRatingsSection() {
-  const [open, setOpen] = useState(false); // closed by default — keeps the report scannable
-
-  return (
-    <div className="border border-stone-200 rounded-xl overflow-hidden no-print">
-      {/* Collapsed header */}
-      <button
-        onClick={() => setOpen(v => !v)}
-        className="w-full px-5 py-4 flex items-center justify-between gap-4
-          bg-white hover:bg-stone-50 transition-colors text-left pressable"
-        aria-expanded={open}
-      >
-        <div>
-          <p className="text-sm font-semibold text-stone-700">
-            ESG Ratings Alignment — MSCI &amp; DJSI
-          </p>
-          <p className="text-xs text-stone-400 mt-0.5">
-            See how this BRSR data also feeds your client's MSCI ESG Rating and S&amp;P CSA / DJSI submission
-          </p>
-        </div>
-        <div className="flex items-center gap-3 flex-shrink-0">
-          <div className="hidden sm:flex items-center gap-2">
-            <span className="text-[10px] font-semibold text-violet-700 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <span className="text-[11px] font-semibold text-violet-700 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">
               MSCI
             </span>
-            <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full">
+            <span className="text-[11px] font-semibold text-amber-700 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full">
               DJSI
             </span>
           </div>
-          <svg
-            aria-hidden="true"
-            className={`w-4 h-4 text-stone-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
         </div>
-      </button>
+        <div className="p-5">
+          <EsgRatingsMapper />
+        </div>
+      </section>
 
-      {/* Expandable content */}
-      <div
-        className={`grid overflow-hidden transition-[grid-template-rows] duration-300
-          ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
-        style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
-      >
-        <div className="min-h-0">
-          <div className="border-t border-stone-100 p-5">
-            <EsgRatingsMapper />
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

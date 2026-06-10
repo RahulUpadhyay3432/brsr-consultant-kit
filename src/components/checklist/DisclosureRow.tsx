@@ -212,52 +212,12 @@ export default function DisclosureRow({
               </div>
             )}
 
-            {/* Best practices — principle-level, India + International. Hidden for N/A. */}
-            {!isNA && BEST_PRACTICES[item.principle] && (
-              <div className="border-t border-stone-200 pt-3.5">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-2.5">
-                  Best practices
-                  <span className="font-normal text-stone-400 normal-case tracking-normal">
-                    {" "}— how leaders address {item.principle} ({BEST_PRACTICES[item.principle].name})
-                  </span>
-                </p>
-                <div className="space-y-3">
-                  {BEST_PRACTICES[item.principle].india.length > 0 && (
-                    <div>
-                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded mb-2">
-                        India
-                      </span>
-                      <ul className="space-y-2">
-                        {BEST_PRACTICES[item.principle].india.map((bp, i) => (
-                          <li key={`in-${i}`} className="flex gap-2 text-sm text-stone-600 leading-relaxed">
-                            <span className="mt-2 w-1 h-1 rounded-full bg-emerald-400 flex-shrink-0" />
-                            <span>{bp}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  {BEST_PRACTICES[item.principle].international.length > 0 && (
-                    <div>
-                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-1.5 py-0.5 rounded mb-2">
-                        International
-                      </span>
-                      <ul className="space-y-2">
-                        {BEST_PRACTICES[item.principle].international.map((bp, i) => (
-                          <li key={`int-${i}`} className="flex gap-2 text-sm text-stone-600 leading-relaxed">
-                            <span className="mt-2 w-1 h-1 rounded-full bg-blue-400 flex-shrink-0" />
-                            <span>{bp}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* SEBI reference — verbatim language + source + unit, tiered behind a
-                disclosure so the open row leads with action, not regulatory detail */}
+            {/* Reference — best practices + verbatim SEBI language, source & unit.
+                Tiered behind one disclosure so the open row leads with the next
+                ACTION (gap, how to collect, calculator), not a regulatory essay. */}
+            {(() => {
+              const hasBP = !isNA && !!BEST_PRACTICES[item.principle];
+              return (
             <details className="group border-t border-stone-200 pt-3.5">
               <summary className="flex items-center gap-1.5 cursor-pointer list-none [&::-webkit-details-marker]:hidden
                 text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-500 hover:text-stone-800 transition-colors">
@@ -265,12 +225,57 @@ export default function DisclosureRow({
                   fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
-                SEBI reference — verbatim language, source &amp; unit
+                {hasBP ? "Best practices & SEBI reference" : "SEBI reference — verbatim language, source & unit"}
               </summary>
 
-              <div className="mt-3 space-y-3.5">
+              <div className="mt-3.5 space-y-4">
+
+                {/* Best practices — principle-level, India + International. Hidden for N/A. */}
+                {hasBP && (
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-2.5">
+                      Best practices
+                      <span className="font-normal text-stone-400 normal-case tracking-normal">
+                        {" "}— how leaders address {item.principle} ({BEST_PRACTICES[item.principle].name})
+                      </span>
+                    </p>
+                    <div className="space-y-3">
+                      {BEST_PRACTICES[item.principle].india.length > 0 && (
+                        <div>
+                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-1.5 py-0.5 rounded mb-2">
+                            India
+                          </span>
+                          <ul className="space-y-2">
+                            {BEST_PRACTICES[item.principle].india.map((bp, i) => (
+                              <li key={`in-${i}`} className="flex gap-2 text-sm text-stone-600 leading-relaxed">
+                                <span className="mt-2 w-1 h-1 rounded-full bg-emerald-400 flex-shrink-0" />
+                                <span>{bp}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {BEST_PRACTICES[item.principle].international.length > 0 && (
+                        <div>
+                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-1.5 py-0.5 rounded mb-2">
+                            International
+                          </span>
+                          <ul className="space-y-2">
+                            {BEST_PRACTICES[item.principle].international.map((bp, i) => (
+                              <li key={`int-${i}`} className="flex gap-2 text-sm text-stone-600 leading-relaxed">
+                                <span className="mt-2 w-1 h-1 rounded-full bg-blue-400 flex-shrink-0" />
+                                <span>{bp}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* SEBI verbatim */}
-                <div>
+                <div className={hasBP ? "border-t border-stone-200 pt-4" : ""}>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
                     SEBI language
                   </p>
@@ -313,6 +318,8 @@ export default function DisclosureRow({
                 )}
               </div>
             </details>
+              );
+            })()}
 
             {/* ── Mark as collected ──────────────────────────────────────── */}
             {!isNA && (
