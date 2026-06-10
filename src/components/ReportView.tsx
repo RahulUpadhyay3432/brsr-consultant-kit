@@ -17,17 +17,17 @@ const TABS = [
   {
     id: "checklist",
     label: "Action Plan",
-    hint: "All 108 BRSR disclosure fields your client must report — with status showing what's already documented in their compliance filings vs what needs to be collected fresh.",
+    hint: "All 108 disclosure fields — what's already covered by existing filings vs. what to collect fresh.",
   },
   {
     id: "materiality",
     label: "Suggested Materiality",
-    hint: "A suggested shortlist of material ESG topics for your client's industry — a starting point for the stakeholder-driven materiality process, not a finished assessment.",
+    hint: "A starting shortlist of material ESG topics for your client's industry.",
   },
   {
     id: "alignment",
-    label: "Alignment",
-    hint: "How your BRSR data maps to GRI, TCFD, and IFRS S1/S2 — and to MSCI & DJSI ESG ratings. Collect the data once, report it across every framework.",
+    label: "Frameworks & Ratings",
+    hint: "How this BRSR data also maps to GRI, TCFD & IFRS — and feeds MSCI & DJSI ESG ratings.",
   },
 ] as const;
 
@@ -102,11 +102,11 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
       </div>
 
       {/* ── Report header card — hero element, card reveal ──────────────── */}
-      <div className="anim-card bg-white rounded-xl border border-stone-200 overflow-hidden" style={{ animationDelay: "60ms" }}>
+      <div className="anim-card bg-white rounded-xl border border-stone-200 overflow-hidden shadow-[0_2px_24px_rgba(80,60,30,0.07)]" style={{ animationDelay: "60ms" }}>
 
         {/* ── 1. Client identity ───────────────────────────────────────────── */}
         <div className="px-6 pt-5 pb-4">
-          <h2 className="font-display text-xl font-light text-stone-900 tracking-tight">
+          <h2 className="font-display text-[26px] sm:text-[30px] font-normal text-stone-900 tracking-tight leading-tight">
             {report.companyName || "Your Client"}
           </h2>
           <p className="text-sm text-stone-500 mt-0.5">
@@ -163,33 +163,65 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
             </div>
           </div>
 
-          {/* 3 stat columns */}
+          {/* Segmented gap bar — at-a-glance proportions of the 108 fields, in our
+              palette (adapted from Vanta's evidence-tracker). The report's visual anchor. */}
+          <div className="px-6 pt-4 pb-3.5">
+            <div className="flex items-stretch gap-1 h-2.5">
+              {alreadyTracked > 0 && (
+                <div className="bg-emerald-500 rounded-full min-w-[10px]" style={{ flexGrow: alreadyTracked }}
+                  title={`Ready to pull: ${alreadyTracked}`} />
+              )}
+              {partiallyTracked > 0 && (
+                <div className="bg-amber-400 rounded-full min-w-[10px]" style={{ flexGrow: partiallyTracked }}
+                  title={`Needs verification: ${partiallyTracked}`} />
+              )}
+              {newDataNeeded > 0 && (
+                <div className="bg-stone-400 rounded-full min-w-[10px]" style={{ flexGrow: newDataNeeded }}
+                  title={`Collect fresh: ${newDataNeeded}`} />
+              )}
+              {notApplicable > 0 && (
+                <div className="bg-slate-300 rounded-full min-w-[10px]" style={{ flexGrow: notApplicable }}
+                  title={`Not applicable: ${notApplicable}`} />
+              )}
+            </div>
+          </div>
+
+          {/* Stat columns — the bar's legend, with presence */}
           <div className="grid grid-cols-3 divide-x divide-stone-200">
             <div className="px-5 py-4">
-              <p className={`text-3xl font-semibold leading-none tabular-nums
+              <p className={`text-[2.5rem] font-semibold leading-none tabular-nums
                 ${alreadyTracked > 0 ? "text-emerald-600" : "text-stone-300"}`}>
                 {alreadyTracked}
               </p>
-              <p className="text-sm font-medium text-stone-700 mt-2">Ready to pull</p>
+              <p className="flex items-center gap-1.5 text-sm font-semibold text-stone-700 mt-2.5">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
+                Ready to pull
+              </p>
               <p className="text-xs text-stone-500 mt-1 leading-snug">
                 Already in their existing compliance reports.
               </p>
             </div>
             <div className="px-5 py-4">
-              <p className={`text-3xl font-semibold leading-none tabular-nums
+              <p className={`text-[2.5rem] font-semibold leading-none tabular-nums
                 ${partiallyTracked > 0 ? "text-amber-600" : "text-stone-300"}`}>
                 {partiallyTracked}
               </p>
-              <p className="text-sm font-medium text-stone-700 mt-2">Needs verification</p>
+              <p className="flex items-center gap-1.5 text-sm font-semibold text-stone-700 mt-2.5">
+                <span className="w-2 h-2 rounded-full bg-amber-400 flex-shrink-0" />
+                Needs verification
+              </p>
               <p className="text-xs text-stone-500 mt-1 leading-snug">
                 Partially covered — one missing piece each.
               </p>
             </div>
             <div className="px-5 py-4">
-              <p className="text-3xl font-semibold leading-none tabular-nums text-stone-700">
+              <p className="text-[2.5rem] font-semibold leading-none tabular-nums text-stone-700">
                 {newDataNeeded}
               </p>
-              <p className="text-sm font-medium text-stone-700 mt-2">Collect fresh</p>
+              <p className="flex items-center gap-1.5 text-sm font-semibold text-stone-700 mt-2.5">
+                <span className="w-2 h-2 rounded-full bg-stone-400 flex-shrink-0" />
+                Collect fresh
+              </p>
               <p className="text-xs text-stone-500 mt-1 leading-snug">
                 Not in any existing filing.
               </p>
@@ -272,7 +304,7 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
                 </span>
               )}
             </div>
-            <p className="text-[11px] text-stone-500 leading-snug">{tab.hint}</p>
+            <p className="text-[13px] text-stone-500 leading-relaxed">{tab.hint}</p>
           </button>
         ))}
       </div>
