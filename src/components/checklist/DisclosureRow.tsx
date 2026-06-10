@@ -136,7 +136,7 @@ export default function DisclosureRow({
       >
       <div className="min-h-0">
         <div className="px-4 pb-4" style={{ paddingLeft: "calc(1rem + 22px)" }}>
-          <div className="bg-stone-50 border border-stone-200 rounded-lg p-4 space-y-4">
+          <div className="bg-stone-100/70 border border-stone-200/80 rounded-lg p-3 space-y-3">
 
             {/* Not-applicable explainer — service-sector clients skip this */}
             {isNA && (
@@ -179,6 +179,10 @@ export default function DisclosureRow({
               </div>
             )}
 
+            {/* ── Action card (raised) — what to actually do: pull-from, gap, how to collect ── */}
+            {(item.source_filing || item.gap_note || item.measurement_guidance) && (
+            <div className="bg-white border border-stone-200 rounded-lg p-3.5 shadow-[0_1px_4px_rgba(80,60,30,0.06)] space-y-3.5">
+
             {/* Source filing — shown when data comes from an existing compliance report */}
             {item.source_filing && (
               <div>
@@ -212,15 +216,16 @@ export default function DisclosureRow({
               </div>
             )}
 
-            {/* Embedded calculator — energy (P6-E1), GHG (P6-E7), water (P6-E3) */}
+            </div>
+            )}
+
+            {/* Embedded calculator — its own raised card (energy P6-E1, GHG P6-E7, water P6-E3) */}
             {!isNA && CALC_MODES[item.id] && (
-              <div className={item.measurement_guidance || item.gap_note ? "border-t border-stone-200 pt-3.5" : ""}>
-                <EmissionsCalculator
-                  mode={CALC_MODES[item.id]!}
-                  inputs={calcInputs}
-                  onChange={onCalcChange}
-                />
-              </div>
+              <EmissionsCalculator
+                mode={CALC_MODES[item.id]!}
+                inputs={calcInputs}
+                onChange={onCalcChange}
+              />
             )}
 
             {/* Reference — best practices + verbatim SEBI language, source & unit.
@@ -229,7 +234,7 @@ export default function DisclosureRow({
             {(() => {
               const hasBP = !isNA && !!BEST_PRACTICES[item.principle];
               return (
-            <details className="group border-t border-stone-200 pt-3.5">
+            <details className="group bg-white/60 border border-stone-200/70 rounded-lg px-3.5 py-3">
               <summary className="flex items-center gap-1.5 cursor-pointer list-none [&::-webkit-details-marker]:hidden
                 text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-500 hover:text-stone-800 transition-colors">
                 <svg aria-hidden="true" className="w-3 h-3 flex-shrink-0 transition-transform duration-200 group-open:rotate-90"
@@ -334,7 +339,7 @@ export default function DisclosureRow({
 
             {/* ── Mark as collected ──────────────────────────────────────── */}
             {!isNA && (
-            <div className="border-t border-stone-200 pt-3.5 flex items-center justify-between gap-3">
+            <div className="flex items-center justify-between gap-3 px-0.5 pt-1">
               <p className="text-[11px] text-stone-400 leading-relaxed">
                 {isCollected
                   ? "You've marked this data as collected."
