@@ -15,6 +15,8 @@ export default function DataChecklist({
   focusPrinciple?: { id: string; nonce: number } | null;
 }) {
   const c = useChecklistState(items, focusPrinciple);
+  const essentialCount  = items.filter(i => i.indicator_type === "essential").length;
+  const leadershipCount = items.filter(i => i.indicator_type === "leadership").length;
 
   return (
     <div className="space-y-4">
@@ -100,6 +102,18 @@ export default function DataChecklist({
               dimmed={c.statusCounts[s] === 0}
             />
           ))}
+        </div>
+
+        <div className="mx-3 border-t border-stone-100" />
+
+        {/* Indicator type filter — desktop sidebar (mobile uses the top-bar pills) */}
+        <div className="px-3 pt-3 pb-3">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-stone-400 px-2 mb-1.5">
+            Filter by indicator
+          </p>
+          <NavItem label="All types"  count={items.length}    active={c.typeFilter === "all"}        onClick={() => c.setTypeFilter("all")} />
+          <NavItem label="Essential"  count={essentialCount}  active={c.typeFilter === "essential"}  onClick={() => c.setTypeFilter("essential")} />
+          <NavItem label="Leadership" count={leadershipCount} active={c.typeFilter === "leadership"} onClick={() => c.setTypeFilter("leadership")} />
         </div>
 
         <div className="mx-3 border-t border-stone-100" />
@@ -232,8 +246,8 @@ export default function DataChecklist({
             )}
           </div>
 
-          {/* Type filter pills */}
-          <div className="flex items-center border border-stone-200 rounded-md overflow-hidden divide-x divide-stone-200 flex-shrink-0">
+          {/* Type filter pills — mobile only; desktop uses the sidebar "Filter by indicator" */}
+          <div className="md:hidden flex items-center border border-stone-200 rounded-md overflow-hidden divide-x divide-stone-200 flex-shrink-0">
             {(["all", "essential", "leadership"] as TypeKey[]).map(t => (
               <button
                 key={t}
