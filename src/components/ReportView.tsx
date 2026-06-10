@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { ReportOutput, FrameworkMapping } from "@/lib/types";
 import { INDUSTRY_LABELS, FILING_LABELS, type IndustryType, type ExistingFiling } from "@/lib/types";
+import { PRINCIPLES, type StatusKey } from "./checklist/constants";
 import DataChecklist from "./DataChecklist";
 import MaterialityMatrix from "./MaterialityMatrix";
 import FrameworkMapper from "./FrameworkMapper";
 import EsgRatingsMapper from "./EsgRatingsMapper";
+
+// Per-principle status tally for the Overview readiness grid.
+type PrincipleStat = { total: number } & Record<StatusKey, number>;
 
 interface ReportViewProps {
   report: ReportOutput;
@@ -65,6 +69,24 @@ type TabId = (typeof TABS)[number]["id"];
 
 export default function ReportView({ report, onBack }: ReportViewProps) {
   const [activeTab, setActiveTab] = useState<TabId>("checklist");
+  // Drill-in target for the Action Plan, set by clicking an Overview principle card.
+  const [focusPrinciple, setFocusPrinciple] = useState<{ id: string; nonce: number } | null>(null);
+  const tabPanelRef = useRef<HTMLDivElement>(null);
+
+  function openPrinciple(id: string) {
+    setActiveTab("checklist");
+    setFocusPrinciple({ id, nonce: Date.now() });
+    setTimeout(() => tabPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 70);
+  }
+
+  // Per-principle readiness tally for the Overview dashboard grid.
+  const byPrinciple = report.checklist.reduce((acc, it) => {
+    const p = it.principle;
+    if (!acc[p]) acc[p] = { total: 0, already_tracked: 0, partially_tracked: 0, new_data_needed: 0, not_applicable: 0 };
+    acc[p].total += 1;
+    acc[p][it.status as StatusKey] += 1;
+    return acc;
+  }, {} as Record<string, PrincipleStat>);
 
   const industryLabel = INDUSTRY_LABELS[report.industry as IndustryType] || report.industry;
   const { alreadyTracked, partiallyTracked, newDataNeeded, notApplicable, totalDataPoints } = report.summary;
@@ -278,8 +300,11 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
         </div>
       </div>
 
+      {/* ── Readiness by principle — the Overview dashboard grid ────────── */}
+      <PrincipleReadinessGrid stats={byPrinciple} onSelect={openPrinciple} />
+
       {/* ── What's in this report — output workspaces ───────────────────── */}
-      <div role="tablist" aria-label="Report outputs" className="grid grid-cols-1 sm:grid-cols-3 gap-3 no-print anim-up-md" style={{ animationDelay: "160ms" }}>
+      <div role="tablist" aria-label="Report outputs" className="grid grid-cols-1 sm:grid-cols-3 gap-3 no-print anim-up-md" style={{ animationDelay: "200ms" }}>
         {TABS.map(tab => (
           <button
             key={tab.id}
@@ -310,8 +335,8 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
       </div>
 
       {/* ── Tab content ──────────────────────────────────────────────────── */}
-      <div key={activeTab} role="tabpanel" id={`${activeTab}-panel`} className="tab-fade">
-        {activeTab === "checklist"   && <DataChecklist items={report.checklist} />}
+      <div ref={tabPanelRef} key={activeTab} role="tabpanel" id={`${activeTab}-panel`} className="tab-fade scroll-mt-20">
+        {activeTab === "checklist"   && <DataChecklist items={report.checklist} focusPrinciple={focusPrinciple} />}
         {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} />}
         {activeTab === "alignment"   && <AlignmentWorkspace mappings={report.frameworkMappings} />}
       </div>
@@ -336,6 +361,75 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
           </svg>
           Save as PDF
         </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Overview: readiness-by-principle grid ───────────────────────────────────
+// A scannable command-center of the 9 principles (the Drata readiness-card
+// pattern, in our palette). Each card shows its status mix and drills into the
+// Action Plan filtered to that principle.
+function PrincipleReadinessGrid({
+  stats, onSelect,
+}: {
+  stats: Record<string, PrincipleStat>;
+  onSelect: (id: string) => void;
+}) {
+  return (
+    <div className="no-print anim-up-md" style={{ animationDelay: "120ms" }}>
+      <div className="flex items-baseline justify-between mb-2.5 px-0.5">
+        <h3 className="text-[11px] font-bold uppercase tracking-[0.16em] text-stone-400">
+          Readiness by principle
+        </h3>
+        <span className="text-[11px] text-stone-400">Click a principle to work on it</span>
+      </div>
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5">
+        {Object.entries(PRINCIPLES).map(([key, info]) => {
+          const s = stats[key];
+          if (!s || s.total === 0) return null;
+          return (
+            <button
+              key={key}
+              onClick={() => onSelect(key)}
+              className="text-left bg-white rounded-xl border border-stone-200 p-3.5 pressable group
+                hover:border-stone-300 hover:shadow-[0_4px_16px_rgba(80,60,30,0.08)] transition-all"
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <span className={`text-[10px] font-bold font-mono px-1.5 py-0.5 rounded flex-shrink-0
+                  ${info.bg} ${info.color} border ${info.border}`}>
+                  {key}
+                </span>
+                <span className="text-[13px] font-semibold text-stone-700 truncate group-hover:text-stone-900">
+                  {info.name}
+                </span>
+                <svg aria-hidden="true" className="w-3.5 h-3.5 text-stone-300 ml-auto flex-shrink-0
+                  group-hover:text-stone-500 group-hover:translate-x-0.5 transition-all"
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+              {/* Status mix bar */}
+              <div className="flex items-stretch gap-0.5 h-2 mb-2.5">
+                {s.already_tracked > 0 &&
+                  <div className="bg-emerald-500 rounded-full" style={{ flexGrow: s.already_tracked }} />}
+                {s.partially_tracked > 0 &&
+                  <div className="bg-amber-400 rounded-full" style={{ flexGrow: s.partially_tracked }} />}
+                {s.new_data_needed > 0 &&
+                  <div className="bg-stone-300 rounded-full" style={{ flexGrow: s.new_data_needed }} />}
+                {s.not_applicable > 0 &&
+                  <div className="bg-slate-300 rounded-full" style={{ flexGrow: s.not_applicable }} />}
+              </div>
+              {/* Counts legend */}
+              <div className="flex items-center gap-x-2.5 gap-y-0.5 flex-wrap text-[11px] tabular-nums">
+                {s.already_tracked > 0 && <span className="font-medium text-emerald-700">{s.already_tracked} ready</span>}
+                {s.partially_tracked > 0 && <span className="font-medium text-amber-700">{s.partially_tracked} verify</span>}
+                {s.new_data_needed > 0 && <span className="text-stone-500">{s.new_data_needed} collect</span>}
+                {s.not_applicable > 0 && <span className="text-slate-400">{s.not_applicable} N/A</span>}
+              </div>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

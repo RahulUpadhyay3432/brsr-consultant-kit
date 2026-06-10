@@ -18,7 +18,10 @@ interface ChecklistPersist {
   calcInputs?: CalcInputs;
 }
 
-export function useChecklistState(items: ChecklistItem[]) {
+export function useChecklistState(
+  items: ChecklistItem[],
+  focusPrinciple?: { id: string; nonce: number } | null,
+) {
   const [statusFilter,      setStatusFilter]      = useState<StatusKey | "all">("all");
   const [principleFilter,   setPrincipleFilter]   = useState<string>("all");
   const [typeFilter,        setTypeFilter]        = useState<TypeKey>("all");
@@ -127,6 +130,20 @@ export function useChecklistState(items: ChecklistItem[]) {
       return next;
     });
   }
+
+  // Drill-in from the Overview dashboard: focus a principle → filter to it,
+  // clear the status filter, and expand its section so rows are visible.
+  useEffect(() => {
+    if (!focusPrinciple) return;
+    setPrincipleFilter(focusPrinciple.id);
+    setStatusFilter("all");
+    setCollapsedSections(prev => {
+      const next = new Set(prev);
+      next.delete(focusPrinciple.id);
+      return next;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusPrinciple?.nonce]);
 
   function toggleExpanded(id: string) {
     setExpandedId(prev => (prev === id ? null : id));

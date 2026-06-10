@@ -8,8 +8,13 @@ import UploadCard from "./checklist/UploadCard";
 import PrincipleSection from "./checklist/PrincipleSection";
 
 // ─── Main component ────────────────────────────────────────────────────────────
-export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
-  const c = useChecklistState(items);
+export default function DataChecklist({
+  items, focusPrinciple,
+}: {
+  items: ChecklistItem[];
+  focusPrinciple?: { id: string; nonce: number } | null;
+}) {
+  const c = useChecklistState(items, focusPrinciple);
 
   return (
     <div className="space-y-4">
