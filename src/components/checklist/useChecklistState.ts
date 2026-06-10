@@ -16,12 +16,16 @@ interface ChecklistPersist {
   uploadInfo: { fileName: string; pageCount: number } | null;
   showOnlyDetected: boolean;
   calcInputs?: CalcInputs;
+  // View state — persisted so a tab-switch or refresh doesn't lose the
+  // consultant's filters / search / expanded sections.
+  statusFilter?: StatusKey | "all";
+  principleFilter?: string;
+  typeFilter?: TypeKey;
+  search?: string;
+  collapsedSections?: string[];
 }
 
-export function useChecklistState(
-  items: ChecklistItem[],
-  focusPrinciple?: { id: string; nonce: number } | null,
-) {
+export function useChecklistState(items: ChecklistItem[]) {
   const [statusFilter,      setStatusFilter]      = useState<StatusKey | "all">("all");
   const [principleFilter,   setPrincipleFilter]   = useState<string>("all");
   const [typeFilter,        setTypeFilter]        = useState<TypeKey>("all");
@@ -60,6 +64,11 @@ export function useChecklistState(
       setUploadInfo(saved.uploadInfo ?? null);
       setShowOnlyDetected(!!saved.showOnlyDetected);
       if (saved.calcInputs) setCalcInputs(saved.calcInputs);
+      if (saved.statusFilter) setStatusFilter(saved.statusFilter);
+      if (saved.principleFilter) setPrincipleFilter(saved.principleFilter);
+      if (saved.typeFilter) setTypeFilter(saved.typeFilter);
+      if (typeof saved.search === "string") setSearch(saved.search);
+      if (saved.collapsedSections) setCollapsedSections(new Set(saved.collapsedSections));
       if (saved.detection || saved.uploadInfo) setUploadStatus("done");
     }
     setHydrated(true);
@@ -73,8 +82,14 @@ export function useChecklistState(
       uploadInfo,
       showOnlyDetected,
       calcInputs,
+      statusFilter,
+      principleFilter,
+      typeFilter,
+      search,
+      collapsedSections: Array.from(collapsedSections),
     } satisfies ChecklistPersist);
-  }, [hydrated, collectedIds, detection, uploadInfo, showOnlyDetected, calcInputs]);
+  }, [hydrated, collectedIds, detection, uploadInfo, showOnlyDetected, calcInputs,
+      statusFilter, principleFilter, typeFilter, search, collapsedSections]);
 
   const detectedSet = useMemo(
     () => new Set(detection?.detectedIds ?? []),
@@ -130,20 +145,6 @@ export function useChecklistState(
       return next;
     });
   }
-
-  // Drill-in from the Overview dashboard: focus a principle → filter to it,
-  // clear the status filter, and expand its section so rows are visible.
-  useEffect(() => {
-    if (!focusPrinciple) return;
-    setPrincipleFilter(focusPrinciple.id);
-    setStatusFilter("all");
-    setCollapsedSections(prev => {
-      const next = new Set(prev);
-      next.delete(focusPrinciple.id);
-      return next;
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focusPrinciple?.nonce]);
 
   function toggleExpanded(id: string) {
     setExpandedId(prev => (prev === id ? null : id));

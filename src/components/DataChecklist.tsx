@@ -8,13 +8,8 @@ import UploadCard from "./checklist/UploadCard";
 import PrincipleSection from "./checklist/PrincipleSection";
 
 // ─── Main component ────────────────────────────────────────────────────────────
-export default function DataChecklist({
-  items, focusPrinciple,
-}: {
-  items: ChecklistItem[];
-  focusPrinciple?: { id: string; nonce: number } | null;
-}) {
-  const c = useChecklistState(items, focusPrinciple);
+export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
+  const c = useChecklistState(items);
   const essentialCount  = items.filter(i => i.indicator_type === "essential").length;
   const leadershipCount = items.filter(i => i.indicator_type === "leadership").length;
 
