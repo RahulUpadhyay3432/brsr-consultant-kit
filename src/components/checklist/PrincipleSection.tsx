@@ -1,7 +1,7 @@
 // A collapsible principle group containing its disclosure rows.
 import type { ChecklistItem } from "@/lib/types";
 import type { DisclosureMatch } from "@/lib/report-extractor";
-import { PRINCIPLES } from "./constants";
+import { PRINCIPLES, type StatusKey } from "./constants";
 import type { CalcInputs } from "@/lib/emissions-calculator";
 import DisclosureRow from "./DisclosureRow";
 
@@ -25,6 +25,13 @@ export default function PrincipleSection({
   const info = PRINCIPLES[principle];
   const collectedCount = items.filter(i => collectedIds.has(i.id)).length;
 
+  // Per-principle status mix → a small segmented bar (the principle's "readiness" profile).
+  const mix = items.reduce((acc, i) => {
+    const k = i.status as StatusKey;
+    acc[k] = (acc[k] ?? 0) + 1;
+    return acc;
+  }, {} as Record<StatusKey, number>);
+
   return (
     <div className={isFirst ? "" : "border-t-2 border-stone-200"}>
       <button
@@ -40,7 +47,19 @@ export default function PrincipleSection({
         <span className="text-sm font-semibold text-stone-700 group-hover:text-stone-900">
           {info?.name ?? principle}
         </span>
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-2.5">
+          {/* Status mix mini-bar — at-a-glance readiness for this principle */}
+          <div className="hidden sm:flex items-stretch gap-0.5 h-1.5 w-24 flex-shrink-0"
+            title={`${mix.already_tracked ?? 0} ready · ${mix.partially_tracked ?? 0} verify · ${mix.new_data_needed ?? 0} collect${mix.not_applicable ? ` · ${mix.not_applicable} N/A` : ""}`}>
+            {(mix.already_tracked ?? 0) > 0 &&
+              <div className="bg-emerald-500 rounded-full" style={{ flexGrow: mix.already_tracked }} />}
+            {(mix.partially_tracked ?? 0) > 0 &&
+              <div className="bg-amber-400 rounded-full" style={{ flexGrow: mix.partially_tracked }} />}
+            {(mix.new_data_needed ?? 0) > 0 &&
+              <div className="bg-stone-300 rounded-full" style={{ flexGrow: mix.new_data_needed }} />}
+            {(mix.not_applicable ?? 0) > 0 &&
+              <div className="bg-slate-300 rounded-full" style={{ flexGrow: mix.not_applicable }} />}
+          </div>
           {collectedCount > 0 && (
             <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full">
               {collectedCount} collected

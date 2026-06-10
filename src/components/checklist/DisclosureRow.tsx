@@ -17,6 +17,14 @@ const CALC_MODES: Partial<Record<string, "energy" | "ghg" | "water">> = {
   "P6-E3": "water",
 };
 
+// Pill border per status — pairs with STATUS_META bg/text for a Vanta-style status chip.
+const STATUS_PILL_BORDER: Record<StatusKey, string> = {
+  already_tracked:   "border-emerald-200",
+  partially_tracked: "border-amber-200",
+  new_data_needed:   "border-stone-200",
+  not_applicable:    "border-slate-200",
+};
+
 export default function DisclosureRow({
   item, isOdd, expanded, onToggle, isCollected, onToggleCollected, detectedMatch,
   calcInputs, onCalcChange,
@@ -93,18 +101,21 @@ export default function DisclosureRow({
           </span>
         </div>
 
-        {/* Status + expand chevron */}
+        {/* Status pill + expand chevron */}
         <div className="flex items-center gap-1.5 w-[145px] flex-shrink-0">
           {isCollected ? (
-            <span className="flex items-center gap-1 text-xs font-medium text-emerald-600 truncate">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold
+              bg-emerald-100 text-emerald-700 border border-emerald-200">
               <svg key="row-checked" aria-hidden="true" className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                 <path className="check-path" d="M5 13l4 4L19 7" />
               </svg>
               Collected
             </span>
           ) : (
-            <span className={`text-xs font-medium ${s.text}`}>
-              {s.label}
+            <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px] font-semibold border
+              ${s.bg} ${s.text} ${STATUS_PILL_BORDER[item.status as StatusKey]}`}>
+              <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${s.dot}`} />
+              {s.short}
             </span>
           )}
           <svg

@@ -43,15 +43,13 @@ export default function UploadCard({
             <h3 className="text-sm font-semibold text-stone-800">
               Save time — upload last year's BRSR report
             </h3>
-            <p className="text-xs text-stone-500 mt-1 leading-relaxed">
-              We'll scan it <strong className="text-stone-700">entirely in your browser</strong> and flag the
-              disclosures (policies, management systems, recurring metrics) that already appear documented — so you
-              can focus on what's genuinely new.
+            <p className="text-[13px] text-stone-500 mt-1 leading-relaxed">
+              We'll flag what's already documented, so you only chase what's new.
               <span className="inline-flex items-center gap-1 text-emerald-700 font-medium ml-1">
                 <svg className="w-3 h-3" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
                   <path d="M7.5 1.5l5 2v3.5c0 3-2.2 5-5 6.5-2.8-1.5-5-3.5-5-6.5V3.5z" />
                 </svg>
-                The file never leaves your device.
+                Scanned in your browser — the file never leaves your device.
               </span>
             </p>
             <div className="mt-2.5 flex items-center gap-2 flex-wrap">

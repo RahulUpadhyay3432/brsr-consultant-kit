@@ -14,34 +14,19 @@ export default function DataChecklist({ items }: { items: ChecklistItem[] }) {
   return (
     <div className="space-y-4">
 
-    {/* ── What is this tab? ─────────────────────────────────────────────── */}
-    <div className="bg-brand-50 border border-brand-100 rounded-xl p-4">
+    {/* ── How to use this list — concise orientation ────────────────────── */}
+    <div className="bg-brand-50 border border-brand-100 rounded-xl px-4 py-3.5">
       <div className="flex items-start gap-3">
-        <div className="w-9 h-9 bg-white rounded-lg border border-brand-100 flex items-center justify-center flex-shrink-0">
+        <div className="w-8 h-8 bg-white rounded-lg border border-brand-100 flex items-center justify-center flex-shrink-0">
           <svg className="w-4 h-4 text-brand-700" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <rect x="2" y="1.5" width="11" height="12" rx="1.5" />
             <path d="M5 5.5h5M5 8h5M5 10.5h3" />
           </svg>
         </div>
         <div className="min-w-0">
-          <h3 className="text-sm font-semibold text-stone-800">
-            What is this? — Your BRSR Data Collection Guide
-          </h3>
-          <p className="text-xs text-stone-500 mt-1 leading-relaxed">
-            SEBI's BRSR framework requires companies to disclose information across{" "}
-            <span className="font-medium text-stone-700">9 Business Responsibility Principles</span> (P1–P9).
-            This tab lists all <span className="font-medium text-stone-700">{items.length} disclosure fields</span> your client must fill in their annual report,
-            with each field pre-assessed against their existing filings.
-          </p>
-          <p className="text-xs text-stone-500 mt-1.5 leading-relaxed">
-            Fields are marked:{" "}
-            <span className="font-medium text-emerald-700">Ready to pull</span> (data exists in a filing you can copy),{" "}
-            <span className="font-medium text-amber-700">Needs verification</span> (partially covered — one piece missing), or{" "}
-            <span className="font-medium text-stone-600">Collect fresh</span> (needs to be gathered from scratch).
-          </p>
-          <p className="text-[11px] text-stone-400 mt-2">
-            <strong className="text-stone-500">Already collecting data?</strong> Expand any row and click{" "}
-            <span className="font-semibold text-stone-500">Mark as collected</span> to track your progress and filter out what's done.
+          <h3 className="text-sm font-semibold text-stone-800">How to use this list</h3>
+          <p className="text-[13px] text-stone-500 mt-0.5 leading-relaxed">
+            All {items.length} BRSR fields, pre-checked against your client's filings. Expand any row for how to collect it, then <span className="font-medium text-stone-600">Mark as collected</span> to track progress.
           </p>
         </div>
       </div>
