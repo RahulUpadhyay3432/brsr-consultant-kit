@@ -51,12 +51,24 @@ Lead with only what the consultant *does*: the gap, "How to collect," and (for P
 
 `refactoring-ui`: grayscale-first hierarchy so the eye lands on the action; an elevation ramp so surfaces aren't all on one flat plane; the gap-analysis stats get real presence. `emil-design-eng`: interaction polish. Restraint intact — no glass, no gradients, no flashy SaaS.
 
-## Phased plan (each phase shown before the next)
+## Phased plan
 
-- [ ] **Phase 1 — Workspace consolidation** (this is the big lever): 3 tabs, merge Frameworks + Ratings into Alignment.
-- [ ] **Phase 2 — Expanded row action-first**: tuck reference content; tighten copy.
-- [ ] **Phase 3 — Framework grid**: condense the mapping table inside Alignment.
-- [ ] **Phase 4 — Depth + hierarchy** (`refactoring-ui`): elevation ramp, stat presence, hierarchy contrast.
-- [ ] **Phase 5 — Polish** (`emil-design-eng`) + slop-detector backstop (`impeccable`).
+Consultant feedback (2026-06-10) raised the bar from "consolidate" to **point-of-parity with the
+professional software they already use** (Vanta, Drata, Thoropass, Watershed, Ramp, Linear). The
+common pattern across all of them — a **left-nav app shell + an Overview dashboard** — became the spine.
 
-Every change traces to a named principle, so it is defensible, not taste.
+- [x] **Workspace consolidation** → evolved into a **left-nav app shell** (client context + workspace
+  rail + content), replacing stacked tabs/accordions. Frameworks + Ratings merged into one Alignment view.
+- [x] **Overview dashboard** (maps to our data, no dummy data): stat cards (Ready / Verify / Collect /
+  Total) + a status bar over the 108 + where-to-start. Adapted from Thoropass's "Program Overview."
+- [x] **Status pills** on every row; **per-principle status mini-bars** in group headers.
+- [x] **Trim verbose cards**; gap-analysis hero; bigger titles.
+- [x] **Removed** the redundant 9-principle readiness grid (duplicated the sidebar + mini-bars).
+- [ ] **Expanded-row depth**: card-in-card layering (raised action zone, recessed reference).
+- [ ] **Densify** the Alignment framework table; broader polish (`refactoring-ui` / `emil-design-eng`).
+- [ ] **Consultant retest** once the shell + depth land.
+
+Reference grammar we copy freely (per consultant direction — "copying is fine if it serves the user"):
+left-nav shell, stat-card overview, segmented status bars, status pills, dense clean tables, card layering.
+We do **not** copy their brand colors or fake charts over data we don't have. Every change maps to a named
+pattern or principle.
