@@ -43,9 +43,10 @@ export default function Home() {
 
   const handleBack = () => {
     setReport(null);
-    // New report → clear the persisted session (form + checklist working state).
+    // New report → clear the persisted session (form + checklist + materiality shortlist).
     removeKey(STORAGE_KEYS.form);
     removeKey(STORAGE_KEYS.checklist);
+    removeKey(STORAGE_KEYS.materiality);
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 

@@ -40,4 +40,5 @@ export function removeKey(key: string): void {
 export const STORAGE_KEYS = {
   form: "session.form",
   checklist: "session.checklist",
+  materiality: "session.materiality",
 } as const;
