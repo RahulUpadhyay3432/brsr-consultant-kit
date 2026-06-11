@@ -74,7 +74,7 @@ A separate RAG chatbot (Python, on Hugging Face Spaces, trained on BRSR/CBAM/CCT
 ### `brsr_data_points.json`
 - Source: ICAI Background Material on BRSR (Revised Edition 2024) + SEBI March 2025 amendments
 - Structure: `{ principles: [{ id, essential_indicators: [{id, label, unit, measurement_guidance, page}], leadership_indicators: [...] }], section_a_…, section_b_… }`
-- 9 Principles, 72 essential + 40 leadership = 112 data points (checklist surfaces 108). `page` = ICAI Background Material page, surfaced as the SEBI source citation.
+- 9 Principles, 68 essential + 40 leadership = 108 data points (all surfaced in the checklist). `page` = ICAI Background Material page, surfaced as the SEBI source citation. (Section A = 26 datapoints in 11 grouped rows; Section B = 12.)
 
 ### `compliance_overlaps.json`
 - Maps existing compliance filings to BRSR fields they already cover

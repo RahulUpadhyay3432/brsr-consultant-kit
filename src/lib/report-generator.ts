@@ -318,6 +318,12 @@ function findOverlap(
   return null;
 }
 
+// Remove internal sourcing/provenance markers (e.g. "[from_guide]") that were
+// authored into the knowledge base but must never appear in client-facing text.
+function cleanRationale(text: string): string {
+  return (text || "").replace(/\s*\[from[_\s][^\]]*\]/gi, "").replace(/\s+/g, " ").trim();
+}
+
 function generateMaterialityTopics(formData: IntakeFormData): MaterialityTopic[] {
   const industries = (industryData as any).industries;
   const industryKey = formData.industry;
@@ -365,7 +371,9 @@ function generateMaterialityTopics(formData: IntakeFormData): MaterialityTopic[]
         topic: topic.topic,
         category,
         brsr_principles: topic.brsr_principles,
-        why_material: topic.why_material,
+        // Strip internal provenance tags (e.g. "[from_guide]") so they never
+        // surface in the client-facing materiality rationale.
+        why_material: cleanRationale(topic.why_material),
         stakeholder_importance: Math.round(Math.min(5, Math.max(1, stakeholderBase + variation)) * 10) / 10,
         business_impact: Math.round(Math.min(5, Math.max(1, businessBase - variation * 0.5)) * 10) / 10,
       });
