@@ -13,7 +13,8 @@ import esgRatingsData from "@/data/esg_ratings_mapping.json";
 
 interface ReportViewProps {
   report: ReportOutput;
-  onBack: () => void;
+  onBack: () => void;   // New report — clears the session
+  onEdit: () => void;   // Back to form — keeps answers pre-filled
 }
 
 const TABS = [
@@ -74,7 +75,7 @@ function TabIcon({ id, className }: { id: string; className?: string }) {
   return null;
 }
 
-export default function ReportView({ report, onBack }: ReportViewProps) {
+export default function ReportView({ report, onBack, onEdit }: ReportViewProps) {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [seedQuery, setSeedQuery] = useState("");      // global-search → Action Plan
   const industryLabel = INDUSTRY_LABELS[report.industry as IndustryType] || report.industry;
@@ -96,6 +97,7 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
         activeTab={activeTab}
         onNavigate={setActiveTab}
         onBack={onBack}
+        onEdit={onEdit}
       />
 
       {/* ── Main column — top bar + scrollable content ─────────────────────── */}
@@ -141,7 +143,7 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
 
 // ─── Sidebar — brand, workspace switcher, grouped nav, footer ─────────────────
 function Sidebar({
-  report, industryLabel, fieldCount, activeTab, onNavigate, onBack,
+  report, industryLabel, fieldCount, activeTab, onNavigate, onBack, onEdit,
 }: {
   report: ReportOutput;
   industryLabel: string;
@@ -149,6 +151,7 @@ function Sidebar({
   activeTab: TabId;
   onNavigate: (id: TabId) => void;
   onBack: () => void;
+  onEdit: () => void;
 }) {
   const initials = (report.companyName || "Client")
     .split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
@@ -178,8 +181,13 @@ function Sidebar({
     <aside className="no-print w-[244px] flex-shrink-0 h-screen sticky top-0 hidden lg:flex flex-col
       bg-white/55 backdrop-blur-sm border-r border-black/[0.06]">
 
-      {/* Brand */}
-      <div className="h-14 flex items-center gap-2.5 px-4 border-b border-black/[0.05]">
+      {/* Brand — clicking returns to the intake form (answers stay pre-filled) */}
+      <button
+        onClick={onEdit}
+        aria-label="Back to form"
+        className="group h-14 flex items-center gap-2.5 px-4 border-b border-black/[0.05] w-full text-left
+          hover:bg-stone-100/50 transition-colors pressable"
+      >
         <div className="w-[26px] h-[26px] rounded-md bg-[#111111] flex items-center justify-center flex-shrink-0">
           <span className="text-[10px] font-bold text-white leading-none tracking-tight">BK</span>
         </div>
@@ -187,7 +195,7 @@ function Sidebar({
           <p className="text-[13px] font-semibold text-stone-900 tracking-[-0.01em]">BRSR Kit</p>
           <p className="text-[10.5px] text-stone-400">Readiness workspace</p>
         </div>
-      </div>
+      </button>
 
       {/* Workspace / client identity */}
       <div className="px-3 pt-3">
@@ -235,7 +243,17 @@ function Sidebar({
       </nav>
 
       {/* Footer */}
-      <div className="px-3 py-3 border-t border-black/[0.05] space-y-2.5">
+      <div className="px-3 py-3 border-t border-black/[0.05] space-y-1">
+        <button
+          onClick={onEdit}
+          className="inline-flex items-center gap-2 w-full px-2.5 py-2 rounded-lg text-[13px] font-medium
+            text-stone-600 hover:bg-stone-100/70 transition-colors pressable"
+        >
+          <svg className="w-4 h-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to form
+        </button>
         <button
           onClick={onBack}
           className="inline-flex items-center gap-2 w-full px-2.5 py-2 rounded-lg text-[13px] font-medium
@@ -246,7 +264,7 @@ function Sidebar({
           </svg>
           New report
         </button>
-        <div className="flex items-center gap-1.5 px-2.5">
+        <div className="flex items-center gap-1.5 px-2.5 pt-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
           <span className="text-[10.5px] text-stone-400 tracking-tight">No data stored · No login</span>
         </div>

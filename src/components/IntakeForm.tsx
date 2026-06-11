@@ -22,6 +22,9 @@ import CompanyAutocomplete from "./CompanyAutocomplete";
 interface IntakeFormProps {
   onSubmit: (data: IntakeFormData) => void;
   isLoading: boolean;
+  // When returning from a generated report to edit, the prior answers are
+  // passed back in so the consultant doesn't have to re-enter everything.
+  initialData?: IntakeFormData;
 }
 
 const EXPORT_MARKETS: ExportMarket[] = ["EU", "USA", "UK", "Middle East", "Southeast Asia", "None"];
@@ -34,8 +37,8 @@ const SIZE_OPTIONS: { key: CompanySize; title: string; sub: string }[] = [
   { key: "unlisted_not_in_value_chain", title: "Unlisted",                  sub: "Not in a listed value chain" },
 ];
 
-export default function IntakeForm({ onSubmit, isLoading }: IntakeFormProps) {
-  const [formData, setFormData] = useState<IntakeFormData>({
+export default function IntakeForm({ onSubmit, isLoading, initialData }: IntakeFormProps) {
+  const [formData, setFormData] = useState<IntakeFormData>(initialData ?? {
     companyName: "",
     industry: "textile_and_apparel",
     sector: inferDefaultSector("textile_and_apparel"),

@@ -49,10 +49,17 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
+  // "Back to form" → return to the intake form WITHOUT clearing the session, so
+  // the consultant's answers stay pre-filled and they can tweak and regenerate.
+  const handleEdit = () => {
+    setReport(null);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
+
   // When a report exists, ReportView is a full-screen app shell (its own top bar
   // + sidebar), so we render it standalone instead of inside the landing chrome.
   if (report) {
-    return <ReportView report={report} onBack={handleBack} />;
+    return <ReportView report={report} onBack={handleBack} onEdit={handleEdit} />;
   }
 
   return (
@@ -152,7 +159,11 @@ export default function Home() {
                 shadow-[0_2px_20px_rgba(100,80,40,0.08)] p-6 sm:p-10"
               style={{ animationDelay: "270ms" }}
             >
-              <IntakeForm onSubmit={handleSubmit} isLoading={isLoading} />
+              <IntakeForm
+                onSubmit={handleSubmit}
+                isLoading={isLoading}
+                initialData={loadJSON<IntakeFormData | null>(STORAGE_KEYS.form, null) ?? undefined}
+              />
             </div>
 
             {/* ── What you get — staggered cascade after form ───────────── */}
