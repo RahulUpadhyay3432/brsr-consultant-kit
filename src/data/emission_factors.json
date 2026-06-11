@@ -6,11 +6,11 @@
     "note": "Factors use IPCC AR5 100-yr GWPs (CH4=28, N2O=265) aligned with GHG Protocol. Verify against latest CEA publication and BEE guidance each filing year. Annual upkeep of the grid factor is the consultant's responsibility."
   },
   "scope2_grid": {
-    "factor_kg_co2_per_kwh": 0.717,
-    "factor_display": "0.717 kgCO₂/kWh",
-    "fy": "2022-23",
-    "source": "Central Electricity Authority, CO2 Baseline Database for the Indian Power Sector, Version 19.0 (FY 2022-23) — National Grid Emission Factor (combined margin)",
-    "source_short": "CEA Version 19.0, FY 2022-23"
+    "factor_kg_co2_per_kwh": 0.710,
+    "factor_display": "0.710 kgCO₂/kWh",
+    "fy": "2024-25",
+    "source": "Central Electricity Authority, CO2 Baseline Database for the Indian Power Sector, Version 21.0 (November 2025), FY 2024-25 — National Grid weighted-average emission factor (incl. renewables, adjusted for cross-border transfers). This is the grid-average factor CEA itself applies for electricity-consumption footprinting (User Guide §6.2); it is the correct basis for corporate Scope 2, not the CDM combined margin.",
+    "source_short": "CEA Version 21.0, FY 2024-25"
   },
   "scope1_fuels": [
     {

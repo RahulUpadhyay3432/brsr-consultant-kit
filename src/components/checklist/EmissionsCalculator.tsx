@@ -286,7 +286,7 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
               </p>
               <p>
                 <span className="font-medium text-stone-500">Scope 2 factor:</span>{" "}
-                CEA CO₂ Baseline Database for the Indian Power Sector, Version 19.0, FY 2022-23.{" "}
+                CEA CO₂ Baseline Database for the Indian Power Sector, Version 21.0, FY 2024-25.{" "}
                 <span className="italic">Update annually from cea.nic.in before filing.</span>
               </p>
               <p>

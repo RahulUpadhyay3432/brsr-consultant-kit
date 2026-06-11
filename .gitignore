@@ -20,6 +20,10 @@
 .DS_Store
 *.pem
 
+# local reference docs (source PDFs, scratch exports) — not part of the app
+*.pdf
+/BRSR Consultant Kit.html
+
 # debug
 npm-debug.log*
 yarn-debug.log*
