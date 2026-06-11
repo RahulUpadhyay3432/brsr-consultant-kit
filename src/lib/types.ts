@@ -79,6 +79,16 @@ export interface ChecklistItem {
   page?: number | string; // ICAI Background Material page reference for SEBI source citation
 }
 
+// Section A / B disclosure — entity-level and management-process disclosures.
+// Unlike the Section-C principle indicators these are factual / policy items
+// collected from the client's own records, not gap-analysed against filings.
+export interface SectionDisclosure {
+  id: string;
+  label: string;
+  page?: number | string;
+  amendment?: boolean;
+}
+
 // Materiality topic with scoring
 export interface MaterialityTopic {
   id: string;
@@ -110,6 +120,7 @@ export interface ReportOutput {
   selectedFilings: ExistingFiling[];
   generatedAt: string;
   checklist: ChecklistItem[];
+  generalDisclosures: { sectionA: SectionDisclosure[]; sectionB: SectionDisclosure[] };
   materialityTopics: MaterialityTopic[];
   frameworkMappings: FrameworkMapping[];
   summary: {

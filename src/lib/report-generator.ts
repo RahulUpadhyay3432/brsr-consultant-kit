@@ -1,6 +1,7 @@
 import type {
   IntakeFormData,
   ChecklistItem,
+  SectionDisclosure,
   MaterialityTopic,
   FrameworkMapping,
   ReportOutput,
@@ -74,6 +75,7 @@ const MANUFACTURING_ONLY = new Set<string>([
 
 export function generateReport(formData: IntakeFormData): ReportOutput {
   const checklist = generateChecklist(formData);
+  const generalDisclosures = generateGeneralDisclosures();
   const materialityTopics = generateMaterialityTopics(formData);
   const frameworkMappings = generateFrameworkMappings(formData);
 
@@ -88,6 +90,7 @@ export function generateReport(formData: IntakeFormData): ReportOutput {
     selectedFilings: formData.existingFilings,
     generatedAt: new Date().toISOString(),
     checklist,
+    generalDisclosures,
     materialityTopics,
     frameworkMappings,
     summary: {
@@ -166,6 +169,24 @@ function generateChecklist(formData: IntakeFormData): ChecklistItem[] {
   }
 
   return items;
+}
+
+// Section A (general/entity disclosures) + Section B (management & process /
+// NGRBC policy architecture). These are the same for every client — they're
+// collected from the client's own records, not gap-analysed against filings —
+// so they're surfaced verbatim from the knowledge base.
+function generateGeneralDisclosures(): ReportOutput["generalDisclosures"] {
+  const data = brsrData as any;
+  const map = (x: any): SectionDisclosure => ({
+    id: x.id,
+    label: x.label,
+    page: x.page,
+    amendment: x.amendment,
+  });
+  return {
+    sectionA: (data.section_a_general_disclosures ?? []).map(map),
+    sectionB: (data.section_b_management_process_disclosures ?? []).map(map),
+  };
 }
 
 interface TrackedMetric {

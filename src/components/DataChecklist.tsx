@@ -1,14 +1,20 @@
 "use client";
 
-import type { ChecklistItem } from "@/lib/types";
-import { PRINCIPLES, STATUS_META, type StatusKey, type TypeKey } from "./checklist/constants";
+import { useState } from "react";
+import type { ChecklistItem, SectionDisclosure } from "@/lib/types";
+import { PRINCIPLES, STATUS_META, SEBI_BRSR_FORMAT_URL, type StatusKey, type TypeKey } from "./checklist/constants";
 import { useChecklistState } from "./checklist/useChecklistState";
 import UploadCard from "./checklist/UploadCard";
 import PrincipleSection from "./checklist/PrincipleSection";
 
+type GeneralDisclosures = { sectionA: SectionDisclosure[]; sectionB: SectionDisclosure[] };
+
 // ─── Main component ────────────────────────────────────────────────────────────
-export default function DataChecklist({ items, seedQuery }: { items: ChecklistItem[]; seedQuery?: string }) {
+export default function DataChecklist({ items, general, seedQuery }: { items: ChecklistItem[]; general: GeneralDisclosures; seedQuery?: string }) {
   const c = useChecklistState(items, seedQuery);
+  // Sections A & B are only relevant when no gap-analysis filter is narrowing
+  // the view (they aren't part of the Section-C status/principle/type filters).
+  const abVisible = c.statusFilter === "all" && c.principleFilter === "all" && c.typeFilter === "all";
   const essentialCount  = items.filter(i => i.indicator_type === "essential").length;
   const leadershipCount = items.filter(i => i.indicator_type === "leadership").length;
 
@@ -34,10 +40,13 @@ export default function DataChecklist({ items, seedQuery }: { items: ChecklistIt
           Action Plan
         </h1>
         <p className="text-[13px] text-stone-500 mt-1 max-w-[72ch] leading-relaxed">
-          All {items.length} BRSR disclosure fields with their gap status. Open a row for how to collect it,
-          the SEBI source, and — for emissions — an audit-ready calculator.
+          The full BRSR — Section A &amp; B entity disclosures, plus the {items.length} principle fields (Section C)
+          with their gap status. Open a row for how to collect it, the SEBI source, and — for emissions — a calculator.
         </p>
       </div>
+
+      {/* ── Sections A & B — entity & governance disclosures ────────────────── */}
+      {abVisible && <GeneralDisclosuresCard general={general} search={c.search} />}
 
       {/* ── Upload last year's report — client-side, privacy-safe ───────────── */}
       <UploadCard
@@ -176,7 +185,10 @@ export default function DataChecklist({ items, seedQuery }: { items: ChecklistIt
         </div>
       )}
 
-      {/* ── Sections ────────────────────────────────────────────────────────── */}
+      {/* ── Section C — principle-wise performance (the gap analysis) ───────── */}
+      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-stone-400 px-0.5 pt-1">
+        Section C · Principle-wise performance
+      </p>
       <div className="border border-stone-200 rounded-xl overflow-hidden bg-white">
         {/* Column header */}
         <div className="flex items-center bg-stone-100 px-4 py-2.5 gap-3 border-b border-stone-200">
@@ -211,6 +223,102 @@ export default function DataChecklist({ items, seedQuery }: { items: ChecklistIt
             />
           ))
         )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Sections A & B — entity + governance disclosures (not gap-analysed) ──────
+function GeneralDisclosuresCard({ general, search }: { general: GeneralDisclosures; search: string }) {
+  const q = search.toLowerCase().trim();
+  const filt = (arr: SectionDisclosure[]) =>
+    q ? arr.filter(d => d.label.toLowerCase().includes(q) || d.id.toLowerCase().includes(q)) : arr;
+  const a = filt(general.sectionA);
+  const b = filt(general.sectionB);
+  if (q && a.length === 0 && b.length === 0) return null; // nothing matches the search
+  const total = general.sectionA.length + general.sectionB.length;
+
+  return (
+    <div className="border border-stone-200 rounded-xl overflow-hidden bg-white">
+      <div className="px-4 py-3 border-b border-stone-100 flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <h3 className="text-[14px] font-semibold text-stone-800">Sections A &amp; B · Entity &amp; governance disclosures</h3>
+          <p className="text-[12px] text-stone-500 mt-0.5 leading-relaxed max-w-[70ch]">
+            The {total} entity-level and policy disclosures every BRSR opens with — collected from the client&apos;s
+            own records, not gap-analysed against filings.
+          </p>
+        </div>
+        <a
+          href={SEBI_BRSR_FORMAT_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-[11.5px] font-medium text-brand-700 hover:text-brand-800 pressable flex-shrink-0 mt-0.5"
+        >
+          SEBI source
+          <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+      </div>
+      <SectionBlock tag="A" title="Section A · General disclosures"
+        hint="Pull from the client's MCA filings, annual report and HR records."
+        items={a} forceOpen={!!q} />
+      <SectionBlock tag="B" title="Section B · Management & process"
+        hint="From the client's board-approved policies and governance records."
+        items={b} forceOpen={!!q} />
+    </div>
+  );
+}
+
+function SectionBlock({
+  tag, title, hint, items, forceOpen,
+}: {
+  tag: string; title: string; hint: string; items: SectionDisclosure[]; forceOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  if (items.length === 0) return null;
+  const showOpen = open || !!forceOpen;
+
+  return (
+    <div className="border-t border-stone-100">
+      <button
+        onClick={() => setOpen(o => !o)}
+        aria-expanded={showOpen}
+        className="w-full flex items-center gap-2.5 px-4 py-2.5 hover:bg-stone-50 transition-colors text-left group pressable"
+      >
+        <span className="text-[11px] font-bold font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">{tag}</span>
+        <span className="text-[13px] font-semibold text-stone-700 group-hover:text-stone-900">{title}</span>
+        <span className="ml-auto flex items-center gap-2.5">
+          <span className="text-[11px] text-stone-400 tabular-nums">{items.length} items</span>
+          <svg aria-hidden="true"
+            className={`w-4 h-4 text-stone-400 transition-transform duration-200 flex-shrink-0 ${showOpen ? "" : "-rotate-90"}`}
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </button>
+
+      <div
+        className={`grid transition-[grid-template-rows] duration-200 ${showOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+        style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
+      >
+        <div className="min-h-0 overflow-hidden">
+          <p className="px-4 py-2 text-[11.5px] text-stone-500 bg-stone-50/70 border-y border-stone-100">
+            <span className="font-medium text-stone-600">Where to collect:</span> {hint}
+          </p>
+          {items.map((d, i) => (
+            <div key={d.id}
+              className={`flex items-start gap-3 px-4 py-2.5 border-b border-stone-100 last:border-b-0 ${i % 2 ? "bg-stone-50/40" : ""}`}>
+              <span className="text-[10px] font-bold font-mono text-stone-400 flex-shrink-0 w-[82px] pt-0.5">{d.id}</span>
+              <span className="text-[13px] text-stone-700 leading-relaxed flex-1 min-w-0">{d.label}</span>
+              {d.page != null && (
+                <span className="text-[10px] text-stone-400 flex-shrink-0 whitespace-nowrap pt-0.5">
+                  {typeof d.page === "number" ? `ICAI p.${d.page}` : d.page}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

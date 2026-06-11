@@ -20,7 +20,7 @@ Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUp
 
 After the intake form is submitted, `ReportView` shows a header (client identity + gap-analysis stats) and **two tabs**, with two more outputs as accordions below them:
 
-1. **Action Plan (BRSR Data Collection Checklist)** — Tab 1. All BRSR disclosure fields (P1–P9, Essential + Leadership), grouped by principle in collapsible sections. The UI surfaces **108 fields**. Each field has a status:
+1. **Action Plan (BRSR Data Collection Checklist)** — Tab 1. Covers the **full BRSR**: a **Sections A & B card** at the top (collapsible "Section A · General disclosures" + "Section B · Management & process" — the ~23 entity/policy disclosures from `brsr_data_points.json`, rendered verbatim with SEBI page citations and a "where to collect" hint; these are *not* gap-analysed and are **excluded from the readiness gauge / status counts**, and hidden when a gap filter is active), then the **Section C** principle-wise gap analysis (P1–P9, Essential + Leadership), grouped by principle in collapsible sections. The UI surfaces **108 Section-C fields**. Each Section-C field has a status:
    - `already_tracked` → **"Ready to pull"** (emerald) — data exists in an existing filing
    - `partially_tracked` → **"Needs verification"** (amber) — partially covered, one piece missing; the collapsed row shows an inline `Missing: …` note
    - `new_data_needed` → **"Collect fresh"** (stone) — not in any filing

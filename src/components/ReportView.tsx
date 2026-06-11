@@ -119,7 +119,7 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
               {activeTab === "overview" && (
                 <Overview report={report} onGoToPlan={() => setActiveTab("checklist")} onBack={onBack} />
               )}
-              {activeTab === "checklist"   && <DataChecklist items={report.checklist} seedQuery={seedQuery} />}
+              {activeTab === "checklist"   && <DataChecklist items={report.checklist} general={report.generalDisclosures} seedQuery={seedQuery} />}
               {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} />}
               {activeTab === "alignment"   && <AlignmentWorkspace mappings={report.frameworkMappings} />}
             </div>
@@ -373,7 +373,7 @@ function Overview({
           <p className="text-[13px] text-stone-500 mt-1 max-w-[68ch] leading-relaxed">
             A live readiness picture for{" "}
             <strong className="font-semibold text-stone-700">{report.companyName || "this company"}</strong>{" "}
-            across all {applicableFields} BRSR disclosure fields — what&apos;s already covered, what to verify, and what to collect
+            across the {applicableFields} principle-wise BRSR fields (Section C) — what&apos;s already covered, what to verify, and what to collect
             {notApplicable > 0 && <> ({notApplicable} manufacturing-only marked <span className="font-medium text-slate-500">Not applicable</span>)</>}.
           </p>
         </div>
