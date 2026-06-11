@@ -83,6 +83,21 @@ const SIGNALS: Record<string, string[]> = {
   "P9-E1": ["consumer complaints and feedback", "receive and respond to consumer complaints"],
   "P9-E5": ["cyber security", "data privacy", "information security"],
   "P9-E7": ["data breaches", "personally identifiable information"],
+
+  // ── Section B · Management & process (policies/governance) ──────────────
+  // Policies and governance architecture rarely change year to year, so this
+  // is the strongest case for "found in last year's report" detection.
+  "SB-1":  ["core elements of the ngrbc", "core elements of ngrbc", "policies cover each principle"],
+  "SB-2":  ["translated the policy into procedures", "translated into procedures"],
+  "SB-3":  ["extend to your value chain partners", "extend to value chain partners"],
+  "SB-4":  ["national and international codes", "certifications/labels/standards"],
+  "SB-5":  ["specific commitments, goals", "goals and targets set by the entity"],
+  "SB-6":  ["performance against the specific commitments", "reasons for non-achievement"],
+  "SB-7":  ["statement by director responsible", "statement of the director responsible"],
+  "SB-8":  ["highest authority responsible for implementation"],
+  "SB-9":  ["specified committee of the board", "decision making on sustainability"],
+  "SB-10": ["review of ngrbcs by the company", "review of ngrbc"],
+  "SB-11": ["independent assessment", "evaluation of its policies"],
 };
 
 const SNIPPET_RADIUS = 90;

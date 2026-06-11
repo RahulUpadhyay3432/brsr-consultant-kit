@@ -25,7 +25,16 @@ interface ChecklistPersist {
   collapsedSections?: string[];
 }
 
-export function useChecklistState(items: ChecklistItem[], seedQuery?: string) {
+// Sections A & B disclosure ids (e.g. SA-1, SB-1) — passed in so the upload
+// detection count + "mark all detected" include policy disclosures, not just
+// the Section-C fields.
+type GeneralLike = { sectionA: { id: string }[]; sectionB: { id: string }[] };
+
+export function useChecklistState(items: ChecklistItem[], general: GeneralLike, seedQuery?: string) {
+  const abIds = useMemo(
+    () => [...general.sectionA, ...general.sectionB].map(d => d.id),
+    [general]
+  );
   const [statusFilter,      setStatusFilter]      = useState<StatusKey | "all">("all");
   const [principleFilter,   setPrincipleFilter]   = useState<string>("all");
   const [typeFilter,        setTypeFilter]        = useState<TypeKey>("all");
@@ -109,10 +118,12 @@ export function useChecklistState(items: ChecklistItem[], seedQuery?: string) {
     () => new Set(detection?.detectedIds ?? []),
     [detection]
   );
-  // Only count detections that correspond to fields actually in this report.
+  // Only count detections that correspond to disclosures actually in this report
+  // — Section-C fields plus the Section A & B (policy) disclosures.
   const detectedInReport = useMemo(
-    () => items.filter(i => detectedSet.has(i.id)).length,
-    [items, detectedSet]
+    () => items.filter(i => detectedSet.has(i.id)).length
+        + abIds.filter(id => detectedSet.has(id)).length,
+    [items, abIds, detectedSet]
   );
 
   async function handleFile(file: File) {
@@ -147,6 +158,7 @@ export function useChecklistState(items: ChecklistItem[], seedQuery?: string) {
     setCollectedIds(prev => {
       const next = new Set(prev);
       for (const i of items) if (detectedSet.has(i.id)) next.add(i.id);
+      for (const id of abIds) if (detectedSet.has(id)) next.add(id);
       return next;
     });
   }

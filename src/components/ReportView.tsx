@@ -9,6 +9,7 @@ import FrameworkMapper from "./FrameworkMapper";
 import EsgRatingsMapper from "./EsgRatingsMapper";
 import SourcesPanel from "./SourcesPanel";
 import { PRINCIPLES } from "./checklist/constants";
+import { loadJSON, STORAGE_KEYS } from "@/lib/storage";
 import esgRatingsData from "@/data/esg_ratings_mapping.json";
 
 interface ReportViewProps {
@@ -395,6 +396,24 @@ function Overview({
     { n: newDataNeeded,    label: "Collect fresh",     sub: "no existing source",         dot: "bg-stone-400",   num: "text-stone-700" },
   ];
 
+  // Sections A & B aren't gap-analysed, but they're still collected work. Read
+  // the consultant's progress (collected + last-year detections) from the
+  // persisted checklist state so the Overview reflects it. Re-reads on each
+  // mount — and Overview remounts on every tab switch, so it stays current.
+  const abTotal = report.generalDisclosures.sectionA.length + report.generalDisclosures.sectionB.length;
+  const [abProgress, setAbProgress] = useState({ collected: 0, detected: 0 });
+  useEffect(() => {
+    const saved = loadJSON<{ collectedIds?: string[]; detection?: { detectedIds?: string[] } | null } | null>(
+      STORAGE_KEYS.checklist, null
+    );
+    const abIds = new Set(
+      [...report.generalDisclosures.sectionA, ...report.generalDisclosures.sectionB].map(d => d.id)
+    );
+    const collected = (saved?.collectedIds ?? []).filter(id => abIds.has(id)).length;
+    const detected  = (saved?.detection?.detectedIds ?? []).filter(id => abIds.has(id)).length;
+    setAbProgress({ collected, detected });
+  }, [report]);
+
   return (
     <div className="space-y-4">
 
@@ -490,6 +509,41 @@ function Overview({
           ))}
         </div>
       </div>
+
+      {/* General disclosures (Sections A & B) — collection progress, not gap-analysed */}
+      <button
+        onClick={onGoToPlan}
+        className="group w-full text-left bg-white rounded-xl border border-stone-200 p-4 sm:p-5
+          shadow-[0_1px_3px_rgba(80,60,30,0.04)] hover:border-stone-300 transition-colors pressable
+          flex items-center gap-4 flex-wrap sm:flex-nowrap"
+      >
+        <span className="flex-shrink-0 text-[11px] font-bold font-mono px-2 py-1 rounded bg-slate-100 text-slate-600 border border-slate-200">A·B</span>
+        <div className="min-w-0 flex-1">
+          <p className="text-[14px] font-semibold text-stone-800">General disclosures · Sections A &amp; B</p>
+          <p className="text-[12px] text-stone-500 mt-0.5 leading-relaxed">
+            The {abTotal} entity facts &amp; policies every BRSR opens with — collected from the client&apos;s own
+            records, separate from the Section-C gap analysis above.
+          </p>
+        </div>
+        <div className="flex items-center gap-4 flex-shrink-0">
+          <div className="text-right">
+            <p className="text-[20px] font-semibold tabular-nums text-stone-900 leading-none">
+              {abProgress.collected}<span className="text-stone-300">/{abTotal}</span>
+            </p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-stone-400 mt-1">Collected</p>
+          </div>
+          {abProgress.detected > 0 && (
+            <span className="inline-flex items-center gap-1.5 text-[11.5px] font-medium text-indigo-700
+              bg-indigo-50 border border-indigo-100 px-2 py-1 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
+              {abProgress.detected} from last year
+            </span>
+          )}
+          <svg className="w-4 h-4 text-stone-300 group-hover:text-stone-500 transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </button>
 
       {/* Readiness by principle + Where to start */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
