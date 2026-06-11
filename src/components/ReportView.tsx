@@ -7,6 +7,7 @@ import DataChecklist from "./DataChecklist";
 import MaterialityMatrix from "./MaterialityMatrix";
 import FrameworkMapper from "./FrameworkMapper";
 import EsgRatingsMapper from "./EsgRatingsMapper";
+import SourcesPanel from "./SourcesPanel";
 import { PRINCIPLES } from "./checklist/constants";
 import esgRatingsData from "@/data/esg_ratings_mapping.json";
 
@@ -22,7 +23,8 @@ const TABS = [
   { id: "alignment",   label: "Alignment" },
 ] as const;
 
-type TabId = (typeof TABS)[number]["id"];
+// "sources" is a reference panel, not a workspace step, so it lives outside TABS.
+type TabId = (typeof TABS)[number]["id"] | "sources";
 
 // SVG nav icons — consistent stroke weight, no emoji.
 function TabIcon({ id, className }: { id: string; className?: string }) {
@@ -61,6 +63,12 @@ function TabIcon({ id, className }: { id: string; className?: string }) {
     <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
       <path d="M7.5 1.5v8M4.5 6.5l3 3 3-3" />
       <path d="M2 11.5v1a1 1 0 001 1h9a1 1 0 001-1v-1" />
+    </svg>
+  );
+  if (id === "sources") return (
+    <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2.5 2.5h4a1.5 1.5 0 011.5 1.5v8a1.5 1.5 0 00-1.5-1.5h-4z" />
+      <path d="M12.5 2.5h-4A1.5 1.5 0 007 4v8a1.5 1.5 0 011.5-1.5h4z" />
     </svg>
   );
   return null;
@@ -122,6 +130,7 @@ export default function ReportView({ report, onBack }: ReportViewProps) {
               {activeTab === "checklist"   && <DataChecklist items={report.checklist} general={report.generalDisclosures} seedQuery={seedQuery} />}
               {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} />}
               {activeTab === "alignment"   && <AlignmentWorkspace mappings={report.frameworkMappings} />}
+              {activeTab === "sources"     && <SourcesPanel />}
             </div>
           </div>
         </main>
@@ -203,6 +212,13 @@ function Sidebar({
                 ? <span className={`text-[11px] tabular-nums font-semibold ${activeTab === "checklist" ? "text-brand-700" : "text-stone-400"}`}>{fieldCount}</span>
                 : undefined)
             )}
+          </div>
+        </div>
+
+        <div>
+          <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Reference</p>
+          <div className="space-y-0.5">
+            {navItem({ id: "sources", label: "Sources" })}
           </div>
         </div>
 
