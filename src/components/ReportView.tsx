@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import type { ReportOutput, FrameworkMapping } from "@/lib/types";
 import { INDUSTRY_LABELS, FILING_LABELS, type IndustryType, type ExistingFiling } from "@/lib/types";
 import DataChecklist from "./DataChecklist";
 import MaterialityMatrix from "./MaterialityMatrix";
 import FrameworkMapper from "./FrameworkMapper";
 import EsgRatingsMapper from "./EsgRatingsMapper";
+import { PRINCIPLES } from "./checklist/constants";
+import esgRatingsData from "@/data/esg_ratings_mapping.json";
 
 interface ReportViewProps {
   report: ReportOutput;
@@ -16,8 +18,8 @@ interface ReportViewProps {
 const TABS = [
   { id: "overview",    label: "Overview" },
   { id: "checklist",   label: "Action Plan" },
-  { id: "materiality", label: "Suggested Materiality" },
-  { id: "alignment",   label: "Frameworks & Ratings" },
+  { id: "materiality", label: "Materiality" },
+  { id: "alignment",   label: "Alignment" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
@@ -55,95 +57,280 @@ function TabIcon({ id, className }: { id: string; className?: string }) {
       <path d="M4 7.5l7-4M4 7.5l7 4" />
     </svg>
   );
+  if (id === "deliver") return (
+    <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M7.5 1.5v8M4.5 6.5l3 3 3-3" />
+      <path d="M2 11.5v1a1 1 0 001 1h9a1 1 0 001-1v-1" />
+    </svg>
+  );
   return null;
 }
 
 export default function ReportView({ report, onBack }: ReportViewProps) {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
+  const [seedQuery, setSeedQuery] = useState("");      // global-search → Action Plan
   const industryLabel = INDUSTRY_LABELS[report.industry as IndustryType] || report.industry;
+  const fieldCount = report.checklist.length;
+
+  const goToPlanWithQuery = useCallback((q: string) => {
+    setSeedQuery(q);
+    setActiveTab("checklist");
+  }, []);
 
   return (
-    <div className="anim-up-sm w-full">
-      <div className="flex flex-col lg:flex-row lg:gap-6 lg:items-start">
+    <div className="anim-up-sm flex min-h-screen bg-[#F7F6F2]">
 
-        {/* ── Left rail — client context + workspace nav ─────────────────── */}
-        <aside className="lg:w-[220px] flex-shrink-0 mb-5 lg:mb-0">
-          <div className="lg:sticky lg:top-[72px] space-y-5">
+      {/* ── Sidebar ────────────────────────────────────────────────────────── */}
+      <Sidebar
+        report={report}
+        industryLabel={industryLabel}
+        fieldCount={fieldCount}
+        activeTab={activeTab}
+        onNavigate={setActiveTab}
+        onBack={onBack}
+      />
 
-            <button
-              onClick={onBack}
-              className="no-print inline-flex items-center gap-1.5 text-[13px] text-stone-400
-                hover:text-stone-700 transition-colors pressable"
-            >
-              <svg aria-hidden="true" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              New report
-            </button>
+      {/* ── Main column — top bar + scrollable content ─────────────────────── */}
+      <div className="flex-1 min-w-0 flex flex-col">
+        <TopBar onSearch={goToPlanWithQuery} />
 
-            {/* Client identity — prints at the top of the PDF */}
-            <div>
-              <h2 className="font-display text-[22px] font-normal text-stone-900 leading-tight tracking-tight">
-                {report.companyName || "Your Client"}
-              </h2>
-              <p className="text-[13px] text-stone-500 mt-0.5">{industryLabel} · BRSR Readiness</p>
+        <main className="flex-1 px-5 sm:px-8 lg:px-10 py-7">
+          <div className="max-w-[1180px] mx-auto">
+            {/* Breadcrumb + per-screen actions */}
+            <div className="flex items-center justify-between gap-4 mb-5">
+              <p className="text-[12px] text-stone-400 font-medium tracking-tight">
+                BRSR Readiness · FY 2025–26
+              </p>
+              <button
+                onClick={() => window.print()}
+                className="no-print inline-flex items-center gap-1.5 text-[12.5px] font-medium
+                  text-stone-600 bg-white border border-stone-200 hover:border-stone-300 hover:bg-stone-50
+                  px-3 py-1.5 rounded-lg pressable transition-colors shadow-sm"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
+                  <path strokeLinecap="round" strokeLinejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" aria-hidden="true" />
+                </svg>
+                Save as PDF
+              </button>
             </div>
 
-            {/* Workspace nav */}
-            <nav role="tablist" aria-label="Report sections"
-              className="no-print flex lg:flex-col gap-1 overflow-x-auto pb-1 -mx-1 px-1">
-              {TABS.map(tab => {
-                const active = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    role="tab"
-                    aria-selected={active}
-                    aria-controls={`${tab.id}-panel`}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13.5px] font-medium
-                      flex-shrink-0 whitespace-nowrap transition-colors pressable
-                      ${active ? "bg-forest text-white" : "text-stone-600 hover:bg-stone-100"}`}
-                  >
-                    <TabIcon id={tab.id} className={`flex-shrink-0 ${active ? "text-white" : "text-stone-400"}`} />
-                    {tab.label}
-                  </button>
-                );
-              })}
-            </nav>
-
-            <button
-              onClick={() => window.print()}
-              className="no-print inline-flex items-center justify-center gap-2 w-full text-[13px] font-medium
-                text-stone-600 bg-white border border-stone-200 hover:border-stone-300 hover:bg-stone-50
-                px-3.5 py-2 rounded-lg pressable transition-colors shadow-sm"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" aria-hidden="true" />
-              </svg>
-              Save as PDF
-            </button>
+            <div key={activeTab} role="tabpanel" id={`${activeTab}-panel`} className="tab-fade">
+              {activeTab === "overview" && (
+                <Overview report={report} onGoToPlan={() => setActiveTab("checklist")} onBack={onBack} />
+              )}
+              {activeTab === "checklist"   && <DataChecklist items={report.checklist} seedQuery={seedQuery} />}
+              {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} />}
+              {activeTab === "alignment"   && <AlignmentWorkspace mappings={report.frameworkMappings} />}
+            </div>
           </div>
-        </aside>
-
-        {/* ── Main content ───────────────────────────────────────────────── */}
-        <div className="flex-1 min-w-0">
-          <div key={activeTab} role="tabpanel" id={`${activeTab}-panel`} className="tab-fade">
-            {activeTab === "overview" && (
-              <Overview report={report} onGoToPlan={() => setActiveTab("checklist")} onBack={onBack} />
-            )}
-            {activeTab === "checklist"   && <DataChecklist items={report.checklist} />}
-            {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} />}
-            {activeTab === "alignment"   && <AlignmentWorkspace mappings={report.frameworkMappings} />}
-          </div>
-        </div>
+        </main>
       </div>
     </div>
   );
 }
 
+// ─── Sidebar — brand, workspace switcher, grouped nav, footer ─────────────────
+function Sidebar({
+  report, industryLabel, fieldCount, activeTab, onNavigate, onBack,
+}: {
+  report: ReportOutput;
+  industryLabel: string;
+  fieldCount: number;
+  activeTab: TabId;
+  onNavigate: (id: TabId) => void;
+  onBack: () => void;
+}) {
+  const initials = (report.companyName || "Client")
+    .split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
+
+  const navItem = (tab: { id: string; label: string }, badge?: React.ReactNode) => {
+    const active = activeTab === tab.id;
+    return (
+      <button
+        key={tab.id}
+        role="tab"
+        aria-selected={active}
+        aria-controls={`${tab.id}-panel`}
+        onClick={() => onNavigate(tab.id as TabId)}
+        className={`group relative flex items-center gap-2.5 w-full px-2.5 py-[7px] rounded-lg text-[13.5px] font-medium
+          transition-colors pressable
+          ${active ? "bg-brand-50 text-brand-800" : "text-stone-600 hover:bg-stone-100/70"}`}
+      >
+        {active && <span className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[3px] rounded-full bg-brand-600" />}
+        <TabIcon id={tab.id} className={`flex-shrink-0 ${active ? "text-brand-700" : "text-stone-400 group-hover:text-stone-500"}`} />
+        <span className="flex-1 text-left">{tab.label}</span>
+        {badge}
+      </button>
+    );
+  };
+
+  return (
+    <aside className="no-print w-[244px] flex-shrink-0 h-screen sticky top-0 hidden lg:flex flex-col
+      bg-white/55 backdrop-blur-sm border-r border-black/[0.06]">
+
+      {/* Brand */}
+      <div className="h-14 flex items-center gap-2.5 px-4 border-b border-black/[0.05]">
+        <div className="w-[26px] h-[26px] rounded-md bg-[#111111] flex items-center justify-center flex-shrink-0">
+          <span className="text-[10px] font-bold text-white leading-none tracking-tight">BK</span>
+        </div>
+        <div className="leading-tight">
+          <p className="text-[13px] font-semibold text-stone-900 tracking-[-0.01em]">BRSR Kit</p>
+          <p className="text-[10.5px] text-stone-400">Readiness workspace</p>
+        </div>
+      </div>
+
+      {/* Workspace / client identity */}
+      <div className="px-3 pt-3">
+        <div className="flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg bg-white border border-stone-200/80 shadow-sm">
+          <div className="w-7 h-7 rounded-md bg-brand-600 flex items-center justify-center flex-shrink-0">
+            <span className="text-[10.5px] font-bold text-white leading-none">{initials}</span>
+          </div>
+          <div className="leading-tight min-w-0">
+            <p className="text-[12.5px] font-semibold text-stone-800 truncate">{report.companyName || "Your Client"}</p>
+            <p className="text-[10.5px] text-stone-400 truncate">{industryLabel}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Nav groups */}
+      <nav role="tablist" aria-label="Workspace" className="flex-1 overflow-y-auto px-3 pt-4 space-y-5">
+        <div>
+          <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Workspace</p>
+          <div className="space-y-0.5">
+            {TABS.map(tab =>
+              navItem(tab, tab.id === "checklist"
+                ? <span className={`text-[11px] tabular-nums font-semibold ${activeTab === "checklist" ? "text-brand-700" : "text-stone-400"}`}>{fieldCount}</span>
+                : undefined)
+            )}
+          </div>
+        </div>
+
+        <div>
+          <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Output</p>
+          <div className="space-y-0.5">
+            <div className="flex items-center gap-2.5 w-full px-2.5 py-[7px] rounded-lg text-[13.5px] font-medium text-stone-300 cursor-not-allowed">
+              <TabIcon id="deliver" className="flex-shrink-0 text-stone-300" />
+              <span className="flex-1 text-left">Deliver</span>
+              <span className="text-[9px] font-bold uppercase tracking-[0.1em] text-stone-300 bg-stone-100 px-1.5 py-0.5 rounded">Soon</span>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* Footer */}
+      <div className="px-3 py-3 border-t border-black/[0.05] space-y-2.5">
+        <button
+          onClick={onBack}
+          className="inline-flex items-center gap-2 w-full px-2.5 py-2 rounded-lg text-[13px] font-medium
+            text-stone-600 hover:bg-stone-100/70 transition-colors pressable"
+        >
+          <svg className="w-4 h-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          New report
+        </button>
+        <div className="flex items-center gap-1.5 px-2.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
+          <span className="text-[10.5px] text-stone-400 tracking-tight">No data stored · No login</span>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+// ─── Top bar — global search + utility actions ───────────────────────────────
+function TopBar({ onSearch }: { onSearch: (q: string) => void }) {
+  const [draft, setDraft] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // "/" focuses the search from anywhere (unless already typing in a field).
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key !== "/") return;
+      const el = document.activeElement;
+      const typing = el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement;
+      if (typing) return;
+      e.preventDefault();
+      inputRef.current?.focus();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  return (
+    <header className="no-print sticky top-0 z-40 h-14 flex items-center gap-3 px-5 sm:px-8
+      bg-[#F7F6F2]/85 backdrop-blur-md border-b border-black/[0.06]">
+
+      {/* Search */}
+      <form
+        onSubmit={(e) => { e.preventDefault(); if (draft.trim()) onSearch(draft.trim()); }}
+        className="flex-1 max-w-[560px]"
+      >
+        <div className="relative">
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
+          </svg>
+          <input
+            ref={inputRef}
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            placeholder="Search fields, frameworks, topics…"
+            aria-label="Search the workspace"
+            className="w-full h-9 pl-9 pr-9 rounded-lg bg-white border border-stone-200
+              text-[13px] text-stone-700 placeholder:text-stone-400
+              focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors shadow-sm"
+          />
+          <kbd className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] font-medium text-stone-400
+            bg-stone-100 border border-stone-200 rounded px-1.5 py-0.5 leading-none">/</kbd>
+        </div>
+      </form>
+
+      <div className="flex-1" />
+
+      {/* Utility actions */}
+      <div className="flex items-center gap-1.5">
+        <a
+          href="https://huggingface.co/spaces/sherlockwatson221/climate-compliance"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 px-3 h-9 rounded-lg
+            border border-stone-200 bg-white text-[12.5px] font-medium text-stone-600
+            hover:border-brand-400 hover:text-brand-700 hover:bg-brand-50 transition-colors pressable shadow-sm"
+        >
+          <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+          </svg>
+          <span className="hidden sm:inline">Compliance Chat</span>
+          <svg className="w-2.5 h-2.5 text-stone-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+      </div>
+    </header>
+  );
+}
+
 // ─── Overview — the report's dashboard, mapped to our data (no dummy data) ────
+
+// Per-principle status breakdown, derived from the live checklist.
+function principleBreakdown(report: ReportOutput) {
+  const order = Object.keys(PRINCIPLES); // P1…P9
+  const map = new Map<string, { ready: number; verify: number; collect: number; na: number; total: number }>();
+  for (const item of report.checklist) {
+    const row = map.get(item.principle) ?? { ready: 0, verify: 0, collect: 0, na: 0, total: 0 };
+    if (item.status === "already_tracked") row.ready++;
+    else if (item.status === "partially_tracked") row.verify++;
+    else if (item.status === "new_data_needed") row.collect++;
+    else row.na++;
+    row.total++;
+    map.set(item.principle, row);
+  }
+  return order
+    .filter(p => map.has(p))
+    .map(p => ({ id: p, name: PRINCIPLES[p].name, ...map.get(p)! }));
+}
+
 function Overview({
   report, onGoToPlan, onBack,
 }: {
@@ -153,14 +340,25 @@ function Overview({
 }) {
   const { alreadyTracked, partiallyTracked, newDataNeeded, notApplicable, totalDataPoints } = report.summary;
   const applicableFields = totalDataPoints - notApplicable;
-  const noFilings = alreadyTracked + partiallyTracked === 0;
+  const sourced = alreadyTracked + partiallyTracked;       // fields with an existing source
+  const noFilings = sourced === 0;
   const filings = report.selectedFilings.filter(f => f !== "none");
 
+  // Weighted readiness: full credit for "Ready", half credit for "Verify".
+  const readyPct = applicableFields > 0
+    ? Math.round(((alreadyTracked + partiallyTracked * 0.5) / applicableFields) * 100)
+    : 0;
+
+  // Donut geometry.
+  const R = 52, C = 2 * Math.PI * R;
+
+  const breakdown = principleBreakdown(report);
+  const biggestGap = [...breakdown].sort((a, b) => b.collect - a.collect)[0];
+
   const stats = [
-    { n: alreadyTracked,   label: "Ready to pull",      sub: "In existing filings",   dot: "bg-emerald-500", num: alreadyTracked > 0 ? "text-emerald-600" : "text-stone-300" },
-    { n: partiallyTracked, label: "Needs verification", sub: "One piece missing",     dot: "bg-amber-400",   num: partiallyTracked > 0 ? "text-amber-600"  : "text-stone-300" },
-    { n: newDataNeeded,    label: "Collect fresh",      sub: "Not in any filing",     dot: "bg-stone-400",   num: "text-stone-700" },
-    { n: applicableFields, label: "Total to report",    sub: `of ${totalDataPoints} disclosures`, dot: "bg-slate-300", num: "text-stone-700" },
+    { n: alreadyTracked,   label: "Pull from filing", sub: "already in compliance docs", dot: "bg-emerald-500", num: alreadyTracked > 0 ? "text-emerald-600" : "text-stone-300" },
+    { n: partiallyTracked, label: "Verify & complete", sub: "partial data exists",        dot: "bg-amber-400",   num: partiallyTracked > 0 ? "text-amber-600"  : "text-stone-300" },
+    { n: newDataNeeded,    label: "Collect fresh",     sub: "no existing source",         dot: "bg-stone-400",   num: "text-stone-700" },
   ];
 
   return (
@@ -170,14 +368,13 @@ function Overview({
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
           <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">
-            Readiness overview
+            Overview
           </h1>
-          <p className="text-[13px] text-stone-500 mt-1 max-w-[64ch] leading-relaxed">
-            SEBI&apos;s BRSR framework requires{" "}
+          <p className="text-[13px] text-stone-500 mt-1 max-w-[68ch] leading-relaxed">
+            A live readiness picture for{" "}
             <strong className="font-semibold text-stone-700">{report.companyName || "this company"}</strong>{" "}
-            to report on <span className="font-semibold text-stone-700">{applicableFields} disclosure fields</span>{" "}
-            across 9 business responsibility principles
-            {notApplicable > 0 && <> — {notApplicable} manufacturing-only marked <span className="font-medium text-slate-500">Not applicable</span></>}.
+            across all {applicableFields} BRSR disclosure fields — what&apos;s already covered, what to verify, and what to collect
+            {notApplicable > 0 && <> ({notApplicable} manufacturing-only marked <span className="font-medium text-slate-500">Not applicable</span>)</>}.
           </p>
         </div>
         {!noFilings && (
@@ -193,66 +390,184 @@ function Overview({
         )}
       </div>
 
-      {/* Stat cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {stats.map((s, i) => (
-          <div key={i} className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
-            <p className={`text-[2.25rem] font-semibold leading-none tabular-nums ${s.num}`}>{s.n}</p>
-            <p className="flex items-center gap-1.5 text-[13px] font-semibold text-stone-700 mt-2.5">
-              <span className={`w-2 h-2 rounded-full flex-shrink-0 ${s.dot}`} />
-              {s.label}
-            </p>
-            <p className="text-[11px] text-stone-400 mt-0.5">{s.sub}</p>
-          </div>
-        ))}
-      </div>
+      {/* Hero readiness card — donut + segmented bar + legend */}
+      <div className="bg-white rounded-xl border border-stone-200 p-5 lg:p-6 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
+        <div className="flex flex-col sm:flex-row items-center gap-6 lg:gap-8">
 
-      {/* Status bar + where-to-start, in one summary card */}
-      <div className="bg-white rounded-xl border border-stone-200 p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)] space-y-4">
-        <div>
-          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-stone-400 mb-2.5">
-            All {totalDataPoints} disclosures by status
-          </p>
-          <div className="flex items-stretch gap-1 h-3">
-            {alreadyTracked > 0 &&
-              <div className="bg-emerald-500 rounded-full min-w-[10px]" style={{ flexGrow: alreadyTracked }} title={`Ready to pull: ${alreadyTracked}`} />}
-            {partiallyTracked > 0 &&
-              <div className="bg-amber-400 rounded-full min-w-[10px]" style={{ flexGrow: partiallyTracked }} title={`Needs verification: ${partiallyTracked}`} />}
-            {newDataNeeded > 0 &&
-              <div className="bg-stone-300 rounded-full min-w-[10px]" style={{ flexGrow: newDataNeeded }} title={`Collect fresh: ${newDataNeeded}`} />}
-            {notApplicable > 0 &&
-              <div className="bg-slate-300 rounded-full min-w-[10px]" style={{ flexGrow: notApplicable }} title={`Not applicable: ${notApplicable}`} />}
+          {/* Donut */}
+          <div className="relative flex-shrink-0" style={{ width: 132, height: 132 }}>
+            <svg width="132" height="132" viewBox="0 0 132 132" className="-rotate-90">
+              <circle cx="66" cy="66" r={R} fill="none" className="stroke-stone-100" strokeWidth="11" />
+              <circle
+                cx="66" cy="66" r={R} fill="none"
+                className="stroke-brand-600" strokeWidth="11" strokeLinecap="round"
+                strokeDasharray={C}
+                strokeDashoffset={C * (1 - readyPct / 100)}
+                style={{ transition: "stroke-dashoffset 700ms cubic-bezier(0.2,0,0,1)" }}
+              />
+            </svg>
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-[30px] font-semibold tabular-nums text-stone-900 leading-none">
+                {readyPct}<span className="text-[16px] text-stone-400 align-top">%</span>
+              </span>
+              <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-stone-400 mt-1">Ready</span>
+            </div>
+          </div>
+
+          {/* Bar + legend */}
+          <div className="flex-1 min-w-0 w-full">
+            <p className="text-[13.5px] text-stone-600 leading-relaxed mb-3">
+              <strong className="font-semibold text-stone-900 tabular-nums">{sourced}</strong> of{" "}
+              <strong className="font-semibold text-stone-900 tabular-nums">{applicableFields}</strong> fields have an existing source ·{" "}
+              <strong className="font-semibold text-stone-900 tabular-nums">{newDataNeeded}</strong> need fresh collection
+            </p>
+
+            <div className="flex items-stretch gap-1 h-3 mb-3">
+              {alreadyTracked > 0 &&
+                <div className="bg-emerald-500 rounded-full min-w-[10px]" style={{ flexGrow: alreadyTracked }} title={`Pull from filing: ${alreadyTracked}`} />}
+              {partiallyTracked > 0 &&
+                <div className="bg-amber-400 rounded-full min-w-[10px]" style={{ flexGrow: partiallyTracked }} title={`Verify & complete: ${partiallyTracked}`} />}
+              {newDataNeeded > 0 &&
+                <div className="bg-stone-300 rounded-full min-w-[10px]" style={{ flexGrow: newDataNeeded }} title={`Collect fresh: ${newDataNeeded}`} />}
+              {notApplicable > 0 &&
+                <div className="bg-slate-200 rounded-full min-w-[10px]" style={{ flexGrow: notApplicable }} title={`Not applicable: ${notApplicable}`} />}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-[12px]">
+              <Legend dot="bg-emerald-500" label="Ready"   n={alreadyTracked} />
+              <Legend dot="bg-amber-400"   label="Verify"  n={partiallyTracked} />
+              <Legend dot="bg-stone-300"   label="Collect" n={newDataNeeded} />
+              {notApplicable > 0 && <Legend dot="bg-slate-200" label="N/A" n={notApplicable} />}
+            </div>
           </div>
         </div>
 
-        {noFilings ? (
-          <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
-            <p className="text-[13px] text-amber-800 leading-relaxed">
-              No compliance filings selected — all {newDataNeeded} fields show as &quot;Collect fresh.&quot; Most companies
-              already cover 15–25 of these in PCB consents, EPR registrations, or PAT certificates.
-            </p>
-            <button onClick={onBack}
-              className="no-print mt-2 inline-flex items-center gap-1.5 text-[13px] font-semibold text-amber-900 underline underline-offset-2 pressable">
-              <svg aria-hidden="true" className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Add their filings
-            </button>
+        {/* Action stat cards, inside the hero so the numbers read as one unit */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5 pt-5 border-t border-stone-100">
+          {stats.map((s, i) => (
+            <div key={i} className="rounded-lg">
+              <p className={`text-[2rem] font-semibold leading-none tabular-nums ${s.num}`}>{s.n}</p>
+              <p className="flex items-center gap-1.5 text-[13px] font-semibold text-stone-700 mt-2">
+                <span className={`w-2 h-2 rounded-full flex-shrink-0 ${s.dot}`} />
+                {s.label}
+              </p>
+              <p className="text-[11px] text-stone-400 mt-0.5">{s.sub}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Readiness by principle + Where to start */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+
+        {/* Per-principle breakdown */}
+        <div className="lg:col-span-2 bg-white rounded-xl border border-stone-200 p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
+          <div className="flex items-baseline justify-between mb-4">
+            <h3 className="text-[15px] font-semibold text-stone-800">Readiness by principle</h3>
+            <span className="text-[11px] text-stone-400">{breakdown.length} NGRBC principles</span>
           </div>
-        ) : (
-          <p className="text-[13px] text-stone-600 leading-relaxed">
-            <span className="font-semibold text-stone-700">Where to start:</span>{" "}
-            {alreadyTracked > 0
-              ? <>Open <button onClick={onGoToPlan} className="font-semibold text-brand-700 hover:underline pressable">Action Plan</button>{" "}
-                  and filter by <span className="font-medium text-emerald-700">Ready to pull</span> — send those document requests today.
-                  Then verify the partial fields, and tackle Collect fresh last.</>
-              : <>Open <button onClick={onGoToPlan} className="font-semibold text-brand-700 hover:underline pressable">Action Plan</button>,{" "}
-                  clear the Needs verification fields first, then work through Collect fresh by topic.</>
-            }
-          </p>
-        )}
+          <ul className="space-y-1">
+            {breakdown.map(p => (
+              <li key={p.id}>
+                <button
+                  onClick={onGoToPlan}
+                  className="group w-full flex items-center gap-3 px-2 py-2 -mx-2 rounded-lg text-left
+                    hover:bg-stone-50 transition-colors pressable"
+                >
+                  <span className="flex-shrink-0 w-8 text-[11px] font-bold text-stone-400 tabular-nums">{p.id}</span>
+                  <span className="flex-1 min-w-0">
+                    <span className="block text-[13px] font-medium text-stone-800 truncate">{p.name}</span>
+                    <span className="block text-[11px] text-stone-400">{p.total} fields</span>
+                  </span>
+                  {/* mini stacked bar */}
+                  <span className="hidden sm:flex items-stretch gap-0.5 h-2 w-28 flex-shrink-0">
+                    {p.ready   > 0 && <span className="bg-emerald-500 rounded-full min-w-[3px]" style={{ flexGrow: p.ready }} />}
+                    {p.verify  > 0 && <span className="bg-amber-400 rounded-full min-w-[3px]"   style={{ flexGrow: p.verify }} />}
+                    {p.collect > 0 && <span className="bg-stone-300 rounded-full min-w-[3px]"    style={{ flexGrow: p.collect }} />}
+                    {p.na      > 0 && <span className="bg-slate-200 rounded-full min-w-[3px]"    style={{ flexGrow: p.na }} />}
+                  </span>
+                  <span className="flex items-center gap-2.5 flex-shrink-0 w-[88px] justify-end text-[12px] tabular-nums">
+                    <span className={p.ready   > 0 ? "text-emerald-600 font-semibold" : "text-stone-300"}>{p.ready}</span>
+                    <span className={p.verify  > 0 ? "text-amber-600 font-semibold"   : "text-stone-300"}>{p.verify}</span>
+                    <span className={p.collect > 0 ? "text-stone-600 font-semibold"    : "text-stone-300"}>{p.collect}</span>
+                  </span>
+                  <svg className="w-3.5 h-3.5 text-stone-300 group-hover:text-stone-500 transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Where to start */}
+        <div className="bg-white rounded-xl border border-stone-200 p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
+          <h3 className="text-[15px] font-semibold text-stone-800 mb-4">Where to start</h3>
+
+          {noFilings ? (
+            <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
+              <p className="text-[13px] text-amber-800 leading-relaxed">
+                No compliance filings selected — all {newDataNeeded} fields show as &quot;Collect fresh.&quot; Most companies
+                already cover 15–25 of these in PCB consents, EPR registrations, or PAT certificates.
+              </p>
+              <button onClick={onBack}
+                className="no-print mt-2 inline-flex items-center gap-1.5 text-[13px] font-semibold text-amber-900 underline underline-offset-2 pressable">
+                <svg aria-hidden="true" className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Add their filings
+              </button>
+            </div>
+          ) : (
+            <ul className="space-y-3.5">
+              {alreadyTracked > 0 && (
+                <StartStep dot="bg-emerald-500" onClick={onGoToPlan}>
+                  <strong className="font-semibold text-stone-800">Pull {alreadyTracked} ready field{alreadyTracked > 1 ? "s" : ""}</strong>{" "}
+                  straight from existing filings — cite the source and move on.
+                </StartStep>
+              )}
+              {biggestGap && biggestGap.collect > 0 && (
+                <StartStep dot="bg-stone-400" onClick={onGoToPlan}>
+                  <strong className="font-semibold text-stone-800">Close the {biggestGap.id} gap</strong>{" "}
+                  — {biggestGap.collect} fields to collect in {biggestGap.name}, the largest gap.
+                </StartStep>
+              )}
+              {partiallyTracked > 0 && (
+                <StartStep dot="bg-amber-400" onClick={onGoToPlan}>
+                  <strong className="font-semibold text-stone-800">Verify {partiallyTracked} partial field{partiallyTracked > 1 ? "s" : ""}</strong>{" "}
+                  where a filing covers most of the disclosure but one piece is missing.
+                </StartStep>
+              )}
+            </ul>
+          )}
+        </div>
       </div>
     </div>
+  );
+}
+
+// Legend chip — dot + label + count.
+function Legend({ dot, label, n }: { dot: string; label: string; n: number }) {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span className={`w-2 h-2 rounded-full ${dot}`} />
+      <span className="text-stone-500">{label}</span>
+      <span className="font-semibold text-stone-800 tabular-nums">{n}</span>
+    </span>
+  );
+}
+
+// A single "Where to start" step — clickable, routes to the Action Plan.
+function StartStep({ dot, onClick, children }: { dot: string; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <li>
+      <button onClick={onClick} className="group w-full flex items-start gap-3 text-left pressable">
+        <span className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ${dot}`} />
+        <span className="text-[13px] text-stone-600 leading-relaxed group-hover:text-stone-800 transition-colors">
+          {children}
+        </span>
+      </button>
+    </li>
   );
 }
 
@@ -260,62 +575,75 @@ function Overview({
 // Replaces the two stacked accordions (PRODUCT.md §4): one consistent nav model,
 // ratings is a peer of frameworks instead of buried below a long table.
 function AlignmentWorkspace({ mappings }: { mappings: FrameworkMapping[] }) {
+  const [sub, setSub] = useState<"frameworks" | "ratings">("frameworks");
+
+  const total    = mappings.length;
   const withGRI  = mappings.filter(m => m.gri_standard   && m.gri_standard   !== "—").length;
-  const withTCFD = mappings.filter(m => m.tcfd_pillar     && m.tcfd_pillar    !== "—").length;
-  const withIFRS = mappings.filter(m => m.ifrs_reference  && m.ifrs_reference !== "—").length;
+  const withTCFD = mappings.filter(m => m.tcfd_pillar    && m.tcfd_pillar    !== "—").length;
+  const withIFRS = mappings.filter(m => m.ifrs_reference && m.ifrs_reference !== "—").length;
+  const ratingsCount = (esgRatingsData as { mappings?: unknown[] }).mappings?.length ?? 9;
+
+  const subTabs = [
+    { key: "frameworks" as const, label: "Reporting frameworks", count: total },
+    { key: "ratings"    as const, label: "ESG ratings",          count: ratingsCount },
+  ];
+
+  const statCards = [
+    { n: total,    label: "Total mappings", tone: "text-stone-800"   },
+    { n: withGRI,  label: "GRI Standards",  tone: "text-blue-600"    },
+    { n: withTCFD, label: "TCFD aligned",   tone: "text-violet-600"  },
+    { n: withIFRS, label: "IFRS S1/S2",     tone: "text-emerald-600" },
+  ];
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-4">
 
-      {/* Reporting frameworks — GRI / TCFD / IFRS */}
-      <section className="bg-white rounded-xl border border-stone-200 overflow-hidden">
-        <div className="px-5 py-4 border-b border-stone-100 flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <h3 className="text-[15px] font-semibold text-stone-800">Reporting frameworks</h3>
-            <p className="text-[13px] text-stone-500 mt-0.5 leading-relaxed">
-              How each BRSR disclosure maps to GRI, TCFD, and IFRS S1/S2 — collect once, report across all of them.
-            </p>
+      {/* Title */}
+      <div>
+        <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">
+          Alignment
+        </h1>
+        <p className="text-[13px] text-stone-500 mt-1 max-w-[72ch] leading-relaxed">
+          How each BRSR disclosure maps to GRI, TCFD and IFRS S1/S2 — and to the MSCI &amp; DJSI rating
+          frameworks. Collect once, report across all.
+        </p>
+      </div>
+
+      {/* Sub-tabs */}
+      <div className="inline-flex items-center gap-0.5 p-0.5 bg-stone-100/80 rounded-lg border border-stone-200/60">
+        {subTabs.map(t => {
+          const active = sub === t.key;
+          return (
+            <button
+              key={t.key}
+              onClick={() => setSub(t.key)}
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-[13px] font-medium
+                whitespace-nowrap transition-colors pressable
+                ${active ? "bg-white text-stone-800 shadow-sm" : "text-stone-500 hover:text-stone-700"}`}
+            >
+              {t.label}
+              <span className={`tabular-nums text-[11px] ${active ? "text-stone-400" : "text-stone-400"}`}>{t.count}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {sub === "frameworks" ? (
+        <>
+          {/* Headline stat cards */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {statCards.map((s, i) => (
+              <div key={i} className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
+                <p className={`text-[2rem] font-semibold leading-none tabular-nums ${s.tone}`}>{s.n}</p>
+                <p className="text-[12.5px] font-medium text-stone-500 mt-2">{s.label}</p>
+              </div>
+            ))}
           </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full">
-              GRI {withGRI}
-            </span>
-            <span className="text-[11px] font-semibold text-violet-700 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">
-              TCFD {withTCFD}
-            </span>
-            <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">
-              IFRS {withIFRS}
-            </span>
-          </div>
-        </div>
-        <div className="p-5">
           <FrameworkMapper mappings={mappings} />
-        </div>
-      </section>
-
-      {/* ESG ratings alignment — MSCI / DJSI */}
-      <section className="bg-white rounded-xl border border-stone-200 overflow-hidden">
-        <div className="px-5 py-4 border-b border-stone-100 flex items-start justify-between gap-4 flex-wrap">
-          <div>
-            <h3 className="text-[15px] font-semibold text-stone-800">ESG ratings alignment</h3>
-            <p className="text-[13px] text-stone-500 mt-0.5 leading-relaxed">
-              How this same BRSR data feeds your client&apos;s MSCI ESG Rating and S&amp;P CSA / DJSI submission.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <span className="text-[11px] font-semibold text-violet-700 bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">
-              MSCI
-            </span>
-            <span className="text-[11px] font-semibold text-amber-700 bg-amber-50 border border-amber-100 px-2 py-0.5 rounded-full">
-              DJSI
-            </span>
-          </div>
-        </div>
-        <div className="p-5">
-          <EsgRatingsMapper />
-        </div>
-      </section>
-
+        </>
+      ) : (
+        <EsgRatingsMapper />
+      )}
     </div>
   );
 }

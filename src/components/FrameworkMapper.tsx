@@ -30,79 +30,8 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
     });
   }, [mappings, searchQuery, filterPillar, filterFramework]);
 
-  // Stats
-  const stats = useMemo(() => {
-    const withGRI = mappings.filter((m) => m.gri_standard && m.gri_standard !== "—").length;
-    const withTCFD = mappings.filter((m) => m.tcfd_pillar && m.tcfd_pillar !== "—").length;
-    const withIFRS = mappings.filter((m) => m.ifrs_reference && m.ifrs_reference !== "—").length;
-    return { total: mappings.length, withGRI, withTCFD, withIFRS };
-  }, [mappings]);
-
   return (
-    <div className="space-y-6">
-
-      {/* ── What is this tab? ─────────────────────────────────────────────── */}
-      <div className="bg-brand-50 border border-brand-100 rounded-xl p-4">
-        <div className="flex items-start gap-3">
-          <div className="w-9 h-9 bg-white rounded-lg border border-brand-100 flex items-center justify-center flex-shrink-0">
-            <svg className="w-4 h-4 text-brand-700" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" aria-hidden="true">
-              <circle cx="2.5" cy="7.5" r="1.5" />
-              <circle cx="12.5" cy="3" r="1.5" />
-              <circle cx="12.5" cy="12" r="1.5" />
-              <path d="M4 7.5l7-4M4 7.5l7 4" />
-            </svg>
-          </div>
-          <div>
-            <h3 className="text-sm font-semibold text-stone-800">What is this? — Cross-Framework Mapping</h3>
-            <p className="text-xs text-stone-500 mt-1 leading-relaxed">
-              If your client exports to the EU, reports to international investors, or is listed on global indices, they may also need to report against <strong className="text-stone-700">GRI, TCFD, or IFRS S1/S2</strong>.
-              Good news: BRSR overlaps significantly with all three.
-              This table shows exactly which BRSR disclosures map to which international standard — so you can <strong className="text-stone-700">collect the data once and report across all frameworks</strong>.
-            </p>
-            <p className="text-[11px] text-stone-500 mt-2">
-              <strong className="text-stone-600">How to use this:</strong> Filter by a framework (e.g. "Has GRI mapping") to see only the rows relevant for your client's international reporting obligations.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Framework definition cards ────────────────────────────────────── */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="bg-white rounded-xl border border-blue-100 p-4">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">GRI</span>
-            <span className="text-2xl font-semibold text-blue-600">{stats.withGRI}</span>
-          </div>
-          <p className="text-xs font-semibold text-stone-800 mb-1">Global Reporting Initiative</p>
-          <p className="text-xs text-stone-500 leading-relaxed">
-            The world's most widely used sustainability standard — adopted by 10,000+ companies in 100+ countries.
-            <span className="text-blue-700 font-medium"> {stats.withGRI} of your {stats.total} BRSR fields</span> directly overlap with GRI disclosures.
-          </p>
-        </div>
-        <div className="bg-white rounded-xl border border-violet-100 p-4">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] font-bold text-violet-600 uppercase tracking-widest">TCFD</span>
-            <span className="text-2xl font-semibold text-violet-600">{stats.withTCFD}</span>
-          </div>
-          <p className="text-xs font-semibold text-stone-800 mb-1">Climate Disclosure Standard</p>
-          <p className="text-xs text-stone-500 leading-relaxed">
-            Required by global banks, investors, and regulators to disclose how climate change affects the business.
-            Covers 4 pillars: Governance, Strategy, Risk Management, and Metrics.
-            <span className="text-violet-700 font-medium"> {stats.withTCFD} BRSR fields</span> align here.
-          </p>
-        </div>
-        <div className="bg-white rounded-xl border border-emerald-100 p-4">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">IFRS S1/S2</span>
-            <span className="text-2xl font-semibold text-emerald-600">{stats.withIFRS}</span>
-          </div>
-          <p className="text-xs font-semibold text-stone-800 mb-1">IFRS Sustainability Standards</p>
-          <p className="text-xs text-stone-500 leading-relaxed">
-            The new global baseline being adopted by 40+ countries. S1 = general sustainability risks; S2 = climate-specific disclosures.
-            <span className="text-emerald-700 font-medium"> {stats.withIFRS} BRSR fields</span> map to these standards.
-          </p>
-        </div>
-      </div>
+    <div className="space-y-5">
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2 items-center">

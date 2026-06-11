@@ -38,7 +38,7 @@ export default function PrincipleSection({
         onClick={onCollapse}
         aria-expanded={!collapsed}
         className="w-full flex items-center gap-2 px-4 py-2.5 bg-stone-100 border-b border-stone-200
-          sticky top-0 z-10 hover:bg-stone-150 transition-colors text-left group pressable"
+          hover:bg-stone-150 transition-colors text-left group pressable"
       >
         <span className={`text-[11px] font-bold font-mono px-2 py-0.5 rounded
           ${info?.bg ?? "bg-stone-200"} ${info?.color ?? "text-stone-700"} border ${info?.border ?? "border-stone-300"}`}>

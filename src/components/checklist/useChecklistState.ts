@@ -25,7 +25,7 @@ interface ChecklistPersist {
   collapsedSections?: string[];
 }
 
-export function useChecklistState(items: ChecklistItem[]) {
+export function useChecklistState(items: ChecklistItem[], seedQuery?: string) {
   const [statusFilter,      setStatusFilter]      = useState<StatusKey | "all">("all");
   const [principleFilter,   setPrincipleFilter]   = useState<string>("all");
   const [typeFilter,        setTypeFilter]        = useState<TypeKey>("all");
@@ -90,6 +90,20 @@ export function useChecklistState(items: ChecklistItem[]) {
     } satisfies ChecklistPersist);
   }, [hydrated, collectedIds, detection, uploadInfo, showOnlyDetected, calcInputs,
       statusFilter, principleFilter, typeFilter, search, collapsedSections]);
+
+  // ── Global search seed — a query from the app-shell top bar lands here and
+  //    seeds the Action Plan search (resetting filters so matches aren't hidden).
+  const lastSeedRef = useRef<string | undefined>(undefined);
+  useEffect(() => {
+    if (!hydrated) return;
+    if (seedQuery == null || seedQuery === lastSeedRef.current) return;
+    lastSeedRef.current = seedQuery;
+    if (!seedQuery) return;
+    setSearch(seedQuery);
+    setStatusFilter("all");
+    setPrincipleFilter("all");
+    setTypeFilter("all");
+  }, [seedQuery, hydrated]);
 
   const detectedSet = useMemo(
     () => new Set(detection?.detectedIds ?? []),

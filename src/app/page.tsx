@@ -49,6 +49,12 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
+  // When a report exists, ReportView is a full-screen app shell (its own top bar
+  // + sidebar), so we render it standalone instead of inside the landing chrome.
+  if (report) {
+    return <ReportView report={report} onBack={handleBack} />;
+  }
+
   return (
     <div className="min-h-screen bg-grid">
 
@@ -101,8 +107,7 @@ export default function Home() {
 
       {/* ── Main Content ────────────────────────────────────────────────── */}
       <main className="max-w-[1680px] mx-auto px-4 sm:px-8 py-12">
-        {!report ? (
-          <div className="max-w-[880px] mx-auto">
+        <div className="max-w-[880px] mx-auto">
 
             {/* ── Hero ──────────────────────────────────────────────────── */}
             <div className="mb-10 pt-6">
@@ -180,10 +185,7 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          </div>
-        ) : (
-          <ReportView report={report} onBack={handleBack} />
-        )}
+        </div>
       </main>
 
       {/* ── Footer ──────────────────────────────────────────────────────── */}
