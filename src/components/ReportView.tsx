@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useRef, useEffect } from "react";
+import Link from "next/link";
 import type { ReportOutput, FrameworkMapping } from "@/lib/types";
 import { INDUSTRY_LABELS, FILING_LABELS, type IndustryType, type ExistingFiling } from "@/lib/types";
 import DataChecklist from "./DataChecklist";
@@ -71,6 +72,11 @@ function TabIcon({ id, className }: { id: string; className?: string }) {
     <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
       <path d="M2.5 2.5h4a1.5 1.5 0 011.5 1.5v8a1.5 1.5 0 00-1.5-1.5h-4z" />
       <path d="M12.5 2.5h-4A1.5 1.5 0 007 4v8a1.5 1.5 0 011.5-1.5h4z" />
+    </svg>
+  );
+  if (id === "collect") return (
+    <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M13.5 1.5L6.5 8.5M13.5 1.5l-4.5 12-2.5-5.5L1 5.5z" />
     </svg>
   );
   return null;
@@ -232,13 +238,19 @@ function Sidebar({
         </div>
 
         <div>
-          <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Output</p>
+          <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Collect data</p>
           <div className="space-y-0.5">
-            <div className="flex items-center gap-2.5 w-full px-2.5 py-[7px] rounded-lg text-[13.5px] font-medium text-stone-300 cursor-not-allowed">
-              <TabIcon id="deliver" className="flex-shrink-0 text-stone-300" />
-              <span className="flex-1 text-left">Deliver</span>
-              <span className="text-[9px] font-bold uppercase tracking-[0.1em] text-stone-300 bg-stone-100 px-1.5 py-0.5 rounded">Soon</span>
-            </div>
+            <Link
+              href="/requests"
+              className="group flex items-center gap-2.5 w-full px-2.5 py-[7px] rounded-lg text-[13.5px] font-medium
+                text-stone-600 hover:bg-stone-100/70 transition-colors pressable"
+            >
+              <TabIcon id="collect" className="flex-shrink-0 text-stone-400 group-hover:text-stone-500" />
+              <span className="flex-1 text-left">Collect</span>
+              <svg className="w-3 h-3 text-stone-300 group-hover:text-stone-500 transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
           </div>
         </div>
       </nav>

@@ -3,9 +3,8 @@ import { createCampaignAction } from "@/lib/datarequest/actions";
 
 export default function NewCampaignPage({ searchParams }: { searchParams: { error?: string } }) {
   return (
-    <main className="min-h-screen bg-[#F7F6F2]">
-      <div className="max-w-[560px] mx-auto px-5 sm:px-8 py-10">
-        <Link href="/requests" className="text-[13px] text-stone-500 hover:text-stone-700">← All requests</Link>
+    <div className="max-w-[560px] mx-auto">
+        <Link href="/requests" className="text-[13px] text-stone-500 hover:text-stone-700">← All collections</Link>
 
         <h1 className="font-display text-[26px] text-stone-900 mt-3 tracking-tight">New collection</h1>
         <p className="text-[13.5px] text-stone-500 mt-1 leading-relaxed">
@@ -34,7 +33,6 @@ export default function NewCampaignPage({ searchParams }: { searchParams: { erro
             Create →
           </button>
         </form>
-      </div>
-    </main>
+    </div>
   );
 }

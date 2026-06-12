@@ -34,8 +34,7 @@ export default async function CampaignDetailPage({
   const grouped = CATEGORY_ORDER.map((cat) => ({ cat, fields: REQUEST_FIELDS.filter((f) => f.category === cat) }));
 
   return (
-    <main className="min-h-screen bg-[#F7F6F2]">
-      <div className="max-w-[820px] mx-auto px-5 sm:px-8 py-10">
+    <div className="max-w-[820px] mx-auto">
         <Link href="/requests" className="text-[13px] text-stone-500 hover:text-stone-700">← All collections</Link>
 
         <div className="flex items-start justify-between gap-4 mt-3">
@@ -147,8 +146,7 @@ export default async function CampaignDetailPage({
             </button>
           </form>
         </div>
-      </div>
-    </main>
+    </div>
   );
 }
 
