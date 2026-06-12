@@ -46,7 +46,14 @@ export default async function CampaignDetailPage({
             </p>
           </div>
           {allItems.length > 0 && (
-            <span className="text-[13px] font-semibold text-stone-700 tabular-nums whitespace-nowrap">{received}/{allItems.length} received</span>
+            <div className="flex flex-col items-end gap-2 flex-shrink-0">
+              <span className="text-[13px] font-semibold text-stone-700 tabular-nums whitespace-nowrap">{received}/{allItems.length} received</span>
+              <Link href={`/requests/${campaign.id}/draft`}
+                className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap">
+                Generate draft
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+              </Link>
+            </div>
           )}
         </div>
 
