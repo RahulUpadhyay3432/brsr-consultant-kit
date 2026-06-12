@@ -23,6 +23,10 @@
 # local reference docs (source PDFs, scratch exports) — not part of the app
 *.pdf
 /BRSR Consultant Kit.html
+/reference-screenshots/
+
+# local data-request prototype store (swapped for Supabase before deploy)
+/.data/
 
 # debug
 npm-debug.log*
