@@ -83,9 +83,15 @@ export async function sendRequestEmail(req: EmailReq, link: string): Promise<voi
   }
 
   // Stub fallback (no key, or send failed): keep a local copy you can open.
-  const dir = path.join(process.cwd(), ".data", "sent-emails");
-  await fs.mkdir(dir, { recursive: true });
-  await fs.writeFile(path.join(dir, `${req.token}.html`), html, "utf8");
+  // Best-effort — the filesystem is read-only on Vercel, so never let a failed
+  // write break the request (it's already saved; the link is shown in the UI).
+  try {
+    const dir = path.join(process.cwd(), ".data", "sent-emails");
+    await fs.mkdir(dir, { recursive: true });
+    await fs.writeFile(path.join(dir, `${req.token}.html`), html, "utf8");
+  } catch {
+    /* read-only FS (e.g. Vercel) — email delivery is best-effort */
+  }
   // eslint-disable-next-line no-console
   console.log(`[email stub] → ${req.contactEmail} | "${subject}" | ${link}`);
 }
