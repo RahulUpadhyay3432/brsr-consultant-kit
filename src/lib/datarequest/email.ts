@@ -11,13 +11,28 @@ export interface EmailReq {
   deadline: string | null;
   items: { label: string; unit: string | null }[];
   token: string;
+  kind?: "initial" | "reminder"; // default "initial"
+  final?: boolean;               // last reminder / deadline imminent
 }
 
 export function buildRequestEmail(req: EmailReq, link: string): { subject: string; html: string } {
-  const subject = `Data request for ${req.clientName}'s BRSR report`;
   const deadline = req.deadline
     ? new Date(req.deadline).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
     : null;
+
+  const isReminder = req.kind === "reminder";
+  const subject = isReminder
+    ? (req.final
+        ? `Final reminder: data for ${req.clientName}'s BRSR report`
+        : `Reminder: data still needed for ${req.clientName}'s BRSR report`)
+    : `Data request for ${req.clientName}'s BRSR report`;
+
+  const clientStrong = `<strong style="color:#1a1916;">${req.clientName}</strong>`;
+  const intro = isReminder
+    ? (req.final
+        ? `This is a <strong style="color:#1a1916;">final reminder</strong> — we still need the data points below for ${clientStrong}'s BRSR report${deadline ? `, due ${deadline}` : ""}. It only takes a couple of minutes via the secure link.`
+        : `Just a reminder — we still need the data points below for ${clientStrong}'s BRSR report. It only takes a couple of minutes via the secure link.`)
+    : `We're preparing the BRSR (Business Responsibility &amp; Sustainability Report) for ${clientStrong} and need a few data points you're best placed to provide. It takes a couple of minutes — open the secure link below and fill them in.`;
 
   const itemsHtml = req.items
     .map(
@@ -37,11 +52,7 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
     </div>
     <div style="padding:24px;">
       <p style="font-size:15px;color:#1a1916;margin:0 0 12px;">Hi ${req.contactName || "there"},</p>
-      <p style="font-size:14px;color:#52504a;line-height:1.6;margin:0 0 18px;">
-        We're preparing the BRSR (Business Responsibility &amp; Sustainability Report) for
-        <strong style="color:#1a1916;">${req.clientName}</strong> and need a few data points you're best placed to provide.
-        It takes a couple of minutes — open the secure link below and fill them in.
-      </p>
+      <p style="font-size:14px;color:#52504a;line-height:1.6;margin:0 0 18px;">${intro}</p>
       <table style="width:100%;border-collapse:collapse;margin:0 0 18px;">${itemsHtml}</table>
       ${deadline ? `<p style="font-size:13px;color:#a8662a;background:#fdf3e7;border:1px solid #f6e1c6;border-radius:8px;padding:10px 12px;margin:0 0 18px;">Please submit by <strong>${deadline}</strong>.</p>` : ""}
       <a href="${link}" style="display:inline-block;background:#111;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px 20px;border-radius:9px;">Provide the data →</a>

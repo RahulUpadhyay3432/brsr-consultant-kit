@@ -36,6 +36,8 @@ export interface Contact {
   email: string;
   token: string;         // unguessable; used in the recipient link
   status: ContactStatus;
+  lastEmailedAt: string | null; // ISO; last email (initial or reminder) sent
+  remindersSent: number;        // reminder emails sent (excludes the initial)
   items: Item[];
 }
 

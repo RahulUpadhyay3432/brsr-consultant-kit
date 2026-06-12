@@ -38,6 +38,7 @@ interface ItemRow {
 }
 interface ContactRow {
   id: string; name: string | null; email: string; token: string; status: string;
+  last_emailed_at?: string | null; reminders_sent?: number | null;
   brsr_request_items?: ItemRow[];
 }
 interface CampaignRow {
@@ -57,6 +58,8 @@ function mapContact(r: ContactRow): Contact {
   return {
     id: r.id, name: r.name, email: r.email, token: r.token,
     status: (["partial", "received"].includes(r.status) ? (r.status as Contact["status"]) : "pending"),
+    lastEmailedAt: r.last_emailed_at ?? null,
+    remindersSent: r.reminders_sent ?? 0,
     items: (r.brsr_request_items ?? []).map(mapItem),
   };
 }
@@ -97,7 +100,10 @@ export async function addContact(
   const res = await rest("brsr_contacts", {
     method: "POST",
     prefer: "return=representation",
-    body: JSON.stringify({ request_id: campaignId, name: name || null, email, token, status: "pending" }),
+    body: JSON.stringify({
+      request_id: campaignId, name: name || null, email, token, status: "pending",
+      last_emailed_at: new Date().toISOString(), // starts the reminder cadence clock
+    }),
   });
   const [contact] = (await res.json()) as ContactRow[];
 
@@ -138,5 +144,13 @@ export async function setContactStatus(contactId: string, status: Contact["statu
   await rest(`brsr_contacts?id=eq.${encodeURIComponent(contactId)}`, {
     method: "PATCH",
     body: JSON.stringify({ status }),
+  });
+}
+
+// Records that a reminder was just sent: refresh the cadence clock + bump count.
+export async function markReminded(contactId: string, remindersSent: number): Promise<void> {
+  await rest(`brsr_contacts?id=eq.${encodeURIComponent(contactId)}`, {
+    method: "PATCH",
+    body: JSON.stringify({ last_emailed_at: new Date().toISOString(), reminders_sent: remindersSent }),
   });
 }
