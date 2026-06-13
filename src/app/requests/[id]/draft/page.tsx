@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCampaign } from "@/lib/datarequest/db";
 import { buildDraft } from "@/lib/datarequest/draft";
+import { fmtNum } from "@/lib/emissions-calculator";
 import PrintButton from "@/components/datarequest/PrintButton";
 
 export const dynamic = "force-dynamic";
@@ -43,9 +44,17 @@ export default async function DraftPage({ params }: { params: { id: string } }) 
           <Line label="Scope 1 — fuel combustion" value={`${draft.emissions.scope1} tCO₂e`} />
           <Line label="Scope 2 — purchased electricity" value={`${draft.emissions.scope2} tCO₂e`} />
           <Line label="Total (Scope 1 + 2)" value={`${draft.emissions.total} tCO₂e`} />
-          <p className="text-[11px] text-stone-400 mt-2 px-0.5">
-            CEA grid factor (Scope 2) + IPCC 2006 fuel factors (Scope 1), computed from the submitted activity data.
-          </p>
+          {draft.emissionInputs.length > 0 && (
+            <div className="mt-2.5 pt-2.5 border-t border-stone-100 space-y-1.5">
+              <p className="text-[10px] font-bold uppercase tracking-[0.1em] text-stone-400">Basis</p>
+              {draft.emissionInputs.map((inp, i) => (
+                <p key={i} className="text-[11.5px] text-stone-500 leading-relaxed">
+                  <span className="font-medium text-stone-700">Scope {inp.scope} · {fmtNum(inp.tco2e)} tCO₂e</span>
+                  {" ← "}{inp.rawValue} · submitted by {inp.submittedBy} · {inp.factor}
+                </p>
+              ))}
+            </div>
+          )}
         </Section>
       )}
 

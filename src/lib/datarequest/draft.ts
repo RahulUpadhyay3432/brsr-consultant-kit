@@ -3,7 +3,7 @@
 // computed from those values via the cited calculators). Pure function so it's
 // easy to reason about / test.
 import type { Campaign } from "./types";
-import { campaignEmissions } from "./emissions";
+import { campaignEmissions, emissionInputs, type EmissionInput } from "./emissions";
 import { fmtNum } from "@/lib/emissions-calculator";
 
 export interface DraftLine { label: string; value: string }
@@ -16,6 +16,7 @@ export interface Draft {
   totalCount: number;
   sections: DraftSection[];
   emissions: { scope1: string; scope2: string; total: string } | null;
+  emissionInputs: EmissionInput[];
   pending: string[];
 }
 
@@ -53,6 +54,7 @@ export function buildDraft(campaign: Campaign): Draft {
     totalCount: allItems.length,
     sections,
     emissions,
+    emissionInputs: emissionInputs(campaign),
     pending,
   };
 }
