@@ -2,15 +2,23 @@
 
 ## What This Is
 
-A free web tool for independent ESG consultants in India who prepare BRSR (Business Responsibility and Sustainability Reporting) reports for their clients. Consultant fills a structured intake form → tool generates a client-specific BRSR readiness report instantly, entirely client-side.
+A web tool for independent ESG consultants in India who prepare BRSR (Business Responsibility and Sustainability Reporting) reports for their clients.
+
+**Two parts now (freemium):**
+1. **Free readiness tool** (the original) — consultant fills a structured intake form → tool generates a client-specific BRSR readiness report instantly, **entirely client-side, no login, nothing stored**. Lives at `/`.
+2. **Collect** — a **login-gated, backend-powered data-collection system** (the intended **paid tier**, validated by practising consultant *Priya*). Lets a consultant chase BRSR data from a client's team, auto-compute emissions, and generate a draft. Lives at `/requests/*`, `/submit/*`, `/login`. See the "Collect" section below.
+
+The "100% on-device / no data stored" framing applies to **(1) only**. Collect deliberately stores data (securely) — that was a pragmatic stance for a free-and-shared tool, not a core vision; commercial + secure removes the need for it.
 
 Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUpadhyay3432/brsr-consultant-kit
 
-## Project Status — last updated 2026-06-10
+## Project Status — last updated 2026-06-13
 
-**Shipped & live** (all deployed to production): SEBI source links per disclosure · service-sector differentiation (Business Type toggle + `not_applicable` status) · per-principle best practices · MSCI/DJSI ESG Ratings Alignment section · "Suggested Materiality" reframe + disclaimer · upload-last-year's-report client-side detection · company-name autocomplete with industry/sector auto-fill · **localStorage session persistence** (report + collected + detection survive refresh) · **DataChecklist decomposed** into the `checklist/` module (was 1,118 lines) · **embedded GHG Scope 1 & 2 + energy + water intensity calculators** in P6 rows (P6-E1, P6-E7, P6-E3) with cited India emission factors. Product North Star doc at `docs/PRODUCT.md` gates new features.
+**Free readiness tool (Tab/report side) — shipped & live:** SEBI source links per disclosure · service-sector differentiation (Business Type toggle + `not_applicable` status) · per-principle best practices · MSCI/DJSI ESG Ratings Alignment section · "Suggested Materiality" reframe + shortlist · upload-last-year's-report client-side detection · company-name autocomplete · **localStorage session persistence** · **DataChecklist decomposed** into the `checklist/` module · **embedded GHG Scope 1 & 2 + energy + water calculators** (P6-E1/E7/E3, cited factors) · **Sources & Methodology** reference panel · A & B collected-tracking + last-year detection. Product North Star doc at `docs/PRODUCT.md` gates new features.
 
-**Next up:** peer/competitor benchmarking (gated on sourcing real cited BRSR data by sector), CBAM module, client data-request export, native Compliance Chat integration.
+**Collect / data-request product (the paid backend tier) — shipped & live** (the big new thing; lives behind a passcode at `/requests`): consultant creates a per-client collection → adds multiple data owners (one-at-a-time via an "+ Add owner" button, each assigned their fields) → one-click **branded request email** (Resend) → owner fills a **no-login form** → **tracking dashboard** + **submission alert email to the consultant** → **auto-reminder cadence** (daily Vercel Cron) → **emissions auto-calc** from submitted activity data, with **per-input attribution** (input → factor + source → who submitted) and a **GHG methodology statement** → **draft BRSR responses** (deterministic, printable, no fabrication). Stack: **Supabase** (Postgres via PostgREST + service_role) + **Resend** + **Vercel Cron** + **middleware passcode auth**. Validated by consultant *Priya*, who also offered webinars/partnership (see `[memory]/priya-call-feedback.md`).
+
+**Next up:** evidence/document attachment (owners upload the supporting bill/invoice → assurance-readiness) · monetization (freemium + Razorpay) · real per-consultant accounts (Supabase Auth + RLS, replacing the single passcode) · "Layer 2" — wire the Action-Plan gap-fields into Collect requests · Scope 3 calculator · CBAM module.
 
 **Key docs:** `docs/PRODUCT.md` (product principles + IA + ship-gate) · `docs/DECISIONS.md` (the *why* behind each feature, from consultant feedback — read before changing things).
 
@@ -35,11 +43,12 @@ After the intake form is submitted, `ReportView` shows a header (client identity
 
 - Next.js 14 (App Router, TypeScript, Tailwind CSS)
 - No component library (custom components)
-- No database, no auth, no backend — all report generation is client-side from pre-extracted JSON knowledge base files
+- **Free readiness tool is client-side** — all report generation runs in the browser from pre-extracted JSON knowledge base files; no DB/auth/backend for that half.
+- **Collect tier has a backend** (added on top, doesn't touch the free tool): **Supabase** Postgres accessed via its PostgREST REST API with the `service_role` key (server-only; see `src/lib/datarequest/db.ts` — no `@supabase/*` SDK, just `fetch`); **Resend** for transactional email (`src/lib/datarequest/email.ts`, REST, Resend-or-stub, best-effort); **Vercel Cron** for the daily reminder job (`vercel.json` → `/api/cron/reminders`, `CRON_SECRET`-gated); **Next.js server actions** for mutations; **middleware passcode auth** (`src/middleware.ts`) gating `/requests/*`. Supabase tables are `brsr_`-prefixed and **RLS-locked** (only the server's service_role can touch them).
 - **Session persistence** via `localStorage` (`src/lib/storage.ts`): the report restores on refresh (intake form is persisted + regenerated in `page.tsx`); collected items + upload detection persist (in `useChecklistState`); "New report" clears the session. Still 100% on-device.
 - **Client-side PDF extraction**: `pdfjs-dist` (v4). Used only for the "upload last year's report" feature; dynamically imported so it stays out of the main bundle. The worker is served as a static file from `/public/pdf.worker.min.mjs` (a prebuild step copies it from node_modules — see below).
 - Analytics: Google Analytics 4 (`G-GJBBQ6YPZL`) via `@next/third-parties/google`, plus `@vercel/analytics`
-- Deployed on Vercel free tier (static)
+- Deployed on Vercel free (Hobby) tier — the free tool is static; Collect adds dynamic server-rendered routes + server actions + a daily cron (Hobby cron is once-per-day max)
 
 ## Deployment & Local-Machine Constraints (IMPORTANT)
 
@@ -53,11 +62,32 @@ This dev machine has an SSL cert issue (`UNABLE_TO_VERIFY_LEAF_SIGNATURE` on out
 
 These are local-only issues — builds on Vercel's servers succeed. Standard loop: `npx next build` → commit/push → `$env:NODE_TLS_REJECT_UNAUTHORIZED="0"; vercel --prod --yes`.
 
+**Collect needs env vars** (all in `.env.local`, gitignored; the same names set on Vercel **production** via `vercel env add`, value piped so it's never echoed): `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `RESEND_FROM`, `APP_BASE_URL` (the deployed URL, so email links are absolute), `CONSULTANT_PASSCODE` (the `/requests` gate), `CRON_SECRET`, `CONSULTANT_NOTIFY_EMAIL` (where submission alerts go). **Local dev that exercises Collect must run with the TLS bypass too** (it makes outbound HTTPS to Supabase/Resend): `$env:NODE_TLS_REJECT_UNAUTHORIZED="0"; npm run dev`. **Resend caveat:** until a sending domain is verified, Resend only delivers to the account's own inbox — fine for the demo, and sends are best-effort so non-deliverable recipients never error.
+
 **pdf.js worker gotcha**: pdfjs-dist v4 ships an ESM `.mjs` worker that webpack/Terser can't process via `new URL(...)`. The fix is to serve it as a static `/public/pdf.worker.min.mjs` and set `GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs"`. `scripts/copy-pdf-worker.mjs` runs as the `prebuild` npm script to keep the public copy in sync with the pinned package version (a committed copy is the fallback if the copy ever fails).
 
 ## Compliance Chat
 
 A separate RAG chatbot (Python, on Hugging Face Spaces, trained on BRSR/CBAM/CCTS regs) is linked via a **"Compliance Chat ↗" button in the header** (`page.tsx`) that opens in a new tab: https://huggingface.co/spaces/sherlockwatson221/climate-compliance — Python can't deploy on Vercel, so native integration (Railway backend + React chat UI) is a planned V2 item.
+
+## Collect — the data-request product (paid tier, backend)
+
+The killer feature from Priya's feedback: collecting BRSR data from a client's team is the consultant's #1 time-sink (different numbers live with different people; manual email/WhatsApp chasing). Collect turns that into: **request → alert-on-submit → auto-reminders → collect → emissions calc (attributed) → draft.**
+
+**Auth (MVP):** a single shared passcode (`CONSULTANT_PASSCODE`) gates `/requests/*` via `src/middleware.ts` (httpOnly cookie, `/login` page). The free tool (`/`) and the recipient pages (`/submit/*`) stay public. Real per-consultant accounts (Supabase Auth + per-user RLS) are the planned replacement, arriving with monetization.
+
+**Data model (Supabase, `brsr_`-prefixed, RLS-locked):** `brsr_requests` (a campaign = one client) → `brsr_contacts` (data owners; each has a unguessable `token`, `status`, `last_emailed_at`, `reminders_sent`) → `brsr_request_items` (the fields assigned to a contact: `field_id/label/unit/kind/category`, `value`, `status`). Schema changes are run by the user as SQL in the Supabase SQL editor (PostgREST can't DDL).
+
+**Flow & files** (all under `src/lib/datarequest/` + `src/app/requests|submit|api`):
+- **Consultant** logs in → `/requests` (collections list) → `/requests/new` (create campaign) → `/requests/[id]` (detail). On the detail page: an **"+ Add a data owner"** panel (`components/datarequest/AddOwnerPanel.tsx`, client; reveals the form, one owner per send), the **owners list** (status + per-owner secure link), the **emissions panel** (dark, with attribution + methodology), and a **"Generate draft"** button.
+- **`addContactAction`** inserts the contact + items, timestamps `last_emailed_at`, and sends the **branded request email** (`email.ts` → `sendRequestEmail`, reusing `buildRequestEmail`).
+- **Recipient** opens `/submit/[token]` (no login), fills values → **`submitDataAction`** writes them, sets contact status, and fires **`sendSubmissionAlert`** to `CONSULTANT_NOTIFY_EMAIL`.
+- **Reminders:** `/api/cron/reminders` (GET, `CRON_SECRET`-gated; `vercel.json` runs it daily) iterates campaigns; `cadence.ts → dueReminder()` decides (3-day interval, max 3, "final" near deadline); sends a reminder variant and `markReminded()`.
+- **Emissions:** `emissions.ts` — `campaignEmissions()` (totals via the existing cited `calcGhg`) + `emissionInputs()` (per-input **attribution**: value → factor + source → who submitted) + `GHG_METHODOLOGY` (the statement surfaced under every figure). Only Scope 1 (diesel) + Scope 2 (grid electricity) are wired so far (fields `P6-E1-diesel`, `P6-E1-elec`).
+- **Draft:** `draft.ts → buildDraft()` + `/requests/[id]/draft` — a **deterministic, printable** draft of BRSR responses from collected data (grouped by section + the emissions block with basis + a "nothing is invented" disclaimer). No AI narrative (that would risk fabrication; it'd be a clearly-labelled opt-in later).
+- **Shell:** `/requests/*` are wrapped in `src/app/requests/layout.tsx` (+ `components/datarequest/CollectNav.tsx`) so Collect uses the same sidebar/chrome as the report — one product. `/submit` and `/login` keep standalone layouts.
+
+**Invariants:** drafts/calcs never fabricate (every figure is a submitted value or computed from one via cited factors); email is **best-effort** (never throws — Vercel FS is read-only, Resend rejects unverified recipients); the curated request-field list is in `fields.ts` (`REQUEST_FIELDS`, an MVP subset — the full 108-field KB wires in with "Layer 2").
 
 ## Intake Form Fields (in `IntakeForm.tsx`)
 
@@ -138,6 +168,40 @@ public/pdf.worker.min.mjs   # pdf.js worker (served statically; kept in sync by 
 scripts/copy-pdf-worker.mjs # prebuild: copies the worker from node_modules → public
 ```
 
+### Collect (paid tier) file map
+
+```
+src/
+├── middleware.ts                       # passcode gate for /requests/*
+├── components/
+│   ├── SourcesPanel.tsx                # "Sources & Methodology" panel (in the report)
+│   └── datarequest/
+│       ├── CollectNav.tsx              #   sidebar nav for the Collect shell (client)
+│       ├── AddOwnerPanel.tsx           #   "+ Add a data owner" → form (client)
+│       └── PrintButton.tsx             #   Save-as-PDF on the draft (client)
+├── lib/datarequest/
+│   ├── types.ts        # Campaign → Contact → Item domain types
+│   ├── db.ts           # Supabase PostgREST access (service_role, server-only)
+│   ├── actions.ts      # server actions: create campaign, add owner, submit data
+│   ├── auth.ts         # passcode login/logout server actions
+│   ├── email.ts        # Resend-or-stub send; request + reminder + submission-alert emails
+│   ├── cadence.ts      # pure dueReminder() reminder rule
+│   ├── emissions.ts    # campaignEmissions + emissionInputs (attribution) + GHG_METHODOLOGY
+│   ├── draft.ts        # buildDraft() — deterministic BRSR draft from collected data
+│   └── fields.ts       # REQUEST_FIELDS (curated MVP request-field subset)
+└── app/
+    ├── login/page.tsx
+    ├── requests/
+    │   ├── layout.tsx              # Collect app-shell (sidebar/topbar)
+    │   ├── page.tsx                # collections list
+    │   ├── new/page.tsx            # create campaign
+    │   └── [id]/page.tsx           # campaign detail (owners + emissions + add-owner)
+    │       └── draft/page.tsx      # printable draft
+    ├── submit/[token]/page.tsx     # recipient form (no login)
+    └── api/cron/reminders/route.ts # daily reminder cron (CRON_SECRET-gated)
+vercel.json                         # Vercel Cron schedule
+```
+
 ## Core Logic Flow (in `report-generator.ts`)
 
 1. Takes `IntakeFormData` from the form.
@@ -173,8 +237,9 @@ The originally-validated top-5 consultant requests are now **shipped** (1–4 + 
 - ✅ **Suggested Materiality reframe** — honest "starting point" framing + disclaimer.
 - ✅ **Upload last year's report** — client-side PDF detection of already-documented disclosures.
 - ✅ **Company-name autocomplete** — typeahead + industry/sector auto-fill.
-- ✅ **Embedded GHG + energy + water calculators** — Scope 1 & 2 + intensity inside P6-E1, P6-E7, P6-E3 rows. CEA grid factor, IPCC/GHG-Protocol fuel factors, all cited. Inputs persist via localStorage. Shared state: fuel inputs entered in P6-E7 carry over to P6-E1 and vice versa. Scope 3 is next.
+- ✅ **Embedded GHG + energy + water calculators** — Scope 1 & 2 + intensity inside P6-E1, P6-E7, P6-E3 rows. CEA grid factor, IPCC/GHG-Protocol fuel factors, all cited. Inputs persist via localStorage. Shared state: fuel inputs entered in P6-E7 carry over to P6-E1 and vice versa.
+- ✅ **Collect — the data-request product** (the paid backend tier): multi-owner collection, branded request + auto-reminder + submission-alert emails, no-login owner submission, emissions auto-calc with per-input attribution + a GHG-methodology statement, and deterministic printable drafts. Validated by consultant Priya. See the **Collect** section above.
 
-**Roadmap:** peer/competitor benchmarking (gated on sourcing real cited BRSR data), Scope 3 calculator expansion, client data-request export, CBAM module (EU exporters), native Compliance Chat integration.
+**Roadmap:** evidence/document attachment (owners upload the supporting bill/invoice → assurance-readiness; BRSR Core needs reasonable assurance), monetization (freemium + **Razorpay**), real per-consultant accounts (**Supabase Auth + RLS**, replacing the single passcode), **"Layer 2"** (wire the Action-Plan gap-fields into Collect requests + tie collections to a saved client), Scope 3 calculator expansion, peer/competitor benchmarking (gated on cited data), CBAM module, native Compliance Chat integration.
 
 **Calculator files:** `src/data/emission_factors.json` (factors + citations) · `src/lib/emissions-calculator.ts` (pure calc functions) · `src/components/checklist/EmissionsCalculator.tsx` (UI, ~280 lines). `CalcInputs` is stored in `useChecklistState` and persisted under the existing `session.checklist` localStorage key.
