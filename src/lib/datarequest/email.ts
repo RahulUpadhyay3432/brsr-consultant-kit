@@ -67,9 +67,10 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
   return { subject, html };
 }
 
-export async function sendRequestEmail(req: EmailReq, link: string): Promise<void> {
-  const { subject, html } = buildRequestEmail(req, link);
-
+// Resend-or-stub send. Best-effort: never throws — a failed/blocked email must
+// not break the request or the recipient's submission. (Vercel FS is read-only,
+// and Resend rejects unverified-domain recipients until a domain is added.)
+async function sendEmail(to: string, subject: string, html: string, stubKey: string): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RESEND_FROM || "BRSR Consultant Kit <onboarding@resend.dev>";
 
@@ -78,11 +79,11 @@ export async function sendRequestEmail(req: EmailReq, link: string): Promise<voi
       const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ from, to: req.contactEmail, subject, html }),
+        body: JSON.stringify({ from, to, subject, html }),
       });
       if (res.ok) {
         // eslint-disable-next-line no-console
-        console.log(`[resend] sent to ${req.contactEmail}`);
+        console.log(`[resend] sent to ${to}`);
         return;
       }
       // eslint-disable-next-line no-console
@@ -92,17 +93,46 @@ export async function sendRequestEmail(req: EmailReq, link: string): Promise<voi
       console.error(`[resend] error:`, e instanceof Error ? e.message : e);
     }
   }
-
-  // Stub fallback (no key, or send failed): keep a local copy you can open.
-  // Best-effort — the filesystem is read-only on Vercel, so never let a failed
-  // write break the request (it's already saved; the link is shown in the UI).
   try {
     const dir = path.join(process.cwd(), ".data", "sent-emails");
     await fs.mkdir(dir, { recursive: true });
-    await fs.writeFile(path.join(dir, `${req.token}.html`), html, "utf8");
+    await fs.writeFile(path.join(dir, `${stubKey}.html`), html, "utf8");
   } catch {
-    /* read-only FS (e.g. Vercel) — email delivery is best-effort */
+    /* read-only FS (e.g. Vercel) — delivery is best-effort */
   }
   // eslint-disable-next-line no-console
-  console.log(`[email stub] → ${req.contactEmail} | "${subject}" | ${link}`);
+  console.log(`[email stub] → ${to} | "${subject}"`);
+}
+
+export async function sendRequestEmail(req: EmailReq, link: string): Promise<void> {
+  const { subject, html } = buildRequestEmail(req, link);
+  await sendEmail(req.contactEmail, subject, html, req.token);
+}
+
+// Notifies the consultant when an owner submits data (Priya's "alert on who
+// gave the data"). Sends to CONSULTANT_NOTIFY_EMAIL; no-op if it isn't set.
+export async function sendSubmissionAlert(args: {
+  clientName: string; ownerName: string; received: number; total: number; link: string;
+}): Promise<void> {
+  const to = process.env.CONSULTANT_NOTIFY_EMAIL;
+  if (!to) return;
+
+  const subject = `${args.ownerName} submitted data for ${args.clientName}`;
+  const html = `<!doctype html><html><body style="margin:0;background:#F7F6F2;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+  <div style="max-width:520px;margin:0 auto;background:#fff;border:1px solid #e7e5e0;border-radius:14px;overflow:hidden;">
+    <div style="padding:18px 24px;border-bottom:1px solid #f0eee9;">
+      <span style="display:inline-block;width:26px;height:26px;border-radius:7px;background:#111;color:#fff;font-weight:700;font-size:11px;text-align:center;line-height:26px;vertical-align:middle;">BK</span>
+      <span style="font-weight:600;color:#1a1916;font-size:14px;vertical-align:middle;margin-left:8px;">BRSR Consultant Kit</span>
+    </div>
+    <div style="padding:24px;">
+      <p style="font-size:15px;color:#1a1916;margin:0 0 10px;"><strong>${args.ownerName}</strong> just submitted data.</p>
+      <p style="font-size:14px;color:#52504a;line-height:1.6;margin:0 0 18px;">
+        For <strong style="color:#1a1916;">${args.clientName}</strong>'s BRSR report — ${args.received} of ${args.total} requested fields are now in.
+      </p>
+      <a href="${args.link}" style="display:inline-block;background:#111;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px 20px;border-radius:9px;">View collection →</a>
+    </div>
+  </div>
+  </body></html>`;
+
+  await sendEmail(to, subject, html, `alert-${Date.now()}`);
 }

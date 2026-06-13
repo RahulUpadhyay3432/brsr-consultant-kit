@@ -4,7 +4,7 @@ import { randomBytes } from "crypto";
 import { redirect } from "next/navigation";
 import { fieldsByIds } from "./fields";
 import * as db from "./db";
-import { sendRequestEmail } from "./email";
+import { sendRequestEmail, sendSubmissionAlert } from "./email";
 
 function baseUrl(): string {
   return process.env.APP_BASE_URL || "http://localhost:3000";
@@ -56,7 +56,7 @@ export async function submitDataAction(token: string, formData: FormData): Promi
   const found = await db.getContactByToken(token);
   if (!found) redirect("/submit/invalid");
 
-  const { contact } = found!;
+  const { contact, clientName, campaignId } = found!;
   let received = 0;
   for (const item of contact.items) {
     const v = formData.get(`f_${item.id}`);
@@ -71,6 +71,15 @@ export async function submitDataAction(token: string, formData: FormData): Promi
 
   const status = received === 0 ? "pending" : received === contact.items.length ? "received" : "partial";
   await db.setContactStatus(contact.id, status);
+
+  // Alert the consultant that this owner just submitted (best-effort).
+  await sendSubmissionAlert({
+    clientName,
+    ownerName: contact.name || contact.email,
+    received,
+    total: contact.items.length,
+    link: `${baseUrl()}/requests/${campaignId}`,
+  });
 
   redirect(`/submit/${token}?done=1`);
 }

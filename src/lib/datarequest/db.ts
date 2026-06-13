@@ -120,16 +120,17 @@ export async function addContact(
 // For the recipient page — contact + items + the parent client name/deadline.
 export async function getContactByToken(
   token: string
-): Promise<{ contact: Contact; clientName: string; deadline: string | null } | null> {
+): Promise<{ contact: Contact; clientName: string; deadline: string | null; campaignId: string } | null> {
   const res = await rest(
     `brsr_contacts?token=eq.${encodeURIComponent(token)}&select=*,brsr_request_items(*),brsr_requests(client_name,deadline)`
   );
-  const rows = (await res.json()) as (ContactRow & { brsr_requests: { client_name: string; deadline: string | null } })[];
+  const rows = (await res.json()) as (ContactRow & { request_id: string; brsr_requests: { client_name: string; deadline: string | null } })[];
   if (!rows[0]) return null;
   return {
     contact: mapContact(rows[0]),
     clientName: rows[0].brsr_requests?.client_name ?? "",
     deadline: rows[0].brsr_requests?.deadline ?? null,
+    campaignId: rows[0].request_id,
   };
 }
 

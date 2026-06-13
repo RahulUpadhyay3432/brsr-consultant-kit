@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCampaign } from "@/lib/datarequest/db";
 import { buildDraft } from "@/lib/datarequest/draft";
+import { GHG_METHODOLOGY } from "@/lib/datarequest/emissions";
 import { fmtNum } from "@/lib/emissions-calculator";
 import PrintButton from "@/components/datarequest/PrintButton";
 
@@ -53,6 +54,7 @@ export default async function DraftPage({ params }: { params: { id: string } }) 
                   {" ← "}{inp.rawValue} · submitted by {inp.submittedBy} · {inp.factor}
                 </p>
               ))}
+              <p className="text-[11px] text-stone-400 leading-relaxed pt-1">{GHG_METHODOLOGY}</p>
             </div>
           )}
         </Section>

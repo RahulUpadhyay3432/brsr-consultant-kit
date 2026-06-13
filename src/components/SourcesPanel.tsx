@@ -42,7 +42,7 @@ const GROUPS: Group[] = [
   },
   {
     heading: "Calculation factors",
-    blurb: "The numbers behind the embedded GHG, energy and water calculators.",
+    blurb: "The numbers behind the embedded GHG, energy and water calculators — GHG figures follow the GHG Protocol Corporate Standard (Scope 1 & 2, location-based, IPCC AR5 GWPs).",
     items: [
       {
         name: "CEA CO₂ Baseline Database",

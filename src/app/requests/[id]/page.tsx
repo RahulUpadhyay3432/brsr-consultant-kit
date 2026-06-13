@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCampaign } from "@/lib/datarequest/db";
-import { campaignEmissions, emissionInputs } from "@/lib/datarequest/emissions";
+import { campaignEmissions, emissionInputs, GHG_METHODOLOGY } from "@/lib/datarequest/emissions";
 import { addContactAction } from "@/lib/datarequest/actions";
 import AddOwnerPanel from "@/components/datarequest/AddOwnerPanel";
 import type { ContactStatus } from "@/lib/datarequest/types";
@@ -71,6 +71,7 @@ export default async function CampaignDetailPage({
                 <span className="text-white/35"> · </span>{inp.factor}
               </p>
             ))}
+            <p className="text-[11px] text-white/40 leading-relaxed pt-1.5">{GHG_METHODOLOGY}</p>
           </div>
         </div>
       )}
