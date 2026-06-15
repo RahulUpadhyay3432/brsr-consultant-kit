@@ -35,15 +35,15 @@ export default async function DraftPage({ params }: { params: { id: string } }) 
       <div className="mt-5 bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
         <p className="text-[12.5px] text-amber-800 leading-relaxed">
           <strong>Drafted from your collected data.</strong> Every figure below is your client&apos;s submitted value
-          (emissions are computed from those values using cited CEA / IPCC factors). Nothing is invented — review,
+          (emissions are computed from those values using cited CEA / IPCC factors). Nothing is invented. Review,
           edit, and write the qualitative narrative before filing.
         </p>
       </div>
 
       {draft.emissions && (
-        <Section title="Principle 6 — GHG emissions (computed)">
-          <Line label="Scope 1 — fuel combustion" value={`${draft.emissions.scope1} tCO₂e`} />
-          <Line label="Scope 2 — purchased electricity" value={`${draft.emissions.scope2} tCO₂e`} />
+        <Section title="Principle 6 · GHG emissions (computed)">
+          <Line label="Scope 1: fuel combustion" value={`${draft.emissions.scope1} tCO₂e`} />
+          <Line label="Scope 2: purchased electricity" value={`${draft.emissions.scope2} tCO₂e`} />
           <Line label="Total (Scope 1 + 2)" value={`${draft.emissions.total} tCO₂e`} />
           {draft.emissionInputs.length > 0 && (
             <div className="mt-2.5 pt-2.5 border-t border-stone-100 space-y-1.5">
@@ -68,7 +68,7 @@ export default async function DraftPage({ params }: { params: { id: string } }) 
 
       {draft.collectedCount === 0 && (
         <p className="mt-5 text-[13px] text-stone-500">
-          No data collected yet — once owners submit values, they appear here as draft responses.
+          No data collected yet. Once owners submit values, they appear here as draft responses.
         </p>
       )}
 

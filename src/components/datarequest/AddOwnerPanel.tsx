@@ -45,7 +45,7 @@ export default function AddOwnerPanel({
         <button onClick={() => setOpen(false)} className="text-[12.5px] text-stone-400 hover:text-stone-600 transition-colors">Cancel</button>
       </div>
       <p className="text-[12px] text-stone-500 mt-0.5 mb-4">
-        Assign the fields this person owns — e.g. the energy manager for electricity &amp; fuel, EHS for water.
+        Assign the fields this person owns: the energy manager for electricity &amp; fuel, EHS for water, HR for headcount.
         Each owner gets their own request; add them one at a time.
       </p>
 
@@ -85,7 +85,7 @@ export default function AddOwnerPanel({
           ))}
         </div>
 
-        <button type="submit" className="inline-flex items-center gap-2 bg-[#111] text-white text-[14px] font-semibold px-5 py-2.5 rounded-lg hover:bg-black transition-colors">
+        <button type="submit" className="inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest-light transition-colors pressable">
           Send request →
         </button>
       </form>

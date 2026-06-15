@@ -25,7 +25,7 @@ export default async function SubmitPage({
         <div className="w-11 h-11 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-3">
           <svg className="w-5 h-5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
         </div>
-        <p className="text-[16px] text-stone-900 font-semibold">Thank you — your data is in.</p>
+        <p className="text-[16px] text-stone-900 font-semibold">Thank you. Your data is in.</p>
         <p className="text-[13.5px] text-stone-500 mt-1 leading-relaxed">
           The consultant preparing {clientName}&apos;s BRSR report has been notified. You can close this tab.
         </p>
@@ -45,7 +45,7 @@ export default async function SubmitPage({
         A few data points for {clientName}&apos;s BRSR report
       </h1>
       <p className="text-[13.5px] text-stone-500 mt-2 leading-relaxed">
-        Hi {contact.name || "there"} — please fill in what you have below. Estimates are fine; the consultant will
+        Hi {contact.name || "there"}, please fill in what you have below. Estimates are fine; the consultant will
         confirm. {deadlineStr && <>Needed by <strong className="text-stone-700">{deadlineStr}</strong>.</>}
       </p>
 
@@ -68,10 +68,13 @@ export default async function SubmitPage({
         ))}
 
         <div className="pt-2 flex items-center gap-3">
-          <button type="submit" className="inline-flex items-center gap-2 bg-[#111] text-white text-[14px] font-semibold px-5 py-2.5 rounded-lg hover:bg-black transition-colors">
+          <button type="submit" className="inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest-light transition-colors pressable">
             Submit data
           </button>
-          <span className="text-[12px] text-stone-400">Sent securely · no account needed.</span>
+          <span className="inline-flex items-center gap-1.5 text-[12px] text-stone-400">
+            <svg className="w-3.5 h-3.5 text-stone-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="11" width="16" height="9" rx="2" /><path d="M8 11V7a4 4 0 018 0v4" /></svg>
+            Sent securely · no account needed.
+          </span>
         </div>
       </form>
     </Shell>

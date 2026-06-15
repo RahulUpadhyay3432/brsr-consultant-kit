@@ -8,8 +8,8 @@ export default function NewCampaignPage({ searchParams }: { searchParams: { erro
 
         <h1 className="font-display text-[26px] text-stone-900 mt-3 tracking-tight">New collection</h1>
         <p className="text-[13.5px] text-stone-500 mt-1 leading-relaxed">
-          Start with the client. Next you&apos;ll add the people who own each piece of data — water, energy,
-          HR — and send each their own request.
+          Start with the client. Next you&apos;ll add the people who own each piece of data (water, energy,
+          HR) and send each their own request.
         </p>
 
         {searchParams.error === "missing" && (
@@ -29,8 +29,8 @@ export default function NewCampaignPage({ searchParams }: { searchParams: { erro
             <input name="deadline" type="date"
               className="w-full h-10 px-3 text-[13.5px] text-stone-800 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
           </label>
-          <button type="submit" className="inline-flex items-center gap-2 bg-[#111] text-white text-[14px] font-semibold px-5 py-2.5 rounded-lg hover:bg-black transition-colors">
-            Create →
+          <button type="submit" className="inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest-light transition-colors pressable">
+            Create collection →
           </button>
         </form>
     </div>
