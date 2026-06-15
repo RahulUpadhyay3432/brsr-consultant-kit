@@ -12,13 +12,15 @@ The "100% on-device / no data stored" framing applies to **(1) only**. Collect d
 
 Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUpadhyay3432/brsr-consultant-kit
 
-## Project Status — last updated 2026-06-13
+## Project Status — last updated 2026-06-16
 
 **Free readiness tool (Tab/report side) — shipped & live:** SEBI source links per disclosure · service-sector differentiation (Business Type toggle + `not_applicable` status) · per-principle best practices · MSCI/DJSI ESG Ratings Alignment section · "Suggested Materiality" reframe + shortlist · upload-last-year's-report client-side detection · company-name autocomplete · **localStorage session persistence** · **DataChecklist decomposed** into the `checklist/` module · **embedded GHG Scope 1 & 2 + energy + water calculators** (P6-E1/E7/E3, cited factors) · **Sources & Methodology** reference panel · A & B collected-tracking + last-year detection. Product North Star doc at `docs/PRODUCT.md` gates new features.
 
-**Collect / data-request product (the paid backend tier) — shipped & live** (the big new thing; lives behind a passcode at `/requests`): consultant creates a per-client collection → adds multiple data owners (one-at-a-time via an "+ Add owner" button, each assigned their fields) → one-click **branded request email** (Resend) → owner fills a **no-login form** → **tracking dashboard** + **submission alert email to the consultant** → **auto-reminder cadence** (daily Vercel Cron) → **emissions auto-calc** from submitted activity data, with **per-input attribution** (input → factor + source → who submitted) and a **GHG methodology statement** → **draft BRSR responses** (deterministic, printable, no fabrication). Stack: **Supabase** (Postgres via PostgREST + service_role) + **Resend** + **Vercel Cron** + **middleware passcode auth**. Validated by consultant *Priya*, who also offered webinars/partnership (see `[memory]/priya-call-feedback.md`).
+**Collect / data-request product (the paid backend tier) — shipped & live** (the big new thing; lives behind a passcode at `/requests`): consultant creates a per-client collection → adds multiple data owners (one-at-a-time via an "+ Add owner" button, each assigned their fields) → one-click **branded request email** (Resend) → owner fills a **no-login form** → **tracking dashboard** + **submission alert email to the consultant** → **auto-reminder cadence** (daily Vercel Cron) → **emissions auto-calc** from submitted activity data, with **per-input attribution** (input → factor + source → who submitted) and a **GHG methodology statement** → **draft BRSR responses** (deterministic, printable, no fabrication) → **evidence/document attachment** (owners upload supporting bills/invoices per field → stored in private Supabase Storage bucket `brsr-evidence` → signed-URL view for the consultant on the detail page → listed in the draft under "Supporting evidence (for assurance)" with a BRSR Core reasonable-assurance note). Stack: **Supabase** (Postgres via PostgREST + service_role + Storage REST API) + **Resend** + **Vercel Cron** + **middleware passcode auth**. Validated by consultant *Priya*, who also offered webinars/partnership (see `[memory]/priya-call-feedback.md`).
 
-**Next up:** evidence/document attachment (owners upload the supporting bill/invoice → assurance-readiness) · monetization (freemium + Razorpay) · real per-consultant accounts (Supabase Auth + RLS, replacing the single passcode) · "Layer 2" — wire the Action-Plan gap-fields into Collect requests · Scope 3 calculator · CBAM module.
+**Collect UI polish (shipped 2026-06-16):** `CopyLinkButton` component replaces raw owner URLs (copy + open affordance); chasing visibility — reminder cadence surfaced on each owner card ("Emailed N days ago · X reminders sent"); teaching empty state for campaigns with no owners yet; `bg-forest` primary buttons + `pressable` micro-interactions across all Collect screens; em-dash copy scrubbed throughout.
+
+**Next up:** monetization (freemium + Razorpay) · real per-consultant accounts (Supabase Auth + RLS, replacing the single passcode) · "Layer 2" — wire the Action-Plan gap-fields into Collect requests · Scope 3 calculator · CBAM module.
 
 **Key docs:** `docs/PRODUCT.md` (product principles + IA + ship-gate) · `docs/DECISIONS.md` (the *why* behind each feature, from consultant feedback — read before changing things).
 
@@ -178,16 +180,18 @@ src/
 │   └── datarequest/
 │       ├── CollectNav.tsx              #   sidebar nav for the Collect shell (client)
 │       ├── AddOwnerPanel.tsx           #   "+ Add a data owner" → form (client)
+│       ├── CopyLinkButton.tsx          #   copy + open affordance for the owner's secure link (client)
 │       └── PrintButton.tsx             #   Save-as-PDF on the draft (client)
 ├── lib/datarequest/
-│   ├── types.ts        # Campaign → Contact → Item domain types
-│   ├── db.ts           # Supabase PostgREST access (service_role, server-only)
-│   ├── actions.ts      # server actions: create campaign, add owner, submit data
+│   ├── types.ts        # Campaign → Contact → Item domain types (Item has evidencePath + evidenceName)
+│   ├── db.ts           # Supabase PostgREST access (service_role, server-only); setItemEvidence()
+│   ├── actions.ts      # server actions: create campaign, add owner, submit data (evidence upload best-effort)
 │   ├── auth.ts         # passcode login/logout server actions
 │   ├── email.ts        # Resend-or-stub send; request + reminder + submission-alert emails
 │   ├── cadence.ts      # pure dueReminder() reminder rule
 │   ├── emissions.ts    # campaignEmissions + emissionInputs (attribution) + GHG_METHODOLOGY
-│   ├── draft.ts        # buildDraft() — deterministic BRSR draft from collected data
+│   ├── draft.ts        # buildDraft() — deterministic BRSR draft from collected data (includes evidence list)
+│   ├── storage.ts      # Supabase Storage REST API (private bucket brsr-evidence); uploadEvidence + signedEvidenceUrl + signCampaignEvidence
 │   └── fields.ts       # REQUEST_FIELDS (curated MVP request-field subset)
 └── app/
     ├── login/page.tsx
