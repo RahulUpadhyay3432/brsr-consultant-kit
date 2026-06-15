@@ -66,6 +66,18 @@ export default async function DraftPage({ params }: { params: { id: string } }) 
         </Section>
       ))}
 
+      {draft.evidence.length > 0 && (
+        <Section title="Supporting evidence (for assurance)">
+          {draft.evidence.map((e, i) => (
+            <Line key={i} label={e.label} value={e.fileName} />
+          ))}
+          <p className="text-[11px] text-stone-400 leading-relaxed pt-2">
+            Source documents attached by the data owners. Retain these for the assurance provider;
+            BRSR Core disclosures require reasonable assurance.
+          </p>
+        </Section>
+      )}
+
       {draft.collectedCount === 0 && (
         <p className="mt-5 text-[13px] text-stone-500">
           No data collected yet. Once owners submit values, they appear here as draft responses.

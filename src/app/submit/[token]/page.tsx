@@ -64,6 +64,28 @@ export default async function SubmitPage({
                   focus:outline-none focus:bg-white focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
               />
             </label>
+
+            {/* Optional supporting document — backs the figure for assurance. */}
+            <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
+              <input
+                type="file"
+                name={`file_${it.id}`}
+                accept=".pdf,image/*,.xlsx,.xls,.csv"
+                aria-label={`Attach the supporting bill or invoice for ${it.label}`}
+                className="block max-w-full text-[12px] text-stone-400 cursor-pointer
+                  file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border file:border-stone-200
+                  file:text-[12px] file:font-medium file:text-stone-600 file:bg-stone-50 hover:file:bg-stone-100
+                  file:cursor-pointer file:transition-colors"
+              />
+              {it.evidenceName ? (
+                <span className="inline-flex items-center gap-1.5 text-[11.5px] text-emerald-700">
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+                  {it.evidenceName} attached
+                </span>
+              ) : (
+                <span className="text-[11.5px] text-stone-400">Attach the bill / invoice (optional)</span>
+              )}
+            </div>
           </div>
         ))}
 

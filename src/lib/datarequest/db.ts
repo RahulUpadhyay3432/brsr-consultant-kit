@@ -35,6 +35,7 @@ async function rest(path: string, init?: RequestInit & { prefer?: string }): Pro
 interface ItemRow {
   id: string; field_id: string; field_label: string; field_unit: string | null;
   field_kind: string; field_category: string | null; value: string | null; status: string;
+  evidence_path?: string | null; evidence_name?: string | null;
 }
 interface ContactRow {
   id: string; name: string | null; email: string; token: string; status: string;
@@ -52,6 +53,8 @@ function mapItem(r: ItemRow): Item {
     kind: (r.field_kind === "activity" ? "activity" : "value"),
     category: r.field_category, value: r.value,
     status: (r.status === "received" ? "received" : "pending"),
+    evidencePath: r.evidence_path ?? null,
+    evidenceName: r.evidence_name ?? null,
   };
 }
 function mapContact(r: ContactRow): Contact {
@@ -138,6 +141,15 @@ export async function updateItem(itemId: string, value: string): Promise<void> {
   await rest(`brsr_request_items?id=eq.${encodeURIComponent(itemId)}`, {
     method: "PATCH",
     body: JSON.stringify({ value, status: "received" }),
+  });
+}
+
+// Records the supporting document an owner attached. Independent of the value
+// (status is untouched) — evidence can land with or without a number.
+export async function setItemEvidence(itemId: string, path: string, name: string): Promise<void> {
+  await rest(`brsr_request_items?id=eq.${encodeURIComponent(itemId)}`, {
+    method: "PATCH",
+    body: JSON.stringify({ evidence_path: path, evidence_name: name }),
   });
 }
 

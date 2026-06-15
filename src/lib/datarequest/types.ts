@@ -26,6 +26,10 @@ export interface Item {
   category: string | null;
   value: string | null;
   status: "pending" | "received";
+  // Supporting document the owner attached (the bill / invoice / register that
+  // backs the figure) — for assurance-readiness. Null when none uploaded.
+  evidencePath: string | null;   // private Storage object path (bucket-relative)
+  evidenceName: string | null;   // original filename, shown to the consultant
 }
 
 export type ContactStatus = "pending" | "partial" | "received";

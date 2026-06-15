@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCampaign } from "@/lib/datarequest/db";
 import { campaignEmissions, emissionInputs, GHG_METHODOLOGY } from "@/lib/datarequest/emissions";
+import { signCampaignEvidence } from "@/lib/datarequest/storage";
 import { addContactAction } from "@/lib/datarequest/actions";
 import AddOwnerPanel from "@/components/datarequest/AddOwnerPanel";
 import CopyLinkButton from "@/components/datarequest/CopyLinkButton";
@@ -43,6 +44,7 @@ export default async function CampaignDetailPage({
 
   const base = process.env.APP_BASE_URL || "http://localhost:3000";
   const allItems = campaign.contacts.flatMap((c) => c.items);
+  const evidence = await signCampaignEvidence(allItems);
   const received = allItems.filter((i) => i.status === "received").length;
   const ghg = campaignEmissions(campaign);
   const inputs = emissionInputs(campaign);
@@ -133,6 +135,21 @@ export default async function CampaignDetailPage({
                     <span className="flex-1 min-w-0 text-[13px] text-stone-700 truncate">
                       {it.label}{it.unit && <span className="text-stone-400"> · {it.unit}</span>}
                     </span>
+                    {it.evidencePath && (
+                      evidence.get(it.id) ? (
+                        <a href={evidence.get(it.id)} target="_blank" rel="noreferrer"
+                          title={it.evidenceName ?? "View evidence"}
+                          className="inline-flex items-center gap-1 flex-shrink-0 text-[11px] font-medium text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-1.5 py-0.5 rounded-md transition-colors pressable">
+                          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 8l-9 9a4 4 0 01-6-6l9-9a3 3 0 014 4l-9 9a1.5 1.5 0 01-2-2l8-8" /></svg>
+                          Evidence
+                        </a>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 flex-shrink-0 text-[11px] text-stone-400" title={it.evidenceName ?? "Evidence attached"}>
+                          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 8l-9 9a4 4 0 01-6-6l9-9a3 3 0 014 4l-9 9a1.5 1.5 0 01-2-2l8-8" /></svg>
+                          Attached
+                        </span>
+                      )
+                    )}
                     <span className="text-[13px] tabular-nums whitespace-nowrap">
                       {it.value ? <span className="font-semibold text-stone-800">{it.value}</span> : <span className="text-stone-300">—</span>}
                     </span>

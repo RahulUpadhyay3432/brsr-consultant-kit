@@ -17,6 +17,7 @@ export interface Draft {
   sections: DraftSection[];
   emissions: { scope1: string; scope2: string; total: string } | null;
   emissionInputs: EmissionInput[];
+  evidence: { label: string; fileName: string }[]; // supporting docs, for assurance
   pending: string[];
 }
 
@@ -47,6 +48,11 @@ export function buildDraft(campaign: Campaign): Draft {
     ? { scope1: fmtNum(ghg.scope1_tco2e), scope2: fmtNum(ghg.scope2_tco2e), total: fmtNum(ghg.total_tco2e) }
     : null;
 
+  // Supporting documents the owners attached — the assurance trail.
+  const evidence = allItems
+    .filter((i) => i.evidenceName)
+    .map((i) => ({ label: i.label, fileName: i.evidenceName! }));
+
   return {
     clientName: campaign.clientName,
     generatedAt: new Date().toISOString(),
@@ -55,6 +61,7 @@ export function buildDraft(campaign: Campaign): Draft {
     sections,
     emissions,
     emissionInputs: emissionInputs(campaign),
+    evidence,
     pending,
   };
 }
