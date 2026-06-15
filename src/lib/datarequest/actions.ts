@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { fieldsByIds } from "./fields";
 import * as db from "./db";
 import { sendRequestEmail, sendSubmissionAlert } from "./email";
+import { uploadEvidence } from "./storage";
 
 function baseUrl(): string {
   return process.env.APP_BASE_URL || "http://localhost:3000";
@@ -66,6 +67,17 @@ export async function submitDataAction(token: string, formData: FormData): Promi
       received++;
     } else if (item.status === "received") {
       received++; // already had a value, left unchanged
+    }
+
+    // Optional supporting document — best-effort, never blocks the number.
+    const file = formData.get(`file_${item.id}`);
+    if (file instanceof File && file.size > 0) {
+      try {
+        const up = await uploadEvidence(item.id, file);
+        if (up) await db.setItemEvidence(item.id, up.path, up.name);
+      } catch {
+        /* storage/column hiccup must not fail the owner's submission */
+      }
     }
   }
 

@@ -19,7 +19,7 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
 
           {searchParams.error && (
             <p className="mt-4 text-[13px] text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3.5 py-2.5">
-              Incorrect passcode — try again.
+              Incorrect passcode. Try again.
             </p>
           )}
 
@@ -33,14 +33,14 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
               className="w-full h-11 px-3.5 text-[14px] text-stone-800 bg-white border border-stone-200 rounded-lg
                 focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
             />
-            <button type="submit" className="w-full bg-[#111] text-white text-[14px] font-semibold py-2.5 rounded-lg hover:bg-black transition-colors">
+            <button type="submit" className="w-full bg-forest text-white text-[14px] font-semibold py-2.5 rounded-lg hover:bg-forest-light transition-colors pressable">
               Sign in
             </button>
           </form>
         </div>
 
         <p className="text-[11.5px] text-stone-400 text-center mt-4">
-          The free readiness tool needs no sign-in — this protects client data collections only.
+          The free readiness tool needs no sign-in; this protects client data collections only.
         </p>
       </div>
     </main>
