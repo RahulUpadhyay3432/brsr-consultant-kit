@@ -159,6 +159,7 @@ export default async function CampaignDetailPage({
                     )}
                     <span className="text-[13px] tabular-nums whitespace-nowrap">
                       {it.value ? <span className="font-semibold text-stone-800">{it.value}</span> : <span className="text-stone-300">—</span>}
+                      {it.priorValue && <span className="text-stone-400"> · prev {it.priorValue}</span>}
                     </span>
                   </div>
                 ))}

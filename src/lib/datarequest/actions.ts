@@ -65,11 +65,19 @@ export async function submitDataAction(token: string, formData: FormData): Promi
   for (const item of contact.items) {
     const v = formData.get(`f_${item.id}`);
     const val = v == null ? "" : String(v).trim();
+    const pv = formData.get(`pf_${item.id}`);
+    const prior = pv == null ? "" : String(pv).trim();
     if (val !== "") {
       await db.updateItem(item.id, val);
       received++;
     } else if (item.status === "received") {
       received++; // already had a value, left unchanged
+    }
+
+    // Prior-year figure is supplementary — write it best-effort so a missing
+    // column or hiccup never fails the owner's core submission.
+    if (prior !== "") {
+      try { await db.setItemPrior(item.id, prior); } catch { /* supplementary */ }
     }
 
     // Optional supporting document — best-effort, never blocks the number.

@@ -6,16 +6,23 @@ import { calcGhg, DEFAULT_CALC_INPUTS, type CalcInputs, type GhgResult } from "@
 import factors from "@/data/emission_factors.json";
 import type { Campaign } from "./types";
 
-// Map our request field ids → the calculator's input keys.
-const FIELD_TO_INPUT: Partial<Record<string, keyof CalcInputs>> = {
-  "P6-E1-elec": "grid_kwh",
-  "P6-E1-diesel": "diesel_l",
+// Collect activity-field id → the calculator's input key + (for fuels) the
+// factor id. Covers Scope 2 grid electricity and all six Scope 1 fuels the
+// calculator supports, so Collect's auto-calc is at parity with the readiness
+// calculator (cited IPCC 2006 / CEA factors throughout).
+const GRID = factors.scope2_grid;
+const FUEL_FIELDS: Record<string, { input: keyof CalcInputs; fuelId: string }> = {
+  "P6-E1-diesel": { input: "diesel_l", fuelId: "diesel" },
+  "P6-E1-petrol": { input: "petrol_l", fuelId: "petrol" },
+  "P6-E1-cng": { input: "gas_m3", fuelId: "cng" },
+  "P6-E1-lpg": { input: "lpg_kg", fuelId: "lpg" },
+  "P6-E1-coal": { input: "coal_kg", fuelId: "coal" },
+  "P6-E1-fo": { input: "furnace_oil_l", fuelId: "furnace_oil" },
 };
 
-// ─── Attribution: trace each computed figure back to its input, factor + source,
-//     and the person who submitted it. Same factors as calcGhg, so totals agree.
-const GRID = factors.scope2_grid;
-const DIESEL = factors.scope1_fuels.find((f) => f.id === "diesel")!;
+function fuelFactor(fuelId: string) {
+  return factors.scope1_fuels.find((f) => f.id === fuelId)!;
+}
 
 // The methodology statement surfaced wherever a computed emissions figure shows.
 // Accurate to what the calculator actually does — and honest about its limits.
@@ -55,13 +62,14 @@ export function emissionInputs(campaign: Campaign): EmissionInput[] {
           tco2e: (v * GRID.factor_kg_co2_per_kwh) / 1000,
           submittedBy: who,
         });
-      } else if (item.fieldId === "P6-E1-diesel") {
+      } else if (FUEL_FIELDS[item.fieldId]) {
+        const f = fuelFactor(FUEL_FIELDS[item.fieldId].fuelId);
         out.push({
           fieldLabel: item.label,
-          rawValue: `${fmtInt(v)} ${item.unit ?? "litres"}`,
+          rawValue: `${fmtInt(v)} ${item.unit ?? f.unit}`,
           scope: 1,
-          factor: `IPCC 2006 · ${DIESEL.co2e_display}`,
-          tco2e: (v * DIESEL.co2e_per_unit) / 1000,
+          factor: `IPCC 2006 · ${f.co2e_display}`,
+          tco2e: (v * f.co2e_per_unit) / 1000,
           submittedBy: who,
         });
       }
@@ -75,13 +83,19 @@ export function campaignEmissions(campaign: Campaign): GhgResult | null {
   const inputs: CalcInputs = { ...DEFAULT_CALC_INPUTS };
   let any = false;
 
+  // Accumulate (not overwrite): the same activity field can be collected from
+  // several owners (e.g. one plant manager each), and the total must include
+  // all of them so it matches the per-input attribution from emissionInputs().
+  const add = (key: keyof CalcInputs, raw: string) => {
+    inputs[key] = String((parseFloat(inputs[key]) || 0) + parseFloat(raw));
+    any = true;
+  };
+
   for (const contact of campaign.contacts) {
     for (const item of contact.items) {
-      const key = FIELD_TO_INPUT[item.fieldId];
-      if (key && item.status === "received" && item.value && parseFloat(item.value) > 0) {
-        inputs[key] = item.value;
-        any = true;
-      }
+      if (item.status !== "received" || !item.value || !(parseFloat(item.value) > 0)) continue;
+      if (item.fieldId === "P6-E1-elec") add("grid_kwh", item.value);
+      else if (FUEL_FIELDS[item.fieldId]) add(FUEL_FIELDS[item.fieldId].input, item.value);
     }
   }
 
