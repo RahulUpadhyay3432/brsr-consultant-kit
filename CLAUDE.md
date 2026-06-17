@@ -12,7 +12,7 @@ The "100% on-device / no data stored" framing applies to **(1) only**. Collect d
 
 Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUpadhyay3432/brsr-consultant-kit
 
-## Project Status — last updated 2026-06-16
+## Project Status — last updated 2026-06-17
 
 **Free readiness tool (Tab/report side) — shipped & live:** SEBI source links per disclosure · service-sector differentiation (Business Type toggle + `not_applicable` status) · per-principle best practices · MSCI/DJSI ESG Ratings Alignment section · "Suggested Materiality" reframe + shortlist · upload-last-year's-report client-side detection · company-name autocomplete · **localStorage session persistence** · **DataChecklist decomposed** into the `checklist/` module · **embedded GHG Scope 1 & 2 + energy + water calculators** (P6-E1/E7/E3, cited factors) · **Sources & Methodology** reference panel · A & B collected-tracking + last-year detection. Product North Star doc at `docs/PRODUCT.md` gates new features.
 
@@ -20,7 +20,9 @@ Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUp
 
 **Collect UI polish (shipped 2026-06-16):** `CopyLinkButton` component replaces raw owner URLs (copy + open affordance); chasing visibility — reminder cadence surfaced on each owner card ("Emailed N days ago · X reminders sent"); teaching empty state for campaigns with no owners yet; `bg-forest` primary buttons + `pressable` micro-interactions across all Collect screens; em-dash copy scrubbed throughout.
 
-**Next up:** monetization (freemium + Razorpay) · real per-consultant accounts (Supabase Auth + RLS, replacing the single passcode) · "Layer 2" — wire the Action-Plan gap-fields into Collect requests · Scope 3 calculator · CBAM module.
+**Reporting period + Layer 2 (shipped 2026-06-17, from Priya's feedback):** (1) **Reporting period** — every collection now carries a BRSR financial year (FY select on create, defaulting to the most recently completed year), shown on the request email, the owner's submission form, the campaign header and the draft. (2) **Layer 2 — collect against the full BRSR format** — the Add-owner picker now offers the **entire BRSR format (Section A + B + C, 133 fields)** flattened from the readiness KB (`brsr_data_points.json`) via `brsrRequestFields()`, replacing the curated 9-field MVP list. Each request field carries its **BRSR coordinates** (`field_section` / `field_principle` / `field_indicator_type` columns on `brsr_request_items`), rendered as **code chips** on owner cards and used to **group the draft by Section → Principle** so collected values map straight back into the report. The picker is searchable/collapsible (Section A, Section B, P1–P9, with Essential/Leadership tags). The two granular **activity inputs** (`P6-E1-elec`, `P6-E1-diesel`) are preserved under P6 so the GHG auto-calc is untouched. Verified end-to-end (picker, code chips, emissions, draft grouping).
+
+**Next up:** monetization (freemium + Razorpay) · real per-consultant accounts (Supabase Auth + RLS, replacing the single passcode) · Scope 3 calculator · CBAM module.
 
 **Key docs:** `docs/PRODUCT.md` (product principles + IA + ship-gate) · `docs/DECISIONS.md` (the *why* behind each feature, from consultant feedback — read before changing things).
 
@@ -78,7 +80,7 @@ The killer feature from Priya's feedback: collecting BRSR data from a client's t
 
 **Auth (MVP):** a single shared passcode (`CONSULTANT_PASSCODE`) gates `/requests/*` via `src/middleware.ts` (httpOnly cookie, `/login` page). The free tool (`/`) and the recipient pages (`/submit/*`) stay public. Real per-consultant accounts (Supabase Auth + per-user RLS) are the planned replacement, arriving with monetization.
 
-**Data model (Supabase, `brsr_`-prefixed, RLS-locked):** `brsr_requests` (a campaign = one client) → `brsr_contacts` (data owners; each has a unguessable `token`, `status`, `last_emailed_at`, `reminders_sent`) → `brsr_request_items` (the fields assigned to a contact: `field_id/label/unit/kind/category`, `value`, `status`). Schema changes are run by the user as SQL in the Supabase SQL editor (PostgREST can't DDL).
+**Data model (Supabase, `brsr_`-prefixed, RLS-locked):** `brsr_requests` (a campaign = one client; has `reporting_period`) → `brsr_contacts` (data owners; each has a unguessable `token`, `status`, `last_emailed_at`, `reminders_sent`) → `brsr_request_items` (the fields assigned to a contact: `field_id/label/unit/kind/category`, the BRSR coordinates `field_section/field_principle/field_indicator_type`, `value`, `status`, `evidence_path/evidence_name`). Schema changes are run by the user as SQL in the Supabase SQL editor (PostgREST can't DDL).
 
 **Flow & files** (all under `src/lib/datarequest/` + `src/app/requests|submit|api`):
 - **Consultant** logs in → `/requests` (collections list) → `/requests/new` (create campaign) → `/requests/[id]` (detail). On the detail page: an **"+ Add a data owner"** panel (`components/datarequest/AddOwnerPanel.tsx`, client; reveals the form, one owner per send), the **owners list** (status + per-owner secure link), the **emissions panel** (dark, with attribution + methodology), and a **"Generate draft"** button.
@@ -89,7 +91,7 @@ The killer feature from Priya's feedback: collecting BRSR data from a client's t
 - **Draft:** `draft.ts → buildDraft()` + `/requests/[id]/draft` — a **deterministic, printable** draft of BRSR responses from collected data (grouped by section + the emissions block with basis + a "nothing is invented" disclaimer). No AI narrative (that would risk fabrication; it'd be a clearly-labelled opt-in later).
 - **Shell:** `/requests/*` are wrapped in `src/app/requests/layout.tsx` (+ `components/datarequest/CollectNav.tsx`) so Collect uses the same sidebar/chrome as the report — one product. `/submit` and `/login` keep standalone layouts.
 
-**Invariants:** drafts/calcs never fabricate (every figure is a submitted value or computed from one via cited factors); email is **best-effort** (never throws — Vercel FS is read-only, Resend rejects unverified recipients); the curated request-field list is in `fields.ts` (`REQUEST_FIELDS`, an MVP subset — the full 108-field KB wires in with "Layer 2").
+**Invariants:** drafts/calcs never fabricate (every figure is a submitted value or computed from one via cited factors); email is **best-effort** (never throws — Vercel FS is read-only, Resend rejects unverified recipients); the request-field list is the **full BRSR format** built by `brsrRequestFields()` in `fields.ts` (flattened from `brsr_data_points.json` — Section A + B + C, 133 fields, each with its coordinates), with the two `P6-E1-elec` / `P6-E1-diesel` activity inputs preserved for the GHG calc. Static display labels (principle short names, section labels) live in `brsr-meta.ts` so the client picker imports them without pulling in the KB JSON.
 
 ## Intake Form Fields (in `IntakeForm.tsx`)
 
@@ -192,7 +194,8 @@ src/
 │   ├── emissions.ts    # campaignEmissions + emissionInputs (attribution) + GHG_METHODOLOGY
 │   ├── draft.ts        # buildDraft() — deterministic BRSR draft from collected data (includes evidence list)
 │   ├── storage.ts      # Supabase Storage REST API (private bucket brsr-evidence); uploadEvidence + signedEvidenceUrl + signCampaignEvidence
-│   └── fields.ts       # REQUEST_FIELDS (curated MVP request-field subset)
+│   ├── fields.ts       # brsrRequestFields() — full BRSR format (A+B+C, 133) flattened from the KB
+│   └── brsr-meta.ts    # static section/principle display labels (no KB import — safe for the client picker)
 └── app/
     ├── login/page.tsx
     ├── requests/
@@ -244,6 +247,9 @@ The originally-validated top-5 consultant requests are now **shipped** (1–4 + 
 - ✅ **Embedded GHG + energy + water calculators** — Scope 1 & 2 + intensity inside P6-E1, P6-E7, P6-E3 rows. CEA grid factor, IPCC/GHG-Protocol fuel factors, all cited. Inputs persist via localStorage. Shared state: fuel inputs entered in P6-E7 carry over to P6-E1 and vice versa.
 - ✅ **Collect — the data-request product** (the paid backend tier): multi-owner collection, branded request + auto-reminder + submission-alert emails, no-login owner submission, emissions auto-calc with per-input attribution + a GHG-methodology statement, and deterministic printable drafts. Validated by consultant Priya. See the **Collect** section above.
 
-**Roadmap:** evidence/document attachment (owners upload the supporting bill/invoice → assurance-readiness; BRSR Core needs reasonable assurance), monetization (freemium + **Razorpay**), real per-consultant accounts (**Supabase Auth + RLS**, replacing the single passcode), **"Layer 2"** (wire the Action-Plan gap-fields into Collect requests + tie collections to a saved client), Scope 3 calculator expansion, peer/competitor benchmarking (gated on cited data), CBAM module, native Compliance Chat integration.
+- ✅ **Evidence/document attachment** (owners upload the supporting bill/invoice → assurance-readiness; private `brsr-evidence` Storage bucket + signed-URL view + draft "Supporting evidence" list).
+- ✅ **Reporting period + Layer 2** (Priya's feedback): per-collection BRSR financial year; Collect now requests against the **full BRSR format** (Section A+B+C, 133 coded fields) with Section/Principle-grouped drafts. See the Project Status block.
+
+**Roadmap:** monetization (freemium + **Razorpay**), real per-consultant accounts (**Supabase Auth + RLS**, replacing the single passcode), tie collections to a saved client, Scope 3 calculator expansion, peer/competitor benchmarking (gated on cited data), CBAM module, native Compliance Chat integration.
 
 **Calculator files:** `src/data/emission_factors.json` (factors + citations) · `src/lib/emissions-calculator.ts` (pure calc functions) · `src/components/checklist/EmissionsCalculator.tsx` (UI, ~280 lines). `CalcInputs` is stored in `useChecklistState` and persisted under the existing `session.checklist` localStorage key.
