@@ -17,7 +17,7 @@ export default async function SubmitPage({
     );
   }
 
-  const { contact, clientName, deadline } = found;
+  const { contact, clientName, reportingPeriod, deadline } = found;
 
   if (searchParams.done) {
     return (
@@ -45,8 +45,9 @@ export default async function SubmitPage({
         A few data points for {clientName}&apos;s BRSR report
       </h1>
       <p className="text-[13.5px] text-stone-500 mt-2 leading-relaxed">
-        Hi {contact.name || "there"}, please fill in what you have below. Estimates are fine; the consultant will
-        confirm. {deadlineStr && <>Needed by <strong className="text-stone-700">{deadlineStr}</strong>.</>}
+        Hi {contact.name || "there"}, please fill in what you have below
+        {reportingPeriod && <> for <strong className="text-stone-700">{reportingPeriod}</strong></>}. Estimates are fine;
+        the consultant will confirm. {deadlineStr && <>Needed by <strong className="text-stone-700">{deadlineStr}</strong>.</>}
       </p>
 
       <form action={submit} className="mt-6 space-y-3 w-full">

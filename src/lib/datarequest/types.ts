@@ -48,6 +48,7 @@ export interface Contact {
 export interface Campaign {
   id: string;
   clientName: string;
+  reportingPeriod: string | null; // the BRSR reporting year, e.g. "FY 2025-26"
   deadline: string | null; // ISO date (YYYY-MM-DD)
   createdAt: string;
   contacts: Contact[];

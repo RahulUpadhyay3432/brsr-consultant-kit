@@ -11,6 +11,7 @@ export interface DraftSection { title: string; lines: DraftLine[] }
 
 export interface Draft {
   clientName: string;
+  reportingPeriod: string | null;
   generatedAt: string;
   collectedCount: number;
   totalCount: number;
@@ -55,6 +56,7 @@ export function buildDraft(campaign: Campaign): Draft {
 
   return {
     clientName: campaign.clientName,
+    reportingPeriod: campaign.reportingPeriod,
     generatedAt: new Date().toISOString(),
     collectedCount: received.length,
     totalCount: allItems.length,

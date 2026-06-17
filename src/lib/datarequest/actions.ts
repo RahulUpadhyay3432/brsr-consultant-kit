@@ -15,15 +15,17 @@ function baseUrl(): string {
 export async function createCampaignAction(formData: FormData): Promise<void> {
   const clientName = String(formData.get("clientName") || "").trim();
   const deadline = (String(formData.get("deadline") || "").trim() || null) as string | null;
+  const reportingPeriod = (String(formData.get("reportingPeriod") || "").trim() || null) as string | null;
   if (!clientName) redirect("/requests/new?error=missing");
 
-  const id = await db.createCampaign(clientName, deadline);
+  const id = await db.createCampaign(clientName, deadline, reportingPeriod);
   redirect(`/requests/${id}`);
 }
 
 // 2) Consultant adds a data owner to a campaign and sends them a request.
 export async function addContactAction(
-  campaignId: string, clientName: string, deadline: string | null, formData: FormData
+  campaignId: string, clientName: string, deadline: string | null,
+  reportingPeriod: string | null, formData: FormData
 ): Promise<void> {
   const name = String(formData.get("name") || "").trim();
   const email = String(formData.get("email") || "").trim();
@@ -43,6 +45,7 @@ export async function addContactAction(
       contactName: name || null,
       contactEmail: email,
       deadline,
+      reportingPeriod,
       items: fields.map((f) => ({ label: f.label, unit: f.unit ?? null })),
       token,
     },
