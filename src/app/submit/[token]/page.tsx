@@ -37,6 +37,9 @@ export default async function SubmitPage({
   const deadlineStr = deadline
     ? new Date(deadline).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
     : null;
+  // BRSR is reported year-on-year, so collect this year + the previous year.
+  const thisYearLabel = reportingPeriod || "This year";
+  const prevYearLabel = priorFy(reportingPeriod) || "Previous year";
 
   return (
     <Shell wide>
@@ -53,18 +56,31 @@ export default async function SubmitPage({
       <form action={submit} className="mt-6 space-y-3 w-full">
         {contact.items.map((it) => (
           <div key={it.id} className="bg-white border border-stone-200 rounded-xl px-4 py-3.5">
-            <label className="block">
-              <span className="block text-[13.5px] font-medium text-stone-800">
-                {it.label}{it.unit && <span className="text-stone-400 font-normal"> ({it.unit})</span>}
-              </span>
-              <input
-                name={`f_${it.id}`}
-                defaultValue={it.value ?? ""}
-                placeholder="Enter value"
-                className="mt-2 w-full h-10 px-3 text-[13.5px] text-stone-800 bg-stone-50 border border-stone-200 rounded-lg
-                  focus:outline-none focus:bg-white focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
-              />
-            </label>
+            <span className="block text-[13.5px] font-medium text-stone-800">
+              {it.label}{it.unit && <span className="text-stone-400 font-normal"> ({it.unit})</span>}
+            </span>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              <label className="block">
+                <span className="block text-[11px] font-medium text-stone-500 mb-1">{thisYearLabel}</span>
+                <input
+                  name={`f_${it.id}`}
+                  defaultValue={it.value ?? ""}
+                  placeholder="Enter value"
+                  className="w-full h-10 px-3 text-[13.5px] text-stone-800 bg-stone-50 border border-stone-200 rounded-lg
+                    focus:outline-none focus:bg-white focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
+                />
+              </label>
+              <label className="block">
+                <span className="block text-[11px] text-stone-400 mb-1">{prevYearLabel} (optional)</span>
+                <input
+                  name={`pf_${it.id}`}
+                  defaultValue={it.priorValue ?? ""}
+                  placeholder="Last year"
+                  className="w-full h-10 px-3 text-[13.5px] text-stone-700 bg-stone-50 border border-stone-200 rounded-lg
+                    focus:outline-none focus:bg-white focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
+                />
+              </label>
+            </div>
 
             {/* Optional supporting document — backs the figure for assurance. */}
             <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
@@ -102,6 +118,15 @@ export default async function SubmitPage({
       </form>
     </Shell>
   );
+}
+
+// "FY 2025-26" → "FY 2024-25". Returns null if the period isn't a parseable FY.
+function priorFy(period: string | null): string | null {
+  if (!period) return null;
+  const m = period.match(/(\d{4})-(\d{2})/);
+  if (!m) return null;
+  const start = parseInt(m[1], 10) - 1;
+  return `FY ${start}-${String(start + 1).slice(2)}`;
 }
 
 function Shell({ children, wide }: { children: React.ReactNode; wide?: boolean }) {

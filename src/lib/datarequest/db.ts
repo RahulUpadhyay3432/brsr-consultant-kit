@@ -35,6 +35,7 @@ async function rest(path: string, init?: RequestInit & { prefer?: string }): Pro
 interface ItemRow {
   id: string; field_id: string; field_label: string; field_unit: string | null;
   field_kind: string; field_category: string | null; value: string | null; status: string;
+  prior_value?: string | null;
   field_section?: string | null; field_principle?: string | null; field_indicator_type?: string | null;
   evidence_path?: string | null; evidence_name?: string | null;
 }
@@ -58,6 +59,7 @@ function mapItem(r: ItemRow): Item {
     principle: r.field_principle ?? null,
     indicatorType: (it === "essential" || it === "leadership") ? it : null,
     value: r.value,
+    priorValue: r.prior_value ?? null,
     status: (r.status === "received" ? "received" : "pending"),
     evidencePath: r.evidence_path ?? null,
     evidenceName: r.evidence_name ?? null,
@@ -153,6 +155,15 @@ export async function updateItem(itemId: string, value: string): Promise<void> {
   await rest(`brsr_request_items?id=eq.${encodeURIComponent(itemId)}`, {
     method: "PATCH",
     body: JSON.stringify({ value, status: "received" }),
+  });
+}
+
+// Prior-year figure — written separately from the value so it can be best-effort
+// (the previous-FY column is supplementary to the reportable number).
+export async function setItemPrior(itemId: string, priorValue: string): Promise<void> {
+  await rest(`brsr_request_items?id=eq.${encodeURIComponent(itemId)}`, {
+    method: "PATCH",
+    body: JSON.stringify({ prior_value: priorValue }),
   });
 }
 

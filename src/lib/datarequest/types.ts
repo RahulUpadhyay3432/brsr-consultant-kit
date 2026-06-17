@@ -35,6 +35,7 @@ export interface Item {
   principle: string | null;
   indicatorType: IndicatorType | null;
   value: string | null;
+  priorValue: string | null; // previous-FY figure (BRSR needs year-on-year)
   status: "pending" | "received";
   // Supporting document the owner attached (the bill / invoice / register that
   // backs the figure) — for assurance-readiness. Null when none uploaded.

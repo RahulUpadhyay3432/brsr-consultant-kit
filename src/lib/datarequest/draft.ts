@@ -7,7 +7,7 @@ import { campaignEmissions, emissionInputs, type EmissionInput } from "./emissio
 import { SECTION_LABELS, PRINCIPLE_LABELS, PRINCIPLE_ORDER } from "./brsr-meta";
 import { fmtNum } from "@/lib/emissions-calculator";
 
-export interface DraftLine { code?: string; label: string; value: string }
+export interface DraftLine { code?: string; label: string; value: string; prior?: string }
 export interface DraftSection { title: string; lines: DraftLine[] }
 
 // Place each collected item in its BRSR home: Section A, Section B, then Section
@@ -51,10 +51,12 @@ export function buildDraft(campaign: Campaign): Draft {
     seen.add(key);
     const { order, title } = groupFor(it);
     if (!byGroup.has(title)) byGroup.set(title, { order, lines: [] });
+    const unit = it.unit ? ` ${it.unit}` : "";
     byGroup.get(title)!.lines.push({
       code: it.fieldId,
       label: it.label,
-      value: `${it.value}${it.unit ? ` ${it.unit}` : ""}`,
+      value: `${it.value}${unit}`,
+      prior: it.priorValue ? `${it.priorValue}${unit}` : undefined,
     });
   }
 

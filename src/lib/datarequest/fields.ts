@@ -11,6 +11,9 @@ import brsrData from "@/data/brsr_data_points.json";
 // than replacing the formal P6-E1 / P6-E7 fields. (Static display labels live in
 // brsr-meta.ts so the picker can import them without pulling in the KB JSON.)
 
+// Granular activity inputs that feed the GHG calculator. Scope 2 = grid
+// electricity; Scope 1 = the six fuels the calculator already supports (cited
+// IPCC 2006 factors). emissions.ts keys off these exact ids.
 const ACTIVITY_FIELDS: RequestField[] = [
   {
     id: "P6-E1-elec", label: "Grid electricity consumed (annual)", unit: "kWh",
@@ -21,6 +24,31 @@ const ACTIVITY_FIELDS: RequestField[] = [
     id: "P6-E1-diesel", label: "Diesel / HSD consumed (DG sets, vehicles)", unit: "litres",
     kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
     hint: "Facilities / admin — fuel purchase logs.",
+  },
+  {
+    id: "P6-E1-petrol", label: "Petrol / MS consumed (vehicles, equipment)", unit: "litres",
+    kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
+    hint: "Facilities / fleet — fuel purchase logs.",
+  },
+  {
+    id: "P6-E1-cng", label: "CNG / piped natural gas consumed", unit: "m³",
+    kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
+    hint: "Energy manager — gas utility bills / meter readings.",
+  },
+  {
+    id: "P6-E1-lpg", label: "LPG consumed (canteen, process heating)", unit: "kg",
+    kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
+    hint: "Admin / EHS — LPG cylinder or bulk purchase records.",
+  },
+  {
+    id: "P6-E1-coal", label: "Coal consumed (boilers, furnaces)", unit: "kg",
+    kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
+    hint: "Plant / utilities — coal purchase and consumption logs.",
+  },
+  {
+    id: "P6-E1-fo", label: "Furnace oil / HFO consumed (boilers, DG)", unit: "litres",
+    kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
+    hint: "Plant / utilities — furnace oil purchase logs.",
   },
 ];
 

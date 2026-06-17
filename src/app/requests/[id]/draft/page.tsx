@@ -62,7 +62,7 @@ export default async function DraftPage({ params }: { params: { id: string } }) 
 
       {draft.sections.map((s) => (
         <Section key={s.title} title={s.title}>
-          {s.lines.map((l, i) => <Line key={i} code={l.code} label={l.label} value={l.value} />)}
+          {s.lines.map((l, i) => <Line key={i} code={l.code} label={l.label} value={l.value} prior={l.prior} />)}
         </Section>
       ))}
 
@@ -111,14 +111,17 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-function Line({ code, label, value }: { code?: string; label: string; value: string }) {
+function Line({ code, label, value, prior }: { code?: string; label: string; value: string; prior?: string }) {
   return (
     <div className="flex items-baseline justify-between gap-4 py-1.5 border-b border-stone-50 last:border-0">
       <span className="text-[13px] text-stone-700">
         {code && <span className="font-mono text-[11px] font-semibold text-stone-400 mr-1.5">{code}</span>}
         {label}
       </span>
-      <span className="text-[13px] font-semibold text-stone-900 tabular-nums whitespace-nowrap">{value}</span>
+      <span className="text-[13px] tabular-nums whitespace-nowrap text-right">
+        <span className="font-semibold text-stone-900">{value}</span>
+        {prior && <span className="text-stone-400"> · prev {prior}</span>}
+      </span>
     </div>
   );
 }
