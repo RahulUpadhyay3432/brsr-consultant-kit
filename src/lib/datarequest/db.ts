@@ -35,6 +35,7 @@ async function rest(path: string, init?: RequestInit & { prefer?: string }): Pro
 interface ItemRow {
   id: string; field_id: string; field_label: string; field_unit: string | null;
   field_kind: string; field_category: string | null; value: string | null; status: string;
+  field_section?: string | null; field_principle?: string | null; field_indicator_type?: string | null;
   evidence_path?: string | null; evidence_name?: string | null;
 }
 interface ContactRow {
@@ -48,10 +49,15 @@ interface CampaignRow {
 }
 
 function mapItem(r: ItemRow): Item {
+  const it = r.field_indicator_type;
   return {
     id: r.id, fieldId: r.field_id, label: r.field_label, unit: r.field_unit,
     kind: (r.field_kind === "activity" ? "activity" : "value"),
-    category: r.field_category, value: r.value,
+    category: r.field_category,
+    section: (r.field_section === "A" || r.field_section === "B" || r.field_section === "C") ? r.field_section : null,
+    principle: r.field_principle ?? null,
+    indicatorType: (it === "essential" || it === "leadership") ? it : null,
+    value: r.value,
     status: (r.status === "received" ? "received" : "pending"),
     evidencePath: r.evidence_path ?? null,
     evidenceName: r.evidence_name ?? null,
@@ -116,7 +122,9 @@ export async function addContact(
   const items = fields.map((f) => ({
     contact_id: contact.id,
     field_id: f.id, field_label: f.label, field_unit: f.unit ?? null,
-    field_kind: f.kind, field_category: f.category, status: "pending",
+    field_kind: f.kind, field_category: f.category ?? null,
+    field_section: f.section, field_principle: f.principle, field_indicator_type: f.indicatorType,
+    status: "pending",
   }));
   if (items.length) {
     await rest("brsr_request_items", { method: "POST", body: JSON.stringify(items) });

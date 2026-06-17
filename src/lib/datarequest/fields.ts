@@ -1,65 +1,67 @@
 import type { RequestField } from "./types";
+import brsrData from "@/data/brsr_data_points.json";
 
-// A curated subset of BRSR data points for the MVP send form. The full 108-field
-// knowledge base wires in later; this keeps the thin slice focused.
-//
-// The "activity" fields (grid electricity, diesel) are the emissions hook: the
-// recipient supplies raw inputs, and the existing GHG calculators turn them into
-// Scope 1/2 + intensity in a later phase. The rest are collected as-is.
-export const REQUEST_FIELDS: RequestField[] = [
-  // ── Environment ───────────────────────────────────────────────────────────
+// Layer 2: the request-field list is the FULL BRSR format, flattened from the
+// same knowledge base the readiness tool uses (brsr_data_points.json) — Section
+// A (general), Section B (policy/management), Section C (108 principle-wise
+// indicators). Every field carries its BRSR coordinates so collected values map
+// straight back into the report. The two "activity" inputs (grid kWh, diesel
+// litres) are finer than any single indicator and feed the GHG calculator
+// (emissions.ts keys off their exact ids), so they're slotted under P6 rather
+// than replacing the formal P6-E1 / P6-E7 fields. (Static display labels live in
+// brsr-meta.ts so the picker can import them without pulling in the KB JSON.)
+
+const ACTIVITY_FIELDS: RequestField[] = [
   {
     id: "P6-E1-elec", label: "Grid electricity consumed (annual)", unit: "kWh",
-    category: "Environment", kind: "activity",
+    kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
     hint: "Energy / utilities manager — annual electricity bills.",
   },
   {
     id: "P6-E1-diesel", label: "Diesel / HSD consumed (DG sets, vehicles)", unit: "litres",
-    category: "Environment", kind: "activity",
+    kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
     hint: "Facilities / admin — fuel purchase logs.",
-  },
-  {
-    id: "P6-E3", label: "Water withdrawn by source", unit: "kL",
-    category: "Environment", kind: "value",
-    hint: "Plant / EHS team — water meter readings or PCB returns.",
-  },
-  {
-    id: "P6-E9", label: "Total waste generated (hazardous + non-hazardous)", unit: "MT",
-    category: "Environment", kind: "value",
-    hint: "EHS team — hazardous waste returns / manifests.",
-  },
-
-  // ── Social ────────────────────────────────────────────────────────────────
-  {
-    id: "SA-EMP", label: "Total employees and workers (by gender)", unit: "count",
-    category: "Social", kind: "value",
-    hint: "HR — headcount as on 31 March.",
-  },
-  {
-    id: "P3-SAFE", label: "Safety incidents / LTIFR for the year", unit: "rate / count",
-    category: "Social", kind: "value",
-    hint: "EHS / safety officer — incident register.",
-  },
-  {
-    id: "P3-TRAIN", label: "Average training hours per employee", unit: "hours",
-    category: "Social", kind: "value",
-    hint: "HR / L&D — training records.",
-  },
-
-  // ── Governance ────────────────────────────────────────────────────────────
-  {
-    id: "P1-POL", label: "Anti-corruption / anti-bribery policy in place?", unit: "Yes/No + link",
-    category: "Governance", kind: "value",
-    hint: "Company secretary / legal — board-approved policy register.",
-  },
-  {
-    id: "P9-COMP", label: "Consumer complaints received & resolved", unit: "count",
-    category: "Governance", kind: "value",
-    hint: "Customer service / grievance officer.",
   },
 ];
 
+interface KbIndicator { id: string; label: string; unit: string | null }
+interface KbPrinciple {
+  id: string; name: string;
+  essential_indicators: KbIndicator[];
+  leadership_indicators: KbIndicator[];
+}
+interface KbDisclosure { id: string; label: string }
+
+function buildBrsrRequestFields(): RequestField[] {
+  const data = brsrData as unknown as {
+    section_a_general_disclosures: KbDisclosure[];
+    section_b_management_process_disclosures: KbDisclosure[];
+    principles: KbPrinciple[];
+  };
+  const out: RequestField[] = [];
+
+  for (const d of data.section_a_general_disclosures) {
+    out.push({ id: d.id, label: d.label, kind: "value", section: "A", principle: null, indicatorType: null });
+  }
+  for (const d of data.section_b_management_process_disclosures) {
+    out.push({ id: d.id, label: d.label, kind: "value", section: "B", principle: null, indicatorType: null });
+  }
+  for (const p of data.principles) {
+    for (const ind of p.essential_indicators) {
+      out.push({ id: ind.id, label: ind.label, unit: ind.unit ?? undefined, kind: "value", section: "C", principle: p.id, indicatorType: "essential" });
+    }
+    for (const ind of p.leadership_indicators) {
+      out.push({ id: ind.id, label: ind.label, unit: ind.unit ?? undefined, kind: "value", section: "C", principle: p.id, indicatorType: "leadership" });
+    }
+    if (p.id === "P6") out.push(...ACTIVITY_FIELDS); // keep the calc inputs with their principle
+  }
+  return out;
+}
+
+export const REQUEST_FIELDS: RequestField[] = buildBrsrRequestFields();
+
+const BY_ID = new Map(REQUEST_FIELDS.map((f) => [f.id, f]));
+
 export function fieldsByIds(ids: string[]): RequestField[] {
-  const set = new Set(ids);
-  return REQUEST_FIELDS.filter((f) => set.has(f.id));
+  return ids.map((id) => BY_ID.get(id)).filter((f): f is RequestField => !!f);
 }
