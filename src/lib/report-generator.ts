@@ -11,6 +11,7 @@ import type {
 import brsrData from "@/data/brsr_data_points.json";
 import complianceData from "@/data/compliance_overlaps.json";
 import frameworkData from "@/data/framework_mappings.json";
+import tnfdData from "@/data/tnfd_mappings.json";
 import industryData from "@/data/industry_material_topics.json";
 
 // Normalize compliance overlaps (JSON has inconsistent nesting)
@@ -402,8 +403,10 @@ function getGenericMaterialityTopics(): MaterialityTopic[] {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function generateFrameworkMappings(_formData: IntakeFormData): FrameworkMapping[] {
   const mappings = (frameworkData as any).mappings as FrameworkMapping[];
+  const tnfd = (tnfdData as any).mappings as Record<string, { pillar: string; detail: string }>;
 
-  // Return all mappings — the UI will handle filtering
+  // Return all mappings — the UI will handle filtering. Attach the indicative
+  // TNFD crosswalk where the disclosure is nature-related.
   return mappings.map((m) => ({
     brsr_id: m.brsr_id,
     brsr_label: m.brsr_label,
@@ -413,6 +416,8 @@ function generateFrameworkMappings(_formData: IntakeFormData): FrameworkMapping[
     tcfd_pillar: m.tcfd_pillar,
     tcfd_detail: m.tcfd_detail,
     ifrs_reference: m.ifrs_reference,
+    tnfd_pillar: tnfd[m.brsr_id]?.pillar,
+    tnfd_detail: tnfd[m.brsr_id]?.detail,
     notes: m.notes,
   }));
 }

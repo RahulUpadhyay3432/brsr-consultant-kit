@@ -110,6 +110,10 @@ export interface FrameworkMapping {
   tcfd_pillar: string;
   tcfd_detail: string;
   ifrs_reference: string;
+  // TNFD (nature-related) — only present on the nature-relevant rows; from the
+  // indicative tnfd_mappings.json overlay. Undefined where there's no mapping.
+  tnfd_pillar?: string;
+  tnfd_detail?: string;
   notes: string;
 }
 
