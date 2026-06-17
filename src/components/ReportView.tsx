@@ -136,8 +136,8 @@ export default function ReportView({ report, onBack, onEdit }: ReportViewProps) 
               {activeTab === "overview" && (
                 <Overview report={report} onGoToPlan={() => setActiveTab("checklist")} onBack={onBack} />
               )}
-              {activeTab === "checklist"   && <DataChecklist items={report.checklist} general={report.generalDisclosures} seedQuery={seedQuery} />}
-              {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} />}
+              {activeTab === "checklist"   && <DataChecklist items={report.checklist} general={report.generalDisclosures} seedQuery={seedQuery} clientName={report.companyName} />}
+              {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} clientName={report.companyName} />}
               {activeTab === "alignment"   && <AlignmentWorkspace mappings={report.frameworkMappings} />}
               {activeTab === "sources"     && <SourcesPanel />}
             </div>
