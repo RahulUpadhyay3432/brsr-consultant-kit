@@ -681,6 +681,7 @@ function AlignmentWorkspace({ mappings }: { mappings: FrameworkMapping[] }) {
   const withGRI  = mappings.filter(m => m.gri_standard   && m.gri_standard   !== "—").length;
   const withTCFD = mappings.filter(m => m.tcfd_pillar    && m.tcfd_pillar    !== "—").length;
   const withIFRS = mappings.filter(m => m.ifrs_reference && m.ifrs_reference !== "—").length;
+  const withTNFD = mappings.filter(m => m.tnfd_pillar    && m.tnfd_pillar    !== "—").length;
   const ratingsCount = (esgRatingsData as { mappings?: unknown[] }).mappings?.length ?? 9;
 
   const subTabs = [
@@ -693,6 +694,7 @@ function AlignmentWorkspace({ mappings }: { mappings: FrameworkMapping[] }) {
     { n: withGRI,  label: "GRI Standards",  tone: "text-blue-600"    },
     { n: withTCFD, label: "TCFD aligned",   tone: "text-violet-600"  },
     { n: withIFRS, label: "IFRS S1/S2",     tone: "text-emerald-600" },
+    { n: withTNFD, label: "TNFD (nature)",  tone: "text-teal-600"    },
   ];
 
   return (
@@ -704,8 +706,8 @@ function AlignmentWorkspace({ mappings }: { mappings: FrameworkMapping[] }) {
           Alignment
         </h1>
         <p className="text-[13px] text-stone-500 mt-1 max-w-[72ch] leading-relaxed">
-          How each BRSR disclosure maps to GRI, TCFD and IFRS S1/S2 — and to the MSCI &amp; DJSI rating
-          frameworks. Collect once, report across all.
+          How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2 and TNFD (nature) — and to the MSCI &amp; DJSI
+          rating frameworks. Collect once, report across all.
         </p>
       </div>
 
@@ -731,7 +733,7 @@ function AlignmentWorkspace({ mappings }: { mappings: FrameworkMapping[] }) {
       {sub === "frameworks" ? (
         <>
           {/* Headline stat cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {statCards.map((s, i) => (
               <div key={i} className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
                 <p className={`text-[2rem] font-semibold leading-none tabular-nums ${s.tone}`}>{s.n}</p>

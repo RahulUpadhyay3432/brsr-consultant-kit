@@ -19,13 +19,14 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
     return mappings.filter((m) => {
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
-        const searchable = `${m.brsr_id} ${m.brsr_label} ${m.gri_standard} ${m.gri_label} ${m.tcfd_detail} ${m.ifrs_reference} ${m.notes}`.toLowerCase();
+        const searchable = `${m.brsr_id} ${m.brsr_label} ${m.gri_standard} ${m.gri_label} ${m.tcfd_detail} ${m.ifrs_reference} ${m.tnfd_detail ?? ""} ${m.notes}`.toLowerCase();
         if (!searchable.includes(q)) return false;
       }
       if (filterPillar !== "all" && m.tcfd_pillar !== filterPillar) return false;
       if (filterFramework === "gri" && (!m.gri_standard || m.gri_standard === "—")) return false;
       if (filterFramework === "tcfd" && (!m.tcfd_pillar || m.tcfd_pillar === "—")) return false;
       if (filterFramework === "ifrs" && (!m.ifrs_reference || m.ifrs_reference === "—")) return false;
+      if (filterFramework === "tnfd" && (!m.tnfd_pillar || m.tnfd_pillar === "—")) return false;
       return true;
     });
   }, [mappings, searchQuery, filterPillar, filterFramework]);
@@ -51,6 +52,7 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
           <option value="gri">Has GRI mapping</option>
           <option value="tcfd">Has TCFD mapping</option>
           <option value="ifrs">Has IFRS mapping</option>
+          <option value="tnfd">Has TNFD mapping</option>
         </select>
         <select
           value={filterPillar}
@@ -102,6 +104,11 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
                         {mapping.ifrs_reference}
                       </span>
                     )}
+                    {mapping.tnfd_pillar && mapping.tnfd_pillar !== "—" && (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-teal-50 text-teal-700 border border-teal-100">
+                        TNFD: {mapping.tnfd_pillar}
+                      </span>
+                    )}
                   </div>
                 </div>
                 <svg
@@ -139,6 +146,13 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
                       <span className="text-xs font-medium text-emerald-600 uppercase tracking-wider">IFRS S1/S2</span>
                       <p className="text-sm text-stone-700 mt-0.5">{mapping.ifrs_reference || "—"}</p>
                     </div>
+                    {mapping.tnfd_pillar && (
+                      <div>
+                        <span className="text-xs font-medium text-teal-600 uppercase tracking-wider">TNFD (nature)</span>
+                        <p className="text-sm text-stone-700 mt-0.5">{mapping.tnfd_pillar}</p>
+                        <p className="text-xs text-stone-500 mt-0.5">{mapping.tnfd_detail}</p>
+                      </div>
+                    )}
                     <div>
                       <span className="text-xs font-medium text-stone-500 uppercase tracking-wider">BRSR Section (where it appears)</span>
                       <p className="text-sm text-stone-700 mt-0.5">{mapping.brsr_section}</p>
