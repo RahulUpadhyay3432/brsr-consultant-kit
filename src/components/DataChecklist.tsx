@@ -7,12 +7,41 @@ import { PRINCIPLES, STATUS_META, SEBI_BRSR_FORMAT_URL, type StatusKey, type Typ
 import { useChecklistState } from "./checklist/useChecklistState";
 import UploadCard from "./checklist/UploadCard";
 import PrincipleSection from "./checklist/PrincipleSection";
+import { downloadCsv, exportFilename } from "@/lib/export";
 
 type GeneralDisclosures = { sectionA: SectionDisclosure[]; sectionB: SectionDisclosure[] };
 
+const EXPORT_STATUS_LABEL: Record<ChecklistItem["status"], string> = {
+  already_tracked: "Ready to pull",
+  partially_tracked: "Needs verification",
+  new_data_needed: "Collect fresh",
+  not_applicable: "Not applicable",
+};
+
 // ─── Main component ────────────────────────────────────────────────────────────
-export default function DataChecklist({ items, general, seedQuery }: { items: ChecklistItem[]; general: GeneralDisclosures; seedQuery?: string }) {
+export default function DataChecklist({ items, general, seedQuery, clientName }: { items: ChecklistItem[]; general: GeneralDisclosures; seedQuery?: string; clientName?: string }) {
   const c = useChecklistState(items, general, seedQuery);
+
+  // Export the full BRSR action plan (Sections A, B and all of Section C) as a
+  // working CSV the consultant can edit or hand to the client. Exports
+  // everything, not just the filtered view, plus their collected / last-year flags.
+  function exportChecklist() {
+    const ab = (d: SectionDisclosure, section: string) =>
+      [section, d.id, d.label, "", "", "", "", "", "", d.page ?? "",
+        c.collectedIds.has(d.id) ? "Yes" : "", c.detectedSet.has(d.id) ? "Yes" : ""];
+    const rows: (string | number)[][] = [
+      ["Section", "Code", "Disclosure", "Indicator", "Status", "Pull from (filing)", "Missing / gap", "How to collect", "Unit", "SEBI ref", "Collected", "Found last year"],
+      ...general.sectionA.map((d) => ab(d, "A")),
+      ...general.sectionB.map((d) => ab(d, "B")),
+      ...items.map((it) => [
+        "C", it.id, it.label, it.indicator_type, EXPORT_STATUS_LABEL[it.status],
+        it.source_filing ?? "", it.gap_note ?? "", it.measurement_guidance ?? "", it.unit ?? "", it.page ?? "",
+        c.collectedIds.has(it.id) ? "Yes" : "", c.detectedSet.has(it.id) ? "Yes" : "",
+      ]),
+    ];
+    downloadCsv(exportFilename("BRSR-action-plan", clientName), rows);
+  }
+
   // Sections A & B are only relevant when no gap-analysis filter is narrowing
   // the view (they aren't part of the Section-C status/principle/type filters).
   const abVisible = c.statusFilter === "all" && c.principleFilter === "all" && c.typeFilter === "all";
@@ -36,14 +65,28 @@ export default function DataChecklist({ items, general, seedQuery }: { items: Ch
     <div className="space-y-4">
 
       {/* ── Title ───────────────────────────────────────────────────────────── */}
-      <div>
-        <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">
-          Action Plan
-        </h1>
-        <p className="text-[13px] text-stone-500 mt-1 max-w-[72ch] leading-relaxed">
-          The full BRSR — Section A &amp; B entity disclosures, plus the {items.length} principle fields (Section C)
-          with their gap status. Open a row for how to collect it, the SEBI source, and — for emissions — a calculator.
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">
+            Action Plan
+          </h1>
+          <p className="text-[13px] text-stone-500 mt-1 max-w-[72ch] leading-relaxed">
+            The full BRSR — Section A &amp; B entity disclosures, plus the {items.length} principle fields (Section C)
+            with their gap status. Open a row for how to collect it, the SEBI source, and — for emissions — a calculator.
+          </p>
+        </div>
+        <button
+          onClick={exportChecklist}
+          title="Download the full checklist as a CSV (opens in Excel)"
+          className="no-print flex-shrink-0 inline-flex items-center gap-1.5 text-[12.5px] font-medium
+            text-stone-600 bg-white border border-stone-200 hover:border-stone-300 hover:bg-stone-50
+            px-3 py-1.5 rounded-lg pressable transition-colors shadow-sm"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          Export CSV
+        </button>
       </div>
 
       {/* ── Sections A & B — entity & governance disclosures ────────────────── */}

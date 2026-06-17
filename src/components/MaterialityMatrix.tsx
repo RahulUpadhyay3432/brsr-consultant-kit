@@ -3,9 +3,11 @@
 import { useState, useMemo, useEffect } from "react";
 import type { MaterialityTopic } from "@/lib/types";
 import { loadJSON, saveJSON, STORAGE_KEYS } from "@/lib/storage";
+import { downloadCsv, exportFilename } from "@/lib/export";
 
 interface MaterialityMatrixProps {
   topics: MaterialityTopic[];
+  clientName?: string;
 }
 
 const CATEGORY_META = {
@@ -40,7 +42,7 @@ interface MaterialityPersist {
   showShortlistedOnly: boolean;
 }
 
-export default function MaterialityMatrix({ topics }: MaterialityMatrixProps) {
+export default function MaterialityMatrix({ topics, clientName }: MaterialityMatrixProps) {
   const [selectedCategory, setSelectedCategory] = useState<Category | "all">("all");
 
   // ── Working shortlist — the consultant flags topics to carry into the
@@ -80,6 +82,22 @@ export default function MaterialityMatrix({ topics }: MaterialityMatrixProps) {
     () => topics.filter(t => shortlisted.has(t.id)).length,
     [topics, shortlisted]
   );
+
+  // Export the suggested topics + the consultant's shortlist flags as a working
+  // CSV. Filename keeps the "suggested" framing — it's a starting shortlist, not
+  // a completed materiality assessment.
+  function exportTopics() {
+    const rows: string[][] = [
+      ["Category", "Material topic", "Why it's material", "BRSR principles", "On shortlist"],
+      ...CATEGORY_ORDER.flatMap(cat =>
+        topics.filter(t => t.category === cat).map(t => [
+          CATEGORY_META[cat].label, t.topic, t.why_material,
+          t.brsr_principles.join(" "), shortlisted.has(t.id) ? "Yes" : "",
+        ])
+      ),
+    ];
+    downloadCsv(exportFilename("BRSR-suggested-material-topics", clientName), rows);
+  }
 
   const categoryCounts = useMemo(() => {
     const counts: Partial<Record<Category, number>> = {};
@@ -177,28 +195,41 @@ export default function MaterialityMatrix({ topics }: MaterialityMatrixProps) {
           </div>
         </div>
 
-        {shortlistedCount > 0 && (
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <button
-              onClick={() => setShowShortlistedOnly(v => !v)}
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border pressable transition-colors ${
-                showShortlistedOnly
-                  ? "bg-brand-600 text-white border-brand-600"
-                  : "bg-brand-50 text-brand-700 border-brand-200 hover:bg-brand-100"
-              }`}
-            >
-              {showShortlistedOnly ? "Showing shortlist" : "Show shortlist only"}
-              <span className={showShortlistedOnly ? "text-white/80" : "text-brand-500"}>({shortlistedCount})</span>
-            </button>
-            <button
-              onClick={() => { setShortlisted(new Set()); setShowShortlistedOnly(false); }}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium
-                text-stone-500 hover:text-stone-700 hover:bg-stone-100 pressable transition-colors"
-            >
-              Clear
-            </button>
-          </div>
-        )}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {shortlistedCount > 0 && (
+            <>
+              <button
+                onClick={() => setShowShortlistedOnly(v => !v)}
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border pressable transition-colors ${
+                  showShortlistedOnly
+                    ? "bg-brand-600 text-white border-brand-600"
+                    : "bg-brand-50 text-brand-700 border-brand-200 hover:bg-brand-100"
+                }`}
+              >
+                {showShortlistedOnly ? "Showing shortlist" : "Show shortlist only"}
+                <span className={showShortlistedOnly ? "text-white/80" : "text-brand-500"}>({shortlistedCount})</span>
+              </button>
+              <button
+                onClick={() => { setShortlisted(new Set()); setShowShortlistedOnly(false); }}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium
+                  text-stone-500 hover:text-stone-700 hover:bg-stone-100 pressable transition-colors"
+              >
+                Clear
+              </button>
+            </>
+          )}
+          <button
+            onClick={exportTopics}
+            title="Download the suggested topics + your shortlist as a CSV (opens in Excel)"
+            className="no-print inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium
+              text-stone-600 bg-white border border-stone-200 hover:border-stone-300 hover:bg-stone-50 pressable transition-colors shadow-sm"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            Export CSV
+          </button>
+        </div>
       </div>
 
       {/* ── Category filter ───────────────────────────────────────────────── */}
