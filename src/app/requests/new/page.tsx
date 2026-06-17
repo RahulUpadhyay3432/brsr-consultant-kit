@@ -1,7 +1,21 @@
 import Link from "next/link";
 import { createCampaignAction } from "@/lib/datarequest/actions";
 
+// Indian financial years run April–March. List the in-progress year and the
+// previous three; default to the most recently completed one (what's reported now).
+function financialYearOptions(now = new Date()): string[] {
+  const startYear = now.getMonth() >= 3 ? now.getFullYear() : now.getFullYear() - 1;
+  const opts: string[] = [];
+  for (let s = startYear; s >= startYear - 3; s--) {
+    opts.push(`FY ${s}-${String(s + 1).slice(2)}`);
+  }
+  return opts;
+}
+
 export default function NewCampaignPage({ searchParams }: { searchParams: { error?: string } }) {
+  const fyOptions = financialYearOptions();
+  const defaultFy = fyOptions[1]; // most recently completed FY
+
   return (
     <div className="max-w-[560px] mx-auto">
         <Link href="/requests" className="text-[13px] text-stone-500 hover:text-stone-700">← All collections</Link>
@@ -23,6 +37,16 @@ export default function NewCampaignPage({ searchParams }: { searchParams: { erro
             <span className="block text-[12px] font-medium text-stone-600 mb-1.5">Client / company <span className="text-rose-500">*</span></span>
             <input name="clientName" required placeholder="Tata Motors Ltd"
               className="w-full h-10 px-3 text-[13.5px] text-stone-800 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
+          </label>
+          <label className="block">
+            <span className="block text-[12px] font-medium text-stone-600 mb-1.5">Reporting period</span>
+            <select name="reportingPeriod" defaultValue={defaultFy}
+              className="w-full h-10 px-3 text-[13.5px] text-stone-800 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors">
+              {fyOptions.map((fy) => (
+                <option key={fy} value={fy}>{fy}</option>
+              ))}
+            </select>
+            <span className="block text-[11.5px] text-stone-400 mt-1.5">The financial year this data covers. Data owners see it on their form.</span>
           </label>
           <label className="block">
             <span className="block text-[12px] font-medium text-stone-600 mb-1.5">Deadline</span>

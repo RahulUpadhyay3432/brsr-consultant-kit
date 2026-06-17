@@ -43,7 +43,7 @@ interface ContactRow {
   brsr_request_items?: ItemRow[];
 }
 interface CampaignRow {
-  id: string; client_name: string; deadline: string | null; created_at: string;
+  id: string; client_name: string; reporting_period: string | null; deadline: string | null; created_at: string;
   brsr_contacts?: ContactRow[];
 }
 
@@ -68,7 +68,8 @@ function mapContact(r: ContactRow): Contact {
 }
 function mapCampaign(r: CampaignRow): Campaign {
   return {
-    id: r.id, clientName: r.client_name, deadline: r.deadline, createdAt: r.created_at,
+    id: r.id, clientName: r.client_name, reportingPeriod: r.reporting_period ?? null,
+    deadline: r.deadline, createdAt: r.created_at,
     contacts: (r.brsr_contacts ?? []).map(mapContact),
   };
 }
@@ -76,11 +77,13 @@ function mapCampaign(r: CampaignRow): Campaign {
 const SELECT = "*,brsr_contacts(*,brsr_request_items(*))";
 
 // ─── Queries ────────────────────────────────────────────────────────────────
-export async function createCampaign(clientName: string, deadline: string | null): Promise<string> {
+export async function createCampaign(
+  clientName: string, deadline: string | null, reportingPeriod: string | null
+): Promise<string> {
   const res = await rest("brsr_requests", {
     method: "POST",
     prefer: "return=representation",
-    body: JSON.stringify({ client_name: clientName, deadline }),
+    body: JSON.stringify({ client_name: clientName, deadline, reporting_period: reportingPeriod }),
   });
   const [row] = (await res.json()) as CampaignRow[];
   return row.id;
@@ -123,15 +126,16 @@ export async function addContact(
 // For the recipient page — contact + items + the parent client name/deadline.
 export async function getContactByToken(
   token: string
-): Promise<{ contact: Contact; clientName: string; deadline: string | null; campaignId: string } | null> {
+): Promise<{ contact: Contact; clientName: string; reportingPeriod: string | null; deadline: string | null; campaignId: string } | null> {
   const res = await rest(
-    `brsr_contacts?token=eq.${encodeURIComponent(token)}&select=*,brsr_request_items(*),brsr_requests(client_name,deadline)`
+    `brsr_contacts?token=eq.${encodeURIComponent(token)}&select=*,brsr_request_items(*),brsr_requests(client_name,reporting_period,deadline)`
   );
-  const rows = (await res.json()) as (ContactRow & { request_id: string; brsr_requests: { client_name: string; deadline: string | null } })[];
+  const rows = (await res.json()) as (ContactRow & { request_id: string; brsr_requests: { client_name: string; reporting_period: string | null; deadline: string | null } })[];
   if (!rows[0]) return null;
   return {
     contact: mapContact(rows[0]),
     clientName: rows[0].brsr_requests?.client_name ?? "",
+    reportingPeriod: rows[0].brsr_requests?.reporting_period ?? null,
     deadline: rows[0].brsr_requests?.deadline ?? null,
     campaignId: rows[0].request_id,
   };

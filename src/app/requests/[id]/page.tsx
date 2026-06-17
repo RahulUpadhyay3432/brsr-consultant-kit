@@ -48,7 +48,7 @@ export default async function CampaignDetailPage({
   const received = allItems.filter((i) => i.status === "received").length;
   const ghg = campaignEmissions(campaign);
   const inputs = emissionInputs(campaign);
-  const addOwner = addContactAction.bind(null, campaign.id, campaign.clientName, campaign.deadline);
+  const addOwner = addContactAction.bind(null, campaign.id, campaign.clientName, campaign.deadline, campaign.reportingPeriod);
 
   return (
     <div className="max-w-[820px] mx-auto">
@@ -58,6 +58,7 @@ export default async function CampaignDetailPage({
         <div>
           <h1 className="font-display text-[24px] text-stone-900 tracking-tight">{campaign.clientName}</h1>
           <p className="text-[13px] text-stone-500 mt-1">
+            {campaign.reportingPeriod && <>{campaign.reportingPeriod} · </>}
             {campaign.contacts.length} {campaign.contacts.length === 1 ? "owner" : "owners"}
             {campaign.deadline && <> · due {new Date(campaign.deadline).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</>}
           </p>

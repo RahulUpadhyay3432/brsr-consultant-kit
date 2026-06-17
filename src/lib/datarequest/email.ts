@@ -9,6 +9,7 @@ export interface EmailReq {
   contactName: string | null;
   contactEmail: string;
   deadline: string | null;
+  reportingPeriod?: string | null; // e.g. "FY 2025-26"
   items: { label: string; unit: string | null }[];
   token: string;
   kind?: "initial" | "reminder"; // default "initial"
@@ -53,6 +54,7 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
     <div style="padding:24px;">
       <p style="font-size:15px;color:#1a1916;margin:0 0 12px;">Hi ${req.contactName || "there"},</p>
       <p style="font-size:14px;color:#52504a;line-height:1.6;margin:0 0 18px;">${intro}</p>
+      ${req.reportingPeriod ? `<p style="font-size:13px;color:#52504a;margin:0 0 14px;">Reporting period: <strong style="color:#1a1916;">${req.reportingPeriod}</strong></p>` : ""}
       <table style="width:100%;border-collapse:collapse;margin:0 0 18px;">${itemsHtml}</table>
       ${deadline ? `<p style="font-size:13px;color:#a8662a;background:#fdf3e7;border:1px solid #f6e1c6;border-radius:8px;padding:10px 12px;margin:0 0 18px;">Please submit by <strong>${deadline}</strong>.</p>` : ""}
       <a href="${link}" style="display:inline-block;background:#111;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px 20px;border-radius:9px;">Provide the data →</a>

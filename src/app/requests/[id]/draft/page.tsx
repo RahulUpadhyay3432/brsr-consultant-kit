@@ -25,7 +25,7 @@ export default async function DraftPage({ params }: { params: { id: string } }) 
         <div>
           <h1 className="font-display text-[24px] text-stone-900 tracking-tight">Draft BRSR responses</h1>
           <p className="text-[13px] text-stone-500 mt-1">
-            {draft.clientName} · {date} · {draft.collectedCount} of {draft.totalCount} data points collected
+            {draft.clientName}{draft.reportingPeriod && <> · {draft.reportingPeriod}</>} · {date} · {draft.collectedCount} of {draft.totalCount} data points collected
           </p>
         </div>
         <PrintButton />

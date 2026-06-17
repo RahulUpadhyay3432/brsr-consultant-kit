@@ -36,6 +36,7 @@ export async function GET(req: NextRequest) {
           contactName: contact.name,
           contactEmail: contact.email,
           deadline: campaign.deadline,
+          reportingPeriod: campaign.reportingPeriod,
           items: contact.items.map((i) => ({ label: i.label, unit: i.unit })),
           token: contact.token,
           kind: "reminder",
