@@ -7,14 +7,20 @@
 //              calculators (CEA/IPCC) to produce the BRSR figure (see emissions.ts).
 export type FieldKind = "value" | "activity";
 export type FieldCategory = "Environment" | "Social" | "Governance";
+export type BrsrSection = "A" | "B" | "C";
+export type IndicatorType = "essential" | "leadership";
 
 export interface RequestField {
-  id: string;            // e.g. "P6-E1-elec"
+  id: string;            // the BRSR code, e.g. "P6-E1" (or "P6-E1-elec" for activity inputs)
   label: string;
   unit?: string;
-  category: FieldCategory;
+  category?: FieldCategory;
   kind: FieldKind;
   hint?: string;         // who typically owns it
+  // BRSR coordinates — where this field sits in the official format.
+  section: BrsrSection;             // A (general) · B (policy/mgmt) · C (principle-wise)
+  principle: string | null;         // "P1".."P9" for Section C; null for A/B
+  indicatorType: IndicatorType | null; // essential/leadership for Section C; null for A/B
 }
 
 export interface Item {
@@ -24,6 +30,10 @@ export interface Item {
   unit: string | null;
   kind: FieldKind;
   category: string | null;
+  // BRSR coordinates carried from the picked field (null on pre-Layer-2 items).
+  section: BrsrSection | null;
+  principle: string | null;
+  indicatorType: IndicatorType | null;
   value: string | null;
   status: "pending" | "received";
   // Supporting document the owner attached (the bill / invoice / register that

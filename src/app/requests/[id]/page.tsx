@@ -6,6 +6,7 @@ import { signCampaignEvidence } from "@/lib/datarequest/storage";
 import { addContactAction } from "@/lib/datarequest/actions";
 import AddOwnerPanel from "@/components/datarequest/AddOwnerPanel";
 import CopyLinkButton from "@/components/datarequest/CopyLinkButton";
+import { REQUEST_FIELDS } from "@/lib/datarequest/fields";
 import type { Contact, ContactStatus } from "@/lib/datarequest/types";
 import { fmtNum } from "@/lib/emissions-calculator";
 
@@ -101,7 +102,7 @@ export default async function CampaignDetailPage({
 
       {/* Owners — add panel on top, then the list (or a teaching empty state) */}
       <div className="mt-5 space-y-3">
-        <AddOwnerPanel action={addOwner} error={searchParams.error === "owner"} />
+        <AddOwnerPanel action={addOwner} error={searchParams.error === "owner"} fields={REQUEST_FIELDS} />
 
         {campaign.contacts.length === 0 ? (
           <div className="rounded-xl border border-stone-200 bg-white px-5 py-9 text-center shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
@@ -133,6 +134,11 @@ export default async function CampaignDetailPage({
                 {c.items.map((it) => (
                   <div key={it.id} className="flex items-center gap-3 px-4 py-2.5 border-t border-stone-50">
                     <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${it.status === "received" ? "bg-emerald-500" : "bg-stone-300"}`} />
+                    {it.section && (
+                      <span className="flex-shrink-0 text-[10px] font-mono font-semibold text-stone-500 bg-stone-100 border border-stone-200 px-1.5 py-0.5 rounded" title={`Section ${it.section}${it.principle ? ` · ${it.principle}` : ""}`}>
+                        {it.fieldId}
+                      </span>
+                    )}
                     <span className="flex-1 min-w-0 text-[13px] text-stone-700 truncate">
                       {it.label}{it.unit && <span className="text-stone-400"> · {it.unit}</span>}
                     </span>
