@@ -7,6 +7,7 @@ import { loadJSON, saveJSON, removeKey, STORAGE_KEYS, markSessionActive, clearSe
 import IntakeForm from "@/components/IntakeForm";
 import ReportView from "@/components/ReportView";
 import LandingPage from "@/components/LandingPage";
+import ResumeBanner from "@/components/ResumeBanner";
 
 export default function Home() {
   const [report, setReport] = useState<ReportOutput | null>(null);
@@ -15,19 +16,66 @@ export default function Home() {
   // switches to the intake form. Returning visitors with a saved session restore
   // straight to their report (the useEffect below), bypassing both.
   const [view, setView] = useState<"landing" | "form">("landing");
+  // A saved work session that exists on this device but isn't the active tab's
+  // session (e.g. the consultant closed the browser / restarted their laptop and
+  // came back). We don't auto-jump into it — that would override the landing-first
+  // decision — but we surface a "Continue where you left off" banner so the work is
+  // never stranded. `companyName` may be "" (the field is optional). null = no banner.
+  const [savedSession, setSavedSession] = useState<{ companyName: string } | null>(null);
 
-  // Restore the report only on a same-tab refresh of an active work session, so a
-  // refresh doesn't lose the consultant's place — but a fresh visit (new tab or a
-  // later visit) always lands on the marketing homepage. The form is persisted
-  // (not the report) and regenerated here. A malformed stored form drops the session.
+  // On first mount, decide what to do with any work persisted on this device:
+  //  • same-tab refresh of an active session → restore straight to the report;
+  //  • a fresh visit with saved work present → offer to resume (the banner);
+  //  • nothing saved → stay on the marketing homepage.
+  // The form is persisted (not the report) and the report is regenerated from it.
+  // A malformed stored form drops the session quietly.
   useEffect(() => {
-    if (!isSessionActive()) return; // fresh visit → stay on the landing page
+    let savedForm: IntakeFormData | null = null;
     try {
-      const savedForm = loadJSON<IntakeFormData | null>(STORAGE_KEYS.form, null);
-      if (savedForm) setReport(generateReport(savedForm));
+      savedForm = loadJSON<IntakeFormData | null>(STORAGE_KEYS.form, null);
     } catch {
       removeKey(STORAGE_KEYS.form);
       removeKey(STORAGE_KEYS.checklist);
+      return;
+    }
+    if (!savedForm) return; // nothing saved → landing page
+
+    if (isSessionActive()) {
+      // Same-tab refresh — put them back exactly where they were.
+      try {
+        setReport(generateReport(savedForm));
+      } catch {
+        removeKey(STORAGE_KEYS.form);
+        removeKey(STORAGE_KEYS.checklist);
+      }
+      return;
+    }
+    // Work exists but this is a fresh visit → show the resume banner.
+    setSavedSession({ companyName: savedForm.companyName || "" });
+  }, []);
+
+  // Restore the saved work the consultant chose to continue (from the banner).
+  const handleResume = useCallback(() => {
+    let savedForm: IntakeFormData | null = null;
+    try {
+      savedForm = loadJSON<IntakeFormData | null>(STORAGE_KEYS.form, null);
+    } catch {
+      savedForm = null;
+    }
+    if (!savedForm) {
+      setSavedSession(null);
+      return;
+    }
+    try {
+      const result = generateReport(savedForm);
+      markSessionActive(); // a same-tab refresh now restores this report again
+      setSavedSession(null);
+      setReport(result);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    } catch {
+      removeKey(STORAGE_KEYS.form);
+      removeKey(STORAGE_KEYS.checklist);
+      setSavedSession(null);
     }
   }, []);
 
@@ -38,6 +86,7 @@ export default function Home() {
         const result = generateReport(formData);
         saveJSON(STORAGE_KEYS.form, formData);
         markSessionActive(); // a same-tab refresh now restores this report
+        setSavedSession(null);
         setReport(result);
         window.scrollTo({ top: 0, behavior: "instant" });
       } catch (err) {
@@ -56,6 +105,7 @@ export default function Home() {
     removeKey(STORAGE_KEYS.checklist);
     removeKey(STORAGE_KEYS.materiality);
     clearSessionActive();
+    setSavedSession(null); // the saved work is gone → no resume banner
     setView("form"); // straight to a fresh intake form
     window.scrollTo({ top: 0, behavior: "instant" });
   };
@@ -72,6 +122,10 @@ export default function Home() {
   // session so a later refresh stays on the landing page (the saved form is kept,
   // so "Start a free report" still pre-fills their last answers).
   const handleHome = () => {
+    // The saved form is kept (so "Start a free report" still pre-fills), so offer
+    // to resume it from the landing banner instead of silently abandoning it.
+    const savedForm = loadJSON<IntakeFormData | null>(STORAGE_KEYS.form, null);
+    setSavedSession(savedForm ? { companyName: savedForm.companyName || "" } : null);
     setReport(null);
     clearSessionActive();
     setView("landing");
@@ -84,9 +138,16 @@ export default function Home() {
     return <ReportView report={report} onBack={handleBack} onEdit={handleEdit} />;
   }
 
-  // First-time visitors (no saved report) see the marketing landing page.
+  // First-time visitors (no saved report) see the marketing landing page. If work
+  // is saved on this device, the landing page shows a "Continue where you left off"
+  // banner so the consultant's progress is never stranded.
   if (view === "landing") {
-    return <LandingPage onStart={() => setView("form")} />;
+    return (
+      <LandingPage
+        onStart={() => setView("form")}
+        resume={savedSession ? { companyName: savedSession.companyName, onResume: handleResume } : null}
+      />
+    );
   }
 
   return (
@@ -142,6 +203,11 @@ export default function Home() {
       {/* ── Main Content ────────────────────────────────────────────────── */}
       <main className="max-w-[1680px] mx-auto px-4 sm:px-8 py-12">
         <div className="max-w-[880px] mx-auto">
+
+            {/* Resume banner — saved work exists on this device but isn't loaded yet */}
+            {savedSession && (
+              <ResumeBanner companyName={savedSession.companyName} onResume={handleResume} className="mb-8" />
+            )}
 
             {/* ── Hero ──────────────────────────────────────────────────── */}
             <div className="mb-10 pt-6">

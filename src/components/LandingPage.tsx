@@ -4,19 +4,30 @@
 // off to the intake form (onStart). Product panels are built in live HTML/CSS
 // from the real design tokens — crisp at any size, responsive, no image assets.
 
+import ResumeBanner from "@/components/ResumeBanner";
+
 interface LandingPageProps {
   onStart: () => void;
+  // Set when in-progress work is saved on this device — shows a "Continue where
+  // you left off" banner under the header so the consultant's work isn't stranded.
+  resume?: { companyName: string; onResume: () => void } | null;
 }
 
 const COMPLIANCE_CHAT = "https://huggingface.co/spaces/sherlockwatson221/climate-compliance";
 
-export default function LandingPage({ onStart }: LandingPageProps) {
+export default function LandingPage({ onStart, resume }: LandingPageProps) {
   const scrollTo = (id: string) => () =>
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
     <div className="min-h-screen bg-[#F7F6F2] text-stone-900">
       <Header onStart={onStart} />
+
+      {resume && (
+        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 pt-4">
+          <ResumeBanner companyName={resume.companyName} onResume={resume.onResume} />
+        </div>
+      )}
 
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <section className="bg-grid">
