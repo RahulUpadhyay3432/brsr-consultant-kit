@@ -192,9 +192,18 @@ body::before {
 ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
 
 /* Print */
+.print-only { display: none; } /* hidden on screen; the dedicated print report */
 @media print {
+  @page { size: A4; margin: 14mm; }
   .no-print { display: none !important; }
-  body { background: white; }
+  .print-only { display: block !important; }
+  body {
+    background: white;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* Keep grouped blocks from splitting awkwardly across pages */
+  .print-avoid-break { break-inside: avoid; }
 }
 
 /* Reduced motion */

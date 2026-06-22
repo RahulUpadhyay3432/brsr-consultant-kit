@@ -9,6 +9,7 @@ import MaterialityMatrix from "./MaterialityMatrix";
 import FrameworkMapper from "./FrameworkMapper";
 import EsgRatingsMapper from "./EsgRatingsMapper";
 import SourcesPanel from "./SourcesPanel";
+import PrintReport from "./PrintReport";
 import { PRINCIPLES } from "./checklist/constants";
 import { loadJSON, STORAGE_KEYS } from "@/lib/storage";
 import esgRatingsData from "@/data/esg_ratings_mapping.json";
@@ -94,7 +95,9 @@ export default function ReportView({ report, onBack, onEdit }: ReportViewProps) 
   }, []);
 
   return (
-    <div className="anim-up-sm flex min-h-screen bg-[#F7F6F2]">
+    <>
+    {/* Interactive app — hidden when printing (the print report renders instead) */}
+    <div className="no-print anim-up-sm flex min-h-screen bg-[#F7F6F2]">
 
       {/* ── Sidebar ────────────────────────────────────────────────────────── */}
       <Sidebar
@@ -145,6 +148,10 @@ export default function ReportView({ report, onBack, onEdit }: ReportViewProps) 
         </main>
       </div>
     </div>
+
+    {/* Print-only: a clean, paginated full-report document (Save as PDF) */}
+    <PrintReport report={report} />
+    </>
   );
 }
 
