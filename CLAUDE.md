@@ -138,8 +138,9 @@ src/
 │   ├── fonts/          # Geist fonts (local — GeistVF.woff, GeistMonoVF.woff)
 │   ├── globals.css     # Tailwind + brand tokens, badges, motion system, micro-interactions
 │   ├── layout.tsx      # Root layout — metadata + GA4 + Vercel Analytics
-│   └── page.tsx        # Main page — toggles IntakeForm/ReportView; header has Compliance Chat button + "No data stored" badge
+│   └── page.tsx        # Main page — 3 client-side views: LandingPage (default) → IntakeForm ("Start a free report") → ReportView (on submit). Returning visitors with a saved session restore straight to the report.
 ├── components/
+│   ├── LandingPage.tsx         # Marketing homepage (hero + live product panels, sources bar, how-it-works, 3 feature sections, dark Trust + founder note, stats band, final CTA). All on-brand live HTML/CSS, no screenshot assets. "Start a free report" → onStart switches page.tsx to the form view.
 │   ├── IntakeForm.tsx          # Structured intake form (company autocomplete, business-type toggle, etc.)
 │   ├── CompanyAutocomplete.tsx # Typeahead for company name → auto-fills industry + sector
 │   ├── ReportView.tsx          # Container: header stats + 2 tabs + 2 accordions
