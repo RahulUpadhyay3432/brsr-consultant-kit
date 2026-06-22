@@ -6,10 +6,15 @@ import { generateReport } from "@/lib/report-generator";
 import { loadJSON, saveJSON, removeKey, STORAGE_KEYS } from "@/lib/storage";
 import IntakeForm from "@/components/IntakeForm";
 import ReportView from "@/components/ReportView";
+import LandingPage from "@/components/LandingPage";
 
 export default function Home() {
   const [report, setReport] = useState<ReportOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  // First-time visitors see the marketing landing page; "Start a free report"
+  // switches to the intake form. Returning visitors with a saved session restore
+  // straight to their report (the useEffect below), bypassing both.
+  const [view, setView] = useState<"landing" | "form">("landing");
 
   // Restore the last report on load so a refresh doesn't lose the consultant's
   // work. The intake form is persisted (not the report) and regenerated here.
@@ -47,6 +52,7 @@ export default function Home() {
     removeKey(STORAGE_KEYS.form);
     removeKey(STORAGE_KEYS.checklist);
     removeKey(STORAGE_KEYS.materiality);
+    setView("form"); // straight to a fresh intake form
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
@@ -54,6 +60,14 @@ export default function Home() {
   // the consultant's answers stay pre-filled and they can tweak and regenerate.
   const handleEdit = () => {
     setReport(null);
+    setView("form");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  };
+
+  // Brand logo on the form view → back to the marketing home (keeps any session).
+  const handleHome = () => {
+    setReport(null);
+    setView("landing");
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
@@ -61,6 +75,11 @@ export default function Home() {
   // + sidebar), so we render it standalone instead of inside the landing chrome.
   if (report) {
     return <ReportView report={report} onBack={handleBack} onEdit={handleEdit} />;
+  }
+
+  // First-time visitors (no saved report) see the marketing landing page.
+  if (view === "landing") {
+    return <LandingPage onStart={() => setView("form")} />;
   }
 
   return (
@@ -72,7 +91,7 @@ export default function Home() {
 
           {/* Wordmark + mark — clicking returns to home */}
           <button
-            onClick={handleBack}
+            onClick={handleHome}
             className="flex items-center gap-2.5 py-3.5 pressable"
             aria-label="Go to home"
           >
