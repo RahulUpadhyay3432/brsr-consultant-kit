@@ -9,7 +9,7 @@ import MaterialityMatrix from "./MaterialityMatrix";
 import FrameworkMapper from "./FrameworkMapper";
 import EsgRatingsMapper from "./EsgRatingsMapper";
 import SourcesPanel from "./SourcesPanel";
-import PrintReport from "./PrintReport";
+import { downloadReportPdf } from "@/lib/report-pdf";
 import { PRINCIPLES } from "./checklist/constants";
 import { loadJSON, STORAGE_KEYS } from "@/lib/storage";
 import esgRatingsData from "@/data/esg_ratings_mapping.json";
@@ -95,9 +95,7 @@ export default function ReportView({ report, onBack, onEdit }: ReportViewProps) 
   }, []);
 
   return (
-    <>
-    {/* Interactive app — hidden when printing (the print report renders instead) */}
-    <div className="no-print anim-up-sm flex min-h-screen bg-[#F7F6F2]">
+    <div className="anim-up-sm flex min-h-screen bg-[#F7F6F2]">
 
       {/* ── Sidebar ────────────────────────────────────────────────────────── */}
       <Sidebar
@@ -122,7 +120,8 @@ export default function ReportView({ report, onBack, onEdit }: ReportViewProps) 
                 BRSR Readiness · FY 2025–26
               </p>
               <button
-                onClick={() => window.print()}
+                onClick={() => { downloadReportPdf(report).catch((e) => console.error("PDF export failed", e)); }}
+                title="Download a clean BRSR data-request brief to share with the client"
                 className="no-print inline-flex items-center gap-1.5 text-[12.5px] font-medium
                   text-stone-600 bg-white border border-stone-200 hover:border-stone-300 hover:bg-stone-50
                   px-3 py-1.5 rounded-lg pressable transition-colors shadow-sm"
@@ -131,7 +130,7 @@ export default function ReportView({ report, onBack, onEdit }: ReportViewProps) 
                   <path strokeLinecap="round" strokeLinejoin="round"
                     d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" aria-hidden="true" />
                 </svg>
-                Save as PDF
+                Download PDF
               </button>
             </div>
 
@@ -148,10 +147,6 @@ export default function ReportView({ report, onBack, onEdit }: ReportViewProps) 
         </main>
       </div>
     </div>
-
-    {/* Print-only: a clean, paginated full-report document (Save as PDF) */}
-    <PrintReport report={report} />
-    </>
   );
 }
 

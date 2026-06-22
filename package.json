@@ -13,6 +13,7 @@
   "dependencies": {
     "@next/third-parties": "^16.2.7",
     "@vercel/analytics": "^2.0.1",
+    "jspdf": "^4.2.1",
     "next": "14.2.35",
     "pdfjs-dist": "^4.7.76",
     "react": "^18",
