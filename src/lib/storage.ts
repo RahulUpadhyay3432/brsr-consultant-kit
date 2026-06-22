@@ -42,3 +42,28 @@ export const STORAGE_KEYS = {
   checklist: "session.checklist",
   materiality: "session.materiality",
 } as const;
+
+// Per-tab "active work session" flag (sessionStorage, not localStorage). It lets
+// us show the marketing landing page on every fresh visit while still restoring
+// the report on a same-tab refresh, so the consultant doesn't lose their place.
+// A new tab / a later visit has no flag → landing page.
+const ACTIVE_KEY = PREFIX + "active";
+
+function hasSession(): boolean {
+  return typeof window !== "undefined" && typeof window.sessionStorage !== "undefined";
+}
+
+export function markSessionActive(): void {
+  if (!hasSession()) return;
+  try { window.sessionStorage.setItem(ACTIVE_KEY, "1"); } catch { /* best-effort */ }
+}
+
+export function clearSessionActive(): void {
+  if (!hasSession()) return;
+  try { window.sessionStorage.removeItem(ACTIVE_KEY); } catch { /* ignore */ }
+}
+
+export function isSessionActive(): boolean {
+  if (!hasSession()) return false;
+  try { return window.sessionStorage.getItem(ACTIVE_KEY) === "1"; } catch { return false; }
+}

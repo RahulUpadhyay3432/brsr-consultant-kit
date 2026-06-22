@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import type { IntakeFormData, ReportOutput } from "@/lib/types";
 import { generateReport } from "@/lib/report-generator";
-import { loadJSON, saveJSON, removeKey, STORAGE_KEYS } from "@/lib/storage";
+import { loadJSON, saveJSON, removeKey, STORAGE_KEYS, markSessionActive, clearSessionActive, isSessionActive } from "@/lib/storage";
 import IntakeForm from "@/components/IntakeForm";
 import ReportView from "@/components/ReportView";
 import LandingPage from "@/components/LandingPage";
@@ -16,10 +16,12 @@ export default function Home() {
   // straight to their report (the useEffect below), bypassing both.
   const [view, setView] = useState<"landing" | "form">("landing");
 
-  // Restore the last report on load so a refresh doesn't lose the consultant's
-  // work. The intake form is persisted (not the report) and regenerated here.
-  // If a stored form is malformed (e.g. an older schema), drop the session.
+  // Restore the report only on a same-tab refresh of an active work session, so a
+  // refresh doesn't lose the consultant's place — but a fresh visit (new tab or a
+  // later visit) always lands on the marketing homepage. The form is persisted
+  // (not the report) and regenerated here. A malformed stored form drops the session.
   useEffect(() => {
+    if (!isSessionActive()) return; // fresh visit → stay on the landing page
     try {
       const savedForm = loadJSON<IntakeFormData | null>(STORAGE_KEYS.form, null);
       if (savedForm) setReport(generateReport(savedForm));
@@ -35,6 +37,7 @@ export default function Home() {
       try {
         const result = generateReport(formData);
         saveJSON(STORAGE_KEYS.form, formData);
+        markSessionActive(); // a same-tab refresh now restores this report
         setReport(result);
         window.scrollTo({ top: 0, behavior: "instant" });
       } catch (err) {
@@ -52,6 +55,7 @@ export default function Home() {
     removeKey(STORAGE_KEYS.form);
     removeKey(STORAGE_KEYS.checklist);
     removeKey(STORAGE_KEYS.materiality);
+    clearSessionActive();
     setView("form"); // straight to a fresh intake form
     window.scrollTo({ top: 0, behavior: "instant" });
   };
@@ -64,9 +68,12 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "instant" });
   };
 
-  // Brand logo on the form view → back to the marketing home (keeps any session).
+  // Brand logo on the form view → back to the marketing home. Ends the active
+  // session so a later refresh stays on the landing page (the saved form is kept,
+  // so "Start a free report" still pre-fills their last answers).
   const handleHome = () => {
     setReport(null);
+    clearSessionActive();
     setView("landing");
     window.scrollTo({ top: 0, behavior: "instant" });
   };
