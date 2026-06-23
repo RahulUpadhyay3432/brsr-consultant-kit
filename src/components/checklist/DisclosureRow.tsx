@@ -9,6 +9,12 @@ import {
 } from "./constants";
 import type { CalcInputs } from "@/lib/emissions-calculator";
 import EmissionsCalculator from "./EmissionsCalculator";
+import explainersData from "@/data/brsr_field_explainers.json";
+
+// Pre-generated, AI-written plain-English explanation per BRSR field. Static data
+// (generated once via scripts/generate-field-explainers.mjs) — zero runtime tokens,
+// no network call, nothing about the client is sent anywhere.
+const EXPLAINERS = (explainersData as { explainers: Record<string, string> }).explainers;
 
 // Fields that get an embedded calculator, and which mode each uses.
 const CALC_MODES: Partial<Record<string, "energy" | "ghg" | "water">> = {
@@ -42,6 +48,7 @@ export default function DisclosureRow({
   const s = STATUS_META[item.status as StatusKey];
   const isNA = item.status === "not_applicable";
   const isDetected = !!detectedMatch && !isNA;
+  const explainer = EXPLAINERS[item.id];
 
   return (
     <div className={`border-b border-stone-200 transition-colors duration-300
@@ -137,6 +144,25 @@ export default function DisclosureRow({
       <div className="min-h-0">
         <div className="px-4 pb-4" style={{ paddingLeft: "calc(1rem + 22px)" }}>
           <div className="bg-stone-100/70 border border-stone-200/80 rounded-lg p-3 space-y-3">
+
+            {/* In plain English — AI-written, precomputed, on-device (no live call) */}
+            {explainer && (
+              <div className="bg-white border border-stone-200 rounded-lg px-3.5 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5 flex items-center gap-1.5">
+                  In plain English
+                  <span className="inline-flex items-center gap-1 text-[9px] font-semibold text-violet-700 bg-violet-50 border border-violet-100 px-1.5 py-0.5 rounded-full normal-case tracking-normal">
+                    <svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12 2l1.6 4.8L18 8.4l-4.4 1.6L12 15l-1.6-5L6 8.4l4.4-1.6L12 2z" />
+                    </svg>
+                    AI-written
+                  </span>
+                </p>
+                <p className="text-sm text-stone-600 leading-relaxed">{explainer}</p>
+                <p className="text-[10px] text-stone-400 mt-1.5 leading-relaxed">
+                  General explanation to aid understanding, not legal advice. Written from the public SEBI/ICAI definition; nothing about your client is used.
+                </p>
+              </div>
+            )}
 
             {/* Not-applicable explainer — service-sector clients skip this */}
             {isNA && (
