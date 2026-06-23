@@ -1,4 +1,5 @@
 import { loginAction } from "@/lib/datarequest/auth";
+import { REQUEST_ACCESS_URL } from "@/lib/links";
 
 export default function LoginPage({ searchParams }: { searchParams: { error?: string } }) {
   return (
@@ -39,7 +40,11 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
           </form>
         </div>
 
-        <p className="text-[11.5px] text-stone-400 text-center mt-4">
+        <p className="text-[12px] text-stone-500 text-center mt-4">
+          Don&apos;t have access yet?{" "}
+          <a href={REQUEST_ACCESS_URL} className="text-brand-700 font-medium underline underline-offset-2 hover:text-brand-800">Request Pro access</a>
+        </p>
+        <p className="text-[11px] text-stone-400 text-center mt-2">
           The free readiness tool needs no sign-in; this protects client data collections only.
         </p>
       </div>

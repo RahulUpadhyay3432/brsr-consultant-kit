@@ -7,6 +7,7 @@
 
 import { useState } from "react";
 import ResumeBanner from "@/components/ResumeBanner";
+import { REQUEST_ACCESS_URL } from "@/lib/links";
 
 interface LandingPageProps {
   onStart: () => void;
@@ -192,6 +193,11 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               <li key={f} className="flex items-center gap-2.5 text-[14px] text-[#14201B]"><Check />{f}</li>
             ))}
           </ul>
+          <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-5 py-3 rounded-xl hover:bg-forest-light transition-colors pressable mt-7">
+            Request Pro access
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+          <p className="text-[12.5px] text-[#8A938D] mt-3 max-w-[440px]">The readiness tool stays free and needs no login. Collect is the paid tier — we onboard you on request.</p>
         </div>
         <CollectPanel />
       </section>
