@@ -15,7 +15,6 @@ interface LandingPageProps {
 }
 
 const COMPLIANCE_CHAT = "https://huggingface.co/spaces/sherlockwatson221/climate-compliance";
-const INK = "text-[#14201B]";
 const BODY = "text-[#3F4A44]";
 
 export default function LandingPage({ onStart, resume }: LandingPageProps) {
@@ -46,9 +45,11 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                 Prepare a client&apos;s <span className="italic">BRSR report</span> in a fraction of the time.
               </h1>
 
-              <p className={`anim-up-md text-[16.5px] sm:text-[18px] ${BODY} leading-[1.6] mt-6 max-w-[520px]`} style={{ animationDelay: "160ms" }}>
-                A readiness tool for independent ESG consultants in India. It starts with BRSR and grows
-                with you: CBAM, CCTS and broader ESG next.
+              <p className={`anim-up-md text-[16.5px] sm:text-[18px] ${BODY} leading-[1.6] mt-6 max-w-[530px]`} style={{ animationDelay: "160ms" }}>
+                The first week of a BRSR engagement is the same scramble every time: a blank 108-field
+                format, filings scattered across teams, no quick read on what&apos;s already covered.
+                Saaksh turns that into minutes, with a gap-analysed plan and a plain-English AI
+                explanation on every field, cited and on your device.
               </p>
 
               <div className="anim-up-md flex flex-wrap items-center gap-3 mt-8" style={{ animationDelay: "240ms" }}>
@@ -62,8 +63,8 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               </div>
 
               <p className="anim-up-md flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-[11.5px] text-[#5B6660] mt-6" style={{ animationDelay: "320ms" }}>
-                <Dot /> No login <span className="text-[#C9CFC9]">·</span>
                 <Dot /> Client data never leaves your browser <span className="text-[#C9CFC9]">·</span>
+                <Dot /> Plain-English AI <span className="text-[#C9CFC9]">·</span>
                 <Dot /> Cited to SEBI &amp; ICAI
               </p>
             </div>
@@ -197,9 +198,67 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
             Request Pro access
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
           </a>
-          <p className="text-[12.5px] text-[#8A938D] mt-3 max-w-[440px]">The readiness tool stays free and needs no login. Collect is the paid tier — we onboard you on request.</p>
+          <p className="text-[12.5px] text-[#8A938D] mt-3 max-w-[440px]">The readiness tool stays free and needs no login. Collect is the paid tier; we onboard you on request.</p>
         </div>
         <CollectPanel />
+      </section>
+
+      {/* ── Free vs Pro ────────────────────────────────────────────────────── */}
+      <section className="bg-white border-t border-[#E6E3DB]">
+        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
+          <Eyebrow>Free and Pro</Eyebrow>
+          <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.8rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>
+            Everything you need to prepare is free.
+          </h2>
+          <p className={`text-[15px] ${BODY} leading-relaxed mt-4 max-w-[600px]`}>
+            The readiness tool, including the GHG, energy and water calculators, is free and runs on
+            your device. Pro adds Collect: the engine for gathering data from the client&apos;s team and
+            the grounded AI narrative draft.
+          </p>
+          <div className="grid md:grid-cols-2 gap-4 mt-12">
+            {/* Free */}
+            <div className="rounded-2xl border border-[#E6E3DB] bg-[#FCFBF7] p-6 sm:p-7">
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-display text-[20px] text-[#14201B]">Free · the readiness tool</span>
+                <span className="font-mono text-[9.5px] uppercase tracking-wide text-[#0E7A56] bg-[#E3F7F0] rounded-full px-2 py-1 whitespace-nowrap">No login</span>
+              </div>
+              <p className="text-[13px] text-[#5B6660] leading-relaxed mt-2">Prepare a defensible report start to finish, on your device.</p>
+              <ul className="mt-5 space-y-2.5">
+                {[
+                  "Gap-analysed action plan (Ready / Verify / Collect)",
+                  "Built-in GHG, energy and water calculators",
+                  "Suggested materiality and cross-framework mapping",
+                  "Plain-English AI explanation on every field",
+                  "CSV export and a client-ready PDF brief",
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-[#3F4A44] leading-snug"><Check className="text-brand-600 mt-0.5" />{f}</li>
+                ))}
+              </ul>
+            </div>
+            {/* Pro */}
+            <div className="rounded-2xl bg-forest text-white p-6 sm:p-7">
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-display text-[20px] text-white">Pro · Collect</span>
+                <span className="font-mono text-[9.5px] uppercase tracking-wide text-forest bg-brand-400 rounded-full px-2 py-1 whitespace-nowrap">Paid</span>
+              </div>
+              <p className="text-[13px] text-[#BFD3CA] leading-relaxed mt-2">Everything in Free, plus the tools to collect at scale.</p>
+              <ul className="mt-5 space-y-2.5">
+                {[
+                  "Chase data from the client's team with branded emails and auto-reminders",
+                  "No-login owner submission with evidence attached",
+                  "Emissions auto-computed and attributed to source",
+                  "Grounded AI narrative draft, review-ready",
+                ].map((f) => (
+                  <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-[#EAF3EE] leading-snug"><Check className="text-brand-400 mt-0.5" />{f}</li>
+                ))}
+              </ul>
+              <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-brand-500 text-forest text-[13.5px] font-semibold px-4 py-2.5 rounded-lg hover:bg-brand-400 transition-colors pressable mt-6">
+                Request Pro access
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </a>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ── Modules ────────────────────────────────────────────────────────── */}
@@ -256,18 +315,23 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 
       {/* ── Stats band ─────────────────────────────────────────────────────── */}
       <section className="bg-[#FCFBF7] border-y border-[#E6E3DB]">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-14 grid grid-cols-2 lg:grid-cols-4 gap-8">
-          {[
-            { n: "108", l: "BRSR fields" },
-            { n: "9", l: "NGRBC principles" },
-            { n: "68", l: "framework mappings" },
-            { n: "0", l: "records stored" },
-          ].map((s) => (
-            <div key={s.l} className="text-center">
-              <p className="font-display text-[2.8rem] sm:text-[3.2rem] leading-none text-forest">{s.n}</p>
-              <p className="font-mono text-[11.5px] uppercase tracking-wide text-[#8A938D] mt-2">{s.l}</p>
-            </div>
-          ))}
+        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-16">
+          <p className="font-display font-normal text-center text-[1.7rem] sm:text-[2.2rem] leading-[1.18] tracking-[-0.02em] text-[#14201B] max-w-[640px] mx-auto" style={{ textWrap: "balance" }}>
+            The first week of a BRSR engagement, done in minutes. Gap-analysed, cited, and ready to send.
+          </p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+            {[
+              { n: "108", l: "BRSR fields" },
+              { n: "9", l: "NGRBC principles" },
+              { n: "68", l: "framework mappings" },
+              { n: "0", l: "records stored" },
+            ].map((s) => (
+              <div key={s.l} className="text-center">
+                <p className="font-display text-[2.8rem] sm:text-[3.2rem] leading-none text-forest">{s.n}</p>
+                <p className="font-mono text-[11.5px] uppercase tracking-wide text-[#8A938D] mt-2">{s.l}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -367,9 +431,9 @@ function Spark() {
     </span>
   );
 }
-function Check() {
+function Check({ className = "text-brand-600" }: { className?: string }) {
   return (
-    <svg className="w-4 h-4 text-brand-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.4}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+    <svg className={`w-4 h-4 flex-shrink-0 ${className}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.4}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
   );
 }
 
