@@ -46,6 +46,7 @@ interface ContactRow {
 }
 interface CampaignRow {
   id: string; client_name: string; reporting_period: string | null; deadline: string | null; created_at: string;
+  narrative?: Record<string, string> | null;
   brsr_contacts?: ContactRow[];
 }
 
@@ -79,6 +80,7 @@ function mapCampaign(r: CampaignRow): Campaign {
     id: r.id, clientName: r.client_name, reportingPeriod: r.reporting_period ?? null,
     deadline: r.deadline, createdAt: r.created_at,
     contacts: (r.brsr_contacts ?? []).map(mapContact),
+    narrative: r.narrative ?? null, // present once the migration + generation have run
   };
 }
 
@@ -173,6 +175,16 @@ export async function setItemEvidence(itemId: string, path: string, name: string
   await rest(`brsr_request_items?id=eq.${encodeURIComponent(itemId)}`, {
     method: "PATCH",
     body: JSON.stringify({ evidence_path: path, evidence_name: name }),
+  });
+}
+
+// Persists the AI-drafted per-principle narrative on the campaign. Caller wraps
+// this best-effort: the `narrative jsonb` column may not exist until the user runs
+// the migration, in which case the draft still shows the freshly-generated prose.
+export async function setNarrative(campaignId: string, narrative: Record<string, string>): Promise<void> {
+  await rest(`brsr_requests?id=eq.${encodeURIComponent(campaignId)}`, {
+    method: "PATCH",
+    body: JSON.stringify({ narrative }),
   });
 }
 

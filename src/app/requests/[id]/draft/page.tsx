@@ -5,6 +5,7 @@ import { buildDraft } from "@/lib/datarequest/draft";
 import { GHG_METHODOLOGY } from "@/lib/datarequest/emissions";
 import { fmtNum } from "@/lib/emissions-calculator";
 import PrintButton from "@/components/datarequest/PrintButton";
+import NarrativePanel from "@/components/datarequest/NarrativePanel";
 
 export const dynamic = "force-dynamic";
 
@@ -39,6 +40,8 @@ export default async function DraftPage({ params }: { params: { id: string } }) 
           edit, and write the qualitative narrative before filing.
         </p>
       </div>
+
+      <NarrativePanel campaignId={campaign.id} initial={campaign.narrative ?? null} />
 
       {draft.emissions && (
         <Section title="Principle 6 · GHG emissions (computed)">

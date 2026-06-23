@@ -63,4 +63,7 @@ export interface Campaign {
   deadline: string | null; // ISO date (YYYY-MM-DD)
   createdAt: string;
   contacts: Contact[];
+  // AI-drafted per-principle qualitative prose (Groq), keyed by principle id
+  // ("P1".."P9"). Optional — only present once generated and the column exists.
+  narrative?: Record<string, string> | null;
 }

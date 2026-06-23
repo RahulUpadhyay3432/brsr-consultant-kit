@@ -6,6 +6,7 @@ import { fieldsByIds } from "./fields";
 import * as db from "./db";
 import { sendRequestEmail, sendSubmissionAlert } from "./email";
 import { uploadEvidence } from "./storage";
+import { generateNarrative, type NarrativeResult } from "./narrative";
 
 function baseUrl(): string {
   return process.env.APP_BASE_URL || "http://localhost:3000";
@@ -53,6 +54,20 @@ export async function addContactAction(
   );
 
   redirect(`/requests/${campaignId}`);
+}
+
+// Generate the AI narrative draft for a campaign (paid tier — /requests/* is
+// passcode-gated by middleware). Grounded in collected data only; persisted
+// best-effort (the column may not exist until the migration runs), but always
+// returned so the draft can render it immediately.
+export async function generateNarrativeAction(campaignId: string): Promise<NarrativeResult> {
+  const campaign = await db.getCampaign(campaignId);
+  if (!campaign) return {};
+  const narrative = await generateNarrative(campaign);
+  if (Object.keys(narrative).length > 0) {
+    try { await db.setNarrative(campaignId, narrative); } catch { /* column missing — still return it */ }
+  }
+  return narrative;
 }
 
 // 3) Recipient submits their values (token bound in the page).
