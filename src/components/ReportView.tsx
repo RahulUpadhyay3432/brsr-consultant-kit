@@ -96,7 +96,7 @@ export default function ReportView({ report, onBack, onEdit }: ReportViewProps) 
   }, []);
 
   return (
-    <div className="anim-up-sm flex min-h-screen bg-[#F7F6F2]">
+    <div className="anim-up-sm flex min-h-screen bg-[#FAF8F3]">
 
       {/* ── Sidebar ────────────────────────────────────────────────────────── */}
       <Sidebar
@@ -198,7 +198,7 @@ function Sidebar({
         className="group h-14 flex items-center gap-2.5 px-4 border-b border-black/[0.05] w-full text-left
           hover:bg-stone-100/50 transition-colors pressable"
       >
-        <div className="w-[26px] h-[26px] rounded-md bg-[#111111] flex items-center justify-center flex-shrink-0">
+        <div className="w-[26px] h-[26px] rounded-md bg-forest flex items-center justify-center flex-shrink-0">
           <span className="text-[11px] font-bold text-white leading-none tracking-tight">S</span>
         </div>
         <div className="leading-tight">
@@ -310,7 +310,7 @@ function TopBar({ onSearch }: { onSearch: (q: string) => void }) {
 
   return (
     <header className="no-print sticky top-0 z-40 h-14 flex items-center gap-3 px-5 sm:px-8
-      bg-[#F7F6F2]/85 backdrop-blur-md border-b border-black/[0.06]">
+      bg-[#FAF8F3]/85 backdrop-blur-md border-b border-black/[0.06]">
 
       {/* Search */}
       <form
@@ -408,7 +408,7 @@ function Overview({
   const stats = [
     { n: alreadyTracked,   label: "Pull from filing", sub: "already in compliance docs", dot: "bg-emerald-500", num: alreadyTracked > 0 ? "text-emerald-600" : "text-stone-300" },
     { n: partiallyTracked, label: "Verify & complete", sub: "partial data exists",        dot: "bg-amber-400",   num: partiallyTracked > 0 ? "text-amber-600"  : "text-stone-300" },
-    { n: newDataNeeded,    label: "Collect fresh",     sub: "no existing source",         dot: "bg-stone-400",   num: "text-stone-700" },
+    { n: newDataNeeded,    label: "Collect fresh",     sub: "no existing source",         dot: "bg-orange-500",  num: newDataNeeded > 0 ? "text-orange-600" : "text-stone-300" },
   ];
 
   // Sections A & B aren't gap-analysed, but they're still collected work. Read
@@ -508,7 +508,7 @@ function Overview({
               {partiallyTracked > 0 &&
                 <div className="bg-amber-400 rounded-full min-w-[10px]" style={{ flexGrow: partiallyTracked }} title={`Verify & complete: ${partiallyTracked}`} />}
               {newDataNeeded > 0 &&
-                <div className="bg-stone-300 rounded-full min-w-[10px]" style={{ flexGrow: newDataNeeded }} title={`Collect fresh: ${newDataNeeded}`} />}
+                <div className="bg-orange-500 rounded-full min-w-[10px]" style={{ flexGrow: newDataNeeded }} title={`Collect fresh: ${newDataNeeded}`} />}
               {notApplicable > 0 &&
                 <div className="bg-slate-200 rounded-full min-w-[10px]" style={{ flexGrow: notApplicable }} title={`Not applicable: ${notApplicable}`} />}
             </div>
@@ -516,7 +516,7 @@ function Overview({
             <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-[12px]">
               <Legend dot="bg-emerald-500" label="Ready"   n={alreadyTracked} />
               <Legend dot="bg-amber-400"   label="Verify"  n={partiallyTracked} />
-              <Legend dot="bg-stone-300"   label="Collect" n={newDataNeeded} />
+              <Legend dot="bg-orange-500"  label="Collect" n={newDataNeeded} />
               {notApplicable > 0 && <Legend dot="bg-slate-200" label="N/A" n={notApplicable} />}
             </div>
           </div>
@@ -598,13 +598,13 @@ function Overview({
                   <span className="hidden sm:flex items-stretch gap-0.5 h-2 w-28 flex-shrink-0">
                     {p.ready   > 0 && <span className="bg-emerald-500 rounded-full min-w-[3px]" style={{ flexGrow: p.ready }} />}
                     {p.verify  > 0 && <span className="bg-amber-400 rounded-full min-w-[3px]"   style={{ flexGrow: p.verify }} />}
-                    {p.collect > 0 && <span className="bg-stone-300 rounded-full min-w-[3px]"    style={{ flexGrow: p.collect }} />}
+                    {p.collect > 0 && <span className="bg-orange-500 rounded-full min-w-[3px]"   style={{ flexGrow: p.collect }} />}
                     {p.na      > 0 && <span className="bg-slate-200 rounded-full min-w-[3px]"    style={{ flexGrow: p.na }} />}
                   </span>
                   <span className="flex items-center gap-2.5 flex-shrink-0 w-[88px] justify-end text-[12px] tabular-nums">
                     <span className={p.ready   > 0 ? "text-emerald-600 font-semibold" : "text-stone-300"}>{p.ready}</span>
                     <span className={p.verify  > 0 ? "text-amber-600 font-semibold"   : "text-stone-300"}>{p.verify}</span>
-                    <span className={p.collect > 0 ? "text-stone-600 font-semibold"    : "text-stone-300"}>{p.collect}</span>
+                    <span className={p.collect > 0 ? "text-orange-600 font-semibold"   : "text-stone-300"}>{p.collect}</span>
                   </span>
                   <svg className="w-3.5 h-3.5 text-stone-300 group-hover:text-stone-500 transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />

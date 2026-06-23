@@ -45,10 +45,10 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
     )
     .join("");
 
-  const html = `<!doctype html><html><body style="margin:0;background:#F7F6F2;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+  const html = `<!doctype html><html><body style="margin:0;background:#FAF8F3;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
   <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e7e5e0;border-radius:14px;overflow:hidden;">
     <div style="padding:18px 24px;border-bottom:1px solid #f0eee9;">
-      <span style="display:inline-block;width:26px;height:26px;border-radius:7px;background:#111;color:#fff;font-weight:700;font-size:13px;text-align:center;line-height:26px;vertical-align:middle;">S</span>
+      <span style="display:inline-block;width:26px;height:26px;border-radius:7px;background:#0E4A36;color:#fff;font-weight:700;font-size:13px;text-align:center;line-height:26px;vertical-align:middle;">S</span>
       <span style="font-weight:600;color:#1a1916;font-size:14px;vertical-align:middle;margin-left:8px;">Saaksh</span>
     </div>
     <div style="padding:24px;">
@@ -57,10 +57,10 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
       ${req.reportingPeriod ? `<p style="font-size:13px;color:#52504a;margin:0 0 14px;">Reporting period: <strong style="color:#1a1916;">${req.reportingPeriod}</strong></p>` : ""}
       <table style="width:100%;border-collapse:collapse;margin:0 0 18px;">${itemsHtml}</table>
       ${deadline ? `<p style="font-size:13px;color:#a8662a;background:#fdf3e7;border:1px solid #f6e1c6;border-radius:8px;padding:10px 12px;margin:0 0 18px;">Please submit by <strong>${deadline}</strong>.</p>` : ""}
-      <a href="${link}" style="display:inline-block;background:#111;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px 20px;border-radius:9px;">Provide the data →</a>
+      <a href="${link}" style="display:inline-block;background:#0E4A36;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px 20px;border-radius:9px;">Provide the data →</a>
       <p style="font-size:12px;color:#9a958c;line-height:1.6;margin:18px 0 0;">
         Sent via Saaksh. If the button doesn't work, paste this into your browser:<br>
-        <span style="color:#00745a;word-break:break-all;">${link}</span>
+        <span style="color:#0E4A36;word-break:break-all;">${link}</span>
       </p>
     </div>
   </div>
@@ -120,10 +120,10 @@ export async function sendSubmissionAlert(args: {
   if (!to) return;
 
   const subject = `${args.ownerName} submitted data for ${args.clientName}`;
-  const html = `<!doctype html><html><body style="margin:0;background:#F7F6F2;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+  const html = `<!doctype html><html><body style="margin:0;background:#FAF8F3;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
   <div style="max-width:520px;margin:0 auto;background:#fff;border:1px solid #e7e5e0;border-radius:14px;overflow:hidden;">
     <div style="padding:18px 24px;border-bottom:1px solid #f0eee9;">
-      <span style="display:inline-block;width:26px;height:26px;border-radius:7px;background:#111;color:#fff;font-weight:700;font-size:13px;text-align:center;line-height:26px;vertical-align:middle;">S</span>
+      <span style="display:inline-block;width:26px;height:26px;border-radius:7px;background:#0E4A36;color:#fff;font-weight:700;font-size:13px;text-align:center;line-height:26px;vertical-align:middle;">S</span>
       <span style="font-weight:600;color:#1a1916;font-size:14px;vertical-align:middle;margin-left:8px;">Saaksh</span>
     </div>
     <div style="padding:24px;">
@@ -131,7 +131,7 @@ export async function sendSubmissionAlert(args: {
       <p style="font-size:14px;color:#52504a;line-height:1.6;margin:0 0 18px;">
         For <strong style="color:#1a1916;">${args.clientName}</strong>'s BRSR report — ${args.received} of ${args.total} requested fields are now in.
       </p>
-      <a href="${args.link}" style="display:inline-block;background:#111;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px 20px;border-radius:9px;">View collection →</a>
+      <a href="${args.link}" style="display:inline-block;background:#0E4A36;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px 20px;border-radius:9px;">View collection →</a>
     </div>
   </div>
   </body></html>`;

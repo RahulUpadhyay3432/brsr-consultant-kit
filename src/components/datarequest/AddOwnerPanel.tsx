@@ -174,7 +174,7 @@ export default function AddOwnerPanel({
                           <input
                             type="checkbox" name="fields" value={f.id}
                             checked={checked} onChange={() => toggleField(f.id)}
-                            className="mt-0.5 accent-[#00745a]"
+                            className="mt-0.5 accent-[#0E4A36]"
                           />
                           <span className="min-w-0 flex-1">
                             <span className="flex items-center gap-1.5 flex-wrap">

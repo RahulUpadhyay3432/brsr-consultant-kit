@@ -7,7 +7,7 @@ import { logoutAction } from "@/lib/datarequest/auth";
 // and /login keep their own standalone layouts.)
 export default function RequestsLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-[#F7F6F2]">
+    <div className="flex min-h-screen bg-[#FAF8F3]">
 
       {/* Sidebar */}
       <aside className="no-print w-[244px] flex-shrink-0 h-screen sticky top-0 hidden lg:flex flex-col
@@ -16,7 +16,7 @@ export default function RequestsLayout({ children }: { children: React.ReactNode
         {/* Brand → back to the readiness tool */}
         <Link href="/" className="h-14 flex items-center gap-2.5 px-4 border-b border-black/[0.05]
           hover:bg-stone-100/50 transition-colors">
-          <div className="w-[26px] h-[26px] rounded-md bg-[#111111] flex items-center justify-center flex-shrink-0">
+          <div className="w-[26px] h-[26px] rounded-md bg-forest flex items-center justify-center flex-shrink-0">
             <span className="text-[11px] font-bold text-white leading-none tracking-tight">S</span>
           </div>
           <div className="leading-tight">
@@ -48,10 +48,10 @@ export default function RequestsLayout({ children }: { children: React.ReactNode
       {/* Main column */}
       <div className="flex-1 min-w-0 flex flex-col">
         <header className="no-print sticky top-0 z-40 h-14 flex items-center gap-3 px-5 sm:px-8
-          bg-[#F7F6F2]/85 backdrop-blur-md border-b border-black/[0.06]">
+          bg-[#FAF8F3]/85 backdrop-blur-md border-b border-black/[0.06]">
           {/* Mobile brand (sidebar is hidden < lg) */}
           <Link href="/" className="lg:hidden flex items-center">
-            <span className="w-[24px] h-[24px] rounded-md bg-[#111111] flex items-center justify-center">
+            <span className="w-[24px] h-[24px] rounded-md bg-forest flex items-center justify-center">
               <span className="text-[10px] font-bold text-white leading-none">S</span>
             </span>
           </Link>

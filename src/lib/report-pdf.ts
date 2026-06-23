@@ -28,7 +28,7 @@ type RGB = [number, number, number];
 const INK: RGB = [38, 35, 32];
 const MUTED: RGB = [122, 116, 110];
 const FAINT: RGB = [150, 145, 138];
-const TEAL: RGB = [0, 116, 90];
+const TEAL: RGB = [14, 74, 54]; // evergreen #0E4A36
 const LINE: RGB = [223, 219, 212];
 const BOXBG: RGB = [243, 241, 234];
 

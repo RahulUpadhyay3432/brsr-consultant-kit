@@ -168,18 +168,19 @@ export default function HelpWidget() {
       {/* ── Floating button ─────────────────────────────────────────────────── */}
       <button
         onClick={() => setOpen((o) => !o)}
-        aria-label={open ? "Close help" : "Open help"}
-        className="fixed z-[100] bottom-4 right-4 sm:right-6 w-12 h-12 rounded-full bg-forest text-white
-          shadow-[0_8px_24px_rgba(20,30,25,0.28)] flex items-center justify-center hover:bg-forest-light transition-colors pressable"
+        aria-label={open ? "Close help" : "Ask Saaksh"}
+        className="fixed z-[100] bottom-4 right-4 sm:right-6 inline-flex items-center gap-2 rounded-full bg-forest text-white
+          pl-3.5 pr-4 py-2.5 text-[13px] font-semibold shadow-[0_8px_24px_rgba(20,30,25,0.28)] hover:bg-forest-light transition-colors pressable"
       >
         {open ? (
-          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
           </svg>
         ) : (
-          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.375M12 16.5h.008v.008H12V16.5zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+          <>
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-400" />
+            Ask Saaksh
+          </>
         )}
       </button>
     </div>

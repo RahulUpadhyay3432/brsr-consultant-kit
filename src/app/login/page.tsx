@@ -2,10 +2,10 @@ import { loginAction } from "@/lib/datarequest/auth";
 
 export default function LoginPage({ searchParams }: { searchParams: { error?: string } }) {
   return (
-    <main className="min-h-screen bg-[#F7F6F2] flex items-center justify-center px-5">
+    <main className="min-h-screen bg-[#FAF8F3] flex items-center justify-center px-5">
       <div className="w-full max-w-[380px]">
         <div className="flex items-center gap-2.5 mb-6 justify-center">
-          <span className="w-[28px] h-[28px] rounded-md bg-[#111] flex items-center justify-center">
+          <span className="w-[28px] h-[28px] rounded-md bg-forest flex items-center justify-center">
             <span className="text-[12px] font-bold text-white leading-none">S</span>
           </span>
           <span className="text-[14px] font-semibold text-stone-900">Saaksh</span>

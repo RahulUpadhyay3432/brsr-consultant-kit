@@ -3,10 +3,11 @@
 @tailwind utilities;
 
 :root {
-  /* Brand tokens */
-  --brand-500: #00d4a4;
-  --brand-800: #00745a;
-  --forest:    #111111;
+  /* Evergreen & Ember tokens */
+  --brand-500: #18C39A;   /* mint accent */
+  --brand-800: #0E4A36;   /* deep evergreen */
+  --forest:    #0E4A36;   /* primary green (buttons, logo, dark sections) */
+  --ink:       #14201B;   /* heading/text ink */
 
   /* Custom easing */
   --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
@@ -14,27 +15,27 @@
 }
 
 * {
-  /* Apple SF Pro on Mac/iOS, Geist on Windows (loaded locally), then system-ui */
-  font-family: -apple-system, BlinkMacSystemFont, var(--font-geist-sans), 'Segoe UI', system-ui, sans-serif;
+  /* Hanken Grotesk (self-hosted), then system fallbacks */
+  font-family: var(--font-hanken), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Display font — editorial headings only (Georgia: ships with every OS, no network fetch) */
+/* Display font — editorial headings (Newsreader serif, self-hosted; Georgia fallback) */
 .font-display {
-  font-family: 'Georgia', 'Times New Roman', serif;
+  font-family: var(--font-newsreader), 'Georgia', 'Times New Roman', serif;
 }
 
 body {
   min-height: 100vh;
-  /* Warm off-white canvas — not the cold stone-50 default */
-  background-color: #F7F6F2;
+  /* Cream paper canvas */
+  background-color: #FAF8F3;
 }
 
 /* Background: only the atmospheric glow, no grid lines */
 .bg-grid {
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 212, 164, 0.07) 0%, transparent 65%);
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(24, 195, 154, 0.07) 0%, transparent 65%);
 }
 
 /* Hairline accent at the top — 1px, intentional */
@@ -46,20 +47,20 @@ body::before {
   left: 0;
   right: 0;
   height: 1.5px;
-  background: linear-gradient(90deg, var(--brand-500) 0%, #111111 55%);
+  background: linear-gradient(90deg, var(--brand-500) 0%, #0E4A36 55%);
   z-index: 200;
   pointer-events: none;
 }
 
-/* Status badges */
+/* Status badges — Ready (green) · Verify (amber) · Collect (ember) */
 .badge-tracked {
-  @apply bg-emerald-50 text-emerald-700 border border-emerald-200;
+  background-color: #E3F7F0; color: #0E7A56; border: 1px solid #BFE6D8;
 }
 .badge-partial {
-  @apply bg-amber-50 text-amber-700 border border-amber-200;
+  background-color: #F6ECD8; color: #8A6516; border: 1px solid #EAD8B0;
 }
 .badge-new {
-  @apply bg-rose-50 text-rose-700 border border-rose-200;
+  background-color: #FBE7DC; color: #A8481B; border: 1px solid #F2CDBA;
 }
 
 /* Pressable: physical press feedback on all interactive elements */

@@ -27,7 +27,7 @@ const CALC_MODES: Partial<Record<string, "energy" | "ghg" | "water">> = {
 const STATUS_PILL_BORDER: Record<StatusKey, string> = {
   already_tracked:   "border-emerald-200",
   partially_tracked: "border-amber-200",
-  new_data_needed:   "border-stone-200",
+  new_data_needed:   "border-orange-200",
   not_applicable:    "border-slate-200",
 };
 
@@ -82,8 +82,8 @@ export default function DisclosureRow({
             <div className="flex items-center gap-1.5 mt-0.5">
               <p className="text-[10px] text-stone-400 font-mono">{item.id}</p>
               {isDetected && !isCollected && (
-                <span className="inline-flex items-center gap-1 text-[9px] font-semibold text-indigo-700
-                  bg-indigo-50 border border-indigo-100 px-1.5 py-0.5 rounded-full leading-none">
+                <span className="inline-flex items-center gap-1 text-[9px] font-semibold text-brand-700
+                  bg-brand-50 border border-brand-100 px-1.5 py-0.5 rounded-full leading-none">
                   <svg className="w-2.5 h-2.5" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
                     <path d="M7.5 4v3.5l2 1.5" strokeLinecap="round" strokeLinejoin="round" />
                     <circle cx="7.5" cy="7.5" r="5.5" />
@@ -181,8 +181,8 @@ export default function DisclosureRow({
 
             {/* Detected in uploaded report — consultant confirms */}
             {isDetected && detectedMatch && (
-              <div className="bg-indigo-50 border border-indigo-100 rounded-md px-3.5 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-indigo-700 mb-1.5 flex items-center gap-1.5">
+              <div className="bg-brand-50 border border-brand-100 rounded-md px-3.5 py-3">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-700 mb-1.5 flex items-center gap-1.5">
                   <svg className="w-3.5 h-3.5" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
                     <path d="M7.5 4v3.5l2 1.5" strokeLinecap="round" strokeLinejoin="round" />
                     <circle cx="7.5" cy="7.5" r="5.5" />
@@ -191,12 +191,12 @@ export default function DisclosureRow({
                 </p>
                 <p className="text-sm text-stone-600 leading-relaxed">
                   Matched: {detectedMatch.keywords.map((k, i) => (
-                    <span key={i} className="inline-block font-medium text-[13px] text-indigo-700 bg-white border border-indigo-100 px-1.5 py-0.5 rounded mr-1 mb-1">
+                    <span key={i} className="inline-block font-medium text-[13px] text-brand-700 bg-white border border-brand-100 px-1.5 py-0.5 rounded mr-1 mb-1">
                       {k}
                     </span>
                   ))}
                 </p>
-                <p className="text-[13px] text-stone-500 italic leading-relaxed mt-1.5 border-l-2 border-indigo-200 pl-2.5">
+                <p className="text-[13px] text-stone-500 italic leading-relaxed mt-1.5 border-l-2 border-brand-200 pl-2.5">
                   {detectedMatch.snippet}
                 </p>
                 <p className="text-[11px] text-stone-400 mt-2 leading-relaxed">

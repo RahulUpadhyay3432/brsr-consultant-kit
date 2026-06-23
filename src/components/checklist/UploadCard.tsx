@@ -22,7 +22,7 @@ export default function UploadCard({
   showOnlyDetected, onFile, onToggleShowOnlyDetected, onMarkAllDetected, onClear,
 }: UploadCardProps) {
   return (
-    <div className="bg-white border border-indigo-200 rounded-xl p-4">
+    <div className="bg-white border border-brand-200 rounded-xl p-4">
       <input
         ref={fileInputRef}
         type="file"
@@ -33,8 +33,8 @@ export default function UploadCard({
 
       {uploadStatus !== "done" ? (
         <div className="flex items-start gap-3">
-          <div className="w-9 h-9 bg-indigo-50 rounded-lg border border-indigo-100 flex items-center justify-center flex-shrink-0">
-            <svg className="w-4 h-4 text-indigo-600" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <div className="w-9 h-9 bg-brand-50 rounded-lg border border-brand-100 flex items-center justify-center flex-shrink-0">
+            <svg className="w-4 h-4 text-brand-600" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M7.5 10V2.5M5 5l2.5-2.5L10 5" />
               <path d="M2.5 9.5v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-2" />
             </svg>
@@ -58,7 +58,7 @@ export default function UploadCard({
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploadStatus === "processing"}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold
-                  bg-indigo-600 text-white hover:bg-indigo-700 pressable transition-colors
+                  bg-forest text-white hover:bg-forest-light pressable transition-colors
                   disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {uploadStatus === "processing" ? (
@@ -101,7 +101,7 @@ export default function UploadCard({
             <p className="text-xs text-stone-500 mt-1 leading-relaxed">
               Scanned <span className="font-medium text-stone-600">{uploadInfo?.fileName}</span> ({uploadInfo?.pageCount} pages) locally.
               {detectedInReport > 0
-                ? <> These fields show a <span className="font-medium text-indigo-700">Last year</span> tag — expand one to see the matched text, confirm it's still current, then mark it collected.</>
+                ? <> These fields show a <span className="font-medium text-brand-700">Last year</span> tag — expand one to see the matched text, confirm it's still current, then mark it collected.</>
                 : <> The PDF may be image-based, or use different wording. You can still work through the checklist normally.</>}
             </p>
             <div className="mt-2.5 flex items-center gap-2 flex-wrap">
@@ -112,12 +112,12 @@ export default function UploadCard({
                     onClick={onToggleShowOnlyDetected}
                     className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border pressable transition-colors ${
                       showOnlyDetected
-                        ? "bg-indigo-600 text-white border-indigo-600"
-                        : "bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100"
+                        ? "bg-brand-600 text-white border-brand-600"
+                        : "bg-brand-50 text-brand-700 border-brand-200 hover:bg-brand-100"
                     }`}
                   >
                     {showOnlyDetected ? "Showing found only" : "Show found only"}
-                    <span className={showOnlyDetected ? "text-white/80" : "text-indigo-500"}>({detectedInReport})</span>
+                    <span className={showOnlyDetected ? "text-white/80" : "text-brand-500"}>({detectedInReport})</span>
                   </button>
                   <button
                     type="button"

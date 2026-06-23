@@ -5,15 +5,36 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import HelpWidget from "@/components/HelpWidget";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+// Self-hosted (no next/font/google on this machine). Newsreader = display serif,
+// Hanken Grotesk = body sans, IBM Plex Mono = mono. Files fetched once by
+// scripts/fetch-fonts.mjs.
+const newsreader = localFont({
+  src: [
+    { path: "./fonts/Newsreader-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/Newsreader-500.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/Newsreader-600.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/Newsreader-400italic.woff2", weight: "400", style: "italic" },
+  ],
+  variable: "--font-newsreader",
+  display: "swap",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+const hanken = localFont({
+  src: [
+    { path: "./fonts/HankenGrotesk-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/HankenGrotesk-500.woff2", weight: "500", style: "normal" },
+    { path: "./fonts/HankenGrotesk-600.woff2", weight: "600", style: "normal" },
+    { path: "./fonts/HankenGrotesk-700.woff2", weight: "700", style: "normal" },
+  ],
+  variable: "--font-hanken",
+  display: "swap",
+});
+const plexMono = localFont({
+  src: [
+    { path: "./fonts/IBMPlexMono-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/IBMPlexMono-500.woff2", weight: "500", style: "normal" },
+  ],
+  variable: "--font-plex-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -31,7 +52,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} text-stone-900`}
+        className={`${newsreader.variable} ${hanken.variable} ${plexMono.variable} text-stone-900`}
       >
         <Analytics />
         {children}

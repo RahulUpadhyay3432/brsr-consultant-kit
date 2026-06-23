@@ -154,7 +154,7 @@ export default function Home() {
     <div className="min-h-screen bg-grid">
 
       {/* ── Header ─────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 no-print bg-[#F7F6F2]/85 backdrop-blur-md">
+      <header className="sticky top-0 z-50 no-print bg-[#FAF8F3]/85 backdrop-blur-md">
         <div className="max-w-[1680px] mx-auto px-4 sm:px-8 h-13 flex items-center justify-between">
 
           {/* Wordmark + mark — clicking returns to home */}
@@ -163,7 +163,7 @@ export default function Home() {
             className="flex items-center gap-2.5 py-3.5 pressable"
             aria-label="Go to home"
           >
-            <div className="w-[26px] h-[26px] rounded-md bg-[#111111] flex items-center justify-center flex-shrink-0">
+            <div className="w-[26px] h-[26px] rounded-md bg-forest flex items-center justify-center flex-shrink-0">
               <span className="text-[11px] font-bold text-white leading-none tracking-tight">S</span>
             </div>
             <span className="text-[13.5px] font-semibold text-stone-900 tracking-[-0.01em]">

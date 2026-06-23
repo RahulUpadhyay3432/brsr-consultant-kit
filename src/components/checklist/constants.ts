@@ -36,9 +36,9 @@ export const STATUS_META = {
     short: "Verify",
   },
   new_data_needed: {
-    dot:   "bg-stone-400",
-    text:  "text-stone-600",
-    bg:    "bg-stone-50",
+    dot:   "bg-orange-500",
+    text:  "text-orange-700",
+    bg:    "bg-orange-50",
     label: "Collect fresh",
     short: "Collect",
   },

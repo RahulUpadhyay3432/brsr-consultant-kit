@@ -78,7 +78,7 @@ export default async function CampaignDetailPage({
 
       {/* Emissions auto-calc + attribution */}
       {ghg && (
-        <div className="mt-5 bg-[#111] text-white rounded-xl p-5">
+        <div className="mt-5 bg-forest text-white rounded-xl p-5">
           <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-white/50 mb-3">Calculated emissions · from collected activity data</p>
           <div className="grid grid-cols-3 gap-4">
             <Metric label="Scope 1 (fuel)" value={fmtNum(ghg.scope1_tco2e)} unit="tCO₂e" />

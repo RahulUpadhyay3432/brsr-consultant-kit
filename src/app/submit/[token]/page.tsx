@@ -131,10 +131,10 @@ function priorFy(period: string | null): string | null {
 
 function Shell({ children, wide }: { children: React.ReactNode; wide?: boolean }) {
   return (
-    <main className="min-h-screen bg-[#F7F6F2]">
+    <main className="min-h-screen bg-[#FAF8F3]">
       <div className={`mx-auto px-5 sm:px-8 py-12 ${wide ? "max-w-[640px]" : "max-w-[480px]"}`}>
         <div className="flex items-center gap-2.5 mb-6">
-          <span className="w-[26px] h-[26px] rounded-md bg-[#111] flex items-center justify-center">
+          <span className="w-[26px] h-[26px] rounded-md bg-forest flex items-center justify-center">
             <span className="text-[11px] font-bold text-white leading-none">S</span>
           </span>
           <span className="text-[13px] font-semibold text-stone-900">Saaksh</span>
