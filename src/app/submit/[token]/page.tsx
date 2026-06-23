@@ -135,9 +135,9 @@ function Shell({ children, wide }: { children: React.ReactNode; wide?: boolean }
       <div className={`mx-auto px-5 sm:px-8 py-12 ${wide ? "max-w-[640px]" : "max-w-[480px]"}`}>
         <div className="flex items-center gap-2.5 mb-6">
           <span className="w-[26px] h-[26px] rounded-md bg-[#111] flex items-center justify-center">
-            <span className="text-[10px] font-bold text-white leading-none">BK</span>
+            <span className="text-[11px] font-bold text-white leading-none">S</span>
           </span>
-          <span className="text-[13px] font-semibold text-stone-900">BRSR Consultant Kit</span>
+          <span className="text-[13px] font-semibold text-stone-900">Saaksh</span>
         </div>
         <div className={wide ? "" : "bg-white border border-stone-200 rounded-2xl p-7 shadow-[0_2px_20px_rgba(100,80,40,0.06)] flex flex-col items-start"}>
           {children}

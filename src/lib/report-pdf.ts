@@ -82,7 +82,7 @@ export async function downloadReportPdf(report: ReportOutput): Promise<void> {
   const covered = s.alreadyTracked;
 
   // ── Header ──────────────────────────────────────────────────────────────────
-  write("BRSR CONSULTANT KIT", { size: 8, bold: true, color: TEAL, after: 1 });
+  write("SAAKSH", { size: 8, bold: true, color: TEAL, after: 1 });
   write("BRSR data request", { size: 22, bold: true, after: 1.5 });
   write(`${report.companyName || "Your company"}   ·   ${industry}   ·   FY 2025–26   ·   prepared ${date}`, { size: 9, color: MUTED, after: 3 });
 
@@ -147,7 +147,7 @@ export async function downloadReportPdf(report: ReportOutput): Promise<void> {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7.5);
     doc.setTextColor(...FAINT);
-    doc.text("Prepared with BRSR Consultant Kit · cited to SEBI BRSR Format & ICAI (2024)", M, pageH - 9);
+    doc.text("Prepared with Saaksh · cited to SEBI BRSR Format & ICAI (2024)", M, pageH - 9);
     doc.text(`${p} / ${pages}`, pageW - M, pageH - 9, { align: "right" });
   }
 

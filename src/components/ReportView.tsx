@@ -11,7 +11,8 @@ import EsgRatingsMapper from "./EsgRatingsMapper";
 import SourcesPanel from "./SourcesPanel";
 import { downloadReportPdf } from "@/lib/report-pdf";
 import { PRINCIPLES } from "./checklist/constants";
-import { loadJSON, STORAGE_KEYS } from "@/lib/storage";
+import { loadJSON, saveJSON, STORAGE_KEYS } from "@/lib/storage";
+import { WalkthroughCard, WalkthroughModal } from "./Walkthrough";
 import esgRatingsData from "@/data/esg_ratings_mapping.json";
 
 interface ReportViewProps {
@@ -86,6 +87,7 @@ function TabIcon({ id, className }: { id: string; className?: string }) {
 export default function ReportView({ report, onBack, onEdit }: ReportViewProps) {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [seedQuery, setSeedQuery] = useState("");      // global-search → Action Plan
+  const [showHelp, setShowHelp] = useState(false);     // always-on "How it works" modal
   const industryLabel = INDUSTRY_LABELS[report.industry as IndustryType] || report.industry;
   const fieldCount = report.checklist.length;
 
@@ -119,19 +121,34 @@ export default function ReportView({ report, onBack, onEdit }: ReportViewProps) 
               <p className="text-[12px] text-stone-400 font-medium tracking-tight">
                 BRSR Readiness · FY 2025–26
               </p>
-              <button
-                onClick={() => { downloadReportPdf(report).catch((e) => console.error("PDF export failed", e)); }}
-                title="Download a clean BRSR data-request brief to share with the client"
-                className="no-print inline-flex items-center gap-1.5 text-[12.5px] font-medium
-                  text-stone-600 bg-white border border-stone-200 hover:border-stone-300 hover:bg-stone-50
-                  px-3 py-1.5 rounded-lg pressable transition-colors shadow-sm"
-              >
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
-                  <path strokeLinecap="round" strokeLinejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" aria-hidden="true" />
-                </svg>
-                Download PDF
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowHelp(true)}
+                  title="How to use this report, step by step"
+                  className="no-print inline-flex items-center gap-1.5 text-[12.5px] font-medium
+                    text-stone-600 bg-white border border-stone-200 hover:border-stone-300 hover:bg-stone-50
+                    px-3 py-1.5 rounded-lg pressable transition-colors shadow-sm"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
+                    <path strokeLinecap="round" strokeLinejoin="round"
+                      d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M12 17.25h.008v.008H12v-.008zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" aria-hidden="true" />
+                  </svg>
+                  How it works
+                </button>
+                <button
+                  onClick={() => { downloadReportPdf(report).catch((e) => console.error("PDF export failed", e)); }}
+                  title="Download a clean BRSR data-request brief to share with the client"
+                  className="no-print inline-flex items-center gap-1.5 text-[12.5px] font-medium
+                    text-stone-600 bg-white border border-stone-200 hover:border-stone-300 hover:bg-stone-50
+                    px-3 py-1.5 rounded-lg pressable transition-colors shadow-sm"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
+                    <path strokeLinecap="round" strokeLinejoin="round"
+                      d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" aria-hidden="true" />
+                  </svg>
+                  Download PDF
+                </button>
+              </div>
             </div>
 
             <div key={activeTab} role="tabpanel" id={`${activeTab}-panel`} className="tab-fade">
@@ -146,6 +163,8 @@ export default function ReportView({ report, onBack, onEdit }: ReportViewProps) 
           </div>
         </main>
       </div>
+
+      {showHelp && <WalkthroughModal onClose={() => setShowHelp(false)} />}
     </div>
   );
 }
@@ -198,10 +217,10 @@ function Sidebar({
           hover:bg-stone-100/50 transition-colors pressable"
       >
         <div className="w-[26px] h-[26px] rounded-md bg-[#111111] flex items-center justify-center flex-shrink-0">
-          <span className="text-[10px] font-bold text-white leading-none tracking-tight">BK</span>
+          <span className="text-[11px] font-bold text-white leading-none tracking-tight">S</span>
         </div>
         <div className="leading-tight">
-          <p className="text-[13px] font-semibold text-stone-900 tracking-[-0.01em]">BRSR Kit</p>
+          <p className="text-[13px] font-semibold text-stone-900 tracking-[-0.01em]">Saaksh</p>
           <p className="text-[10.5px] text-stone-400">Readiness workspace</p>
         </div>
       </button>
@@ -428,6 +447,16 @@ function Overview({
     setAbProgress({ collected, detected });
   }, [report]);
 
+  // First-run "Start here" card — shown until dismissed; persists across reports.
+  const [showIntro, setShowIntro] = useState(false);
+  useEffect(() => {
+    setShowIntro(!loadJSON<boolean>(STORAGE_KEYS.walkthroughSeen, false));
+  }, []);
+  const dismissIntro = () => {
+    saveJSON(STORAGE_KEYS.walkthroughSeen, true);
+    setShowIntro(false);
+  };
+
   return (
     <div className="space-y-4">
 
@@ -456,6 +485,8 @@ function Overview({
           </div>
         )}
       </div>
+
+      {showIntro && <WalkthroughCard onDismiss={dismissIntro} />}
 
       {/* Hero readiness card — donut + segmented bar + legend */}
       <div className="bg-white rounded-xl border border-stone-200 p-5 lg:p-6 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">

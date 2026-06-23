@@ -41,6 +41,9 @@ export const STORAGE_KEYS = {
   form: "session.form",
   checklist: "session.checklist",
   materiality: "session.materiality",
+  // Whether the first-run "Start here" walkthrough has been dismissed. Persists
+  // across reports (it's a one-time intro), so it is NOT cleared on "New report".
+  walkthroughSeen: "walkthrough.seen",
 } as const;
 
 // Per-tab "active work session" flag (sessionStorage, not localStorage). It lets

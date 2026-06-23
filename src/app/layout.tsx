@@ -16,7 +16,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "BRSR Consultant Kit: Free BRSR Readiness Report Generator",
+  title: "Saaksh: Free BRSR Readiness Report Generator",
   description:
     "Generate client-specific BRSR data collection checklists, materiality assessments, and cross-framework mappings. Free tool for ESG consultants in India.",
   keywords: "BRSR, ESG, SEBI, sustainability reporting, India, consultant tool, materiality assessment, GRI, TCFD, IFRS",

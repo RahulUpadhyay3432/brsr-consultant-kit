@@ -6,9 +6,9 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
       <div className="w-full max-w-[380px]">
         <div className="flex items-center gap-2.5 mb-6 justify-center">
           <span className="w-[28px] h-[28px] rounded-md bg-[#111] flex items-center justify-center">
-            <span className="text-[10px] font-bold text-white leading-none">BK</span>
+            <span className="text-[12px] font-bold text-white leading-none">S</span>
           </span>
-          <span className="text-[14px] font-semibold text-stone-900">BRSR Consultant Kit</span>
+          <span className="text-[14px] font-semibold text-stone-900">Saaksh</span>
         </div>
 
         <div className="bg-white border border-stone-200 rounded-2xl p-7 shadow-[0_2px_20px_rgba(100,80,40,0.06)]">

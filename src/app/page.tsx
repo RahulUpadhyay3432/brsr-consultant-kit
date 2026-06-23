@@ -164,10 +164,10 @@ export default function Home() {
             aria-label="Go to home"
           >
             <div className="w-[26px] h-[26px] rounded-md bg-[#111111] flex items-center justify-center flex-shrink-0">
-              <span className="text-[10px] font-bold text-white leading-none tracking-tight">BK</span>
+              <span className="text-[11px] font-bold text-white leading-none tracking-tight">S</span>
             </div>
             <span className="text-[13.5px] font-semibold text-stone-900 tracking-[-0.01em]">
-              BRSR Consultant Kit
+              Saaksh
             </span>
           </button>
 

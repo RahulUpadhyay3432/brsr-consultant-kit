@@ -1,5 +1,5 @@
 {
-  "source": "Crosswalk authored by BRSR Consultant Kit from the MSCI ESG Ratings Key Issue Framework (10 themes / 35 Key Issues across 3 pillars) and the S&P Global Corporate Sustainability Assessment (CSA), which underpins the Dow Jones Sustainability Indices (DJSI). Mapped at the BRSR principle level — the granularity at which these ratings actually assess companies.",
+  "source": "Crosswalk authored by Saaksh from the MSCI ESG Ratings Key Issue Framework (10 themes / 35 Key Issues across 3 pillars) and the S&P Global Corporate Sustainability Assessment (CSA), which underpins the Dow Jones Sustainability Indices (DJSI). Mapped at the BRSR principle level — the granularity at which these ratings actually assess companies.",
   "ratings": {
     "msci": {
       "name": "MSCI ESG Ratings",

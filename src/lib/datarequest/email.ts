@@ -48,8 +48,8 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
   const html = `<!doctype html><html><body style="margin:0;background:#F7F6F2;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
   <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e7e5e0;border-radius:14px;overflow:hidden;">
     <div style="padding:18px 24px;border-bottom:1px solid #f0eee9;">
-      <span style="display:inline-block;width:26px;height:26px;border-radius:7px;background:#111;color:#fff;font-weight:700;font-size:11px;text-align:center;line-height:26px;vertical-align:middle;">BK</span>
-      <span style="font-weight:600;color:#1a1916;font-size:14px;vertical-align:middle;margin-left:8px;">BRSR Consultant Kit</span>
+      <span style="display:inline-block;width:26px;height:26px;border-radius:7px;background:#111;color:#fff;font-weight:700;font-size:13px;text-align:center;line-height:26px;vertical-align:middle;">S</span>
+      <span style="font-weight:600;color:#1a1916;font-size:14px;vertical-align:middle;margin-left:8px;">Saaksh</span>
     </div>
     <div style="padding:24px;">
       <p style="font-size:15px;color:#1a1916;margin:0 0 12px;">Hi ${req.contactName || "there"},</p>
@@ -59,7 +59,7 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
       ${deadline ? `<p style="font-size:13px;color:#a8662a;background:#fdf3e7;border:1px solid #f6e1c6;border-radius:8px;padding:10px 12px;margin:0 0 18px;">Please submit by <strong>${deadline}</strong>.</p>` : ""}
       <a href="${link}" style="display:inline-block;background:#111;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px 20px;border-radius:9px;">Provide the data →</a>
       <p style="font-size:12px;color:#9a958c;line-height:1.6;margin:18px 0 0;">
-        Sent via BRSR Consultant Kit. If the button doesn't work, paste this into your browser:<br>
+        Sent via Saaksh. If the button doesn't work, paste this into your browser:<br>
         <span style="color:#00745a;word-break:break-all;">${link}</span>
       </p>
     </div>
@@ -74,7 +74,7 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
 // and Resend rejects unverified-domain recipients until a domain is added.)
 async function sendEmail(to: string, subject: string, html: string, stubKey: string): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM || "BRSR Consultant Kit <onboarding@resend.dev>";
+  const from = process.env.RESEND_FROM || "Saaksh <onboarding@resend.dev>";
 
   if (apiKey && !apiKey.startsWith("re_paste")) {
     try {
@@ -123,8 +123,8 @@ export async function sendSubmissionAlert(args: {
   const html = `<!doctype html><html><body style="margin:0;background:#F7F6F2;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
   <div style="max-width:520px;margin:0 auto;background:#fff;border:1px solid #e7e5e0;border-radius:14px;overflow:hidden;">
     <div style="padding:18px 24px;border-bottom:1px solid #f0eee9;">
-      <span style="display:inline-block;width:26px;height:26px;border-radius:7px;background:#111;color:#fff;font-weight:700;font-size:11px;text-align:center;line-height:26px;vertical-align:middle;">BK</span>
-      <span style="font-weight:600;color:#1a1916;font-size:14px;vertical-align:middle;margin-left:8px;">BRSR Consultant Kit</span>
+      <span style="display:inline-block;width:26px;height:26px;border-radius:7px;background:#111;color:#fff;font-weight:700;font-size:13px;text-align:center;line-height:26px;vertical-align:middle;">S</span>
+      <span style="font-weight:600;color:#1a1916;font-size:14px;vertical-align:middle;margin-left:8px;">Saaksh</span>
     </div>
     <div style="padding:24px;">
       <p style="font-size:15px;color:#1a1916;margin:0 0 10px;"><strong>${args.ownerName}</strong> just submitted data.</p>

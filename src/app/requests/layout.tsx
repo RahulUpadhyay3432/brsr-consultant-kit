@@ -17,10 +17,10 @@ export default function RequestsLayout({ children }: { children: React.ReactNode
         <Link href="/" className="h-14 flex items-center gap-2.5 px-4 border-b border-black/[0.05]
           hover:bg-stone-100/50 transition-colors">
           <div className="w-[26px] h-[26px] rounded-md bg-[#111111] flex items-center justify-center flex-shrink-0">
-            <span className="text-[10px] font-bold text-white leading-none tracking-tight">BK</span>
+            <span className="text-[11px] font-bold text-white leading-none tracking-tight">S</span>
           </div>
           <div className="leading-tight">
-            <p className="text-[13px] font-semibold text-stone-900 tracking-[-0.01em]">BRSR Kit</p>
+            <p className="text-[13px] font-semibold text-stone-900 tracking-[-0.01em]">Saaksh</p>
             <p className="text-[10.5px] text-stone-400">Data collection</p>
           </div>
         </Link>
@@ -52,7 +52,7 @@ export default function RequestsLayout({ children }: { children: React.ReactNode
           {/* Mobile brand (sidebar is hidden < lg) */}
           <Link href="/" className="lg:hidden flex items-center">
             <span className="w-[24px] h-[24px] rounded-md bg-[#111111] flex items-center justify-center">
-              <span className="text-[9px] font-bold text-white leading-none">BK</span>
+              <span className="text-[10px] font-bold text-white leading-none">S</span>
             </span>
           </Link>
           <span className="text-[13px] font-semibold text-stone-700">Data collection</span>

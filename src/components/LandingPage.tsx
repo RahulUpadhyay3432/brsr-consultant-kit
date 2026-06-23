@@ -55,7 +55,8 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               >
                 A free, on-device readiness tool for independent ESG consultants in India. Fill a
                 short intake and get a gap-analysed BRSR action plan, suggested materiality, and
-                cross-framework mapping, ready for your client meeting in minutes.
+                cross-framework mapping in minutes. BRSR is where Saaksh starts; CBAM, CCTS and
+                broader ESG are on the way.
               </p>
 
               <div className="anim-up-md flex flex-wrap items-center gap-3 mt-8" style={{ animationDelay: "240ms" }}>
@@ -185,9 +186,9 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
             <p className="font-display text-[18px] sm:text-[20px] leading-[1.55] text-white/90 mt-3 italic">
               &ldquo;I work in climate compliance, and the first week of every BRSR engagement was the
               same scramble: a blank format, scattered filings, and no quick way to see what was
-              already covered. This is the tool I wished I had.&rdquo;
+              already covered. This is the tool I wished I had, and where Saaksh begins.&rdquo;
             </p>
-            <p className="text-[13px] text-white/55 mt-4">Rahul Upadhyay · maker of BRSR Consultant Kit</p>
+            <p className="text-[13px] text-white/55 mt-4">Rahul Upadhyay · maker of Saaksh</p>
           </div>
         </div>
       </section>
@@ -218,6 +219,51 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               <div key={s.l} className="bg-brand-50/70 px-5 py-8 text-center">
                 <p className="font-display text-[2.6rem] sm:text-[3rem] leading-none text-brand-800 tabular-nums">{s.n}</p>
                 <p className="text-[12.5px] text-brand-700/70 mt-2">{s.l}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Modules — BRSR now, more coming ─────────────────────────────────── */}
+      <section className="border-t border-black/[0.06] bg-[#f3f1ea]">
+        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
+          <SectionEyebrow>One platform, every report</SectionEyebrow>
+          <h2 className="font-display font-light text-[2rem] sm:text-[2.6rem] leading-[1.1] tracking-[-0.02em] text-center text-stone-900 mt-3" style={{ textWrap: "balance" }}>
+            Saaksh starts with BRSR. The rest of compliance is next.
+          </h2>
+          <p className="text-center text-[14.5px] text-stone-500 leading-relaxed mt-4 max-w-[560px] mx-auto">
+            Collect your client&apos;s sustainability data once, then reuse it across every disclosure they owe. BRSR is live today; the next modules are on the way.
+          </p>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
+            {[
+              { code: "BRSR", name: "Business Responsibility & Sustainability Report", desc: "SEBI's sustainability mandate for India's top 1,000 listed companies.", live: true },
+              { code: "CBAM", name: "Carbon Border Adjustment Mechanism", desc: "EU carbon reporting for exporters, with embedded-emissions calculation.", live: false },
+              { code: "CCTS", name: "Carbon Credit Trading Scheme", desc: "India's compliance carbon market: obligations, credits and registry.", live: false },
+              { code: "ESG+", name: "Broader ESG & assurance", desc: "GRI, BRSR-Core reasonable assurance, and wider voluntary disclosure.", live: false },
+            ].map((m) => (
+              <div
+                key={m.code}
+                className={`relative rounded-2xl border p-6 overflow-hidden ${
+                  m.live
+                    ? "bg-white border-stone-200 shadow-[0_1px_3px_rgba(80,60,30,0.05)]"
+                    : "bg-stone-50/60 border-stone-200/70"
+                }`}
+              >
+                {m.live && <span className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-brand-500 to-brand-700" />}
+                <div className="flex items-center justify-between gap-2">
+                  <span className={`text-[15px] font-bold tracking-tight ${m.live ? "text-stone-900" : "text-stone-400"}`}>{m.code}</span>
+                  {m.live ? (
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-brand-700 bg-brand-50 border border-brand-100 rounded-full px-2.5 py-1 whitespace-nowrap">
+                      <span className="w-1.5 h-1.5 rounded-full bg-brand-500" /> Available now
+                    </span>
+                  ) : (
+                    <span className="text-[11px] font-medium text-stone-400 bg-stone-100 border border-stone-200 rounded-full px-2.5 py-1 whitespace-nowrap">Coming soon</span>
+                  )}
+                </div>
+                <h3 className={`text-[14px] font-semibold mt-4 leading-snug ${m.live ? "text-stone-800" : "text-stone-500"}`}>{m.name}</h3>
+                <p className={`text-[12.5px] leading-relaxed mt-1.5 ${m.live ? "text-stone-500" : "text-stone-400"}`}>{m.desc}</p>
               </div>
             ))}
           </div>
@@ -255,9 +301,9 @@ function Header({ onStart }: { onStart: () => void }) {
       <div className="max-w-[1180px] mx-auto px-5 sm:px-8 h-14 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="w-[26px] h-[26px] rounded-md bg-[#111] flex items-center justify-center">
-            <span className="text-[10px] font-bold text-white leading-none">BK</span>
+            <span className="text-[11px] font-bold text-white leading-none">S</span>
           </div>
-          <span className="text-[13.5px] font-semibold text-stone-900 tracking-[-0.01em]">BRSR Consultant Kit</span>
+          <span className="text-[13.5px] font-semibold text-stone-900 tracking-[-0.01em]">Saaksh</span>
         </div>
         <div className="flex items-center gap-2.5">
           <a href={COMPLIANCE_CHAT} target="_blank" rel="noopener noreferrer"
