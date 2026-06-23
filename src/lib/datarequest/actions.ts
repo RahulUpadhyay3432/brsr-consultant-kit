@@ -7,6 +7,7 @@ import * as db from "./db";
 import { sendRequestEmail, sendSubmissionAlert } from "./email";
 import { uploadEvidence } from "./storage";
 import { generateNarrative, type NarrativeResult } from "./narrative";
+import { requireConsultant } from "./guard";
 
 function baseUrl(): string {
   return process.env.APP_BASE_URL || "http://localhost:3000";
@@ -14,6 +15,7 @@ function baseUrl(): string {
 
 // 1) Consultant creates a campaign (one client). Owners are added next.
 export async function createCampaignAction(formData: FormData): Promise<void> {
+  requireConsultant();
   const clientName = String(formData.get("clientName") || "").trim();
   const deadline = (String(formData.get("deadline") || "").trim() || null) as string | null;
   const reportingPeriod = (String(formData.get("reportingPeriod") || "").trim() || null) as string | null;
@@ -28,6 +30,7 @@ export async function addContactAction(
   campaignId: string, clientName: string, deadline: string | null,
   reportingPeriod: string | null, formData: FormData
 ): Promise<void> {
+  requireConsultant();
   const name = String(formData.get("name") || "").trim();
   const email = String(formData.get("email") || "").trim();
   const fieldIds = formData.getAll("fields").map(String);
@@ -61,6 +64,7 @@ export async function addContactAction(
 // best-effort (the column may not exist until the migration runs), but always
 // returned so the draft can render it immediately.
 export async function generateNarrativeAction(campaignId: string): Promise<NarrativeResult> {
+  requireConsultant();
   const campaign = await db.getCampaign(campaignId);
   if (!campaign) return {};
   const narrative = await generateNarrative(campaign);

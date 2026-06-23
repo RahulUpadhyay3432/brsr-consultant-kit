@@ -16,6 +16,19 @@ export interface EmailReq {
   final?: boolean;               // last reminder / deadline imminent
 }
 
+// HTML-escape any user-controlled value before it goes into an email's HTML body,
+// so a client/owner name like "<script>…" can't inject markup into the recipient's
+// mail client. (Plain-text subjects are not escaped — escaping there would render
+// the entities literally.)
+function esc(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export function buildRequestEmail(req: EmailReq, link: string): { subject: string; html: string } {
   const deadline = req.deadline
     ? new Date(req.deadline).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
@@ -28,7 +41,7 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
         : `Reminder: data still needed for ${req.clientName}'s BRSR report`)
     : `Data request for ${req.clientName}'s BRSR report`;
 
-  const clientStrong = `<strong style="color:#1a1916;">${req.clientName}</strong>`;
+  const clientStrong = `<strong style="color:#1a1916;">${esc(req.clientName)}</strong>`;
   const intro = isReminder
     ? (req.final
         ? `This is a <strong style="color:#1a1916;">final reminder</strong> — we still need the data points below for ${clientStrong}'s BRSR report${deadline ? `, due ${deadline}` : ""}. It only takes a couple of minutes via the secure link.`
@@ -39,8 +52,8 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
     .map(
       (it) =>
         `<tr>
-           <td style="padding:8px 0;border-bottom:1px solid #eee;color:#1a1916;font-size:14px;">${it.label}</td>
-           <td style="padding:8px 0;border-bottom:1px solid #eee;color:#8a857c;font-size:13px;text-align:right;white-space:nowrap;">${it.unit ?? ""}</td>
+           <td style="padding:8px 0;border-bottom:1px solid #eee;color:#1a1916;font-size:14px;">${esc(it.label)}</td>
+           <td style="padding:8px 0;border-bottom:1px solid #eee;color:#8a857c;font-size:13px;text-align:right;white-space:nowrap;">${esc(it.unit ?? "")}</td>
          </tr>`
     )
     .join("");
@@ -52,9 +65,9 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
       <span style="font-weight:600;color:#1a1916;font-size:14px;vertical-align:middle;margin-left:8px;">Saaksh</span>
     </div>
     <div style="padding:24px;">
-      <p style="font-size:15px;color:#1a1916;margin:0 0 12px;">Hi ${req.contactName || "there"},</p>
+      <p style="font-size:15px;color:#1a1916;margin:0 0 12px;">Hi ${esc(req.contactName || "there")},</p>
       <p style="font-size:14px;color:#52504a;line-height:1.6;margin:0 0 18px;">${intro}</p>
-      ${req.reportingPeriod ? `<p style="font-size:13px;color:#52504a;margin:0 0 14px;">Reporting period: <strong style="color:#1a1916;">${req.reportingPeriod}</strong></p>` : ""}
+      ${req.reportingPeriod ? `<p style="font-size:13px;color:#52504a;margin:0 0 14px;">Reporting period: <strong style="color:#1a1916;">${esc(req.reportingPeriod)}</strong></p>` : ""}
       <table style="width:100%;border-collapse:collapse;margin:0 0 18px;">${itemsHtml}</table>
       ${deadline ? `<p style="font-size:13px;color:#a8662a;background:#fdf3e7;border:1px solid #f6e1c6;border-radius:8px;padding:10px 12px;margin:0 0 18px;">Please submit by <strong>${deadline}</strong>.</p>` : ""}
       <a href="${link}" style="display:inline-block;background:#0E4A36;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px 20px;border-radius:9px;">Provide the data →</a>
@@ -127,9 +140,9 @@ export async function sendSubmissionAlert(args: {
       <span style="font-weight:600;color:#1a1916;font-size:14px;vertical-align:middle;margin-left:8px;">Saaksh</span>
     </div>
     <div style="padding:24px;">
-      <p style="font-size:15px;color:#1a1916;margin:0 0 10px;"><strong>${args.ownerName}</strong> just submitted data.</p>
+      <p style="font-size:15px;color:#1a1916;margin:0 0 10px;"><strong>${esc(args.ownerName)}</strong> just submitted data.</p>
       <p style="font-size:14px;color:#52504a;line-height:1.6;margin:0 0 18px;">
-        For <strong style="color:#1a1916;">${args.clientName}</strong>'s BRSR report — ${args.received} of ${args.total} requested fields are now in.
+        For <strong style="color:#1a1916;">${esc(args.clientName)}</strong>'s BRSR report — ${args.received} of ${args.total} requested fields are now in.
       </p>
       <a href="${args.link}" style="display:inline-block;background:#0E4A36;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px 20px;border-radius:9px;">View collection →</a>
     </div>
