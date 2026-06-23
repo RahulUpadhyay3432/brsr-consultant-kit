@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import HelpWidget from "@/components/HelpWidget";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -34,6 +35,7 @@ export default function RootLayout({
       >
         <Analytics />
         {children}
+        <HelpWidget />
       </body>
       <GoogleAnalytics gaId="G-GJBBQ6YPZL" />
     </html>

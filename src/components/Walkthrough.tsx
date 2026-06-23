@@ -1,11 +1,8 @@
 "use client";
 
 // The product walkthrough — one source of truth for the sequence a new user
-// should follow. Rendered two ways: as a dismissible "Start here" card on the
-// report Overview (first run), and as an always-on "How it works" panel they can
-// reopen any time from the top bar.
-
-import { useEffect } from "react";
+// should follow. WALKTHROUGH_STEPS + StepRow are reused by the first-run
+// "Start here" card here and by the always-on Help widget (HelpWidget.tsx).
 
 export interface WalkStep {
   n: number;
@@ -40,7 +37,7 @@ export const WALKTHROUGH_STEPS: WalkStep[] = [
   },
 ];
 
-function StepRow({ step }: { step: WalkStep }) {
+export function StepRow({ step }: { step: WalkStep }) {
   return (
     <div className="flex gap-3">
       <div className="w-6 h-6 flex-shrink-0 rounded-full bg-forest text-white flex items-center justify-center text-[12px] font-semibold tabular-nums">
@@ -83,62 +80,8 @@ export function WalkthroughCard({ onDismiss }: { onDismiss: () => void }) {
         ))}
       </div>
       <p className="text-[11.5px] text-stone-400 mt-5">
-        You can reopen this any time from <span className="font-medium text-stone-500">How it works</span> at the top.
+        You can reopen this any time from the <span className="font-medium text-stone-500">Help</span> button (bottom-right).
       </p>
-    </div>
-  );
-}
-
-// ── Always-on "How it works" modal ──────────────────────────────────────────
-export function WalkthroughModal({ onClose }: { onClose: () => void }) {
-  // Close on Escape.
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onClose]);
-
-  return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-stone-900/40 backdrop-blur-sm"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label="How it works"
-    >
-      <div
-        className="anim-card w-full max-w-[560px] max-h-[88vh] overflow-y-auto rounded-2xl bg-white border border-stone-200 shadow-[0_24px_60px_rgba(40,30,15,0.22)]"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex items-center justify-between px-6 pt-6">
-          <div>
-            <p className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-brand-700">How it works</p>
-            <h2 className="font-display text-[20px] text-stone-900 mt-1">From blank format to client-ready plan</h2>
-          </div>
-          <button
-            onClick={onClose}
-            aria-label="Close"
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors pressable"
-          >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M18 6L6 18" />
-            </svg>
-          </button>
-        </div>
-        <div className="px-6 py-6 space-y-5">
-          {WALKTHROUGH_STEPS.map((s) => (
-            <StepRow key={s.n} step={s} />
-          ))}
-        </div>
-        <div className="px-6 pb-6">
-          <button
-            onClick={onClose}
-            className="w-full bg-forest text-white text-[13.5px] font-semibold py-2.5 rounded-lg hover:bg-forest-light transition-colors pressable"
-          >
-            Got it
-          </button>
-        </div>
-      </div>
     </div>
   );
 }

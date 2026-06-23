@@ -1,0 +1,173 @@
+{
+  "_meta": "Help knowledge base for the on-device keyword 'ask' bot. No AI: src/lib/help-search.ts ranks these by keyword/title overlap with the user's question. 'howto' = using the tool; 'glossary' = BRSR basics. Keep answers short and plain.",
+  "topics": [
+    {
+      "id": "start-report",
+      "title": "How do I start a report?",
+      "category": "howto",
+      "keywords": ["start", "begin", "new", "report", "create", "generate", "first", "how do i use", "get started"],
+      "answer": "On the home page, click 'Start a free report' and fill the short intake (client name, industry, size, and their existing compliance filings). The readiness report is generated instantly in your browser."
+    },
+    {
+      "id": "filings-gap",
+      "title": "Why should I add the client's existing filings?",
+      "category": "howto",
+      "keywords": ["filings", "existing", "compliance", "pcb", "epr", "pat", "zld", "already covered", "gap", "gap analysis", "why add"],
+      "answer": "The 'Existing Compliance Filings' field (PCB, EPR, PAT, ZLD and so on) is what powers the gap analysis. When you tick them, the tool marks the BRSR fields those filings already cover as 'Ready to pull', so you don't collect the same data twice. Skip it and every field looks like fresh collection."
+    },
+    {
+      "id": "ready-verify-collect",
+      "title": "What do Ready, Verify and Collect mean?",
+      "category": "howto",
+      "keywords": ["ready", "verify", "collect", "status", "colour", "color", "badge", "what does", "mean", "pull from filing", "needs verification", "collect fresh"],
+      "answer": "Each BRSR field is colour-coded by status. Ready to pull (green): the data already exists in an existing filing. Needs verification (amber): partly covered, one piece missing. Collect fresh (stone): not in any filing, gather it new. Not applicable (slate): a manufacturing-only disclosure hidden for service-sector clients."
+    },
+    {
+      "id": "mark-collected",
+      "title": "How do I mark an item as collected?",
+      "category": "howto",
+      "keywords": ["mark", "collected", "done", "tick", "check off", "complete", "track", "progress", "hide collected"],
+      "answer": "Expand any field in the Action Plan and use 'Mark as collected'. There is a 'Hide collected' toggle to focus on what's left. Your progress is saved on your device, so it survives a refresh or restart."
+    },
+    {
+      "id": "csv-export",
+      "title": "Where is the CSV export?",
+      "category": "howto",
+      "keywords": ["csv", "export", "excel", "spreadsheet", "download data", "full checklist", "where is"],
+      "answer": "On the Action Plan tab, click 'Export CSV' for the full Section A/B/C checklist (status, gap, how-to-collect, collected flags). On the Materiality tab, 'Assessment template' exports the suggested topics with empty scoring columns. Everything stays on your device."
+    },
+    {
+      "id": "pdf-brief",
+      "title": "What is the Download PDF / data-request brief?",
+      "category": "howto",
+      "keywords": ["pdf", "download pdf", "brief", "data request", "client", "send", "share", "report pdf"],
+      "answer": "'Download PDF' generates a clean, plain-English 'BRSR data request' brief you can send straight to the client's team. It lists the gaps grouped by the team that usually owns each item (HR, EHS, energy manager, company secretary). It is generated in your browser, with no Chrome print header or extension overlays."
+    },
+    {
+      "id": "upload-last-year",
+      "title": "How do I upload last year's report?",
+      "category": "howto",
+      "keywords": ["upload", "last year", "previous", "pdf", "prior", "returning client", "detect", "already documented"],
+      "answer": "At the top of the Action Plan, use 'Upload last year's report'. The PDF is read on your device (it never leaves the browser) and disclosures that were already documented last year are tagged with a 'Last year' badge, so you know what to carry forward versus collect fresh. Best for returning clients."
+    },
+    {
+      "id": "materiality",
+      "title": "How does Suggested Materiality work?",
+      "category": "howto",
+      "keywords": ["materiality", "material", "topics", "shortlist", "add to shortlist", "esg topics", "suggested"],
+      "answer": "The Materiality tab suggests ESG topics that matter for the client's industry, grouped by Environment / Social / Governance. 'Add to shortlist' selects the ones to carry into the client's stakeholder process. It is a starting point, not a finished assessment, a BRSR-compliant materiality assessment still needs stakeholder engagement."
+    },
+    {
+      "id": "alignment",
+      "title": "What is the Alignment tab?",
+      "category": "howto",
+      "keywords": ["alignment", "framework", "mapping", "gri", "tcfd", "ifrs", "tnfd", "msci", "djsi", "crosswalk", "report across"],
+      "answer": "Alignment maps every BRSR disclosure to GRI, TCFD, IFRS S1/S2 and TNFD (nature), plus MSCI and S&P/DJSI rating criteria. Collect the data once for BRSR and it serves every other report your client needs."
+    },
+    {
+      "id": "collect-tier",
+      "title": "What is Collect / data requests?",
+      "category": "howto",
+      "keywords": ["collect", "data request", "data owner", "chase", "team", "email", "reminder", "paid", "tier", "login", "requests"],
+      "answer": "Collect is the paid tier for chasing data from a client's team. You add data owners, each gets a no-login secure link, the tool sends a branded request email and auto-reminders, alerts you when they submit, auto-computes emissions, and builds a draft. It lives behind a passcode at /requests."
+    },
+    {
+      "id": "save-progress",
+      "title": "Will I lose my work if I close the browser?",
+      "category": "howto",
+      "keywords": ["save", "saved", "lose", "progress", "restart", "close", "refresh", "persist", "data lost", "shut down"],
+      "answer": "No. Your work (form answers, collected ticks, calculator inputs, materiality shortlist) is saved on your device and survives closing the browser, a refresh, or a laptop restart. When you come back, the home page shows a 'Continue where you left off' banner. Note: it is per-device and per-browser; incognito or clearing browser data will erase it."
+    },
+    {
+      "id": "privacy",
+      "title": "Is my client's data stored anywhere?",
+      "category": "howto",
+      "keywords": ["privacy", "stored", "data", "secure", "server", "upload", "on device", "leaves", "browser", "confidential"],
+      "answer": "For the free readiness tool, no. Everything runs in your browser, nothing is uploaded or stored on a server. The paid Collect tier does store the data you collect (securely), because it has to coordinate a team, but the free tool is 100% on-device."
+    },
+    {
+      "id": "calculators",
+      "title": "How do the emission calculators work?",
+      "category": "howto",
+      "keywords": ["calculator", "emissions", "ghg", "scope 1", "scope 2", "energy", "water", "compute", "p6", "factor"],
+      "answer": "The P6 environment fields have built-in calculators for GHG Scope 1 & 2, energy and water. Enter activity data (electricity units, diesel litres) and the tool computes emissions using cited factors (CEA grid factor, IPCC/GHG-Protocol fuel factors). Inputs are saved on your device and shared across the related fields."
+    },
+    {
+      "id": "brsr",
+      "title": "What is BRSR?",
+      "category": "glossary",
+      "keywords": ["brsr", "what is brsr", "business responsibility", "sustainability report", "sebi", "definition"],
+      "answer": "BRSR (Business Responsibility and Sustainability Report) is SEBI's mandatory ESG disclosure for India's top 1,000 listed companies by market cap. It is filed as part of the annual report, ahead of the AGM (so by about 30 September for a March financial year). It has Sections A, B and C across 9 NGRBC principles."
+    },
+    {
+      "id": "sections",
+      "title": "What are Sections A, B and C?",
+      "category": "glossary",
+      "keywords": ["section a", "section b", "section c", "sections", "general disclosures", "management", "principle"],
+      "answer": "Section A is general disclosures (entity identity, operations). Section B is management and process (policies, governance). Section C is the principle-wise performance: 9 principles (P1-P9), each with Essential and Leadership indicators. The gap analysis focuses on Section C; A and B are tracked but not gap-analysed."
+    },
+    {
+      "id": "essential-leadership",
+      "title": "Essential vs Leadership indicators?",
+      "category": "glossary",
+      "keywords": ["essential", "leadership", "indicator", "mandatory", "voluntary", "difference"],
+      "answer": "Within each Section C principle, Essential indicators are mandatory for everyone in scope. Leadership indicators are more advanced and voluntary, expected mainly of larger or more mature filers. The tool shows Leadership indicators for listed companies or filers with 3+ years of maturity."
+    },
+    {
+      "id": "principles",
+      "title": "What are the 9 NGRBC principles?",
+      "category": "glossary",
+      "keywords": ["ngrbc", "9 principles", "nine principles", "p1", "p9", "principles", "what are the principles"],
+      "answer": "BRSR is built on the 9 NGRBC principles: P1 ethics & transparency, P2 product responsibility, P3 employee wellbeing, P4 stakeholder engagement, P5 human rights, P6 environment, P7 policy advocacy, P8 inclusive growth, P9 consumer responsibility."
+    },
+    {
+      "id": "materiality-term",
+      "title": "What is materiality / a material topic?",
+      "category": "glossary",
+      "keywords": ["materiality", "material topic", "what is materiality", "stakeholder", "relevant", "significant"],
+      "answer": "A material topic is an ESG issue that significantly affects the business or matters most to its stakeholders, so it deserves focus and disclosure. A proper BRSR materiality assessment is driven by a stakeholder-engagement process; the tool's shortlist is a starting point for that, not a finished determination."
+    },
+    {
+      "id": "brsr-core",
+      "title": "What is BRSR Core and assurance?",
+      "category": "glossary",
+      "keywords": ["brsr core", "core", "assurance", "limited assurance", "reasonable assurance", "audit", "verify data"],
+      "answer": "BRSR Core is a sub-set of key ESG attributes that must be independently assured. SEBI is phasing in reasonable/limited assurance: top 150 companies first, then 250, 500 and 1,000 over successive years. Assurance means an external provider checks the data, so keep evidence (bills, returns) for every figure."
+    },
+    {
+      "id": "scopes",
+      "title": "What are Scope 1, 2 and 3 emissions?",
+      "category": "glossary",
+      "keywords": ["scope 1", "scope 2", "scope 3", "ghg", "emissions", "greenhouse gas", "direct", "indirect", "value chain"],
+      "answer": "Scope 1 is direct emissions from owned sources (fuel burned on-site, company vehicles). Scope 2 is indirect emissions from purchased electricity, heat or steam. Scope 3 is all other value-chain emissions (suppliers, business travel, product use). The tool's calculators cover Scope 1 and Scope 2 today."
+    },
+    {
+      "id": "frameworks-term",
+      "title": "What are GRI, TCFD, IFRS and TNFD?",
+      "category": "glossary",
+      "keywords": ["gri", "tcfd", "ifrs", "tnfd", "s1", "s2", "framework", "what is gri", "what is tcfd"],
+      "answer": "These are global reporting frameworks BRSR maps to: GRI (broad sustainability standards), TCFD (climate-related financial disclosures), IFRS S1/S2 (ISSB sustainability and climate standards), and TNFD (nature and biodiversity). Mapping lets one round of BRSR data feed reports in all of them."
+    },
+    {
+      "id": "cbam",
+      "title": "What is CBAM?",
+      "category": "glossary",
+      "keywords": ["cbam", "carbon border", "eu", "export", "europe", "embedded emissions", "tariff"],
+      "answer": "CBAM (Carbon Border Adjustment Mechanism) is the EU's carbon levy on imports of certain carbon-intensive goods (steel, cement, aluminium, fertiliser and more). Indian exporters to the EU must report the embedded emissions of those goods. It is a planned future Saaksh module."
+    },
+    {
+      "id": "ccts",
+      "title": "What is CCTS?",
+      "category": "glossary",
+      "keywords": ["ccts", "carbon credit", "trading scheme", "carbon market", "india", "credits", "registry"],
+      "answer": "CCTS (Carbon Credit Trading Scheme) is India's compliance carbon market, where obligated entities meet emission-intensity targets and trade carbon credits. It is a planned future Saaksh module alongside CBAM and broader ESG."
+    },
+    {
+      "id": "deadline",
+      "title": "When is BRSR due?",
+      "category": "glossary",
+      "keywords": ["deadline", "due", "date", "when", "filing", "agm", "september", "annual report", "last date"],
+      "answer": "BRSR is filed as part of the annual report, which must be out before the AGM. Listed companies hold the AGM within 6 months of the financial year ending (31 March), so the effective deadline is around 30 September each year. The work mostly happens April to September. It is annual, every covered company refiles each year."
+    }
+  ]
+}
