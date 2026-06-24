@@ -4,6 +4,7 @@ import { useState, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import type { ReportOutput, FrameworkMapping } from "@/lib/types";
 import { INDUSTRY_LABELS, FILING_LABELS, type IndustryType, type ExistingFiling } from "@/lib/types";
+import CompanyAvatar from "./CompanyAvatar";
 import DataChecklist from "./DataChecklist";
 import MaterialityMatrix from "./MaterialityMatrix";
 import FrameworkMapper from "./FrameworkMapper";
@@ -166,9 +167,6 @@ function Sidebar({
   onBack: () => void;
   onEdit: () => void;
 }) {
-  const initials = (report.companyName || "Client")
-    .split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
-
   const navItem = (tab: { id: string; label: string }, badge?: React.ReactNode) => {
     const active = activeTab === tab.id;
     return (
@@ -213,9 +211,7 @@ function Sidebar({
       {/* Workspace / client identity */}
       <div className="px-3 pt-3">
         <div className="flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg bg-white border border-stone-200/80 shadow-sm">
-          <div className="w-7 h-7 rounded-md bg-brand-600 flex items-center justify-center flex-shrink-0">
-            <span className="text-[10.5px] font-bold text-white leading-none">{initials}</span>
-          </div>
+          <CompanyAvatar name={report.companyName || "Your Client"} size={28} />
           <div className="leading-tight min-w-0">
             <p className="text-[12.5px] font-semibold text-stone-800 truncate">{report.companyName || "Your Client"}</p>
             <p className="text-[10.5px] text-stone-400 truncate">{industryLabel}</p>

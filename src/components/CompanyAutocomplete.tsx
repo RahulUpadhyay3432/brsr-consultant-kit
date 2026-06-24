@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import companiesData from "@/data/companies.json";
 import { INDUSTRY_LABELS, type IndustryType, type SectorType } from "@/lib/types";
+import CompanyAvatar from "./CompanyAvatar";
 
 export interface Company {
   name: string;
@@ -122,11 +123,12 @@ export default function CompanyAutocomplete({ value, onChange, onPick }: Props) 
               aria-selected={i === highlight}
               onMouseEnter={() => setHighlight(i)}
               onMouseDown={(e) => { e.preventDefault(); pick(c); }}
-              className={`flex items-center justify-between gap-3 px-3 py-2 cursor-pointer text-sm ${
+              className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer text-sm ${
                 i === highlight ? "bg-brand-50" : "hover:bg-stone-50"
               }`}
             >
-              <span className="text-stone-800 truncate">{highlightMatch(c.name, value)}</span>
+              <CompanyAvatar name={c.name} size={24} />
+              <span className="text-stone-800 truncate flex-1 min-w-0">{highlightMatch(c.name, value)}</span>
               <span className="text-[10px] text-stone-400 flex-shrink-0 whitespace-nowrap">
                 {INDUSTRY_LABELS[c.industry]}
               </span>
