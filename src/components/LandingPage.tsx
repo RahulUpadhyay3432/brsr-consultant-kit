@@ -238,10 +238,10 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
             {/* Pro */}
             <div className="rounded-2xl bg-forest text-white p-6 sm:p-7">
               <div className="flex items-center justify-between gap-3">
-                <span className="font-display text-[20px] text-white">Pro · Collect</span>
+                <span className="font-display text-[20px] text-white">Pro · the copilot</span>
                 <span className="font-mono text-[9.5px] uppercase tracking-wide text-forest bg-brand-400 rounded-full px-2 py-1 whitespace-nowrap">Paid</span>
               </div>
-              <p className="text-[13px] text-[#BFD3CA] leading-relaxed mt-2">Everything in Free, plus the tools to collect at scale.</p>
+              <p className="text-[13px] text-[#BFD3CA] leading-relaxed mt-2">Everything in Free, plus the workspace to collect, compute and report at scale. Live today:</p>
               <ul className="mt-5 space-y-2.5">
                 {[
                   "Chase data from the client's team with branded emails and auto-reminders",
@@ -252,6 +252,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                   <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-[#EAF3EE] leading-snug"><Check className="text-brand-400 mt-0.5" />{f}</li>
                 ))}
               </ul>
+              <p className="text-[12px] text-[#9FB6AC] leading-relaxed mt-3.5">The importer, proposal builder, cross-framework export and more are on the way — see the roadmap below.</p>
               <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-brand-500 text-forest text-[13.5px] font-semibold px-4 py-2.5 rounded-lg hover:bg-brand-400 transition-colors pressable mt-6">
                 Request Pro access
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
@@ -261,32 +262,38 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         </div>
       </section>
 
-      {/* ── Modules ────────────────────────────────────────────────────────── */}
-      <section id="modules" className="bg-white border-t border-[#E6E3DB]">
+      {/* ── Saaksh Pro — the compliance copilot ────────────────────────────── */}
+      <section id="pro" className="bg-white border-t border-[#E6E3DB]">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
-          <Eyebrow>The platform</Eyebrow>
-          <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.8rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>One platform, more compliance over time.</h2>
-          <p className={`text-[15px] ${BODY} leading-relaxed mt-4 max-w-[560px]`}>Saaksh starts with BRSR. The same evidence-first approach extends to the frameworks Indian businesses face next.</p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-12">
+          <Eyebrow>Saaksh Pro</Eyebrow>
+          <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.8rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>
+            Your multi-framework compliance copilot.
+          </h2>
+          <p className={`text-[15px] ${BODY} leading-relaxed mt-4 max-w-[620px]`}>
+            The free tool prepares the report. Pro is the workspace for doing the work: winning the engagement,
+            collecting the data, and reporting across frameworks. It starts with Collect today and grows from there.
+          </p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
             {[
-              { code: "BRSR", live: true, desc: "SEBI's Business Responsibility & Sustainability Report, for India's top 1,000 listed companies. The full readiness tool, free." },
-              { code: "CBAM", live: false, desc: "The EU's Carbon Border Adjustment Mechanism, for exporters of steel, aluminium, cement and more." },
-              { code: "CCTS", live: false, desc: "India's Carbon Credit Trading Scheme, with intensity targets and credit accounting." },
-              { code: "Broader ESG", live: false, desc: "Voluntary disclosures and assurance support across GRI, TCFD and IFRS sustainability standards." },
-            ].map((m) => (
-              <div key={m.code} className={`rounded-2xl p-6 ${m.live ? "bg-forest text-white" : "bg-[#FAF8F3] border border-[#E6E3DB]"}`}>
-                <div className="flex items-start justify-between gap-2">
-                  <span className={`font-display text-[19px] leading-tight ${m.live ? "text-white" : "text-[#14201B]"}`}>{m.code}</span>
-                  {m.live ? (
-                    <span className="font-mono text-[9.5px] uppercase tracking-wide text-forest bg-brand-400 rounded-full px-2 py-1 whitespace-nowrap">Available now</span>
-                  ) : (
-                    <span className="font-mono text-[9.5px] uppercase tracking-wide text-[#8A938D] bg-white border border-[#E6E3DB] rounded-full px-2 py-1 whitespace-nowrap">Coming soon</span>
-                  )}
-                </div>
-                <p className={`text-[13px] leading-relaxed mt-4 ${m.live ? "text-[#BFD3CA]" : "text-[#5B6660]"}`}>{m.desc}</p>
-              </div>
+              { name: "Collect", status: "live" as const, desc: "Chase BRSR data from the client's team with branded emails, auto-reminders, and no-login submission with evidence." },
+              { name: "Compliance importer", status: "coming" as const, desc: "Upload the client's existing reports and get the numbers pre-filled, each with its source line, for you to verify." },
+              { name: "Proposal & fee builder", status: "coming" as const, desc: "Turn a scope into a client-ready proposal and a defensible fee estimate, so you win and price the work." },
+              { name: "Cross-framework export", status: "coming" as const, desc: "Map one dataset across BRSR, GRI, IFRS, TCFD, TNFD and CBAM. Collect once, report many." },
+              { name: "Multi-client workspace", status: "coming" as const, desc: "Every client's engagement in one place, instead of one report at a time." },
+              { name: "Consultant network", status: "future" as const, desc: "Get matched with the companies that need a BRSR consultant. Be found, not just searching." },
+            ].map((p) => (
+              <ProPillar key={p.name} name={p.name} status={p.status} desc={p.desc} />
             ))}
           </div>
+          <p className="text-[13px] text-[#8A938D] mt-6 max-w-[620px] leading-relaxed">
+            And the regulations keep coming: CBAM for exporters, CCTS for carbon credits, and broader ESG assurance
+            across GRI, TCFD and IFRS.
+          </p>
+          <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-5 py-3 rounded-xl hover:bg-forest-light transition-colors pressable mt-8">
+            Request Pro access
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+          <p className="text-[12.5px] text-[#8A938D] mt-3">Early access, priced per engagement. Talk to us and we&apos;ll set you up.</p>
         </div>
       </section>
 
@@ -365,7 +372,7 @@ function Header({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: str
         </div>
         <div className="flex items-center gap-5">
           <button onClick={scrollTo("how")} className="hidden sm:inline text-[13.5px] text-[#5B6660] hover:text-[#14201B] transition-colors">How it works</button>
-          <button onClick={scrollTo("modules")} className="hidden sm:inline text-[13.5px] text-[#5B6660] hover:text-[#14201B] transition-colors">Modules</button>
+          <button onClick={scrollTo("pro")} className="hidden sm:inline text-[13.5px] text-[#5B6660] hover:text-[#14201B] transition-colors">Pro</button>
           <a href={COMPLIANCE_CHAT} target="_blank" rel="noopener noreferrer" className="hidden sm:inline-flex items-center gap-1.5 text-[13.5px] text-[#5B6660] hover:text-[#14201B] transition-colors">
             <span className="w-1.5 h-1.5 rounded-full bg-brand-500" /> Compliance Chat
           </a>
@@ -387,7 +394,7 @@ function Footer({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: str
           </div>
           <p className="text-[13px] text-[#9FB6AC] leading-relaxed mt-3 max-w-[240px]">Evidence-first compliance for Indian businesses. Starting with BRSR.</p>
         </div>
-        <FootCol title="Product" links={[["Start a free report", onStart], ["How it works", scrollTo("how")], ["Modules", scrollTo("modules")], ["Collect", scrollTo("collect")]]} />
+        <FootCol title="Product" links={[["Start a free report", onStart], ["How it works", scrollTo("how")], ["Pro", scrollTo("pro")], ["Collect", scrollTo("collect")]]} />
         <FootCol title="Sources" links={[["SEBI BRSR Format", null], ["ICAI Background Material 2024", null], ["CEA emission factors", null], ["IPCC 2006", null]]} />
         <div>
           <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[#5B6660]">Built by</p>
@@ -434,6 +441,26 @@ function Spark() {
 function Check({ className = "text-brand-600" }: { className?: string }) {
   return (
     <svg className={`w-4 h-4 flex-shrink-0 ${className}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.4}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+  );
+}
+
+// A Saaksh Pro capability card — the live flagship (Collect) is forest-filled; the
+// rest are light, each with an honest Available now / Coming / Future tag.
+function ProPillar({ name, status, desc }: { name: string; status: "live" | "coming" | "future"; desc: string }) {
+  const live = status === "live";
+  const tag = status === "live" ? "Available now" : status === "coming" ? "Coming" : "Future";
+  const tagCls =
+    status === "live" ? "text-forest bg-brand-400"
+      : status === "coming" ? "text-[#8A6516] bg-[#F6ECD8] border border-[#EAD9B0]"
+        : "text-[#8A938D] bg-white border border-[#E6E3DB]";
+  return (
+    <div className={`rounded-2xl p-6 ${live ? "bg-forest text-white" : "bg-[#FAF8F3] border border-[#E6E3DB]"}`}>
+      <div className="flex items-start justify-between gap-2">
+        <span className={`font-display text-[18px] leading-tight ${live ? "text-white" : "text-[#14201B]"}`}>{name}</span>
+        <span className={`font-mono text-[9px] uppercase tracking-wide rounded-full px-2 py-1 whitespace-nowrap ${tagCls}`}>{tag}</span>
+      </div>
+      <p className={`text-[13px] leading-relaxed mt-3.5 ${live ? "text-[#BFD3CA]" : "text-[#5B6660]"}`}>{desc}</p>
+    </div>
   );
 }
 
