@@ -250,6 +250,7 @@ function Sidebar({
             >
               <TabIcon id="collect" className="flex-shrink-0 text-stone-400 group-hover:text-stone-500" />
               <span className="flex-1 text-left">Collect</span>
+              <span className="font-mono text-[8.5px] uppercase tracking-[0.08em] font-semibold text-[#0B6B4F] bg-[#E3F7F0] rounded px-1.5 py-0.5 leading-none flex-shrink-0">Pro</span>
               <svg className="w-3 h-3 text-stone-300 group-hover:text-stone-500 transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
