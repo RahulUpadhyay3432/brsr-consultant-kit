@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCampaign } from "@/lib/datarequest/db";
+import { getCampaign, listCompanyContacts } from "@/lib/datarequest/db";
 import { campaignEmissions, emissionInputs, GHG_METHODOLOGY } from "@/lib/datarequest/emissions";
 import { signCampaignEvidence } from "@/lib/datarequest/storage";
-import { addContactAction } from "@/lib/datarequest/actions";
+import { addContactAction, addDirectoryContactsAction, deleteDirectoryContactAction } from "@/lib/datarequest/actions";
 import AddOwnerPanel from "@/components/datarequest/AddOwnerPanel";
+import DirectoryPanel from "@/components/datarequest/DirectoryPanel";
 import CopyLinkButton from "@/components/datarequest/CopyLinkButton";
 import { REQUEST_FIELDS } from "@/lib/datarequest/fields";
 import type { Contact, ContactStatus } from "@/lib/datarequest/types";
@@ -40,7 +41,10 @@ function emailStatus(c: Contact): string {
 export default async function CampaignDetailPage({
   params, searchParams,
 }: { params: { id: string }; searchParams: { error?: string } }) {
-  const campaign = await getCampaign(params.id);
+  const [campaign, directory] = await Promise.all([
+    getCampaign(params.id),
+    listCompanyContacts(params.id), // best-effort → [] before the migration
+  ]);
   if (!campaign) notFound();
 
   const base = process.env.APP_BASE_URL || "http://localhost:3000";
@@ -50,6 +54,8 @@ export default async function CampaignDetailPage({
   const ghg = campaignEmissions(campaign);
   const inputs = emissionInputs(campaign);
   const addOwner = addContactAction.bind(null, campaign.id, campaign.clientName, campaign.deadline, campaign.reportingPeriod);
+  const addContact = addDirectoryContactsAction.bind(null, campaign.id);
+  const deleteContact = deleteDirectoryContactAction.bind(null, campaign.id);
 
   return (
     <div className="max-w-[820px] mx-auto">
@@ -100,9 +106,10 @@ export default async function CampaignDetailPage({
         </div>
       )}
 
-      {/* Owners — add panel on top, then the list (or a teaching empty state) */}
+      {/* Owners — saved roster + add panel on top, then the list (or empty state) */}
       <div className="mt-5 space-y-3">
-        <AddOwnerPanel action={addOwner} error={searchParams.error === "owner"} fields={REQUEST_FIELDS} />
+        <DirectoryPanel contacts={directory} addAction={addContact} deleteAction={deleteContact} />
+        <AddOwnerPanel action={addOwner} error={searchParams.error === "owner"} fields={REQUEST_FIELDS} directory={directory} />
 
         {campaign.contacts.length === 0 ? (
           <div className="rounded-xl border border-stone-200 bg-white px-5 py-9 text-center shadow-[0_1px_3px_rgba(80,60,30,0.04)]">

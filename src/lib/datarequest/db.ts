@@ -3,7 +3,7 @@
 //
 // Tables: brsr_requests (campaign) → brsr_contacts (owner) → brsr_request_items.
 import "server-only";
-import type { Campaign, Contact, Item } from "./types";
+import type { Campaign, Contact, Item, CompanyContact } from "./types";
 import type { RequestField } from "./types";
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -201,4 +201,42 @@ export async function markReminded(contactId: string, remindersSent: number): Pr
     method: "PATCH",
     body: JSON.stringify({ last_emailed_at: new Date().toISOString(), reminders_sent: remindersSent }),
   });
+}
+
+// ─── Company contacts — the per-client saved roster (brsr_company_contacts) ──
+// A reusable directory of people, scoped to a campaign. Created by the user's SQL
+// migration; everything here is best-effort so Collect keeps working before then.
+interface CompanyContactRow {
+  id: string; name: string | null; email: string; role: string | null; created_at: string;
+}
+function mapCompanyContact(r: CompanyContactRow): CompanyContact {
+  return { id: r.id, name: r.name, email: r.email, role: r.role ?? null, createdAt: r.created_at };
+}
+
+// Returns [] if the table doesn't exist yet (pre-migration) or on any error, so a
+// missing directory never 500s the campaign page.
+export async function listCompanyContacts(campaignId: string): Promise<CompanyContact[]> {
+  try {
+    const res = await rest(`brsr_company_contacts?request_id=eq.${encodeURIComponent(campaignId)}&select=*&order=created_at.asc`);
+    return ((await res.json()) as CompanyContactRow[]).map(mapCompanyContact);
+  } catch {
+    return [];
+  }
+}
+
+// Upsert (de-dupes on (request_id, email) via the unique index). Caller wraps best-effort.
+export async function upsertCompanyContacts(
+  campaignId: string, rows: { name: string | null; email: string; role: string | null }[]
+): Promise<void> {
+  if (!rows.length) return;
+  const body = rows.map((r) => ({ request_id: campaignId, name: r.name, email: r.email, role: r.role }));
+  await rest("brsr_company_contacts?on_conflict=request_id,email", {
+    method: "POST",
+    prefer: "resolution=merge-duplicates",
+    body: JSON.stringify(body),
+  });
+}
+
+export async function deleteCompanyContact(id: string): Promise<void> {
+  await rest(`brsr_company_contacts?id=eq.${encodeURIComponent(id)}`, { method: "DELETE" });
 }

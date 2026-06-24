@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { RequestField } from "@/lib/datarequest/types";
+import type { RequestField, CompanyContact } from "@/lib/datarequest/types";
 import { SECTION_LABELS, PRINCIPLE_LABELS, PRINCIPLE_ORDER } from "@/lib/datarequest/brsr-meta";
 
 // A group in the picker: Section A, Section B, or one Section-C principle.
@@ -29,16 +29,19 @@ function buildGroups(fields: RequestField[]): Group[] {
 // (Section A / B / C by principle), search by code or label, then Send. The page
 // reloads (server action) with the new owner listed and this panel collapsed.
 export default function AddOwnerPanel({
-  action, error, fields,
+  action, error, fields, directory = [],
 }: {
   action: (formData: FormData) => void | Promise<void>;
   error?: boolean;
   fields: RequestField[];
+  directory?: CompanyContact[];
 }) {
   const [open, setOpen] = useState(!!error);
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [openGroups, setOpenGroups] = useState<Set<string>>(new Set());
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const allGroups = useMemo(() => buildGroups(fields), [fields]);
 
@@ -109,10 +112,31 @@ export default function AddOwnerPanel({
       )}
 
       <form action={action} className="space-y-4">
+        {/* One-tap import from the client's saved roster */}
+        {directory.length > 0 && (
+          <div className="space-y-1.5">
+            <p className="text-[11.5px] font-medium text-stone-500">Pick from saved contacts</p>
+            <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto">
+              {directory.map((c) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => { setName(c.name || ""); setEmail(c.email); }}
+                  title={c.email}
+                  className="inline-flex items-center gap-1.5 text-[12px] text-stone-700 bg-stone-50 hover:bg-brand-50 border border-stone-200 hover:border-brand-200 px-2.5 py-1 rounded-full transition-colors pressable"
+                >
+                  <span className="font-medium">{c.name || c.email}</span>
+                  {c.role && <span className="text-[10px] text-stone-400">{c.role}</span>}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="grid sm:grid-cols-2 gap-3">
-          <input name="name" placeholder="Name (optional)"
+          <input name="name" placeholder="Name (optional)" value={name} onChange={(e) => setName(e.target.value)}
             className="h-10 px-3 text-[13.5px] text-stone-800 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
-          <input name="email" type="email" required placeholder="Email *"
+          <input name="email" type="email" required placeholder="Email *" value={email} onChange={(e) => setEmail(e.target.value)}
             className="h-10 px-3 text-[13.5px] text-stone-800 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
         </div>
 

@@ -56,6 +56,61 @@ export async function addContactAction(
     `${baseUrl()}/submit/${token}`
   );
 
+  // Auto-capture this owner into the client's saved roster, so the directory
+  // fills itself as you add owners. Best-effort — never breaks the send.
+  try {
+    await db.upsertCompanyContacts(campaignId, [{ name: name || null, email: email.toLowerCase(), role: null }]);
+  } catch { /* directory table optional */ }
+
+  redirect(`/requests/${campaignId}`);
+}
+
+// ── Saved-contacts directory (per client) ───────────────────────────────────
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Smart-parse a pasted block: one contact per line, fields split on tab OR comma
+// (so a list from a client email *and* cells copied from Excel/Sheets both work).
+// The token that looks like an email is required; the rest become name then role.
+function parseContactLines(text: string): { name: string | null; email: string; role: string | null }[] {
+  const out: { name: string | null; email: string; role: string | null }[] = [];
+  for (const rawLine of text.split(/\r?\n/)) {
+    const parts = rawLine.split(/[\t,]+/).map((p) => p.trim()).filter(Boolean);
+    const emailIdx = parts.findIndex((p) => EMAIL_RE.test(p));
+    if (emailIdx === -1) continue; // no email on this line → skip
+    const rest = parts.filter((_, i) => i !== emailIdx);
+    out.push({ email: parts[emailIdx].toLowerCase(), name: rest[0] || null, role: rest[1] || null });
+  }
+  return out;
+}
+
+// Add one contact (name/email/role) and/or a pasted list to the client's roster.
+export async function addDirectoryContactsAction(campaignId: string, formData: FormData): Promise<void> {
+  requireConsultant();
+  const rows: { name: string | null; email: string; role: string | null }[] = [];
+
+  const email = String(formData.get("email") || "").trim().toLowerCase();
+  if (EMAIL_RE.test(email)) {
+    rows.push({
+      name: String(formData.get("name") || "").trim() || null,
+      email,
+      role: String(formData.get("role") || "").trim() || null,
+    });
+  }
+  const paste = String(formData.get("paste") || "");
+  if (paste.trim()) rows.push(...parseContactLines(paste));
+
+  if (rows.length) {
+    try { await db.upsertCompanyContacts(campaignId, rows); } catch { /* table may not exist yet */ }
+  }
+  redirect(`/requests/${campaignId}`);
+}
+
+export async function deleteDirectoryContactAction(campaignId: string, formData: FormData): Promise<void> {
+  requireConsultant();
+  const contactId = String(formData.get("contactId") || "");
+  if (contactId) {
+    try { await db.deleteCompanyContact(contactId); } catch { /* best-effort */ }
+  }
   redirect(`/requests/${campaignId}`);
 }
 

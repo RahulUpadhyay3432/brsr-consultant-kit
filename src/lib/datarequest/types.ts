@@ -67,3 +67,16 @@ export interface Campaign {
   // ("P1".."P9"). Optional — only present once generated and the column exists.
   narrative?: Record<string, string> | null;
 }
+
+// A reusable person saved against this client (campaign): the people the
+// consultant collects data from. Separate from Contact (a per-request "ask"
+// with assigned fields + a token) — these are just the client's roster, so a
+// data owner can be imported with one tap. Fetched best-effort (the
+// brsr_company_contacts table may not exist until the migration runs).
+export interface CompanyContact {
+  id: string;
+  name: string | null;
+  email: string;
+  role: string | null; // free label, e.g. "HR", "EHS / Plant", "Company Secretary"
+  createdAt: string;
+}
