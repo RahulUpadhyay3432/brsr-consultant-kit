@@ -1,6 +1,11 @@
 /**
  * BRSR Consultant Kit — Playwright E2E Test Script
  * Run: node scripts/e2e-test.js
+ *
+ * Routes: the free tool now uses real URLs — `/` is the marketing landing,
+ * the intake form is at `/start`, and the report workspace at `/report`.
+ * (Note: the SIZE_LABELS / MATURITY_LABELS maps below are stale vs the current
+ * IntakeForm copy and need refreshing before the size/maturity clicks pass.)
  */
 
 const { chromium } = require("@playwright/test");
@@ -230,12 +235,14 @@ const SCENARIOS = [
     });
 
     try {
-      // 1. Load page — clear localStorage first
+      // 1. Load the landing page, clear localStorage, then open the intake form
+      //    route (/start) — the form is no longer on the homepage.
       await page.goto(BASE_URL, { waitUntil: "domcontentloaded" });
       await page.evaluate(() => localStorage.clear());
+      await page.goto(`${BASE_URL}/start`, { waitUntil: "domcontentloaded" });
       await page.waitForTimeout(500);
-      await shot(page, `${scenario.name}-01-homepage`);
-      console.log("  ✅ Homepage loaded");
+      await shot(page, `${scenario.name}-01-form`);
+      console.log("  ✅ Intake form (/start) loaded");
 
       // 2. Fill form
       await fillForm(page, scenario.form);

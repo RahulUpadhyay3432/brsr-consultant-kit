@@ -2,6 +2,8 @@
 // consultant's in-progress work (the generated report + checklist state) so a
 // refresh or accidental close doesn't lose it. Everything stays on the device.
 
+import type { IntakeFormData } from "@/lib/types";
+
 const PREFIX = "brsr.v1.";
 
 function isBrowser(): boolean {
@@ -46,27 +48,29 @@ export const STORAGE_KEYS = {
   walkthroughSeen: "walkthrough.seen",
 } as const;
 
-// Per-tab "active work session" flag (sessionStorage, not localStorage). It lets
-// us show the marketing landing page on every fresh visit while still restoring
-// the report on a same-tab refresh, so the consultant doesn't lose their place.
-// A new tab / a later visit has no flag → landing page.
-const ACTIVE_KEY = PREFIX + "active";
+// ── The saved intake form is the source of truth for the report ──────────────
+// The report itself isn't stored; it's regenerated from the form (see the /report
+// route). These helpers are shared by the landing / form / report routes.
 
-function hasSession(): boolean {
-  return typeof window !== "undefined" && typeof window.sessionStorage !== "undefined";
+// The consultant's last intake answers, or null if none/malformed.
+export function loadSavedForm(): IntakeFormData | null {
+  try {
+    return loadJSON<IntakeFormData | null>(STORAGE_KEYS.form, null);
+  } catch {
+    removeKey(STORAGE_KEYS.form);
+    removeKey(STORAGE_KEYS.checklist);
+    return null;
+  }
 }
 
-export function markSessionActive(): void {
-  if (!hasSession()) return;
-  try { window.sessionStorage.setItem(ACTIVE_KEY, "1"); } catch { /* best-effort */ }
+export function saveForm(form: IntakeFormData): void {
+  saveJSON(STORAGE_KEYS.form, form);
 }
 
-export function clearSessionActive(): void {
-  if (!hasSession()) return;
-  try { window.sessionStorage.removeItem(ACTIVE_KEY); } catch { /* ignore */ }
-}
-
-export function isSessionActive(): boolean {
-  if (!hasSession()) return false;
-  try { return window.sessionStorage.getItem(ACTIVE_KEY) === "1"; } catch { return false; }
+// "New report" reset — clears the form, checklist state and materiality shortlist.
+// (The one-time walkthrough flag is intentionally kept.)
+export function clearReportSession(): void {
+  removeKey(STORAGE_KEYS.form);
+  removeKey(STORAGE_KEYS.checklist);
+  removeKey(STORAGE_KEYS.materiality);
 }

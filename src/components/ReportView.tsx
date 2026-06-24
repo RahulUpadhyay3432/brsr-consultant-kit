@@ -17,6 +17,7 @@ import esgRatingsData from "@/data/esg_ratings_mapping.json";
 
 interface ReportViewProps {
   report: ReportOutput;
+  onHome: () => void;   // Brand/logo — go to the marketing home
   onBack: () => void;   // New report — clears the session
   onEdit: () => void;   // Back to form — keeps answers pre-filled
 }
@@ -84,7 +85,7 @@ function TabIcon({ id, className }: { id: string; className?: string }) {
   return null;
 }
 
-export default function ReportView({ report, onBack, onEdit }: ReportViewProps) {
+export default function ReportView({ report, onHome, onBack, onEdit }: ReportViewProps) {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [seedQuery, setSeedQuery] = useState("");      // global-search → Action Plan
   const industryLabel = INDUSTRY_LABELS[report.industry as IndustryType] || report.industry;
@@ -105,6 +106,7 @@ export default function ReportView({ report, onBack, onEdit }: ReportViewProps) 
         fieldCount={fieldCount}
         activeTab={activeTab}
         onNavigate={setActiveTab}
+        onHome={onHome}
         onBack={onBack}
         onEdit={onEdit}
       />
@@ -153,13 +155,14 @@ export default function ReportView({ report, onBack, onEdit }: ReportViewProps) 
 
 // ─── Sidebar — brand, workspace switcher, grouped nav, footer ─────────────────
 function Sidebar({
-  report, industryLabel, fieldCount, activeTab, onNavigate, onBack, onEdit,
+  report, industryLabel, fieldCount, activeTab, onNavigate, onHome, onBack, onEdit,
 }: {
   report: ReportOutput;
   industryLabel: string;
   fieldCount: number;
   activeTab: TabId;
   onNavigate: (id: TabId) => void;
+  onHome: () => void;
   onBack: () => void;
   onEdit: () => void;
 }) {
@@ -191,10 +194,10 @@ function Sidebar({
     <aside className="no-print w-[244px] flex-shrink-0 h-screen sticky top-0 hidden lg:flex flex-col
       bg-white/55 backdrop-blur-sm border-r border-black/[0.06]">
 
-      {/* Brand — clicking returns to the intake form (answers stay pre-filled) */}
+      {/* Brand — clicking returns to the marketing home (the URL changes to /) */}
       <button
-        onClick={onEdit}
-        aria-label="Back to form"
+        onClick={onHome}
+        aria-label="Go to home"
         className="group h-14 flex items-center gap-2.5 px-4 border-b border-black/[0.05] w-full text-left
           hover:bg-stone-100/50 transition-colors pressable"
       >
