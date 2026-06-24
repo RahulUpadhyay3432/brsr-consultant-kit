@@ -9,6 +9,7 @@ import type { IntakeFormData } from "@/lib/types";
 import { generateReport } from "@/lib/report-generator";
 import { loadSavedForm, saveForm } from "@/lib/storage";
 import IntakeForm from "@/components/IntakeForm";
+import { RestoreWorkButton } from "@/components/SessionBackup";
 
 export default function StartPage() {
   const router = useRouter();
@@ -136,6 +137,12 @@ export default function StartPage() {
               isLoading={isLoading}
               initialData={mounted ? loadSavedForm() ?? undefined : undefined}
             />
+          </div>
+
+          {/* Restore — bring saved work in from another browser/device via a backup file */}
+          <div className="mt-3 text-[12.5px] text-stone-500">
+            Already started this on another device?{" "}
+            <RestoreWorkButton onRestored={() => router.push("/report")} />
           </div>
 
           {/* ── What you get — staggered cascade after form ───────────── */}

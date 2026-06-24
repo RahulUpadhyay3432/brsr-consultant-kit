@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { ReportOutput, FrameworkMapping } from "@/lib/types";
 import { INDUSTRY_LABELS, FILING_LABELS, type IndustryType, type ExistingFiling } from "@/lib/types";
 import CompanyAvatar from "./CompanyAvatar";
+import { BackupWorkButton } from "./SessionBackup";
 import DataChecklist from "./DataChecklist";
 import MaterialityMatrix from "./MaterialityMatrix";
 import FrameworkMapper from "./FrameworkMapper";
@@ -280,9 +281,17 @@ function Sidebar({
           </svg>
           New report
         </button>
-        <div className="flex items-center gap-1.5 px-2.5 pt-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
-          <span className="text-[10.5px] text-stone-400 tracking-tight">No data stored · No login</span>
+        <BackupWorkButton />
+
+        {/* Persistent on-device notice — work is saved in this browser only. */}
+        <div className="mt-1.5 pt-2.5 px-2.5 border-t border-black/[0.05]">
+          <p className="flex items-center gap-1.5 text-[11px] font-semibold text-stone-600">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
+            Saved on this device
+          </p>
+          <p className="text-[10.5px] text-stone-400 leading-relaxed mt-1">
+            Your work stays in this browser, so a refresh or restart is safe. Clearing your browser data or switching browsers starts fresh, so back it up (or export the PDF/CSV) to keep a copy.
+          </p>
         </div>
       </div>
     </aside>

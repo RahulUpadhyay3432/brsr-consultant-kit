@@ -74,3 +74,52 @@ export function clearReportSession(): void {
   removeKey(STORAGE_KEYS.checklist);
   removeKey(STORAGE_KEYS.materiality);
 }
+
+// ── Portable backup of the on-device session ─────────────────────────────────
+// Work lives only in this browser, so we let the consultant download a small file
+// of their session and re-import it on another browser/device (or as a safety
+// net). Still 100% on-device — the file stays with them, nothing is uploaded.
+
+export interface SessionBackup {
+  app: "saaksh";
+  kind: "session-backup";
+  version: 1;
+  savedAt: string;
+  companyName: string;
+  data: { form: unknown; checklist: unknown; materiality: unknown };
+}
+
+// Snapshot the current session (form + checklist + materiality). Null if nothing saved.
+export function buildSessionBackup(): SessionBackup | null {
+  const form = loadSavedForm();
+  if (!form) return null;
+  return {
+    app: "saaksh",
+    kind: "session-backup",
+    version: 1,
+    savedAt: new Date().toISOString(),
+    companyName: form.companyName || "",
+    data: {
+      form,
+      checklist: loadJSON(STORAGE_KEYS.checklist, null),
+      materiality: loadJSON(STORAGE_KEYS.materiality, null),
+    },
+  };
+}
+
+// Validate a parsed backup and write it back into localStorage. Returns false for
+// anything that isn't a Saaksh backup with a usable form (so a wrong file is a
+// no-op, not a corrupted session).
+export function restoreSessionBackup(parsed: unknown): boolean {
+  if (!parsed || typeof parsed !== "object") return false;
+  const b = parsed as Partial<SessionBackup>;
+  if (b.app !== "saaksh" || !b.data || typeof b.data !== "object") return false;
+  const data = b.data as SessionBackup["data"];
+  if (!data.form || typeof data.form !== "object") return false;
+  saveJSON(STORAGE_KEYS.form, data.form);
+  if (data.checklist != null) saveJSON(STORAGE_KEYS.checklist, data.checklist);
+  else removeKey(STORAGE_KEYS.checklist);
+  if (data.materiality != null) saveJSON(STORAGE_KEYS.materiality, data.materiality);
+  else removeKey(STORAGE_KEYS.materiality);
+  return true;
+}
