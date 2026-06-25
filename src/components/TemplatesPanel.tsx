@@ -3,6 +3,7 @@
 // formats and how-to guidance consultants hunt for (materiality, the response
 // workbook, the hard principles, assurance-readiness). Downloads reuse the report's
 // formula-safe CSV export. Nothing leaves the browser. Cited where it states a rule.
+import { useState } from "react";
 import { downloadCsv, exportFilename } from "@/lib/export";
 import { SEBI_BRSR_FORMAT_URL } from "./checklist/constants";
 import brsrData from "@/data/brsr_data_points.json";
@@ -152,25 +153,44 @@ export default function TemplatesPanel() {
       <section className="space-y-3">
         <h2 className="text-[15px] font-semibold text-stone-800">How-to guides</h2>
         <div className="space-y-2.5">
-          {GUIDES.map((g) => (
-            <details key={g.title} className="group bg-white border border-stone-200 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
-              <summary className="flex items-center gap-2 cursor-pointer list-none [&::-webkit-details-marker]:hidden text-[14px] font-semibold text-stone-800">
-                <svg className="w-3.5 h-3.5 text-stone-400 transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                {g.title}
-              </summary>
-              <div className="mt-3 pl-6 text-[13px] text-stone-600 leading-relaxed space-y-1">
-                {g.body}
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-2 mt-2 border-t border-stone-100">
-                  <span className="text-[10.5px] font-semibold uppercase tracking-wide text-stone-400">Sources</span>
-                  {g.sources.map((s) => (
-                    <a key={s.href} href={s.href} target="_blank" rel="noreferrer" className="text-[11.5px] text-brand-700 hover:text-brand-800 underline decoration-stone-300 hover:decoration-brand-500 transition-colors">{s.label} ↗</a>
-                  ))}
-                </div>
-              </div>
-            </details>
-          ))}
+          {GUIDES.map((g) => <GuideItem key={g.title} g={g} />)}
         </div>
       </section>
+    </div>
+  );
+}
+
+// A how-to guide that expands/collapses its height smoothly (grid-rows 0fr→1fr),
+// the same pattern the Action Plan's principle sections use — vs the native
+// <details> which snaps open.
+function GuideItem({ g }: { g: Guide }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="bg-white border border-stone-200 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="w-full flex items-center gap-2 text-left text-[14px] font-semibold text-stone-800"
+      >
+        <svg className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-200 ${open ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+        {g.title}
+      </button>
+      <div
+        className={`grid overflow-hidden transition-[grid-template-rows] duration-200 ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+        style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
+      >
+        <div className="min-h-0">
+          <div className="mt-3 pl-6 text-[13px] text-stone-600 leading-relaxed space-y-1">
+            {g.body}
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-2 mt-2 border-t border-stone-100">
+              <span className="text-[10.5px] font-semibold uppercase tracking-wide text-stone-400">Sources</span>
+              {g.sources.map((s) => (
+                <a key={s.href} href={s.href} target="_blank" rel="noreferrer" className="text-[11.5px] text-brand-700 hover:text-brand-800 underline decoration-stone-300 hover:decoration-brand-500 transition-colors">{s.label} ↗</a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

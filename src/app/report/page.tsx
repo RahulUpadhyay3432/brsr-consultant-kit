@@ -11,6 +11,7 @@ import type { ReportOutput } from "@/lib/types";
 import { generateReport } from "@/lib/report-generator";
 import { loadSavedForm, clearReportSession } from "@/lib/storage";
 import ReportView from "@/components/ReportView";
+import Skeleton from "@/components/Skeleton";
 
 export default function ReportPage() {
   const router = useRouter();
@@ -32,12 +33,28 @@ export default function ReportPage() {
   }, [router]);
 
   if (!report) {
+    // Workspace-shaped skeleton (sidebar + hero card) — reads as "report arriving"
+    // rather than a blank spinner. The real report renders on the next frame.
     return (
-      <div className="min-h-screen bg-[#FAF8F3] flex items-center justify-center">
-        <div className="flex items-center gap-2.5 text-stone-400 text-[13px]">
-          <span className="w-4 h-4 border-2 border-stone-300 border-t-brand-500 rounded-full animate-spin" />
-          Preparing your workspace…
-        </div>
+      <div className="min-h-screen bg-[#FAF8F3] flex">
+        <aside className="hidden md:flex flex-col w-[248px] border-r border-stone-200 bg-white/60 p-4 gap-4">
+          <Skeleton className="h-7 w-32" />
+          <Skeleton className="h-12 w-full rounded-lg" />
+          <div className="space-y-2 mt-2">
+            {[0, 1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-7 w-full rounded-lg" />)}
+          </div>
+        </aside>
+        <main className="flex-1 p-6 lg:p-8">
+          <div className="max-w-[860px] mx-auto space-y-4">
+            <Skeleton className="h-7 w-40" />
+            <Skeleton className="h-3.5 w-80" />
+            <Skeleton className="h-44 w-full rounded-xl mt-2" />
+            <div className="grid grid-cols-3 gap-3">
+              {[0, 1, 2].map((i) => <Skeleton key={i} className="h-20 rounded-lg" />)}
+            </div>
+          </div>
+        </main>
+        <span className="sr-only">Preparing your workspace…</span>
       </div>
     );
   }

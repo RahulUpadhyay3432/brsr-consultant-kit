@@ -186,6 +186,50 @@ body::before {
   transition: color 140ms ease, border-color 140ms ease;
 }
 
+/* Shimmer placeholder — loading skeletons */
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #ECE8E0;
+  border-radius: 8px;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* Invalid-form shake — a small, purposeful error nudge */
+@keyframes shake {
+  10%, 90% { transform: translateX(-1.5px); }
+  20%, 80% { transform: translateX(3px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+.shake { animation: shake 420ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
+
+/* Dropdown — grows from the top edge of its trigger (origin-aware) */
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translateY(-4px) scaleY(0.96); }
+  to   { opacity: 1; transform: translateY(0)    scaleY(1); }
+}
+.dropdown-in { transform-origin: top center; animation: dropdownIn 140ms var(--ease-out) both; }
+
+/* Scroll reveal — JS adds .reveal-init (hidden) only when motion is allowed; the
+   element is visible by default (SSR / no-JS / reduced-motion all stay visible). */
+.reveal-init { opacity: 0; transform: translateY(14px); }
+.reveal-init.reveal-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+}
+
 /* Scrollbar — minimal */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }

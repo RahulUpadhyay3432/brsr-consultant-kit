@@ -6,6 +6,7 @@ import { buildAssuranceLedger, assuranceStats } from "@/lib/datarequest/assuranc
 import { exportFilename } from "@/lib/export";
 import { signCampaignEvidence } from "@/lib/datarequest/storage";
 import AssurancePackButton from "@/components/datarequest/AssurancePackButton";
+import AnimatedNumber from "@/components/AnimatedNumber";
 import { addContactAction, addDirectoryContactsAction, deleteDirectoryContactAction, importDocumentAction, applyImportAction } from "@/lib/datarequest/actions";
 import AddOwnerPanel from "@/components/datarequest/AddOwnerPanel";
 import ImportPanel from "@/components/datarequest/ImportPanel";
@@ -94,9 +95,9 @@ export default async function CampaignDetailPage({
         <div className="mt-5 bg-forest text-white rounded-xl p-5">
           <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-white/50 mb-3">Calculated emissions · from collected activity data</p>
           <div className="grid grid-cols-3 gap-4">
-            <Metric label="Scope 1 (fuel)" value={fmtNum(ghg.scope1_tco2e)} unit="tCO₂e" />
-            <Metric label="Scope 2 (electricity)" value={fmtNum(ghg.scope2_tco2e)} unit="tCO₂e" />
-            <Metric label="Total" value={fmtNum(ghg.total_tco2e)} unit="tCO₂e" accent />
+            <Metric label="Scope 1 (fuel)" value={ghg.scope1_tco2e} unit="tCO₂e" />
+            <Metric label="Scope 2 (electricity)" value={ghg.scope2_tco2e} unit="tCO₂e" />
+            <Metric label="Total" value={ghg.total_tco2e} unit="tCO₂e" accent />
           </div>
           {/* Traceability — every figure back to its input, factor + source, and who gave it */}
           <div className="mt-4 pt-4 border-t border-white/10 space-y-2">
@@ -136,13 +137,13 @@ export default async function CampaignDetailPage({
           </div>
           <div className="flex flex-wrap items-center gap-2 mt-4">
             <span className="text-[12px] font-medium text-stone-700 bg-stone-100 border border-stone-200 rounded-full px-2.5 py-1 tabular-nums">
-              {assurance.collected}/{assurance.total} data points collected
+              <AnimatedNumber value={assurance.collected} />/<AnimatedNumber value={assurance.total} /> data points collected
             </span>
             <span className="text-[12px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-1 tabular-nums">
-              {assurance.withEvidence} with evidence attached
+              <AnimatedNumber value={assurance.withEvidence} /> with evidence attached
             </span>
             <span className="text-[12px] font-medium text-stone-700 bg-stone-100 border border-stone-200 rounded-full px-2.5 py-1 tabular-nums">
-              {assurance.owners} data {assurance.owners === 1 ? "owner" : "owners"}
+              <AnimatedNumber value={assurance.owners} /> data {assurance.owners === 1 ? "owner" : "owners"}
             </span>
           </div>
           <p className="text-[11px] text-stone-400 leading-relaxed mt-3">
@@ -230,10 +231,10 @@ export default async function CampaignDetailPage({
   );
 }
 
-function Metric({ label, value, unit, accent }: { label: string; value: string; unit: string; accent?: boolean }) {
+function Metric({ label, value, unit, accent }: { label: string; value: number; unit: string; accent?: boolean }) {
   return (
     <div>
-      <p className={`text-[24px] font-semibold leading-none tabular-nums ${accent ? "text-brand-400" : "text-white"}`}>{value}</p>
+      <p className={`text-[24px] font-semibold leading-none tabular-nums ${accent ? "text-brand-400" : "text-white"}`}><AnimatedNumber value={value} decimals={1} /></p>
       <p className="text-[11px] text-white/50 mt-1.5">{unit}</p>
       <p className="text-[11.5px] text-white/70 mt-0.5">{label}</p>
     </div>

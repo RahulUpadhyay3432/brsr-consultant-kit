@@ -560,7 +560,7 @@ function Overview({
         {/* Action stat cards, inside the hero so the numbers read as one unit */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5 pt-5 border-t border-stone-100">
           {stats.map((s, i) => (
-            <div key={i} className="rounded-lg">
+            <div key={i} className="stagger-item rounded-lg" style={{ animationDelay: `${i * 60}ms` }}>
               <p className={`text-[2rem] font-semibold leading-none tabular-nums ${s.num}`}><AnimatedNumber value={s.n} /></p>
               <p className="flex items-center gap-1.5 text-[13px] font-semibold text-stone-700 mt-2">
                 <span className={`w-2 h-2 rounded-full flex-shrink-0 ${s.dot}`} />
@@ -809,8 +809,8 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
           {/* Headline stat cards */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {statCards.map((s, i) => (
-              <div key={i} className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
-                <p className={`text-[2rem] font-semibold leading-none tabular-nums ${s.tone}`}>{s.n}</p>
+              <div key={i} className="stagger-item bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)]" style={{ animationDelay: `${i * 45}ms` }}>
+                <p className={`text-[2rem] font-semibold leading-none tabular-nums ${s.tone}`}><AnimatedNumber value={s.n} /></p>
                 <p className="text-[12.5px] font-medium text-stone-500 mt-2">{s.label}</p>
               </div>
             ))}
