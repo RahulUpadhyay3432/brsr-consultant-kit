@@ -39,32 +39,31 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           <div className="grid lg:grid-cols-[1.05fr_1fr] gap-12 lg:gap-12 items-center">
             <div>
               <div className="anim-up-sm inline-flex items-center gap-2 rounded-full border border-[#E6E3DB] bg-white/70 pl-2 pr-3.5 py-1">
-                <span className="font-display text-[13px] text-brand-700">साक्ष्य</span>
-                <span className="text-[12px] text-[#5B6660]">Evidence, by name and by design</span>
+                <span className="font-display text-[14px] text-brand-700">साक्ष्य</span>
+                <span className="text-[12.5px] text-[#5B6660]">Evidence, by name and by design</span>
               </div>
 
-              <h1 className="anim-up-hero font-display font-normal text-[3rem] sm:text-[4.2rem] leading-[1.02] tracking-[-0.02em] mt-6" style={{ textWrap: "balance", animationDelay: "60ms" }}>
-                Prepare a client&apos;s <span className="italic">BRSR report</span> in a fraction of the time.
+              <h1 className="anim-up-hero font-display font-normal text-[3.25rem] sm:text-[4.5rem] leading-[1.02] tracking-[-0.02em] mt-6" style={{ textWrap: "balance", animationDelay: "60ms" }}>
+                All the work <span className="italic">BRSR</span> takes, in one place.
               </h1>
 
-              <p className={`anim-up-md text-[16.5px] sm:text-[18px] ${BODY} leading-[1.6] mt-6 max-w-[530px]`} style={{ animationDelay: "160ms" }}>
-                The first week of a BRSR engagement is the same scramble every time: a blank 108-field
-                format, filings scattered across teams, no quick read on what&apos;s already covered.
-                Saaksh turns that into minutes, with a gap-analysed plan and a plain-English AI
-                explanation on every field, cited and on your device.
+              <p className={`anim-up-md text-[17.5px] sm:text-[19px] ${BODY} leading-[1.6] mt-6 max-w-[545px]`} style={{ animationDelay: "160ms" }}>
+                A blank 108-field format, data scattered across teams, emission factors to get right,
+                frameworks to reconcile, a narrative to draft: the parts that eat weeks, turned into one
+                cited, defensible workflow. It starts with BRSR, and grows to the regulations that follow.
               </p>
 
               <div className="anim-up-md flex flex-wrap items-center gap-3 mt-8" style={{ animationDelay: "240ms" }}>
-                <button onClick={onStart} className="inline-flex items-center gap-2 bg-forest text-white text-[14.5px] font-semibold px-5 py-3 rounded-xl hover:bg-forest-light transition-colors pressable shadow-sm">
+                <button onClick={onStart} className="inline-flex items-center gap-2 bg-forest text-white text-[15.5px] font-semibold px-5 py-3 rounded-xl hover:bg-forest-light transition-colors pressable shadow-sm">
                   Start a free report
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
                 </button>
-                <button onClick={scrollTo("how")} className="inline-flex items-center gap-2 bg-white text-[#14201B] text-[14.5px] font-medium px-5 py-3 rounded-xl border border-[#E6E3DB] hover:bg-[#FCFBF7] transition-colors pressable">
+                <button onClick={scrollTo("how")} className="inline-flex items-center gap-2 bg-white text-[#14201B] text-[15.5px] font-medium px-5 py-3 rounded-xl border border-[#E6E3DB] hover:bg-[#FCFBF7] transition-colors pressable">
                   See how it works
                 </button>
               </div>
 
-              <p className="anim-up-md flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-[11.5px] text-[#5B6660] mt-6" style={{ animationDelay: "320ms" }}>
+              <p className="anim-up-md flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-[12px] text-[#5B6660] mt-6" style={{ animationDelay: "320ms" }}>
                 <Dot /> Client data never leaves your browser <span className="text-[#C9CFC9]">·</span>
                 <Dot /> Plain-English AI <span className="text-[#C9CFC9]">·</span>
                 <Dot /> Cited to SEBI &amp; ICAI
@@ -81,31 +80,68 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       {/* ── Sources bar ────────────────────────────────────────────────────── */}
       <section className="border-y border-[#E6E3DB] bg-white">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-6 flex flex-wrap items-center justify-center gap-x-7 gap-y-2">
-          <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[#8A938D]">Built on primary sources</span>
+          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#8A938D]">Built on primary sources</span>
           {["SEBI BRSR Format", "ICAI 2024", "CEA factors", "IPCC 2006", "GRI · TCFD · IFRS"].map((s) => (
-            <span key={s} className="font-display text-[15px] text-[#14201B]">{s}</span>
+            <span key={s} className="font-display text-[16px] text-[#14201B]">{s}</span>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Where the work goes (pain → solution) ──────────────────────────── */}
+      <section data-reveal className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
+        <Eyebrow>What BRSR actually takes</Eyebrow>
+        <h2 className="font-display font-normal text-[2.4rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.02em] mt-3 max-w-[620px]" style={{ textWrap: "balance" }}>
+          Every part of the work that eats weeks, handled.
+        </h2>
+        <p className={`text-[16.5px] ${BODY} leading-relaxed mt-4 max-w-[600px]`}>
+          A BRSR report is a hundred-odd disclosures, scattered data, emission maths and a stack of frameworks.
+          Saaksh takes each of those jobs and gives it a tool.
+        </p>
+        <div className="mt-12 rounded-2xl border border-[#E6E3DB] bg-white overflow-hidden divide-y divide-[#EFEDE6]">
+          {[
+            { pain: "A blank 108-field format, and no quick read on what's already covered", sol: "A gap-analysed action plan, every field sorted into Ready, Verify or Collect", tier: "Free" },
+            { pain: "Re-keying numbers out of last year's report by hand", sol: "An AI importer that pre-fills the figures, each shown with its source line for you to verify", tier: "Pro" },
+            { pain: "Chasing data that lives with different people across the business", sol: "Collect: branded requests, auto-reminders, no-login submission with evidence attached", tier: "Pro" },
+            { pain: "Emission factors to get right, and proving the number is defensible", sol: "Calculators cited to CEA & IPCC (version on every line) and an assurance evidence trail", tier: "Free + Pro" },
+            { pain: "One dataset, demanded by GRI, TCFD, IFRS and TNFD", sol: "Cross-framework mapping and one-click export — collect once, report many", tier: "Free" },
+            { pain: "Hunting for materiality formats and how-to guidance", sol: "A templates & guides library, built from the same cited knowledge base", tier: "Free" },
+            { pain: "New regulations landing — CBAM for exporters, CCTS carbon credits", sol: "Beyond-BRSR readiness checks: who's in scope, and what to prepare", tier: "Free" },
+          ].map((r) => (
+            <div key={r.pain} className="grid sm:grid-cols-2 gap-x-8 gap-y-2 px-5 sm:px-7 py-5 items-center">
+              <div className="flex items-start gap-3">
+                <span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-[#FBE7DC] flex items-center justify-center">
+                  <svg className="w-3 h-3 text-[#A8481B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+                </span>
+                <p className="text-[15px] text-[#5B6660] leading-snug">{r.pain}</p>
+              </div>
+              <div className="flex items-start gap-3 sm:pl-8 sm:border-l border-[#EFEDE6]">
+                <Check className="text-brand-600 mt-0.5" />
+                <p className="text-[15px] text-[#14201B] leading-snug flex-1 font-medium">{r.sol}</p>
+                <TierPill tier={r.tier} />
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
       {/* ── How it works ───────────────────────────────────────────────────── */}
       <section id="how" data-reveal className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
-        <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.8rem] leading-[1.06] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
-          Three steps from intake to engagement.
+        <h2 className="font-display font-normal text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
+          Three steps from intake to a defensible plan.
         </h2>
-        <p className={`text-[15.5px] ${BODY} leading-relaxed mt-4 max-w-[560px]`}>
-          No setup, no account. Open the tool, describe the client, and get a defensible plan you can take into the room.
+        <p className={`text-[16.5px] ${BODY} leading-relaxed mt-4 max-w-[560px]`}>
+          No setup, no account. Open the tool, describe the company, and get a plan you can take straight into the work.
         </p>
         <div className="grid md:grid-cols-3 gap-10 sm:gap-8 mt-12">
           {[
-            { n: "01", t: "Tell us about the client", b: "A short intake: sector, listing category, what's already in their last filing. Two minutes, on your device." },
+            { n: "01", t: "Describe the company", b: "A short intake: sector, listing category, what's already in last year's filing. Two minutes, on your device." },
             { n: "02", t: "Get a gap-analysed report", b: "All 108 fields sorted into Ready, Verify and Collect, with suggested materiality and cross-framework mapping." },
-            { n: "03", t: "Walk in prepared", b: "Export a clean client-ready PDF brief and a CSV of every data point you still need to collect." },
+            { n: "03", t: "Take it into the work", b: "Export a clean PDF brief and a CSV of every data point still to collect — or move to Collect to chase it." },
           ].map((s) => (
             <div key={s.n}>
-              <p className="font-display text-[2.4rem] text-brand-500 leading-none">{s.n}</p>
-              <h3 className="text-[16px] font-semibold text-[#14201B] mt-4">{s.t}</h3>
-              <p className={`text-[14px] ${BODY} leading-relaxed mt-2`}>{s.b}</p>
+              <p className="font-display text-[2.6rem] text-brand-500 leading-none">{s.n}</p>
+              <h3 className="text-[17px] font-semibold text-[#14201B] mt-4">{s.t}</h3>
+              <p className={`text-[15px] ${BODY} leading-relaxed mt-2`}>{s.b}</p>
             </div>
           ))}
         </div>
@@ -113,15 +149,15 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 
       {/* ── Feature: Action plan ───────────────────────────────────────────── */}
       <FeatureRow eyebrow="The readiness report" title="A gap-analysed action plan, colour-coded." panel={<ActionPlanPanel />}>
-        <p className={`text-[15.5px] ${BODY} leading-relaxed`}>
-          Every disclosure is matched against the client&apos;s last filing and sorted: what&apos;s{" "}
+        <p className={`text-[16.5px] ${BODY} leading-relaxed`}>
+          Every disclosure is matched against last year&apos;s filing and sorted: what&apos;s{" "}
           <span className="text-brand-700 font-medium">Ready</span>, what to{" "}
-          <span className="text-[#8A6516] font-medium">Verify</span>, and what you still need to{" "}
-          <span className="text-[#A8481B] font-medium">Collect</span>. Open any field for a plain-English explanation written from the public SEBI definition.
+          <span className="text-[#8A6516] font-medium">Verify</span>, and what still needs to be{" "}
+          <span className="text-[#A8481B] font-medium">Collected</span>. Open any field for a plain-English explanation written from the public SEBI definition.
         </p>
-        <div className="mt-5 flex items-start gap-2.5 rounded-lg border border-[#E6E3DB] bg-[#FCFBF7] px-3.5 py-3 max-w-[440px]">
+        <div className="mt-5 flex items-start gap-2.5 rounded-lg border border-[#E6E3DB] bg-[#FCFBF7] px-3.5 py-3 max-w-[460px]">
           <Spark />
-          <p className="text-[12.5px] text-[#5B6660] leading-relaxed">
+          <p className="text-[13.5px] text-[#5B6660] leading-relaxed">
             <span className="font-semibold text-[#14201B]">In plain English</span> is AI-written, once, from public definitions. No client data is involved, and the text ships static.
           </p>
         </div>
@@ -132,14 +168,14 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-12 lg:gap-16">
           <div>
             <Eyebrow>Suggested materiality</Eyebrow>
-            <h2 className="font-display font-normal text-[2rem] sm:text-[2.4rem] leading-[1.08] tracking-[-0.02em] mt-3">Where to focus, by sector.</h2>
-            <p className={`text-[15px] ${BODY} leading-relaxed mt-4 max-w-[460px]`}>A starting materiality view drawn from the client&apos;s sector, so the conversation begins with the topics that matter most.</p>
+            <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.6rem] leading-[1.08] tracking-[-0.02em] mt-3">Where to focus, by sector.</h2>
+            <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[460px]`}>A starting materiality view drawn from the company&apos;s sector, so the conversation begins with the topics that matter most.</p>
             <div className="mt-6"><MaterialityPanel /></div>
           </div>
           <div>
             <Eyebrow>Cross-framework alignment</Eyebrow>
-            <h2 className="font-display font-normal text-[2rem] sm:text-[2.4rem] leading-[1.08] tracking-[-0.02em] mt-3">One disclosure, mapped everywhere.</h2>
-            <p className={`text-[15px] ${BODY} leading-relaxed mt-4 max-w-[460px]`}>Each BRSR data point is linked to its equivalent in GRI, TCFD, IFRS S2 and TNFD, plus the ratings the client cares about.</p>
+            <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.6rem] leading-[1.08] tracking-[-0.02em] mt-3">One disclosure, mapped everywhere.</h2>
+            <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[460px]`}>Each BRSR data point is linked to its equivalent in GRI, TCFD, IFRS S2 and TNFD, plus the ratings that matter to investors.</p>
             <div className="mt-6"><AlignmentPanel /></div>
           </div>
         </div>
@@ -147,12 +183,12 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 
       {/* ── Feature: Calculators ───────────────────────────────────────────── */}
       <FeatureRow eyebrow="Calculators & exports" title="The maths is done, and it's cited." panel={<GhgCalculatorPanel />}>
-        <p className={`text-[15.5px] ${BODY} leading-relaxed`}>
-          Built-in GHG, energy and water calculators convert raw activity data into BRSR-ready figures, using CEA and IPCC factors with the version noted on every line. Export a CSV for your working file and a clean PDF brief for the client.
+        <p className={`text-[16.5px] ${BODY} leading-relaxed`}>
+          Built-in GHG, energy, water and Scope 3 screening calculators convert raw activity data into BRSR-ready figures, using CEA and IPCC factors with the version noted on every line. Export a CSV for your working file and a clean PDF brief to share.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <span className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#14201B] bg-white border border-[#E6E3DB] px-3.5 py-2 rounded-lg">Export CSV</span>
-          <span className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-white bg-forest px-3.5 py-2 rounded-lg">Client-ready PDF brief</span>
+          <span className="inline-flex items-center gap-1.5 text-[14px] font-medium text-[#14201B] bg-white border border-[#E6E3DB] px-3.5 py-2 rounded-lg">Export CSV</span>
+          <span className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-white bg-forest px-3.5 py-2 rounded-lg">Client-ready PDF brief</span>
         </div>
       </FeatureRow>
 
@@ -160,25 +196,32 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       <section className="bg-forest text-white">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           <div>
-            <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-brand-400">On AI</p>
-            <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.8rem] leading-[1.05] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-brand-400">On AI</p>
+            <h2 className="font-display font-normal text-[2.4rem] sm:text-[3rem] leading-[1.05] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>
               AI where it helps, never where it can mislead.
             </h2>
-            <p className="text-[15.5px] text-[#BFD3CA] leading-relaxed mt-5 max-w-[460px]">
-              What you put before a client has to be defensible. So AI does the explaining and the drafting, never the deciding, and never the inventing.
+            <p className="text-[16.5px] text-[#BFD3CA] leading-relaxed mt-5 max-w-[460px]">
+              What goes into a filed report has to be defensible. So AI does the explaining, the reading and the
+              drafting, never the deciding, and never the inventing. Three places it helps:
             </p>
           </div>
           <div className="space-y-6">
             {[
-              { t: "Plain-English explanations", b: "Written once from public SEBI definitions and shipped as static text. Nothing about your client is ever sent anywhere." },
-              { t: "The narrative draft is grounded", b: "Collect's draft turns the numbers you gathered into review-ready prose. It never invents a figure; every number traces to its source." },
-              { t: "Everything stays cited", b: "Each disclosure links to SEBI, ICAI, CEA or IPCC, with the version noted. You can defend every line." },
+              { t: "Plain-English explainers", tag: "Free", b: "Every field explained from the public SEBI definition. Written once, shipped as static text — nothing about the client is ever sent anywhere." },
+              { t: "Compliance importer", tag: "Pro", b: "Reads the client's existing reports and pre-fills the figures, each shown with the source line it came from, for you to verify. It never invents a number." },
+              { t: "Grounded narrative draft", tag: "Pro", b: "Turns the numbers you collected into review-ready prose. Every figure traces back to its source; gaps are flagged, not guessed." },
             ].map((p, i) => (
               <div key={p.t} className={i > 0 ? "border-t border-white/10 pt-6" : ""}>
-                <p className="flex items-center gap-2 text-[15px] font-semibold text-white"><span className="w-1.5 h-1.5 rounded-full bg-brand-400" />{p.t}</p>
-                <p className="text-[13.5px] text-[#9FB6AC] leading-relaxed mt-1.5 pl-3.5">{p.b}</p>
+                <p className="flex items-center gap-2 text-[16px] font-semibold text-white">
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand-400" />{p.t}
+                  <span className="font-mono text-[9.5px] uppercase tracking-wide rounded-full px-1.5 py-0.5 text-forest bg-brand-400">{p.tag}</span>
+                </p>
+                <p className="text-[14.5px] text-[#9FB6AC] leading-relaxed mt-1.5 pl-3.5">{p.b}</p>
               </div>
             ))}
+            <p className="text-[13px] text-[#9FB6AC] leading-relaxed pl-3.5 border-t border-white/10 pt-5">
+              Everything stays cited — each disclosure links to SEBI, ICAI, CEA or IPCC with the version noted. You can defend every line.
+            </p>
           </div>
         </div>
       </section>
@@ -186,21 +229,21 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       {/* ── Collect (paid tier) ────────────────────────────────────────────── */}
       <section id="collect" className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-center">
         <div>
-          <span className="inline-flex items-center font-mono text-[10.5px] uppercase tracking-[0.12em] text-[#A8481B] bg-[#FBE7DC] border border-[#F2CDBA] rounded px-2 py-1">Collect · paid tier</span>
-          <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.7rem] leading-[1.06] tracking-[-0.02em] mt-4">Chase the data without chasing people.</h2>
-          <p className={`text-[15.5px] ${BODY} leading-relaxed mt-5 max-w-[470px]`}>
-            When you move from preparing to collecting, Collect requests BRSR data from the client&apos;s team with branded emails and automatic reminders. They submit through a no-login form with evidence attached, emissions are calculated with cited factors, and an AI draft turns the result into review-ready narrative.
+          <span className="inline-flex items-center font-mono text-[11px] uppercase tracking-[0.12em] text-[#A8481B] bg-[#FBE7DC] border border-[#F2CDBA] rounded px-2 py-1">Collect · paid tier</span>
+          <h2 className="font-display font-normal text-[2.4rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.02em] mt-4">Chase the data without chasing people.</h2>
+          <p className={`text-[16.5px] ${BODY} leading-relaxed mt-5 max-w-[470px]`}>
+            When the job moves from preparing to collecting, Collect requests BRSR data from the team that holds each number, with branded emails and automatic reminders. They submit through a no-login form with evidence attached, emissions are calculated with cited factors, and an AI draft turns the result into review-ready narrative.
           </p>
           <ul className="mt-6 space-y-2.5">
-            {["Branded request emails & auto-reminders", "No-login submission with evidence attachments", "Emissions calculated with attributed factors"].map((f) => (
-              <li key={f} className="flex items-center gap-2.5 text-[14px] text-[#14201B]"><Check />{f}</li>
+            {["Branded request emails & auto-reminders", "No-login submission with evidence attachments", "Emissions calculated with attributed factors", "Assurance-ready evidence trail — every figure traced to its owner and source"].map((f) => (
+              <li key={f} className="flex items-center gap-2.5 text-[15px] text-[#14201B]"><Check />{f}</li>
             ))}
           </ul>
-          <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-5 py-3 rounded-xl hover:bg-forest-light transition-colors pressable mt-7">
+          <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-5 py-3 rounded-xl hover:bg-forest-light transition-colors pressable mt-7">
             Request Pro access
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
           </a>
-          <p className="text-[12.5px] text-[#8A938D] mt-3 max-w-[440px]">The readiness tool stays free and needs no login. Collect is the paid tier; we onboard you on request.</p>
+          <p className="text-[13px] text-[#8A938D] mt-3 max-w-[440px]">The readiness tool stays free and needs no login. Collect is the paid tier; we onboard you on request.</p>
         </div>
         <CollectPanel />
       </section>
@@ -209,55 +252,59 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       <section className="bg-white border-t border-[#E6E3DB]">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
           <Eyebrow>Free and Pro</Eyebrow>
-          <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.8rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>
+          <h2 className="font-display font-normal text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>
             Everything you need to prepare is free.
           </h2>
-          <p className={`text-[15px] ${BODY} leading-relaxed mt-4 max-w-[600px]`}>
-            The readiness tool, including the GHG, energy and water calculators, is free and runs on
-            your device. Pro adds Collect: the engine for gathering data from the client&apos;s team and
-            the grounded AI narrative draft.
+          <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[600px]`}>
+            The whole readiness tool — the calculators, the cross-framework mapping, the CBAM/CCTS checks,
+            the templates — is free and runs on your device. Pro is the workspace that does the work:
+            collecting the data, the AI importer, the assurance trail, the narrative draft and the proposal builder.
           </p>
           <div className="grid md:grid-cols-2 gap-4 mt-12">
             {/* Free */}
             <div className="rounded-2xl border border-[#E6E3DB] bg-[#FCFBF7] p-6 sm:p-7">
               <div className="flex items-center justify-between gap-3">
-                <span className="font-display text-[20px] text-[#14201B]">Free · the readiness tool</span>
-                <span className="font-mono text-[9.5px] uppercase tracking-wide text-[#0E7A56] bg-[#E3F7F0] rounded-full px-2 py-1 whitespace-nowrap">No login</span>
+                <span className="font-display text-[21px] text-[#14201B]">Free · the readiness tool</span>
+                <span className="font-mono text-[10px] uppercase tracking-wide text-[#0E7A56] bg-[#E3F7F0] rounded-full px-2 py-1 whitespace-nowrap">No login</span>
               </div>
-              <p className="text-[13px] text-[#5B6660] leading-relaxed mt-2">Prepare a defensible report start to finish, on your device.</p>
+              <p className="text-[13.5px] text-[#5B6660] leading-relaxed mt-2">Prepare a defensible report start to finish, on your device.</p>
               <ul className="mt-5 space-y-2.5">
                 {[
                   "Gap-analysed action plan (Ready / Verify / Collect)",
-                  "Built-in GHG, energy and water calculators",
-                  "Suggested materiality and downloadable cross-framework mapping (GRI, TCFD, IFRS, TNFD)",
+                  "GHG, energy, water and Scope 3 screening calculators, cited",
+                  "Suggested materiality + cross-framework mapping & export (GRI, TCFD, IFRS, TNFD, MSCI, DJSI)",
+                  "Beyond-BRSR readiness: CBAM & CCTS in-scope checks",
+                  "Templates & guides library",
                   "Plain-English AI explanation on every field",
                   "CSV export and a client-ready PDF brief",
                 ].map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-[#3F4A44] leading-snug"><Check className="text-brand-600 mt-0.5" />{f}</li>
+                  <li key={f} className="flex items-start gap-2.5 text-[14.5px] text-[#3F4A44] leading-snug"><Check className="text-brand-600 mt-0.5" />{f}</li>
                 ))}
               </ul>
             </div>
             {/* Pro */}
             <div className="rounded-2xl bg-forest text-white p-6 sm:p-7">
               <div className="flex items-center justify-between gap-3">
-                <span className="font-display text-[20px] text-white">Pro · the copilot</span>
-                <span className="font-mono text-[9.5px] uppercase tracking-wide text-forest bg-brand-400 rounded-full px-2 py-1 whitespace-nowrap">Paid</span>
+                <span className="font-display text-[21px] text-white">Pro · the workspace</span>
+                <span className="font-mono text-[10px] uppercase tracking-wide text-forest bg-brand-400 rounded-full px-2 py-1 whitespace-nowrap">Paid</span>
               </div>
-              <p className="text-[13px] text-[#BFD3CA] leading-relaxed mt-2">Everything in Free, plus the workspace to collect, compute and report at scale. Live today:</p>
+              <p className="text-[13.5px] text-[#BFD3CA] leading-relaxed mt-2">Everything in Free, plus the workspace to collect, compute and report at scale. Live today:</p>
               <ul className="mt-5 space-y-2.5">
                 {[
-                  "Chase data from the client's team with branded emails and auto-reminders",
-                  "No-login owner submission with evidence attached",
+                  "Chase data from the team that holds each number — branded emails, auto-reminders",
+                  "No-login submission with evidence attached",
                   "Emissions auto-computed and attributed to source",
-                  "Pre-fill figures from a client's existing report — you verify each, with its source line",
-                  "Export your BRSR data mapped across GRI, TCFD, IFRS and TNFD",
+                  "AI compliance importer: pre-fill figures from an existing report, you verify each",
+                  "Assurance-readiness pack — a data-ownership ledger of who gave what, with evidence",
                   "Grounded AI narrative draft, review-ready",
+                  "Cross-framework export across GRI, TCFD, IFRS and TNFD",
+                  "Scope & price the work with the proposal & fee builder",
                 ].map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-[#EAF3EE] leading-snug"><Check className="text-brand-400 mt-0.5" />{f}</li>
+                  <li key={f} className="flex items-start gap-2.5 text-[14.5px] text-[#EAF3EE] leading-snug"><Check className="text-brand-400 mt-0.5" />{f}</li>
                 ))}
               </ul>
-              <p className="text-[12px] text-[#9FB6AC] leading-relaxed mt-3.5">The multi-client workspace and more are on the way — see the roadmap below.</p>
-              <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-brand-500 text-forest text-[13.5px] font-semibold px-4 py-2.5 rounded-lg hover:bg-brand-400 transition-colors pressable mt-6">
+              <p className="text-[12.5px] text-[#9FB6AC] leading-relaxed mt-3.5">The multi-client workspace and more are on the way — see the roadmap below.</p>
+              <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-brand-500 text-forest text-[14px] font-semibold px-4 py-2.5 rounded-lg hover:bg-brand-400 transition-colors pressable mt-6">
                 Request Pro access
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
               </a>
@@ -270,35 +317,35 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       <section id="pro" className="bg-white border-t border-[#E6E3DB]">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
           <Eyebrow>Saaksh Pro</Eyebrow>
-          <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.8rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>
-            Your multi-framework compliance copilot.
+          <h2 className="font-display font-normal text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>
+            The workspace for the whole engagement.
           </h2>
-          <p className={`text-[15px] ${BODY} leading-relaxed mt-4 max-w-[620px]`}>
-            The free tool prepares the report. Pro is the workspace for doing the work: winning the engagement,
-            collecting the data, and reporting across frameworks. Collect, the compliance importer and cross-framework
-            export are live today, and it keeps growing.
+          <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[620px]`}>
+            The free tool prepares the report. Pro does the work: winning and pricing the engagement,
+            collecting the data, computing and drafting, and reporting across frameworks. Collect, the AI
+            compliance importer, cross-framework export and the proposal builder are live today, and it keeps growing.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
             {[
               { name: "Collect", status: "live" as const, flagship: true, desc: "Chase BRSR data from the client's team with branded emails, auto-reminders, and no-login submission with evidence." },
-              { name: "Compliance importer", status: "live" as const, desc: "Upload the client's existing reports and get the numbers pre-filled, each with its source line, for you to verify. It never invents a figure." },
+              { name: "Compliance importer", status: "live" as const, ai: true, desc: "Upload an existing report and the numbers are pre-filled, each with its source line, for you to verify. It never invents a figure." },
               { name: "Cross-framework export", status: "live" as const, desc: "Download the full BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD mapping (plus MSCI & DJSI) as a spreadsheet — collect once, report many. CBAM and CCTS join as they ship." },
               { name: "Proposal & fee builder", status: "live" as const, desc: "Turn a scope into a client-ready proposal and a transparent fee estimate, built from your own rates, so you win and price the work." },
               { name: "Multi-client workspace", status: "coming" as const, desc: "Every client's engagement in one place, instead of one report at a time." },
               { name: "Consultant network", status: "future" as const, desc: "Get matched with the companies that need a BRSR consultant. Be found, not just searching." },
             ].map((p) => (
-              <ProPillar key={p.name} name={p.name} status={p.status} desc={p.desc} flagship={p.flagship} />
+              <ProPillar key={p.name} name={p.name} status={p.status} desc={p.desc} flagship={"flagship" in p ? p.flagship : undefined} ai={"ai" in p ? p.ai : undefined} />
             ))}
           </div>
-          <p className="text-[13px] text-[#8A938D] mt-6 max-w-[620px] leading-relaxed">
+          <p className="text-[13.5px] text-[#8A938D] mt-6 max-w-[620px] leading-relaxed">
             And the regulations keep coming: CBAM for exporters, CCTS for carbon credits, and broader ESG assurance
             across GRI, TCFD and IFRS.
           </p>
-          <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-5 py-3 rounded-xl hover:bg-forest-light transition-colors pressable mt-8">
+          <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-5 py-3 rounded-xl hover:bg-forest-light transition-colors pressable mt-8">
             Request Pro access
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
           </a>
-          <p className="text-[12.5px] text-[#8A938D] mt-3">Early access, priced per engagement. Talk to us and we&apos;ll set you up.</p>
+          <p className="text-[13px] text-[#8A938D] mt-3">Early access, priced per engagement. Talk to us and we&apos;ll set you up.</p>
         </div>
       </section>
 
@@ -308,28 +355,21 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           {[
             { t: "Cited & versioned", b: "Every disclosure and emission factor traces to SEBI, ICAI, CEA or IPCC, so what you put in front of a client is defensible." },
             { t: "100% on-device", b: "The free readiness tool runs entirely in your browser. No upload, no account, nothing stored." },
-            { t: "Free to start", b: "Built for independent consultants. The readiness tool is free; the paid Collect tools layer on when you need them." },
+            { t: "Free to start", b: "The readiness tool is free and needs no login. The Pro workspace layers on when you move to collecting and reporting at scale." },
           ].map((c) => (
             <div key={c.t}>
-              <h3 className="font-display text-[19px] text-[#14201B]">{c.t}</h3>
-              <p className={`text-[14px] ${BODY} leading-relaxed mt-2`}>{c.b}</p>
+              <h3 className="font-display text-[20px] text-[#14201B]">{c.t}</h3>
+              <p className={`text-[15px] ${BODY} leading-relaxed mt-2`}>{c.b}</p>
             </div>
           ))}
-        </div>
-        <div className="mt-12 rounded-2xl bg-white border border-[#E6E3DB] p-7 sm:p-9 max-w-[820px]">
-          <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[#8A938D]">Why I built this</p>
-          <p className="font-display text-[19px] sm:text-[22px] leading-[1.5] text-[#14201B] mt-3">
-            &ldquo;I work in climate compliance, and the first week of every BRSR engagement was the same scramble: a blank format, scattered filings, and no quick way to see what was already covered. This is the tool I wished I had, and where Saaksh begins.&rdquo;
-          </p>
-          <p className="text-[13px] text-[#5B6660] mt-4">Rahul Upadhyay · maker of Saaksh</p>
         </div>
       </section>
 
       {/* ── Stats band ─────────────────────────────────────────────────────── */}
       <section className="bg-[#FCFBF7] border-y border-[#E6E3DB]">
         <div data-reveal className="max-w-[1180px] mx-auto px-5 sm:px-8 py-16">
-          <p className="font-display font-normal text-center text-[1.7rem] sm:text-[2.2rem] leading-[1.18] tracking-[-0.02em] text-[#14201B] max-w-[640px] mx-auto" style={{ textWrap: "balance" }}>
-            The first week of a BRSR engagement, done in minutes. Gap-analysed, cited, and ready to send.
+          <p className="font-display font-normal text-center text-[1.9rem] sm:text-[2.4rem] leading-[1.18] tracking-[-0.02em] text-[#14201B] max-w-[660px] mx-auto" style={{ textWrap: "balance" }}>
+            The first week of BRSR work, done in minutes. Gap-analysed, cited, and ready to send.
           </p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
             {[
@@ -339,8 +379,8 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               { n: "0", l: "records stored" },
             ].map((s) => (
               <div key={s.l} className="text-center">
-                <p className="font-display text-[2.8rem] sm:text-[3.2rem] leading-none text-forest">{s.n}</p>
-                <p className="font-mono text-[11.5px] uppercase tracking-wide text-[#8A938D] mt-2">{s.l}</p>
+                <p className="font-display text-[3rem] sm:text-[3.4rem] leading-none text-forest">{s.n}</p>
+                <p className="font-mono text-[12px] uppercase tracking-wide text-[#8A938D] mt-2">{s.l}</p>
               </div>
             ))}
           </div>
@@ -350,14 +390,14 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       {/* ── Final CTA ──────────────────────────────────────────────────────── */}
       <section className="bg-forest text-white">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 text-center">
-          <h2 className="font-display font-normal text-[2.4rem] sm:text-[3.2rem] leading-[1.05] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
-            Walk into your next BRSR engagement prepared.
+          <h2 className="font-display font-normal text-[2.6rem] sm:text-[3.4rem] leading-[1.05] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
+            Take the work out of your next BRSR report.
           </h2>
-          <button onClick={onStart} className="inline-flex items-center gap-2 bg-brand-500 text-forest text-[15px] font-semibold px-6 py-3.5 rounded-xl hover:bg-brand-400 transition-colors pressable mt-8">
+          <button onClick={onStart} className="inline-flex items-center gap-2 bg-brand-500 text-forest text-[16px] font-semibold px-6 py-3.5 rounded-xl hover:bg-brand-400 transition-colors pressable mt-8">
             Start a free report
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
           </button>
-          <p className="font-mono text-[11.5px] text-[#9FB6AC] mt-5">No login · Client data never leaves your browser · Cited to SEBI &amp; ICAI</p>
+          <p className="font-mono text-[12px] text-[#9FB6AC] mt-5">No login · Client data never leaves your browser · Cited to SEBI &amp; ICAI</p>
         </div>
       </section>
 
@@ -373,15 +413,15 @@ function Header({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: str
       <div className="max-w-[1180px] mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="w-[28px] h-[28px] rounded-lg bg-forest flex items-center justify-center"><span className="font-display text-[14px] text-white leading-none">S</span></div>
-          <span className="font-display text-[19px] text-[#14201B]">Saaksh</span>
+          <span className="font-display text-[20px] text-[#14201B]">Saaksh</span>
         </div>
         <div className="flex items-center gap-5">
-          <button onClick={scrollTo("how")} className="hidden sm:inline text-[13.5px] text-[#5B6660] hover:text-[#14201B] transition-colors">How it works</button>
-          <button onClick={scrollTo("pro")} className="hidden sm:inline text-[13.5px] text-[#5B6660] hover:text-[#14201B] transition-colors">Pro</button>
-          <a href={COMPLIANCE_CHAT} target="_blank" rel="noopener noreferrer" className="hidden sm:inline-flex items-center gap-1.5 text-[13.5px] text-[#5B6660] hover:text-[#14201B] transition-colors">
+          <button onClick={scrollTo("how")} className="hidden sm:inline text-[14px] text-[#5B6660] hover:text-[#14201B] transition-colors">How it works</button>
+          <button onClick={scrollTo("pro")} className="hidden sm:inline text-[14px] text-[#5B6660] hover:text-[#14201B] transition-colors">Pro</button>
+          <a href={COMPLIANCE_CHAT} target="_blank" rel="noopener noreferrer" className="hidden sm:inline-flex items-center gap-1.5 text-[14px] text-[#5B6660] hover:text-[#14201B] transition-colors">
             <span className="w-1.5 h-1.5 rounded-full bg-brand-500" /> Compliance Chat
           </a>
-          <button onClick={onStart} className="inline-flex items-center bg-forest text-white text-[13px] font-semibold px-4 py-2 rounded-lg hover:bg-forest-light transition-colors pressable">Start a free report</button>
+          <button onClick={onStart} className="inline-flex items-center bg-forest text-white text-[13.5px] font-semibold px-4 py-2 rounded-lg hover:bg-forest-light transition-colors pressable">Start a free report</button>
         </div>
       </div>
     </header>
@@ -395,16 +435,16 @@ function Footer({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: str
         <div className="lg:col-span-1">
           <div className="flex items-center gap-2.5">
             <div className="w-[26px] h-[26px] rounded-lg bg-brand-500 flex items-center justify-center"><span className="font-display text-[13px] text-forest leading-none">S</span></div>
-            <span className="font-display text-[18px] text-white">Saaksh</span>
+            <span className="font-display text-[19px] text-white">Saaksh</span>
           </div>
-          <p className="text-[13px] text-[#9FB6AC] leading-relaxed mt-3 max-w-[240px]">Evidence-first compliance for Indian businesses. Starting with BRSR.</p>
+          <p className="text-[13.5px] text-[#9FB6AC] leading-relaxed mt-3 max-w-[240px]">Evidence-first compliance for Indian businesses. Starting with BRSR.</p>
         </div>
         <FootCol title="Product" links={[["Start a free report", onStart], ["How it works", scrollTo("how")], ["Pro", scrollTo("pro")], ["Collect", scrollTo("collect")]]} />
         <FootCol title="Sources" links={[["SEBI BRSR Format", null], ["ICAI Background Material 2024", null], ["CEA emission factors", null], ["IPCC 2006", null]]} />
         <div>
           <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[#5B6660]">Built by</p>
-          <a href="https://www.linkedin.com/in/rahul-upadhyay-a7aa12207/" target="_blank" rel="noopener noreferrer" className="block text-[13.5px] text-[#BFD3CA] hover:text-white mt-2.5">Rahul Upadhyay</a>
-          <a href="mailto:rahulu626@gmail.com" className="block text-[13.5px] text-[#BFD3CA] hover:text-white mt-1">rahulu626@gmail.com</a>
+          <a href="https://www.linkedin.com/in/rahul-upadhyay-a7aa12207/" target="_blank" rel="noopener noreferrer" className="block text-[14px] text-[#BFD3CA] hover:text-white mt-2.5">Rahul Upadhyay</a>
+          <a href="mailto:rahulu626@gmail.com" className="block text-[14px] text-[#BFD3CA] hover:text-white mt-1">rahulu626@gmail.com</a>
           <p className="text-[11.5px] text-[#5B6660] mt-4">ICAI BRSR 2024 · SEBI Circulars · MoEFCC Rules</p>
         </div>
       </div>
@@ -420,9 +460,9 @@ function FootCol({ title, links }: { title: string; links: [string, (() => void)
         {links.map(([label, fn]) => (
           <li key={label}>
             {fn ? (
-              <button onClick={fn} className="text-[13.5px] text-[#BFD3CA] hover:text-white text-left">{label}</button>
+              <button onClick={fn} className="text-[14px] text-[#BFD3CA] hover:text-white text-left">{label}</button>
             ) : (
-              <span className="text-[13.5px] text-[#BFD3CA]">{label}</span>
+              <span className="text-[14px] text-[#BFD3CA]">{label}</span>
             )}
           </li>
         ))}
@@ -433,8 +473,18 @@ function FootCol({ title, links }: { title: string; links: [string, (() => void)
 
 /* ── Shared bits ───────────────────────────────────────────────────────────── */
 function Dot() { return <span className="w-1.5 h-1.5 rounded-full bg-brand-500 inline-block" />; }
+function TierPill({ tier }: { tier: string }) {
+  const isPro = tier === "Pro";
+  const isBoth = tier === "Free + Pro";
+  const cls = isPro
+    ? "text-forest bg-brand-400"
+    : isBoth
+      ? "text-[#0E7A56] bg-[#E3F7F0] border border-[#CFEDE1]"
+      : "text-[#0E7A56] bg-[#E3F7F0] border border-[#CFEDE1]";
+  return <span className={`flex-shrink-0 self-start font-mono text-[9.5px] uppercase tracking-wide rounded-full px-1.5 py-0.5 whitespace-nowrap ${cls}`}>{tier}</span>;
+}
 function Eyebrow({ children }: { children: React.ReactNode }) {
-  return <p className="font-mono text-[10.5px] uppercase tracking-[0.16em] text-brand-700">{children}</p>;
+  return <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-brand-700">{children}</p>;
 }
 function Spark() {
   return (
@@ -453,7 +503,7 @@ function Check({ className = "text-brand-600" }: { className?: string }) {
 // live cards are light with a green "Available now" tag; roadmap cards carry an
 // honest Coming / Future tag. Only the flagship gets the dark hero treatment, so
 // "three things are live" reads as momentum without three heavy dark blocks.
-function ProPillar({ name, status, desc, flagship }: { name: string; status: "live" | "coming" | "future"; desc: string; flagship?: boolean }) {
+function ProPillar({ name, status, desc, flagship, ai }: { name: string; status: "live" | "coming" | "future"; desc: string; flagship?: boolean; ai?: boolean }) {
   const filled = !!flagship; // only the flagship gets the forest fill
   const tag = status === "live" ? "Available now" : status === "coming" ? "Coming" : "Future";
   const tagCls =
@@ -463,10 +513,13 @@ function ProPillar({ name, status, desc, flagship }: { name: string; status: "li
   return (
     <div className={`rounded-2xl p-6 ${filled ? "bg-forest text-white" : "bg-[#FAF8F3] border border-[#E6E3DB]"}`}>
       <div className="flex items-start justify-between gap-2">
-        <span className={`font-display text-[18px] leading-tight ${filled ? "text-white" : "text-[#14201B]"}`}>{name}</span>
+        <span className={`font-display text-[19px] leading-tight flex items-center gap-2 ${filled ? "text-white" : "text-[#14201B]"}`}>
+          {name}
+          {ai && <span className={`font-mono text-[8.5px] uppercase tracking-wide rounded-full px-1.5 py-0.5 ${filled ? "bg-brand-400 text-forest" : "bg-forest text-white"}`}>AI</span>}
+        </span>
         <span className={`font-mono text-[9px] uppercase tracking-wide rounded-full px-2 py-1 whitespace-nowrap ${tagCls}`}>{tag}</span>
       </div>
-      <p className={`text-[13px] leading-relaxed mt-3.5 ${filled ? "text-[#BFD3CA]" : "text-[#5B6660]"}`}>{desc}</p>
+      <p className={`text-[13.5px] leading-relaxed mt-3.5 ${filled ? "text-[#BFD3CA]" : "text-[#5B6660]"}`}>{desc}</p>
     </div>
   );
 }
@@ -477,7 +530,7 @@ function FeatureRow({ eyebrow, title, panel, children }: { eyebrow: string; titl
     <section data-reveal className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
       <div>
         <Eyebrow>{eyebrow}</Eyebrow>
-        <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.7rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>{title}</h2>
+        <h2 className="font-display font-normal text-[2.4rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>{title}</h2>
         <div className="mt-5">{children}</div>
       </div>
       <div>{panel}</div>
