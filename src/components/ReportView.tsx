@@ -11,6 +11,7 @@ import MaterialityMatrix from "./MaterialityMatrix";
 import FrameworkMapper from "./FrameworkMapper";
 import EsgRatingsMapper from "./EsgRatingsMapper";
 import RegulatoryReadiness from "./RegulatoryReadiness";
+import TemplatesPanel from "./TemplatesPanel";
 import SourcesPanel from "./SourcesPanel";
 import { downloadReportPdf } from "@/lib/report-pdf";
 import { downloadCsv, exportFilename } from "@/lib/export";
@@ -35,8 +36,8 @@ const TABS = [
   { id: "beyond-brsr", label: "Beyond BRSR" },
 ] as const;
 
-// "sources" is a reference panel, not a workspace step, so it lives outside TABS.
-type TabId = (typeof TABS)[number]["id"] | "sources";
+// "sources" + "templates" are reference panels, not workspace steps, so they live outside TABS.
+type TabId = (typeof TABS)[number]["id"] | "sources" | "templates";
 
 // SVG nav icons — consistent stroke weight, no emoji.
 function TabIcon({ id, className }: { id: string; className?: string }) {
@@ -81,6 +82,12 @@ function TabIcon({ id, className }: { id: string; className?: string }) {
     <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
       <path d="M2.5 2.5h4a1.5 1.5 0 011.5 1.5v8a1.5 1.5 0 00-1.5-1.5h-4z" />
       <path d="M12.5 2.5h-4A1.5 1.5 0 007 4v8a1.5 1.5 0 011.5-1.5h4z" />
+    </svg>
+  );
+  if (id === "templates") return (
+    <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2.5" y="2" width="10" height="11" rx="1.2" />
+      <path d="M5 5.5h5M5 7.5h5M5 9.5h3" />
     </svg>
   );
   if (id === "collect") return (
@@ -151,6 +158,7 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
               {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} clientName={report.companyName} />}
               {activeTab === "alignment"   && <AlignmentWorkspace mappings={report.frameworkMappings} clientName={report.companyName} />}
               {activeTab === "beyond-brsr" && <RegulatoryReadiness regulatory={report.regulatory} />}
+              {activeTab === "templates"   && <TemplatesPanel />}
               {activeTab === "sources"     && <SourcesPanel />}
             </div>
           </div>
@@ -241,6 +249,7 @@ function Sidebar({
         <div>
           <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Reference</p>
           <div className="space-y-0.5">
+            {navItem({ id: "templates", label: "Templates" })}
             {navItem({ id: "sources", label: "Sources" })}
           </div>
         </div>
