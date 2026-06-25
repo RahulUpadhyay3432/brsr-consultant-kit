@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 import { getCampaign, listCompanyContacts } from "@/lib/datarequest/db";
 import { campaignEmissions, emissionInputs, GHG_METHODOLOGY } from "@/lib/datarequest/emissions";
 import { signCampaignEvidence } from "@/lib/datarequest/storage";
-import { addContactAction, addDirectoryContactsAction, deleteDirectoryContactAction } from "@/lib/datarequest/actions";
+import { addContactAction, addDirectoryContactsAction, deleteDirectoryContactAction, importDocumentAction, applyImportAction } from "@/lib/datarequest/actions";
 import AddOwnerPanel from "@/components/datarequest/AddOwnerPanel";
+import ImportPanel from "@/components/datarequest/ImportPanel";
 import DirectoryPanel from "@/components/datarequest/DirectoryPanel";
 import CopyLinkButton from "@/components/datarequest/CopyLinkButton";
 import { REQUEST_FIELDS } from "@/lib/datarequest/fields";
@@ -56,6 +57,8 @@ export default async function CampaignDetailPage({
   const addOwner = addContactAction.bind(null, campaign.id, campaign.clientName, campaign.deadline, campaign.reportingPeriod);
   const addContact = addDirectoryContactsAction.bind(null, campaign.id);
   const deleteContact = deleteDirectoryContactAction.bind(null, campaign.id);
+  const importDoc = importDocumentAction.bind(null, campaign.id);
+  const applyImport = applyImportAction.bind(null, campaign.id);
 
   return (
     <div className="max-w-[820px] mx-auto">
@@ -110,6 +113,7 @@ export default async function CampaignDetailPage({
       <div className="mt-5 space-y-3">
         <DirectoryPanel contacts={directory} addAction={addContact} deleteAction={deleteContact} />
         <AddOwnerPanel action={addOwner} error={searchParams.error === "owner"} fields={REQUEST_FIELDS} directory={directory} />
+        <ImportPanel importAction={importDoc} applyAction={applyImport} hasItems={allItems.length > 0} />
 
         {campaign.contacts.length === 0 ? (
           <div className="rounded-xl border border-stone-200 bg-white px-5 py-9 text-center shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
