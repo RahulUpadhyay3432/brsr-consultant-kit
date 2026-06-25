@@ -44,13 +44,13 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               </div>
 
               <h1 className="anim-up-hero font-display font-normal text-[3.25rem] sm:text-[4.5rem] leading-[1.02] tracking-[-0.02em] mt-6" style={{ textWrap: "balance", animationDelay: "60ms" }}>
-                All the work <span className="italic">BRSR</span> takes, in one place.
+                Compliance reporting, made <span className="italic">fast and defensible</span>.
               </h1>
 
               <p className={`anim-up-md text-[17.5px] sm:text-[19px] ${BODY} leading-[1.6] mt-6 max-w-[545px]`} style={{ animationDelay: "160ms" }}>
-                A blank 108-field format, data scattered across teams, emission factors to get right,
-                frameworks to reconcile, a narrative to draft: the parts that eat weeks, turned into one
-                cited, defensible workflow. It starts with BRSR, and grows to the regulations that follow.
+                Saaksh turns the scramble of regulatory reporting — scattered data, emission maths, frameworks
+                to reconcile, a narrative to draft — into one cited workflow. It starts with BRSR, and grows to
+                CBAM, CCTS and broader ESG.
               </p>
 
               <div className="anim-up-md flex flex-wrap items-center gap-3 mt-8" style={{ animationDelay: "240ms" }}>
@@ -99,13 +99,13 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         </p>
         <div className="mt-12 rounded-2xl border border-[#E6E3DB] bg-white overflow-hidden divide-y divide-[#EFEDE6]">
           {[
-            { pain: "A blank 108-field format, and no quick read on what's already covered", sol: "A gap-analysed action plan, every field sorted into Ready, Verify or Collect", tier: "Free" },
-            { pain: "Re-keying numbers out of last year's report by hand", sol: "An AI importer that pre-fills the figures, each shown with its source line for you to verify", tier: "Pro" },
-            { pain: "Chasing data that lives with different people across the business", sol: "Collect: branded requests, auto-reminders, no-login submission with evidence attached", tier: "Pro" },
-            { pain: "Emission factors to get right, and proving the number is defensible", sol: "Calculators cited to CEA & IPCC (version on every line) and an assurance evidence trail", tier: "Free + Pro" },
-            { pain: "One dataset, demanded by GRI, TCFD, IFRS and TNFD", sol: "Cross-framework mapping and one-click export — collect once, report many", tier: "Free" },
-            { pain: "Hunting for materiality formats and how-to guidance", sol: "A templates & guides library, built from the same cited knowledge base", tier: "Free" },
-            { pain: "New regulations landing — CBAM for exporters, CCTS carbon credits", sol: "Beyond-BRSR readiness checks: who's in scope, and what to prepare", tier: "Free" },
+            { pain: "A blank 108-field format, and no quick read on what's already covered", sol: "A gap-analysed action plan, every field sorted into Ready, Verify or Collect" },
+            { pain: "Re-keying numbers out of last year's report by hand", sol: "An AI importer that pre-fills the figures, each shown with its source line for you to verify" },
+            { pain: "Chasing data that lives with different people across the business", sol: "Branded requests with auto-reminders and no-login submission, evidence attached" },
+            { pain: "Emission factors to get right, and proving the number is defensible", sol: "Calculators cited to CEA & IPCC (version on every line) and an assurance evidence trail" },
+            { pain: "One dataset, demanded by GRI, TCFD, IFRS and TNFD", sol: "Cross-framework mapping and one-click export — collect once, report many" },
+            { pain: "Hunting for materiality formats and how-to guidance", sol: "A templates & guides library, built from the same cited knowledge base" },
+            { pain: "New regulations landing — CBAM for exporters, CCTS carbon credits", sol: "Beyond-BRSR readiness checks: who's in scope, and what to prepare" },
           ].map((r) => (
             <div key={r.pain} className="grid sm:grid-cols-2 gap-x-8 gap-y-2 px-5 sm:px-7 py-5 items-center">
               <div className="flex items-start gap-3">
@@ -117,7 +117,6 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               <div className="flex items-start gap-3 sm:pl-8 sm:border-l border-[#EFEDE6]">
                 <Check className="text-brand-600 mt-0.5" />
                 <p className="text-[15px] text-[#14201B] leading-snug flex-1 font-medium">{r.sol}</p>
-                <TierPill tier={r.tier} />
               </div>
             </div>
           ))}
@@ -248,67 +247,24 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         <CollectPanel />
       </section>
 
-      {/* ── Free vs Pro ────────────────────────────────────────────────────── */}
+      {/* ── Free vs Pro comparison ─────────────────────────────────────────── */}
       <section className="bg-white border-t border-[#E6E3DB]">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
           <Eyebrow>Free and Pro</Eyebrow>
           <h2 className="font-display font-normal text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>
-            Everything you need to prepare is free.
+            Free prepares the report. Pro runs the whole job.
           </h2>
-          <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[600px]`}>
-            The whole readiness tool — the calculators, the cross-framework mapping, the CBAM/CCTS checks,
-            the templates — is free and runs on your device. Pro is the workspace that does the work:
-            collecting the data, the AI importer, the assurance trail, the narrative draft and the proposal builder.
+          <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[620px]`}>
+            The whole readiness tool is genuinely free, on your device. Pro is the workspace that does the work —
+            collecting the data, the AI that reads and drafts, the assurance trail, and the tools to win and price the engagement.
           </p>
-          <div className="grid md:grid-cols-2 gap-4 mt-12">
-            {/* Free */}
-            <div className="rounded-2xl border border-[#E6E3DB] bg-[#FCFBF7] p-6 sm:p-7">
-              <div className="flex items-center justify-between gap-3">
-                <span className="font-display text-[21px] text-[#14201B]">Free · the readiness tool</span>
-                <span className="font-mono text-[10px] uppercase tracking-wide text-[#0E7A56] bg-[#E3F7F0] rounded-full px-2 py-1 whitespace-nowrap">No login</span>
-              </div>
-              <p className="text-[13.5px] text-[#5B6660] leading-relaxed mt-2">Prepare a defensible report start to finish, on your device.</p>
-              <ul className="mt-5 space-y-2.5">
-                {[
-                  "Gap-analysed action plan (Ready / Verify / Collect)",
-                  "GHG, energy, water and Scope 3 screening calculators, cited",
-                  "Suggested materiality + cross-framework mapping & export (GRI, TCFD, IFRS, TNFD, MSCI, DJSI)",
-                  "Beyond-BRSR readiness: CBAM & CCTS in-scope checks",
-                  "Templates & guides library",
-                  "Plain-English AI explanation on every field",
-                  "CSV export and a client-ready PDF brief",
-                ].map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-[14.5px] text-[#3F4A44] leading-snug"><Check className="text-brand-600 mt-0.5" />{f}</li>
-                ))}
-              </ul>
-            </div>
-            {/* Pro */}
-            <div className="rounded-2xl bg-forest text-white p-6 sm:p-7">
-              <div className="flex items-center justify-between gap-3">
-                <span className="font-display text-[21px] text-white">Pro · the workspace</span>
-                <span className="font-mono text-[10px] uppercase tracking-wide text-forest bg-brand-400 rounded-full px-2 py-1 whitespace-nowrap">Paid</span>
-              </div>
-              <p className="text-[13.5px] text-[#BFD3CA] leading-relaxed mt-2">Everything in Free, plus the workspace to collect, compute and report at scale. Live today:</p>
-              <ul className="mt-5 space-y-2.5">
-                {[
-                  "Chase data from the team that holds each number — branded emails, auto-reminders",
-                  "No-login submission with evidence attached",
-                  "Emissions auto-computed and attributed to source",
-                  "AI compliance importer: pre-fill figures from an existing report, you verify each",
-                  "Assurance-readiness pack — a data-ownership ledger of who gave what, with evidence",
-                  "Grounded AI narrative draft, review-ready",
-                  "Cross-framework export across GRI, TCFD, IFRS and TNFD",
-                  "Scope & price the work with the proposal & fee builder",
-                ].map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-[14.5px] text-[#EAF3EE] leading-snug"><Check className="text-brand-400 mt-0.5" />{f}</li>
-                ))}
-              </ul>
-              <p className="text-[12.5px] text-[#9FB6AC] leading-relaxed mt-3.5">The multi-client workspace and more are on the way — see the roadmap below.</p>
-              <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-brand-500 text-forest text-[14px] font-semibold px-4 py-2.5 rounded-lg hover:bg-brand-400 transition-colors pressable mt-6">
-                Request Pro access
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
-              </a>
-            </div>
+          <CompareTable />
+          <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3">
+            <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-5 py-3 rounded-xl hover:bg-forest-light transition-colors pressable">
+              Request Pro access
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </a>
+            <p className="text-[13px] text-[#8A938D]">Early access, priced per engagement — pay only when you have a client. The free tool always stays free.</p>
           </div>
         </div>
       </section>
@@ -473,15 +429,90 @@ function FootCol({ title, links }: { title: string; links: [string, (() => void)
 
 /* ── Shared bits ───────────────────────────────────────────────────────────── */
 function Dot() { return <span className="w-1.5 h-1.5 rounded-full bg-brand-500 inline-block" />; }
-function TierPill({ tier }: { tier: string }) {
-  const isPro = tier === "Pro";
-  const isBoth = tier === "Free + Pro";
-  const cls = isPro
-    ? "text-forest bg-brand-400"
-    : isBoth
-      ? "text-[#0E7A56] bg-[#E3F7F0] border border-[#CFEDE1]"
-      : "text-[#0E7A56] bg-[#E3F7F0] border border-[#CFEDE1]";
-  return <span className={`flex-shrink-0 self-start font-mono text-[9.5px] uppercase tracking-wide rounded-full px-1.5 py-0.5 whitespace-nowrap ${cls}`}>{tier}</span>;
+
+// Free-vs-Pro comparison — Free wins the "prepare" rows; Pro wins those plus the whole
+// collect / AI / win-work stack, so the value gap is visible at a glance.
+const COMPARE: { band: string; rows: [string, boolean, boolean | "soon"][] }[] = [
+  {
+    band: "Prepare the report",
+    rows: [
+      ["Gap-analysed action plan — all 108 fields", true, true],
+      ["GHG, energy, water & Scope 3 calculators, cited", true, true],
+      ["Cross-framework mapping & export (GRI, TCFD, IFRS, TNFD, MSCI, DJSI)", true, true],
+      ["Beyond-BRSR readiness: CBAM & CCTS in-scope checks", true, true],
+      ["Templates & guides library", true, true],
+      ["Plain-English AI explainer on every field", true, true],
+      ["CSV + client-ready PDF export", true, true],
+    ],
+  },
+  {
+    band: "Collect & prove it",
+    rows: [
+      ["Chase data from the team that holds each number", false, true],
+      ["Branded request emails + automatic reminders", false, true],
+      ["No-login submission with evidence attached", false, true],
+      ["Emissions auto-computed & attributed to source", false, true],
+      ["Assurance-readiness pack — a data-ownership ledger", false, true],
+    ],
+  },
+  {
+    band: "AI that does the work",
+    rows: [
+      ["Compliance importer — pre-fill figures from existing reports", false, true],
+      ["Grounded AI narrative draft, review-ready", false, true],
+    ],
+  },
+  {
+    band: "Win & scale",
+    rows: [
+      ["Proposal & fee builder — scope and price an engagement", false, true],
+      ["Multi-client workspace", false, "soon"],
+    ],
+  },
+];
+function Mark({ v }: { v: boolean | "soon" }) {
+  if (v === "soon") return <span className="font-mono text-[9px] uppercase tracking-wide text-[#8A6516] bg-[#F6ECD8] rounded-full px-1.5 py-0.5">soon</span>;
+  return v
+    ? <svg className="w-4 h-4 text-brand-600 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.6}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+    : <span className="text-[#C9CFC9] text-[15px]">—</span>;
+}
+const CMP_COLS = "grid grid-cols-[1fr_52px_60px] sm:grid-cols-[1fr_120px_140px]";
+function CompareTable() {
+  return (
+    <div className="mt-10 rounded-2xl border border-[#E6E3DB] overflow-hidden bg-white">
+      {/* Header */}
+      <div className={`${CMP_COLS} items-stretch border-b border-[#E6E3DB] bg-[#FCFBF7]`}>
+        <div className="px-4 sm:px-6 py-3.5 flex items-end">
+          <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[#8A938D]">What you get</span>
+        </div>
+        <div className="py-3.5 text-center border-l border-[#EFEDE6]">
+          <p className="font-display text-[15px] text-[#14201B] leading-none">Free</p>
+          <p className="font-mono text-[8.5px] uppercase tracking-wide text-[#0E7A56] mt-1">No login</p>
+        </div>
+        <div className="py-3.5 text-center bg-forest">
+          <p className="font-display text-[15px] text-white leading-none">Pro</p>
+          <p className="font-mono text-[8.5px] uppercase tracking-wide text-brand-400 mt-1">Paid</p>
+        </div>
+      </div>
+      {/* Bands + rows */}
+      {COMPARE.map((g) => (
+        <div key={g.band}>
+          <div className={`${CMP_COLS} bg-[#F7F6F1] border-b border-[#EFEDE6]`}>
+            <p className="px-4 sm:px-6 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-[#5B6660]">{g.band}</p>
+            <div className="border-l border-[#EFEDE6]" />
+            <div className="bg-[#F2F7F4]" />
+          </div>
+          {g.rows.map(([label, free, pro], i) => (
+            <div key={label} className={`${CMP_COLS} items-center ${i < g.rows.length - 1 ? "border-b border-[#F2F0EA]" : ""}`}>
+              <p className="px-4 sm:px-6 py-3 text-[13.5px] sm:text-[14px] text-[#14201B] leading-snug">{label}</p>
+              <div className="py-3 flex justify-center border-l border-[#EFEDE6]"><Mark v={free} /></div>
+              <div className="py-3 flex justify-center bg-[#F2F7F4]"><Mark v={pro} /></div>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
 }
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-brand-700">{children}</p>;
