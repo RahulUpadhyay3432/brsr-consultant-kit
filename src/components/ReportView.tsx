@@ -12,6 +12,8 @@ import FrameworkMapper from "./FrameworkMapper";
 import EsgRatingsMapper from "./EsgRatingsMapper";
 import SourcesPanel from "./SourcesPanel";
 import { downloadReportPdf } from "@/lib/report-pdf";
+import { downloadCsv, exportFilename } from "@/lib/export";
+import { buildFrameworkExportRows, buildRatingsExportRows, type RatingMappingRow } from "@/lib/framework-export";
 import { PRINCIPLES } from "./checklist/constants";
 import { loadJSON, saveJSON, STORAGE_KEYS } from "@/lib/storage";
 import { WalkthroughCard } from "./Walkthrough";
@@ -145,7 +147,7 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
               )}
               {activeTab === "checklist"   && <DataChecklist items={report.checklist} general={report.generalDisclosures} seedQuery={seedQuery} clientName={report.companyName} />}
               {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} clientName={report.companyName} />}
-              {activeTab === "alignment"   && <AlignmentWorkspace mappings={report.frameworkMappings} />}
+              {activeTab === "alignment"   && <AlignmentWorkspace mappings={report.frameworkMappings} clientName={report.companyName} />}
               {activeTab === "sources"     && <SourcesPanel />}
             </div>
           </div>
@@ -698,8 +700,19 @@ function StartStep({ dot, onClick, children }: { dot: string; onClick: () => voi
 // ─── Alignment workspace — Reporting frameworks + ESG ratings, in one tab ─────
 // Replaces the two stacked accordions (PRODUCT.md §4): one consistent nav model,
 // ratings is a peer of frameworks instead of buried below a long table.
-function AlignmentWorkspace({ mappings }: { mappings: FrameworkMapping[] }) {
+function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMapping[]; clientName?: string }) {
   const [sub, setSub] = useState<"frameworks" | "ratings">("frameworks");
+
+  // Export whichever crosswalk is in view — one obvious action. On-device CSV
+  // (reuses the report's RFC-4180/formula-safe export.ts), so nothing leaves the browser.
+  function exportActive() {
+    if (sub === "frameworks") {
+      downloadCsv(exportFilename("brsr-framework-mapping", clientName), buildFrameworkExportRows(mappings));
+    } else {
+      const ratings = (esgRatingsData as { mappings: RatingMappingRow[] }).mappings ?? [];
+      downloadCsv(exportFilename("brsr-ratings-alignment", clientName), buildRatingsExportRows(ratings));
+    }
+  }
 
   const total    = mappings.length;
   const withGRI  = mappings.filter(m => m.gri_standard   && m.gri_standard   !== "—").length;
@@ -725,14 +738,27 @@ function AlignmentWorkspace({ mappings }: { mappings: FrameworkMapping[] }) {
     <div className="space-y-4">
 
       {/* Title */}
-      <div>
-        <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">
-          Alignment
-        </h1>
-        <p className="text-[13px] text-stone-500 mt-1 max-w-[72ch] leading-relaxed">
-          How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2 and TNFD (nature) — and to the MSCI &amp; DJSI
-          rating frameworks. Collect once, report across all.
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">
+            Alignment
+          </h1>
+          <p className="text-[13px] text-stone-500 mt-1 max-w-[72ch] leading-relaxed">
+            How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2 and TNFD (nature) — and to the MSCI &amp; DJSI
+            rating frameworks. Collect once, report across all.
+          </p>
+        </div>
+        <button
+          onClick={exportActive}
+          className="flex-shrink-0 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-brand-700 bg-brand-50
+            border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors pressable whitespace-nowrap"
+          title={sub === "frameworks" ? "Download the full BRSR↔GRI↔TCFD↔IFRS↔TNFD mapping as a spreadsheet" : "Download the MSCI & DJSI ratings alignment as a spreadsheet"}
+        >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
+          </svg>
+          Export {sub === "frameworks" ? "mapping" : "ratings"} (CSV)
+        </button>
       </div>
 
       {/* Sub-tabs */}
