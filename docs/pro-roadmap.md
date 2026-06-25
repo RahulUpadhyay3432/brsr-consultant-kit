@@ -45,6 +45,20 @@ customer pitch).
   (`src/lib/emissions-calculator.ts` + `src/components/checklist/EmissionsCalculator.tsx`),
   and the `DisclosureRow.tsx` "Last year" review UI.
 
+## Research-validated additions (June 2026)
+From external web/Reddit/LinkedIn research (`docs/market-research.md`) — these corroborate the
+WhatsApp analysis and surface angles to fold into the phases above:
+- **Assurance-readiness pack** *(building now)* — surface + export Collect's existing per-input
+  attribution + evidence + cited factors as a "data-ownership ledger" for the assurance provider.
+  The rising 2026 buyer pain (BRSR Core reasonable assurance wants the evidence trail + named data
+  owners); reuses what we have. We were under-selling it.
+- **Supplier-lite Collect** — a simpler submission flow for the client's 2%+ value-chain (MSME)
+  partners. On the FY2026-27 mandatory-assured tailwind; a natural Collect extension.
+- **Clone-last-year campaign** — recreate a collection with pre-filled owners + fields + prior-year
+  values. The recurring re-chase is the retention hook ("can't-stop-using-it" lever).
+- **Unit / sanity validation at data entry** — flag implausible values + enforce units; cheap, and
+  directly lowers the assurance unit-error risk consultants named.
+
 ---
 
 ## Build-order summary

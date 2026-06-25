@@ -32,6 +32,7 @@ export const GHG_METHODOLOGY =
   "refresh the CEA factor each filing year.";
 
 export interface EmissionInput {
+  fieldId: string;      // the activity field id — join key for the assurance ledger
   fieldLabel: string;
   rawValue: string;     // e.g. "1,240,000 kWh"
   scope: 1 | 2;
@@ -55,6 +56,7 @@ export function emissionInputs(campaign: Campaign): EmissionInput[] {
 
       if (item.fieldId === "P6-E1-elec") {
         out.push({
+          fieldId: item.fieldId,
           fieldLabel: item.label,
           rawValue: `${fmtInt(v)} ${item.unit ?? "kWh"}`,
           scope: 2,
@@ -65,6 +67,7 @@ export function emissionInputs(campaign: Campaign): EmissionInput[] {
       } else if (FUEL_FIELDS[item.fieldId]) {
         const f = fuelFactor(FUEL_FIELDS[item.fieldId].fuelId);
         out.push({
+          fieldId: item.fieldId,
           fieldLabel: item.label,
           rawValue: `${fmtInt(v)} ${item.unit ?? f.unit}`,
           scope: 1,
