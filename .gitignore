@@ -28,6 +28,10 @@
 # local data-request prototype store (swapped for Supabase before deploy)
 /.data/
 
+# local agent/test artifacts — verification screenshots, downloaded exports, skill installs
+/.playwright-mcp/
+/.agents/
+
 # debug
 npm-debug.log*
 yarn-debug.log*
