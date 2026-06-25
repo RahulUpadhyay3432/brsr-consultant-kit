@@ -12,6 +12,7 @@ import FrameworkMapper from "./FrameworkMapper";
 import EsgRatingsMapper from "./EsgRatingsMapper";
 import RegulatoryReadiness from "./RegulatoryReadiness";
 import TemplatesPanel from "./TemplatesPanel";
+import AnimatedNumber from "./AnimatedNumber";
 import SourcesPanel from "./SourcesPanel";
 import { downloadReportPdf } from "@/lib/report-pdf";
 import { downloadCsv, exportFilename } from "@/lib/export";
@@ -425,6 +426,17 @@ function Overview({
   // Donut geometry.
   const R = 52, C = 2 * Math.PI * R;
 
+  // Ring fills on mount: start empty, then animate to the target so the CSS
+  // transition actually fires (a freshly-rendered element at the final offset
+  // wouldn't transition). Reduced motion → jump straight to the value.
+  const [ringPct, setRingPct] = useState(0);
+  useEffect(() => {
+    const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) { setRingPct(readyPct); return; }
+    const id = requestAnimationFrame(() => setRingPct(readyPct));
+    return () => cancelAnimationFrame(id);
+  }, [readyPct]);
+
   const breakdown = principleBreakdown(report);
   const biggestGap = [...breakdown].sort((a, b) => b.collect - a.collect)[0];
 
@@ -505,13 +517,13 @@ function Overview({
                 cx="66" cy="66" r={R} fill="none"
                 className="stroke-brand-600" strokeWidth="11" strokeLinecap="round"
                 strokeDasharray={C}
-                strokeDashoffset={C * (1 - readyPct / 100)}
+                strokeDashoffset={C * (1 - ringPct / 100)}
                 style={{ transition: "stroke-dashoffset 700ms cubic-bezier(0.2,0,0,1)" }}
               />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <span className="text-[30px] font-semibold tabular-nums text-stone-900 leading-none">
-                {readyPct}<span className="text-[16px] text-stone-400 align-top">%</span>
+                <AnimatedNumber value={readyPct} durationMs={700} /><span className="text-[16px] text-stone-400 align-top">%</span>
               </span>
               <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-stone-400 mt-1">Ready</span>
             </div>
@@ -520,9 +532,9 @@ function Overview({
           {/* Bar + legend */}
           <div className="flex-1 min-w-0 w-full">
             <p className="text-[13.5px] text-stone-600 leading-relaxed mb-3">
-              <strong className="font-semibold text-stone-900 tabular-nums">{sourced}</strong> of{" "}
-              <strong className="font-semibold text-stone-900 tabular-nums">{applicableFields}</strong> fields have an existing source ·{" "}
-              <strong className="font-semibold text-stone-900 tabular-nums">{newDataNeeded}</strong> need fresh collection
+              <strong className="font-semibold text-stone-900"><AnimatedNumber value={sourced} /></strong> of{" "}
+              <strong className="font-semibold text-stone-900"><AnimatedNumber value={applicableFields} /></strong> fields have an existing source ·{" "}
+              <strong className="font-semibold text-stone-900"><AnimatedNumber value={newDataNeeded} /></strong> need fresh collection
             </p>
 
             <div className="flex items-stretch gap-1 h-3 mb-3">
@@ -549,7 +561,7 @@ function Overview({
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-5 pt-5 border-t border-stone-100">
           {stats.map((s, i) => (
             <div key={i} className="rounded-lg">
-              <p className={`text-[2rem] font-semibold leading-none tabular-nums ${s.num}`}>{s.n}</p>
+              <p className={`text-[2rem] font-semibold leading-none tabular-nums ${s.num}`}><AnimatedNumber value={s.n} /></p>
               <p className="flex items-center gap-1.5 text-[13px] font-semibold text-stone-700 mt-2">
                 <span className={`w-2 h-2 rounded-full flex-shrink-0 ${s.dot}`} />
                 {s.label}
