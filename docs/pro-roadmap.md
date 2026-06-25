@@ -66,8 +66,8 @@ WhatsApp analysis and surface angles to fold into the phases above:
 |---|-------|----------|--------|---------|
 | 1 | **Compliance importer** ✅ shipped | The wedge; best demo; reuses everything | Medium | Pro (AI) |
 | 2 | **Cross-framework export** ✅ shipped | Cheapest win; data already exists | Low | Free + Pro |
-| 3 | Scope 3 calculator ← next | Extends the existing calculator | Medium | Free + Pro |
-| 4 | CBAM + CCTS readiness | Platform story; lightweight first | Low–Med | Pro |
+| 3 | **Scope 3 calculator** ✅ shipped | GHG Protocol + DEFRA 2024; activity-based, Cat 1 deferred | Medium | Free + Pro |
+| 4 | CBAM + CCTS readiness ← next | Platform story; lightweight first | Low–Med | Pro |
 | 5 | Template / knowledge library | Cheap, constant demand | Low | Pro |
 | 6 | Proposal & fee builder | Wins work, not just does it | Medium | Pro |
 | 7 | Accounts + billing + workspace | Monetization foundation (deferred) | High | Pro |

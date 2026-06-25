@@ -3,11 +3,12 @@ import type { ChecklistItem } from "@/lib/types";
 import type { DisclosureMatch } from "@/lib/report-extractor";
 import { PRINCIPLES, type StatusKey } from "./constants";
 import type { CalcInputs } from "@/lib/emissions-calculator";
+import type { Scope3Inputs } from "@/lib/scope3-calculator";
 import DisclosureRow from "./DisclosureRow";
 
 export default function PrincipleSection({
   principle, items, expandedId, onToggle, isFirst, collapsed, onCollapse,
-  collectedIds, onToggleCollected, matches, calcInputs, onCalcChange,
+  collectedIds, onToggleCollected, matches, calcInputs, onCalcChange, scope3Inputs, onScope3Change,
 }: {
   principle: string;
   items: ChecklistItem[];
@@ -21,6 +22,8 @@ export default function PrincipleSection({
   matches: Record<string, DisclosureMatch> | null;
   calcInputs: CalcInputs;
   onCalcChange: (key: keyof CalcInputs, value: string) => void;
+  scope3Inputs: Scope3Inputs;
+  onScope3Change: (key: string, value: string) => void;
 }) {
   const info = PRINCIPLES[principle];
   const collectedCount = items.filter(i => collectedIds.has(i.id)).length;
@@ -97,6 +100,8 @@ export default function PrincipleSection({
               detectedMatch={matches?.[item.id] ?? null}
               calcInputs={calcInputs}
               onCalcChange={onCalcChange}
+              scope3Inputs={scope3Inputs}
+              onScope3Change={onScope3Change}
             />
           ))}
         </div>

@@ -8,7 +8,9 @@ import {
   SEBI_BRSR_FORMAT_URL, principleNumber,
 } from "./constants";
 import type { CalcInputs } from "@/lib/emissions-calculator";
+import type { Scope3Inputs } from "@/lib/scope3-calculator";
 import EmissionsCalculator from "./EmissionsCalculator";
+import Scope3Calculator from "./Scope3Calculator";
 import explainersData from "@/data/brsr_field_explainers.json";
 
 // Pre-generated, AI-written plain-English explanation per BRSR field. Static data
@@ -33,7 +35,7 @@ const STATUS_PILL_BORDER: Record<StatusKey, string> = {
 
 export default function DisclosureRow({
   item, isOdd, expanded, onToggle, isCollected, onToggleCollected, detectedMatch,
-  calcInputs, onCalcChange,
+  calcInputs, onCalcChange, scope3Inputs, onScope3Change,
 }: {
   item: ChecklistItem;
   isOdd: boolean;
@@ -44,6 +46,8 @@ export default function DisclosureRow({
   detectedMatch?: DisclosureMatch | null;
   calcInputs: CalcInputs;
   onCalcChange: (key: keyof CalcInputs, value: string) => void;
+  scope3Inputs: Scope3Inputs;
+  onScope3Change: (key: string, value: string) => void;
 }) {
   const s = STATUS_META[item.status as StatusKey];
   const isNA = item.status === "not_applicable";
@@ -245,6 +249,15 @@ export default function DisclosureRow({
                 mode={CALC_MODES[item.id]!}
                 inputs={calcInputs}
                 onChange={onCalcChange}
+              />
+            )}
+
+            {/* Scope 3 screening calculator (P6-L2) — reuses the shared turnover for intensity */}
+            {!isNA && item.id === "P6-L2" && (
+              <Scope3Calculator
+                inputs={scope3Inputs}
+                turnoverCrore={calcInputs.turnover_crore}
+                onChange={onScope3Change}
               />
             )}
 
