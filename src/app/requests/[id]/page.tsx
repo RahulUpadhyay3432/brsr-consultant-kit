@@ -2,7 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCampaign, listCompanyContacts } from "@/lib/datarequest/db";
 import { campaignEmissions, emissionInputs, GHG_METHODOLOGY } from "@/lib/datarequest/emissions";
+import { buildAssuranceLedger, assuranceStats } from "@/lib/datarequest/assurance";
+import { exportFilename } from "@/lib/export";
 import { signCampaignEvidence } from "@/lib/datarequest/storage";
+import AssurancePackButton from "@/components/datarequest/AssurancePackButton";
 import { addContactAction, addDirectoryContactsAction, deleteDirectoryContactAction, importDocumentAction, applyImportAction } from "@/lib/datarequest/actions";
 import AddOwnerPanel from "@/components/datarequest/AddOwnerPanel";
 import ImportPanel from "@/components/datarequest/ImportPanel";
@@ -54,6 +57,7 @@ export default async function CampaignDetailPage({
   const received = allItems.filter((i) => i.status === "received").length;
   const ghg = campaignEmissions(campaign);
   const inputs = emissionInputs(campaign);
+  const assurance = assuranceStats(campaign);
   const addOwner = addContactAction.bind(null, campaign.id, campaign.clientName, campaign.deadline, campaign.reportingPeriod);
   const addContact = addDirectoryContactsAction.bind(null, campaign.id);
   const deleteContact = deleteDirectoryContactAction.bind(null, campaign.id);
@@ -106,6 +110,45 @@ export default async function CampaignDetailPage({
             ))}
             <p className="text-[11px] text-white/40 leading-relaxed pt-1.5">{GHG_METHODOLOGY}</p>
           </div>
+        </div>
+      )}
+
+      {/* Assurance readiness — reframes the attribution + evidence we already capture
+          as the data-ownership trail a reasonable-assurance review asks for. */}
+      {allItems.length > 0 && (
+        <div className="mt-5 bg-white border border-stone-200 rounded-xl p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-[14px] font-semibold text-stone-800">Assurance readiness</p>
+              <p className="text-[12.5px] text-stone-500 mt-1 max-w-[58ch] leading-relaxed">
+                Every collected figure is traceable to who submitted it, the document that backs it, and the cited
+                factor behind any calculation — the data-ownership trail a reasonable-assurance review asks for.
+              </p>
+            </div>
+            {assurance.collected > 0 && (
+              <div className="flex-shrink-0">
+                <AssurancePackButton
+                  rows={buildAssuranceLedger(campaign)}
+                  filename={exportFilename("brsr-assurance-ledger", campaign.clientName)}
+                />
+              </div>
+            )}
+          </div>
+          <div className="flex flex-wrap items-center gap-2 mt-4">
+            <span className="text-[12px] font-medium text-stone-700 bg-stone-100 border border-stone-200 rounded-full px-2.5 py-1 tabular-nums">
+              {assurance.collected}/{assurance.total} data points collected
+            </span>
+            <span className="text-[12px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-1 tabular-nums">
+              {assurance.withEvidence} with evidence attached
+            </span>
+            <span className="text-[12px] font-medium text-stone-700 bg-stone-100 border border-stone-200 rounded-full px-2.5 py-1 tabular-nums">
+              {assurance.owners} data {assurance.owners === 1 ? "owner" : "owners"}
+            </span>
+          </div>
+          <p className="text-[11px] text-stone-400 leading-relaxed mt-3">
+            Every figure is a value an owner submitted or computed from one via a cited factor; nothing is estimated.
+            {assurance.collected === 0 && " Collect a value to populate the ledger."}
+          </p>
         </div>
       )}
 
