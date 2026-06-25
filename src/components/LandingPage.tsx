@@ -227,7 +227,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                 {[
                   "Gap-analysed action plan (Ready / Verify / Collect)",
                   "Built-in GHG, energy and water calculators",
-                  "Suggested materiality and cross-framework mapping",
+                  "Suggested materiality and downloadable cross-framework mapping (GRI, TCFD, IFRS, TNFD)",
                   "Plain-English AI explanation on every field",
                   "CSV export and a client-ready PDF brief",
                 ].map((f) => (
@@ -247,12 +247,14 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                   "Chase data from the client's team with branded emails and auto-reminders",
                   "No-login owner submission with evidence attached",
                   "Emissions auto-computed and attributed to source",
+                  "Pre-fill figures from a client's existing report — you verify each, with its source line",
+                  "Export your BRSR data mapped across GRI, TCFD, IFRS and TNFD",
                   "Grounded AI narrative draft, review-ready",
                 ].map((f) => (
                   <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-[#EAF3EE] leading-snug"><Check className="text-brand-400 mt-0.5" />{f}</li>
                 ))}
               </ul>
-              <p className="text-[12px] text-[#9FB6AC] leading-relaxed mt-3.5">The importer, proposal builder, cross-framework export and more are on the way — see the roadmap below.</p>
+              <p className="text-[12px] text-[#9FB6AC] leading-relaxed mt-3.5">The proposal builder, multi-client workspace and more are on the way — see the roadmap below.</p>
               <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-brand-500 text-forest text-[13.5px] font-semibold px-4 py-2.5 rounded-lg hover:bg-brand-400 transition-colors pressable mt-6">
                 Request Pro access
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
@@ -271,18 +273,19 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           </h2>
           <p className={`text-[15px] ${BODY} leading-relaxed mt-4 max-w-[620px]`}>
             The free tool prepares the report. Pro is the workspace for doing the work: winning the engagement,
-            collecting the data, and reporting across frameworks. It starts with Collect today and grows from there.
+            collecting the data, and reporting across frameworks. Collect, the compliance importer and cross-framework
+            export are live today, and it keeps growing.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
             {[
-              { name: "Collect", status: "live" as const, desc: "Chase BRSR data from the client's team with branded emails, auto-reminders, and no-login submission with evidence." },
-              { name: "Compliance importer", status: "coming" as const, desc: "Upload the client's existing reports and get the numbers pre-filled, each with its source line, for you to verify." },
+              { name: "Collect", status: "live" as const, flagship: true, desc: "Chase BRSR data from the client's team with branded emails, auto-reminders, and no-login submission with evidence." },
+              { name: "Compliance importer", status: "live" as const, desc: "Upload the client's existing reports and get the numbers pre-filled, each with its source line, for you to verify. It never invents a figure." },
+              { name: "Cross-framework export", status: "live" as const, desc: "Download the full BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD mapping (plus MSCI & DJSI) as a spreadsheet — collect once, report many. CBAM and CCTS join as they ship." },
               { name: "Proposal & fee builder", status: "coming" as const, desc: "Turn a scope into a client-ready proposal and a defensible fee estimate, so you win and price the work." },
-              { name: "Cross-framework export", status: "coming" as const, desc: "Map one dataset across BRSR, GRI, IFRS, TCFD, TNFD and CBAM. Collect once, report many." },
               { name: "Multi-client workspace", status: "coming" as const, desc: "Every client's engagement in one place, instead of one report at a time." },
               { name: "Consultant network", status: "future" as const, desc: "Get matched with the companies that need a BRSR consultant. Be found, not just searching." },
             ].map((p) => (
-              <ProPillar key={p.name} name={p.name} status={p.status} desc={p.desc} />
+              <ProPillar key={p.name} name={p.name} status={p.status} desc={p.desc} flagship={p.flagship} />
             ))}
           </div>
           <p className="text-[13px] text-[#8A938D] mt-6 max-w-[620px] leading-relaxed">
@@ -444,22 +447,24 @@ function Check({ className = "text-brand-600" }: { className?: string }) {
   );
 }
 
-// A Saaksh Pro capability card — the live flagship (Collect) is forest-filled; the
-// rest are light, each with an honest Available now / Coming / Future tag.
-function ProPillar({ name, status, desc }: { name: string; status: "live" | "coming" | "future"; desc: string }) {
-  const live = status === "live";
+// A Saaksh Pro capability card. The flagship (Collect) is forest-filled; other
+// live cards are light with a green "Available now" tag; roadmap cards carry an
+// honest Coming / Future tag. Only the flagship gets the dark hero treatment, so
+// "three things are live" reads as momentum without three heavy dark blocks.
+function ProPillar({ name, status, desc, flagship }: { name: string; status: "live" | "coming" | "future"; desc: string; flagship?: boolean }) {
+  const filled = !!flagship; // only the flagship gets the forest fill
   const tag = status === "live" ? "Available now" : status === "coming" ? "Coming" : "Future";
   const tagCls =
     status === "live" ? "text-forest bg-brand-400"
       : status === "coming" ? "text-[#8A6516] bg-[#F6ECD8] border border-[#EAD9B0]"
         : "text-[#8A938D] bg-white border border-[#E6E3DB]";
   return (
-    <div className={`rounded-2xl p-6 ${live ? "bg-forest text-white" : "bg-[#FAF8F3] border border-[#E6E3DB]"}`}>
+    <div className={`rounded-2xl p-6 ${filled ? "bg-forest text-white" : "bg-[#FAF8F3] border border-[#E6E3DB]"}`}>
       <div className="flex items-start justify-between gap-2">
-        <span className={`font-display text-[18px] leading-tight ${live ? "text-white" : "text-[#14201B]"}`}>{name}</span>
+        <span className={`font-display text-[18px] leading-tight ${filled ? "text-white" : "text-[#14201B]"}`}>{name}</span>
         <span className={`font-mono text-[9px] uppercase tracking-wide rounded-full px-2 py-1 whitespace-nowrap ${tagCls}`}>{tag}</span>
       </div>
-      <p className={`text-[13px] leading-relaxed mt-3.5 ${live ? "text-[#BFD3CA]" : "text-[#5B6660]"}`}>{desc}</p>
+      <p className={`text-[13px] leading-relaxed mt-3.5 ${filled ? "text-[#BFD3CA]" : "text-[#5B6660]"}`}>{desc}</p>
     </div>
   );
 }
