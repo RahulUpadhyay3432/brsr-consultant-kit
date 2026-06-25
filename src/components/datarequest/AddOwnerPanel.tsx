@@ -106,7 +106,7 @@ export default function AddOwnerPanel({
       </p>
 
       {error && (
-        <p className="mb-4 text-[13px] text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3.5 py-2.5">
+        <p className="shake mb-4 text-[13px] text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3.5 py-2.5">
           Add an email and select at least one field.
         </p>
       )}

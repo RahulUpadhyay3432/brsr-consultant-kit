@@ -113,7 +113,7 @@ export default function CompanyAutocomplete({ value, onChange, onPick }: Props) 
         <ul
           id="company-autocomplete-list"
           role="listbox"
-          className="absolute z-30 mt-1 w-full max-h-72 overflow-auto rounded-lg border border-stone-200
+          className="dropdown-in absolute z-30 mt-1 w-full max-h-72 overflow-auto rounded-lg border border-stone-200
             bg-white shadow-lg py-1"
         >
           {matches.map((c, i) => (

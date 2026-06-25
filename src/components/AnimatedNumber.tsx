@@ -36,7 +36,7 @@ export default function AnimatedNumber({
     const from = 0;
     const start = performance.now();
     const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / durationMs);
+      const t = Math.min(1, Math.max(0, (now - start) / durationMs));
       setDisplay(from + (value - from) * easeOut(t));
       if (t < 1) rafRef.current = requestAnimationFrame(tick);
     };

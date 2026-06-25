@@ -12,7 +12,7 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
           <span className="text-[14px] font-semibold text-stone-900">Saaksh</span>
         </div>
 
-        <div className="bg-white border border-stone-200 rounded-2xl p-7 shadow-[0_2px_20px_rgba(100,80,40,0.06)]">
+        <div className={`bg-white border border-stone-200 rounded-2xl p-7 shadow-[0_2px_20px_rgba(100,80,40,0.06)] ${searchParams.error ? "shake" : ""}`}>
           <h1 className="font-display text-[20px] text-stone-900 tracking-tight">Consultant sign-in</h1>
           <p className="text-[13px] text-stone-500 mt-1 leading-relaxed">
             Enter your passcode to manage data collections.

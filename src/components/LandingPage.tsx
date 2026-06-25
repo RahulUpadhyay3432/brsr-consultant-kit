@@ -8,6 +8,7 @@
 import { useState } from "react";
 import ResumeBanner from "@/components/ResumeBanner";
 import { REQUEST_ACCESS_URL } from "@/lib/links";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 interface LandingPageProps {
   onStart: () => void;
@@ -18,6 +19,7 @@ const COMPLIANCE_CHAT = "https://huggingface.co/spaces/sherlockwatson221/climate
 const BODY = "text-[#3F4A44]";
 
 export default function LandingPage({ onStart, resume }: LandingPageProps) {
+  useScrollReveal();
   const scrollTo = (id: string) => () =>
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
@@ -87,7 +89,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       </section>
 
       {/* ── How it works ───────────────────────────────────────────────────── */}
-      <section id="how" className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
+      <section id="how" data-reveal className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
         <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.8rem] leading-[1.06] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
           Three steps from intake to engagement.
         </h2>
@@ -325,7 +327,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 
       {/* ── Stats band ─────────────────────────────────────────────────────── */}
       <section className="bg-[#FCFBF7] border-y border-[#E6E3DB]">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-16">
+        <div data-reveal className="max-w-[1180px] mx-auto px-5 sm:px-8 py-16">
           <p className="font-display font-normal text-center text-[1.7rem] sm:text-[2.2rem] leading-[1.18] tracking-[-0.02em] text-[#14201B] max-w-[640px] mx-auto" style={{ textWrap: "balance" }}>
             The first week of a BRSR engagement, done in minutes. Gap-analysed, cited, and ready to send.
           </p>
@@ -472,7 +474,7 @@ function ProPillar({ name, status, desc, flagship }: { name: string; status: "li
 // A copy-left / panel-right feature row.
 function FeatureRow({ eyebrow, title, panel, children }: { eyebrow: string; title: string; panel: React.ReactNode; children: React.ReactNode }) {
   return (
-    <section className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+    <section data-reveal className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
       <div>
         <Eyebrow>{eyebrow}</Eyebrow>
         <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.7rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>{title}</h2>
