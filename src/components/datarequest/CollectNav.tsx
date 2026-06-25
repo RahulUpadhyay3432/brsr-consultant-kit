@@ -21,8 +21,9 @@ function Item({ href, active, icon, children }: {
 
 export default function CollectNav() {
   const path = usePathname();
-  const collectionsActive = path === "/requests" || (path.startsWith("/requests/") && path !== "/requests/new");
+  const proposalActive = path.startsWith("/requests/proposal");
   const newActive = path === "/requests/new";
+  const collectionsActive = !proposalActive && (path === "/requests" || (path.startsWith("/requests/") && !newActive));
 
   return (
     <nav className="flex-1 overflow-y-auto px-3 pt-4 space-y-5">
@@ -31,6 +32,12 @@ export default function CollectNav() {
         <div className="space-y-0.5">
           <Item href="/requests" active={collectionsActive} icon={<IconList />}>Collections</Item>
           <Item href="/requests/new" active={newActive} icon={<IconPlus />}>New collection</Item>
+        </div>
+      </div>
+      <div>
+        <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Win work</p>
+        <div className="space-y-0.5">
+          <Item href="/requests/proposal" active={proposalActive} icon={<IconDoc />}>Proposal builder</Item>
         </div>
       </div>
       <div>
@@ -54,6 +61,13 @@ function IconPlus() {
   return (
     <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
       <path d="M7.5 3v9M3 7.5h9" />
+    </svg>
+  );
+}
+function IconDoc() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 1.5h4.5L11.5 4.5v9H4z" /><path d="M8.5 1.5v3h3M5.5 7.5h4M5.5 9.5h4" />
     </svg>
   );
 }
