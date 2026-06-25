@@ -254,7 +254,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                   <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-[#EAF3EE] leading-snug"><Check className="text-brand-400 mt-0.5" />{f}</li>
                 ))}
               </ul>
-              <p className="text-[12px] text-[#9FB6AC] leading-relaxed mt-3.5">The proposal builder, multi-client workspace and more are on the way — see the roadmap below.</p>
+              <p className="text-[12px] text-[#9FB6AC] leading-relaxed mt-3.5">The multi-client workspace and more are on the way — see the roadmap below.</p>
               <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-brand-500 text-forest text-[13.5px] font-semibold px-4 py-2.5 rounded-lg hover:bg-brand-400 transition-colors pressable mt-6">
                 Request Pro access
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
@@ -281,7 +281,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               { name: "Collect", status: "live" as const, flagship: true, desc: "Chase BRSR data from the client's team with branded emails, auto-reminders, and no-login submission with evidence." },
               { name: "Compliance importer", status: "live" as const, desc: "Upload the client's existing reports and get the numbers pre-filled, each with its source line, for you to verify. It never invents a figure." },
               { name: "Cross-framework export", status: "live" as const, desc: "Download the full BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD mapping (plus MSCI & DJSI) as a spreadsheet — collect once, report many. CBAM and CCTS join as they ship." },
-              { name: "Proposal & fee builder", status: "coming" as const, desc: "Turn a scope into a client-ready proposal and a defensible fee estimate, so you win and price the work." },
+              { name: "Proposal & fee builder", status: "live" as const, desc: "Turn a scope into a client-ready proposal and a transparent fee estimate, built from your own rates, so you win and price the work." },
               { name: "Multi-client workspace", status: "coming" as const, desc: "Every client's engagement in one place, instead of one report at a time." },
               { name: "Consultant network", status: "future" as const, desc: "Get matched with the companies that need a BRSR consultant. Be found, not just searching." },
             ].map((p) => (
