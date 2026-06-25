@@ -7,6 +7,8 @@ import * as db from "./db";
 import { sendRequestEmail, sendSubmissionAlert } from "./email";
 import { uploadEvidence } from "./storage";
 import { generateNarrative, type NarrativeResult } from "./narrative";
+import { extractValues, type ImportResult } from "./importer";
+import { groqConfigured } from "./groq";
 import { requireConsultant } from "./guard";
 
 function baseUrl(): string {
@@ -127,6 +129,42 @@ export async function generateNarrativeAction(campaignId: string): Promise<Narra
     try { await db.setNarrative(campaignId, narrative); } catch { /* column missing — still return it */ }
   }
   return narrative;
+}
+
+// Compliance importer (paid tier). Reads the extracted text of a client's
+// existing report and returns reviewable figure suggestions for the campaign's
+// fields — extract-only, each with its source sentence. Nothing is written here;
+// the consultant applies the ones they verify via applyImportAction. Value-returning
+// action (the client passes the locally-extracted text; the document stays on the
+// consultant's device — only the text reaches the grounded model).
+export async function importDocumentAction(campaignId: string, extractedText: string): Promise<ImportResult> {
+  requireConsultant();
+  if (!groqConfigured()) return { suggestions: [], truncated: false, configured: false };
+
+  const text = (extractedText || "").trim();
+  const campaign = await db.getCampaign(campaignId);
+  if (!campaign || !text) return { suggestions: [], truncated: false, configured: true };
+
+  const candidates = campaign.contacts.flatMap((c) =>
+    c.items.map((i) => ({ itemId: i.id, fieldId: i.fieldId, label: i.label, unit: i.unit }))
+  );
+  if (candidates.length === 0) return { suggestions: [], truncated: false, configured: true };
+
+  const { suggestions, truncated } = await extractValues(text, candidates);
+  return { suggestions, truncated, configured: true };
+}
+
+// Apply the imported figures the consultant ticked. Each accepted itemId gets its
+// (possibly edited) value written — same path as a collected value (status → received).
+export async function applyImportAction(campaignId: string, formData: FormData): Promise<void> {
+  requireConsultant();
+  const itemIds = formData.getAll("apply").map(String);
+  for (const itemId of itemIds) {
+    const value = String(formData.get(`value_${itemId}`) || "").trim();
+    if (!value) continue;
+    try { await db.updateItem(itemId, value); } catch { /* best-effort per row */ }
+  }
+  redirect(`/requests/${campaignId}`);
 }
 
 // 3) Recipient submits their values (token bound in the page).
