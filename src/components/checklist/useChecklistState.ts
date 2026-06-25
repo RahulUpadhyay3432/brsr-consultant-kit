@@ -9,6 +9,7 @@ import { loadJSON, saveJSON, STORAGE_KEYS } from "@/lib/storage";
 import { PRINCIPLES, type StatusKey, type TypeKey } from "./constants";
 import type { UploadStatus } from "./UploadCard";
 import { type CalcInputs, DEFAULT_CALC_INPUTS } from "@/lib/emissions-calculator";
+import { type Scope3Inputs, DEFAULT_SCOPE3_INPUTS } from "@/lib/scope3-calculator";
 
 interface ChecklistPersist {
   collectedIds: string[];
@@ -16,6 +17,7 @@ interface ChecklistPersist {
   uploadInfo: { fileName: string; pageCount: number } | null;
   showOnlyDetected: boolean;
   calcInputs?: CalcInputs;
+  scope3Inputs?: Scope3Inputs;
   // View state — persisted so a tab-switch or refresh doesn't lose the
   // consultant's filters / search / expanded sections.
   statusFilter?: StatusKey | "all";
@@ -51,6 +53,13 @@ export function useChecklistState(items: ChecklistItem[], general: GeneralLike, 
     setCalcInputs(prev => ({ ...prev, [key]: value }));
   }
 
+  // ── Scope 3 calculator inputs — the P6-L2 screening calculator ──────────────
+  const [scope3Inputs, setScope3Inputs] = useState<Scope3Inputs>(DEFAULT_SCOPE3_INPUTS);
+
+  function setScope3Input(key: string, value: string) {
+    setScope3Inputs(prev => ({ ...prev, [key]: value }));
+  }
+
   // ── Collected state — consultant marks data they've already gathered ────────
   const [collectedIds,  setCollectedIds]  = useState<Set<string>>(new Set());
   const [hideCollected, setHideCollected] = useState(false);
@@ -73,6 +82,7 @@ export function useChecklistState(items: ChecklistItem[], general: GeneralLike, 
       setUploadInfo(saved.uploadInfo ?? null);
       setShowOnlyDetected(!!saved.showOnlyDetected);
       if (saved.calcInputs) setCalcInputs(saved.calcInputs);
+      if (saved.scope3Inputs) setScope3Inputs({ ...DEFAULT_SCOPE3_INPUTS, ...saved.scope3Inputs });
       if (saved.statusFilter) setStatusFilter(saved.statusFilter);
       if (saved.principleFilter) setPrincipleFilter(saved.principleFilter);
       if (saved.typeFilter) setTypeFilter(saved.typeFilter);
@@ -91,13 +101,14 @@ export function useChecklistState(items: ChecklistItem[], general: GeneralLike, 
       uploadInfo,
       showOnlyDetected,
       calcInputs,
+      scope3Inputs,
       statusFilter,
       principleFilter,
       typeFilter,
       search,
       collapsedSections: Array.from(collapsedSections),
     } satisfies ChecklistPersist);
-  }, [hydrated, collectedIds, detection, uploadInfo, showOnlyDetected, calcInputs,
+  }, [hydrated, collectedIds, detection, uploadInfo, showOnlyDetected, calcInputs, scope3Inputs,
       statusFilter, principleFilter, typeFilter, search, collapsedSections]);
 
   // ── Global search seed — a query from the app-shell top bar lands here and
@@ -246,6 +257,8 @@ export function useChecklistState(items: ChecklistItem[], general: GeneralLike, 
     detectedSet, detectedInReport,
     // calculator inputs (shared across P6-E1 / P6-E7 / P6-E3)
     calcInputs, setCalcInput,
+    // Scope 3 screening calculator inputs (P6-L2)
+    scope3Inputs, setScope3Input,
     // derived
     statusCounts, principleCounts, filtered, grouped, principleKeys,
   };

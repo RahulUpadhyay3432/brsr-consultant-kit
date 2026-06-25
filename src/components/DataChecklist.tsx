@@ -274,6 +274,8 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
               matches={c.detection?.matches ?? null}
               calcInputs={c.calcInputs}
               onCalcChange={c.setCalcInput}
+              scope3Inputs={c.scope3Inputs}
+              onScope3Change={c.setScope3Input}
             />
           ))
         )}
