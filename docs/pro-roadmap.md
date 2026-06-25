@@ -50,9 +50,9 @@ customer pitch).
 ## Build-order summary
 | # | Phase | Why here | Effort | Surface |
 |---|-------|----------|--------|---------|
-| 1 | **Compliance importer** | The wedge; best demo; reuses everything | Medium | Pro (AI) |
-| 2 | Cross-framework export | Cheapest win; data already exists | Low | Free + Pro |
-| 3 | Scope 3 calculator | Extends the existing calculator | Medium | Free + Pro |
+| 1 | **Compliance importer** ✅ shipped | The wedge; best demo; reuses everything | Medium | Pro (AI) |
+| 2 | **Cross-framework export** ✅ shipped | Cheapest win; data already exists | Low | Free + Pro |
+| 3 | Scope 3 calculator ← next | Extends the existing calculator | Medium | Free + Pro |
 | 4 | CBAM + CCTS readiness | Platform story; lightweight first | Low–Med | Pro |
 | 5 | Template / knowledge library | Cheap, constant demand | Low | Pro |
 | 6 | Proposal & fee builder | Wins work, not just does it | Medium | Pro |
