@@ -8,6 +8,7 @@ import type {
   BRSRPrinciple,
 } from "./types";
 
+import { assessRegulatory } from "./regulatory-readiness";
 import brsrData from "@/data/brsr_data_points.json";
 import complianceData from "@/data/compliance_overlaps.json";
 import frameworkData from "@/data/framework_mappings.json";
@@ -79,6 +80,7 @@ export function generateReport(formData: IntakeFormData): ReportOutput {
   const generalDisclosures = generateGeneralDisclosures();
   const materialityTopics = generateMaterialityTopics(formData);
   const frameworkMappings = generateFrameworkMappings(formData);
+  const regulatory = assessRegulatory(formData.industry, formData.exportMarkets);
 
   const alreadyTracked = checklist.filter((i) => i.status === "already_tracked").length;
   const partiallyTracked = checklist.filter((i) => i.status === "partially_tracked").length;
@@ -94,6 +96,7 @@ export function generateReport(formData: IntakeFormData): ReportOutput {
     generalDisclosures,
     materialityTopics,
     frameworkMappings,
+    regulatory,
     summary: {
       totalDataPoints: checklist.length,
       alreadyTracked,

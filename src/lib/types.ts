@@ -118,6 +118,8 @@ export interface FrameworkMapping {
 }
 
 // Full report output
+import type { RegulatoryReadiness } from "./regulatory-readiness";
+
 export interface ReportOutput {
   companyName: string;
   industry: string;
@@ -127,6 +129,7 @@ export interface ReportOutput {
   generalDisclosures: { sectionA: SectionDisclosure[]; sectionB: SectionDisclosure[] };
   materialityTopics: MaterialityTopic[];
   frameworkMappings: FrameworkMapping[];
+  regulatory: RegulatoryReadiness;
   summary: {
     totalDataPoints: number;
     alreadyTracked: number;

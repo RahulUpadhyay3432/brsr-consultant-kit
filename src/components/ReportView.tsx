@@ -10,6 +10,7 @@ import DataChecklist from "./DataChecklist";
 import MaterialityMatrix from "./MaterialityMatrix";
 import FrameworkMapper from "./FrameworkMapper";
 import EsgRatingsMapper from "./EsgRatingsMapper";
+import RegulatoryReadiness from "./RegulatoryReadiness";
 import SourcesPanel from "./SourcesPanel";
 import { downloadReportPdf } from "@/lib/report-pdf";
 import { downloadCsv, exportFilename } from "@/lib/export";
@@ -31,6 +32,7 @@ const TABS = [
   { id: "checklist",   label: "Action Plan" },
   { id: "materiality", label: "Materiality" },
   { id: "alignment",   label: "Alignment" },
+  { id: "beyond-brsr", label: "Beyond BRSR" },
 ] as const;
 
 // "sources" is a reference panel, not a workspace step, so it lives outside TABS.
@@ -148,6 +150,7 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
               {activeTab === "checklist"   && <DataChecklist items={report.checklist} general={report.generalDisclosures} seedQuery={seedQuery} clientName={report.companyName} />}
               {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} clientName={report.companyName} />}
               {activeTab === "alignment"   && <AlignmentWorkspace mappings={report.frameworkMappings} clientName={report.companyName} />}
+              {activeTab === "beyond-brsr" && <RegulatoryReadiness regulatory={report.regulatory} />}
               {activeTab === "sources"     && <SourcesPanel />}
             </div>
           </div>
