@@ -36,8 +36,8 @@ export default function ReportPage() {
     // Workspace-shaped skeleton (sidebar + hero card) — reads as "report arriving"
     // rather than a blank spinner. The real report renders on the next frame.
     return (
-      <div className="min-h-screen bg-[#FAF8F3] flex">
-        <aside className="hidden md:flex flex-col w-[248px] border-r border-stone-200 bg-white/60 p-4 gap-4">
+      <div className="min-h-screen bg-page flex">
+        <aside className="hidden md:flex flex-col w-[248px] border-r border-line bg-white/60 p-4 gap-4">
           <Skeleton className="h-7 w-32" />
           <Skeleton className="h-12 w-full rounded-lg" />
           <div className="space-y-2 mt-2">

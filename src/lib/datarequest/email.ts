@@ -58,7 +58,7 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
     )
     .join("");
 
-  const html = `<!doctype html><html><body style="margin:0;background:#FAF8F3;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+  const html = `<!doctype html><html><body style="margin:0;background:#F8FAF9;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
   <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e7e5e0;border-radius:14px;overflow:hidden;">
     <div style="padding:18px 24px;border-bottom:1px solid #f0eee9;">
       <span style="display:inline-block;width:26px;height:26px;border-radius:7px;background:#0E4A36;color:#fff;font-weight:700;font-size:13px;text-align:center;line-height:26px;vertical-align:middle;">S</span>
@@ -133,7 +133,7 @@ export async function sendSubmissionAlert(args: {
   if (!to) return;
 
   const subject = `${args.ownerName} submitted data for ${args.clientName}`;
-  const html = `<!doctype html><html><body style="margin:0;background:#FAF8F3;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+  const html = `<!doctype html><html><body style="margin:0;background:#F8FAF9;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
   <div style="max-width:520px;margin:0 auto;background:#fff;border:1px solid #e7e5e0;border-radius:14px;overflow:hidden;">
     <div style="padding:18px 24px;border-bottom:1px solid #f0eee9;">
       <span style="display:inline-block;width:26px;height:26px;border-radius:7px;background:#0E4A36;color:#fff;font-weight:700;font-size:13px;text-align:center;line-height:26px;vertical-align:middle;">S</span>

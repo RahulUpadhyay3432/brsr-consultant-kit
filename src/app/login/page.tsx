@@ -3,18 +3,18 @@ import { REQUEST_ACCESS_URL } from "@/lib/links";
 
 export default function LoginPage({ searchParams }: { searchParams: { error?: string } }) {
   return (
-    <main className="min-h-screen bg-[#FAF8F3] flex items-center justify-center px-5">
+    <main className="min-h-screen bg-page flex items-center justify-center px-5">
       <div className="w-full max-w-[380px]">
         <div className="flex items-center gap-2.5 mb-6 justify-center">
           <span className="w-[28px] h-[28px] rounded-md bg-forest flex items-center justify-center">
             <span className="text-[12px] font-bold text-white leading-none">S</span>
           </span>
-          <span className="text-[14px] font-semibold text-stone-900">Saaksh</span>
+          <span className="text-[14px] font-semibold text-ink">Saaksh</span>
         </div>
 
-        <div className={`bg-white border border-stone-200 rounded-2xl p-7 shadow-[0_2px_20px_rgba(100,80,40,0.06)] ${searchParams.error ? "shake" : ""}`}>
-          <h1 className="font-display text-[20px] text-stone-900 tracking-tight">Consultant sign-in</h1>
-          <p className="text-[13px] text-stone-500 mt-1 leading-relaxed">
+        <div className={`bg-white border border-line rounded-2xl p-7 shadow-[0_1px_2px_rgba(16,33,26,0.05)] ${searchParams.error ? "shake" : ""}`}>
+          <h1 className="font-display text-[22px] font-bold text-ink tracking-tight">Consultant sign-in</h1>
+          <p className="text-[13px] text-ink-muted mt-1 leading-relaxed">
             Enter your passcode to manage data collections.
           </p>
 

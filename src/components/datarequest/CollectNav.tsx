@@ -10,10 +10,10 @@ function Item({ href, active, icon, children }: {
     <Link
       href={href}
       className={`group relative flex items-center gap-2.5 w-full px-2.5 py-[7px] rounded-lg text-[13.5px] font-medium
-        transition-colors pressable ${active ? "bg-brand-50 text-brand-800" : "text-stone-600 hover:bg-stone-100/70"}`}
+        transition-colors pressable ${active ? "bg-white/15 text-white" : "text-white/75 hover:bg-white/10 hover:text-white"}`}
     >
-      {active && <span className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[3px] rounded-full bg-brand-600" />}
-      <span className={`flex-shrink-0 ${active ? "text-brand-700" : "text-stone-400 group-hover:text-stone-500"}`}>{icon}</span>
+      {active && <span className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[3px] rounded-full bg-brand-500" />}
+      <span className={`flex-shrink-0 ${active ? "text-brand-500" : "text-white/55 group-hover:text-white/80"}`}>{icon}</span>
       <span className="flex-1 text-left">{children}</span>
     </Link>
   );
@@ -28,20 +28,20 @@ export default function CollectNav() {
   return (
     <nav className="flex-1 overflow-y-auto px-3 pt-4 space-y-5">
       <div>
-        <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Collect</p>
+        <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-white/45">Collect</p>
         <div className="space-y-0.5">
           <Item href="/requests" active={collectionsActive} icon={<IconList />}>Collections</Item>
           <Item href="/requests/new" active={newActive} icon={<IconPlus />}>New collection</Item>
         </div>
       </div>
       <div>
-        <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Win work</p>
+        <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-white/45">Win work</p>
         <div className="space-y-0.5">
           <Item href="/requests/proposal" active={proposalActive} icon={<IconDoc />}>Proposal builder</Item>
         </div>
       </div>
       <div>
-        <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Tool</p>
+        <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-white/45">Tool</p>
         <div className="space-y-0.5">
           <Item href="/" active={false} icon={<IconBack />}>Readiness report</Item>
         </div>

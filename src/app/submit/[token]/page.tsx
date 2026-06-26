@@ -25,8 +25,8 @@ export default async function SubmitPage({
         <div className="w-11 h-11 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-3">
           <svg className="w-5 h-5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
         </div>
-        <p className="text-[16px] text-stone-900 font-semibold">Thank you. Your data is in.</p>
-        <p className="text-[13.5px] text-stone-500 mt-1 leading-relaxed">
+        <p className="text-[17px] text-ink font-bold">Thank you. Your data is in.</p>
+        <p className="text-[13.5px] text-ink-muted mt-1 leading-relaxed">
           The consultant preparing {clientName}&apos;s BRSR report has been notified. You can close this tab.
         </p>
       </Shell>
@@ -44,10 +44,10 @@ export default async function SubmitPage({
   return (
     <Shell wide>
       <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-brand-700">Data request</p>
-      <h1 className="font-display text-[22px] text-stone-900 mt-1 tracking-tight">
+      <h1 className="font-display text-[23px] font-bold text-ink mt-1 tracking-tight">
         A few data points for {clientName}&apos;s BRSR report
       </h1>
-      <p className="text-[13.5px] text-stone-500 mt-2 leading-relaxed">
+      <p className="text-[13.5px] text-ink-muted mt-2 leading-relaxed">
         Hi {contact.name || "there"}, please fill in what you have below
         {reportingPeriod && <> for <strong className="text-stone-700">{reportingPeriod}</strong></>}. Estimates are fine;
         the consultant will confirm. {deadlineStr && <>Needed by <strong className="text-stone-700">{deadlineStr}</strong>.</>}
@@ -55,8 +55,8 @@ export default async function SubmitPage({
 
       <form action={submit} className="mt-6 space-y-3 w-full">
         {contact.items.map((it) => (
-          <div key={it.id} className="bg-white border border-stone-200 rounded-xl px-4 py-3.5">
-            <span className="block text-[13.5px] font-medium text-stone-800">
+          <div key={it.id} className="bg-white border border-line rounded-xl px-4 py-3.5">
+            <span className="block text-[13.5px] font-semibold text-ink">
               {it.label}{it.unit && <span className="text-stone-400 font-normal"> ({it.unit})</span>}
             </span>
             <div className="mt-2 grid grid-cols-2 gap-2">
@@ -131,15 +131,15 @@ function priorFy(period: string | null): string | null {
 
 function Shell({ children, wide }: { children: React.ReactNode; wide?: boolean }) {
   return (
-    <main className="min-h-screen bg-[#FAF8F3]">
+    <main className="min-h-screen bg-page">
       <div className={`mx-auto px-5 sm:px-8 py-12 ${wide ? "max-w-[640px]" : "max-w-[480px]"}`}>
         <div className="flex items-center gap-2.5 mb-6">
           <span className="w-[26px] h-[26px] rounded-md bg-forest flex items-center justify-center">
             <span className="text-[11px] font-bold text-white leading-none">S</span>
           </span>
-          <span className="text-[13px] font-semibold text-stone-900">Saaksh</span>
+          <span className="text-[13px] font-semibold text-ink">Saaksh</span>
         </div>
-        <div className={wide ? "" : "bg-white border border-stone-200 rounded-2xl p-7 shadow-[0_2px_20px_rgba(100,80,40,0.06)] flex flex-col items-start"}>
+        <div className={wide ? "" : "bg-white border border-line rounded-2xl p-7 shadow-[0_1px_2px_rgba(16,33,26,0.05)] flex flex-col items-start"}>
           {children}
         </div>
       </div>

@@ -6,6 +6,8 @@ import { buildAssuranceLedger, assuranceStats } from "@/lib/datarequest/assuranc
 import { exportFilename } from "@/lib/export";
 import { signCampaignEvidence } from "@/lib/datarequest/storage";
 import AssurancePackButton from "@/components/datarequest/AssurancePackButton";
+import CollectionSummary from "@/components/datarequest/CollectionSummary";
+import CompanyAvatar from "@/components/CompanyAvatar";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import { addContactAction, addDirectoryContactsAction, deleteDirectoryContactAction, importDocumentAction, applyImportAction } from "@/lib/datarequest/actions";
 import AddOwnerPanel from "@/components/datarequest/AddOwnerPanel";
@@ -66,21 +68,24 @@ export default async function CampaignDetailPage({
   const applyImport = applyImportAction.bind(null, campaign.id);
 
   return (
-    <div className="max-w-[820px] mx-auto">
-      <Link href="/requests" className="text-[13px] text-stone-500 hover:text-stone-700">← All collections</Link>
+    <div className="max-w-[820px] mx-auto bg-page">
+      <Link href="/requests" className="text-[13px] text-ink-muted hover:text-ink">← All collections</Link>
 
       <div className="flex items-start justify-between gap-4 mt-3">
-        <div>
-          <h1 className="font-display text-[24px] text-stone-900 tracking-tight">{campaign.clientName}</h1>
-          <p className="text-[13px] text-stone-500 mt-1">
-            {campaign.reportingPeriod && <>{campaign.reportingPeriod} · </>}
-            {campaign.contacts.length} {campaign.contacts.length === 1 ? "owner" : "owners"}
-            {campaign.deadline && <> · due {new Date(campaign.deadline).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</>}
-          </p>
+        <div className="flex items-start gap-3 min-w-0">
+          <CompanyAvatar name={campaign.clientName} size={40} rounded="rounded-xl" className="mt-0.5" />
+          <div className="min-w-0">
+            <h1 className="font-display text-[24px] font-bold text-ink tracking-tight">{campaign.clientName}</h1>
+            <p className="text-[13px] text-ink-muted mt-1">
+              {campaign.reportingPeriod && <>{campaign.reportingPeriod} · </>}
+              {campaign.contacts.length} {campaign.contacts.length === 1 ? "owner" : "owners"}
+              {campaign.deadline && <> · due {new Date(campaign.deadline).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</>}
+            </p>
+          </div>
         </div>
         {allItems.length > 0 && (
           <div className="flex flex-col items-end gap-2 flex-shrink-0">
-            <span className="text-[13px] font-semibold text-stone-700 tabular-nums whitespace-nowrap">{received}/{allItems.length} received</span>
+            <span className="text-[13px] font-semibold text-ink-body tabular-nums whitespace-nowrap">{received}/{allItems.length} received</span>
             <Link href={`/requests/${campaign.id}/draft`}
               className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors whitespace-nowrap">
               Generate draft
@@ -89,6 +94,16 @@ export default async function CampaignDetailPage({
           </div>
         )}
       </div>
+
+      {allItems.length > 0 && (
+        <CollectionSummary
+          received={received}
+          total={allItems.length}
+          owners={assurance.owners}
+          withEvidence={assurance.withEvidence}
+          emissions={ghg ? ghg.total_tco2e : undefined}
+        />
+      )}
 
       {/* Emissions auto-calc + attribution */}
       {ghg && (
@@ -117,11 +132,11 @@ export default async function CampaignDetailPage({
       {/* Assurance readiness — reframes the attribution + evidence we already capture
           as the data-ownership trail a reasonable-assurance review asks for. */}
       {allItems.length > 0 && (
-        <div className="mt-5 bg-white border border-stone-200 rounded-xl p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
+        <div className="mt-5 bg-white border border-line rounded-xl p-5 shadow-[0_1px_2px_rgba(16,33,26,0.05)]">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-[14px] font-semibold text-stone-800">Assurance readiness</p>
-              <p className="text-[12.5px] text-stone-500 mt-1 max-w-[58ch] leading-relaxed">
+              <p className="text-[14px] font-semibold text-ink">Assurance readiness</p>
+              <p className="text-[12.5px] text-ink-body mt-1 max-w-[58ch] leading-relaxed">
                 Every collected figure is traceable to who submitted it, the document that backs it, and the cited
                 factor behind any calculation — the data-ownership trail a reasonable-assurance review asks for.
               </p>
@@ -136,17 +151,17 @@ export default async function CampaignDetailPage({
             )}
           </div>
           <div className="flex flex-wrap items-center gap-2 mt-4">
-            <span className="text-[12px] font-medium text-stone-700 bg-stone-100 border border-stone-200 rounded-full px-2.5 py-1 tabular-nums">
+            <span className="text-[12px] font-medium text-ink-body bg-tint border border-line rounded-full px-2.5 py-1 tabular-nums">
               <AnimatedNumber value={assurance.collected} />/<AnimatedNumber value={assurance.total} /> data points collected
             </span>
             <span className="text-[12px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-1 tabular-nums">
               <AnimatedNumber value={assurance.withEvidence} /> with evidence attached
             </span>
-            <span className="text-[12px] font-medium text-stone-700 bg-stone-100 border border-stone-200 rounded-full px-2.5 py-1 tabular-nums">
+            <span className="text-[12px] font-medium text-ink-body bg-tint border border-line rounded-full px-2.5 py-1 tabular-nums">
               <AnimatedNumber value={assurance.owners} /> data {assurance.owners === 1 ? "owner" : "owners"}
             </span>
           </div>
-          <p className="text-[11px] text-stone-400 leading-relaxed mt-3">
+          <p className="text-[11px] text-ink-muted leading-relaxed mt-3">
             Every figure is a value an owner submitted or computed from one via a cited factor; nothing is estimated.
             {assurance.collected === 0 && " Collect a value to populate the ledger."}
           </p>
@@ -160,12 +175,12 @@ export default async function CampaignDetailPage({
         <ImportPanel importAction={importDoc} applyAction={applyImport} hasItems={allItems.length > 0} />
 
         {campaign.contacts.length === 0 ? (
-          <div className="rounded-xl border border-stone-200 bg-white px-5 py-9 text-center shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
-            <div className="mx-auto w-10 h-10 rounded-full bg-brand-50 border border-brand-100 flex items-center justify-center">
+          <div className="rounded-xl border border-line bg-tint px-5 py-9 text-center shadow-[0_1px_2px_rgba(16,33,26,0.05)]">
+            <div className="mx-auto w-10 h-10 rounded-full bg-white border border-brand-100 flex items-center justify-center">
               <svg className="w-5 h-5 text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M19 8v6M22 11h-6" /></svg>
             </div>
-            <p className="text-[14px] font-semibold text-stone-800 mt-3">No data owners yet</p>
-            <p className="text-[13px] text-stone-500 mt-1.5 max-w-[44ch] mx-auto leading-relaxed">
+            <p className="text-[14px] font-semibold text-ink mt-3">No data owners yet</p>
+            <p className="text-[13px] text-ink-body mt-1.5 max-w-[44ch] mx-auto leading-relaxed">
               Add the people who hold each number: the energy manager for electricity and fuel,
               HR for headcount, EHS for water. Each gets their own secure link and is reminded
               automatically until they respond.
@@ -176,26 +191,34 @@ export default async function CampaignDetailPage({
             const meta = STATUS_META[c.status];
             const link = `${base}/submit/${c.token}`;
             const got = c.items.filter((i) => i.status === "received").length;
+            const ownerPct = c.items.length > 0 ? Math.round((got / c.items.length) * 100) : 0;
             return (
-              <div key={c.id} className="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
-                <div className="flex items-center gap-3 px-4 py-3 border-b border-stone-100">
+              <div key={c.id} className="bg-white border border-line rounded-xl overflow-hidden shadow-[0_1px_2px_rgba(16,33,26,0.05)]">
+                <div className="flex items-center gap-3 px-4 py-3 border-b border-line">
+                  <CompanyAvatar name={c.name || c.email} size={28} />
                   <div className="min-w-0 flex-1">
-                    <p className="text-[13.5px] font-semibold text-stone-800 truncate">{c.name || c.email}</p>
-                    {c.name && <p className="text-[11.5px] text-stone-400 truncate">{c.email}</p>}
+                    <p className="text-[13.5px] font-semibold text-ink truncate">{c.name || c.email}</p>
+                    {c.name && <p className="text-[11.5px] text-ink-muted truncate">{c.email}</p>}
                   </div>
-                  <span className="text-[12px] text-stone-500 tabular-nums">{got}/{c.items.length}</span>
+                  <div className="hidden sm:flex items-center gap-2 flex-shrink-0 w-32">
+                    <div className="flex-1 h-1.5 rounded-full bg-line overflow-hidden">
+                      <div className="h-full rounded-full bg-brand-500" style={{ width: `${ownerPct}%` }} />
+                    </div>
+                    <span className="text-[11.5px] text-ink-muted tabular-nums whitespace-nowrap">{got}/{c.items.length}</span>
+                  </div>
+                  <span className="sm:hidden text-[12px] text-ink-muted tabular-nums">{got}/{c.items.length}</span>
                   <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${meta.cls} whitespace-nowrap`}>{meta.label}</span>
                 </div>
                 {c.items.map((it) => (
-                  <div key={it.id} className="flex items-center gap-3 px-4 py-2.5 border-t border-stone-50">
+                  <div key={it.id} className="flex items-center gap-3 px-4 py-2.5 border-t border-line">
                     <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${it.status === "received" ? "bg-emerald-500" : "bg-stone-300"}`} />
                     {it.section && (
-                      <span className="flex-shrink-0 text-[10px] font-mono font-semibold text-stone-500 bg-stone-100 border border-stone-200 px-1.5 py-0.5 rounded" title={`Section ${it.section}${it.principle ? ` · ${it.principle}` : ""}`}>
+                      <span className="flex-shrink-0 text-[10px] font-mono font-semibold text-ink-muted bg-tint border border-line px-1.5 py-0.5 rounded" title={`Section ${it.section}${it.principle ? ` · ${it.principle}` : ""}`}>
                         {it.fieldId}
                       </span>
                     )}
-                    <span className="flex-1 min-w-0 text-[13px] text-stone-700 truncate">
-                      {it.label}{it.unit && <span className="text-stone-400"> · {it.unit}</span>}
+                    <span className="flex-1 min-w-0 text-[13px] text-ink-body truncate">
+                      {it.label}{it.unit && <span className="text-ink-muted"> · {it.unit}</span>}
                     </span>
                     {it.evidencePath && (
                       evidence.get(it.id) ? (
@@ -213,14 +236,14 @@ export default async function CampaignDetailPage({
                       )
                     )}
                     <span className="text-[13px] tabular-nums whitespace-nowrap">
-                      {it.value ? <span className="font-semibold text-stone-800">{it.value}</span> : <span className="text-stone-300">—</span>}
-                      {it.priorValue && <span className="text-stone-400"> · prev {it.priorValue}</span>}
+                      {it.value ? <span className="font-semibold text-ink">{it.value}</span> : <span className="text-stone-300">—</span>}
+                      {it.priorValue && <span className="text-ink-muted"> · prev {it.priorValue}</span>}
                     </span>
                   </div>
                 ))}
-                <div className="flex items-center justify-between gap-3 px-4 py-2.5 bg-stone-50/60 border-t border-stone-100">
+                <div className="flex items-center justify-between gap-3 px-4 py-2.5 bg-tint/60 border-t border-line">
                   <CopyLinkButton link={link} />
-                  <span className="text-[11.5px] text-stone-400 whitespace-nowrap">{emailStatus(c)}</span>
+                  <span className="text-[11.5px] text-ink-muted whitespace-nowrap">{emailStatus(c)}</span>
                 </div>
               </div>
             );

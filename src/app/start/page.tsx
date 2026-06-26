@@ -38,7 +38,7 @@ export default function StartPage() {
   return (
     <div className="min-h-screen bg-grid">
       {/* ── Header ─────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 no-print bg-[#FAF8F3]/85 backdrop-blur-md">
+      <header className="sticky top-0 z-50 no-print bg-page/85 backdrop-blur-md">
         <div className="max-w-[1680px] mx-auto px-4 sm:px-8 h-13 flex items-center justify-between">
 
           {/* Wordmark + mark — clicking returns to the marketing home */}
@@ -50,7 +50,7 @@ export default function StartPage() {
             <div className="w-[26px] h-[26px] rounded-md bg-forest flex items-center justify-center flex-shrink-0">
               <span className="text-[11px] font-bold text-white leading-none tracking-tight">S</span>
             </div>
-            <span className="text-[13.5px] font-semibold text-stone-900 tracking-[-0.01em]">
+            <span className="text-[13.5px] font-semibold text-ink tracking-[-0.01em]">
               Saaksh
             </span>
           </button>
@@ -103,8 +103,8 @@ export default function StartPage() {
 
             {/* Heading — hero element, larger travel, slowest timing */}
             <h2
-              className="anim-up-hero font-display font-light text-[2.4rem] sm:text-[3.6rem] text-stone-900
-                leading-[1.08] tracking-[-0.02em]"
+              className="anim-up-hero font-display font-bold text-[2.7rem] sm:text-[4rem] text-ink
+                leading-[1.05] tracking-[-0.02em]"
               style={{ textWrap: "balance", animationDelay: "70ms" }}
             >
               Generate your client&apos;s
@@ -116,7 +116,7 @@ export default function StartPage() {
 
             {/* Subtitle — secondary, follows heading */}
             <p
-              className="anim-up-md text-stone-600 mt-6 text-[17px] sm:text-[19px] max-w-[600px] leading-[1.7]"
+              className="anim-up-md text-ink-body mt-6 text-[17px] sm:text-[19px] max-w-[600px] leading-[1.7]"
               style={{ animationDelay: "180ms" }}
             >
               Fill in a few details below. Get a gap-analysis checklist,
@@ -127,8 +127,8 @@ export default function StartPage() {
 
           {/* ── Form Card — enters after hero settles ─────────────────── */}
           <div
-            className="anim-card bg-white rounded-2xl border border-stone-200/80
-              shadow-[0_2px_20px_rgba(100,80,40,0.08)] p-6 sm:p-10"
+            className="anim-card bg-white rounded-2xl border border-line
+              shadow-[0_1px_2px_rgba(16,33,26,0.05)] p-6 sm:p-10"
             style={{ animationDelay: "270ms" }}
           >
             <IntakeForm
@@ -220,8 +220,8 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="bg-white rounded-xl border border-stone-200/80 p-5 flex flex-col gap-4
-      shadow-[0_1px_4px_rgba(100,80,40,0.05)] hover:shadow-[0_6px_20px_rgba(100,80,40,0.10)]
+    <div className="bg-white rounded-xl border border-line p-5 flex flex-col gap-4
+      shadow-[0_1px_2px_rgba(16,33,26,0.05)] hover:shadow-[0_6px_20px_rgba(16,33,26,0.08)]
       transition-all duration-200 hover:-translate-y-1 group cursor-default">
       {/* Icon in a tinted square — scales with card hover */}
       <div className={`w-8 h-8 rounded-lg ${accentBg} flex items-center justify-center flex-shrink-0
@@ -229,8 +229,8 @@ function FeatureCard({
         <span className={`${accent}`} aria-hidden="true">{icon}</span>
       </div>
       <div>
-        <h3 className="text-[13px] font-semibold text-stone-800 leading-snug">{title}</h3>
-        <p className="text-[12px] text-stone-500 mt-1.5 leading-relaxed">{description}</p>
+        <h3 className="text-[13px] font-semibold text-ink leading-snug">{title}</h3>
+        <p className="text-[12px] text-ink-muted mt-1.5 leading-relaxed">{description}</p>
       </div>
     </div>
   );

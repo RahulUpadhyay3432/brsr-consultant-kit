@@ -16,7 +16,7 @@ interface LandingPageProps {
 }
 
 const COMPLIANCE_CHAT = "https://huggingface.co/spaces/sherlockwatson221/climate-compliance";
-const BODY = "text-[#3F4A44]";
+const BODY = "text-ink-body";
 
 export default function LandingPage({ onStart, resume }: LandingPageProps) {
   useScrollReveal();
@@ -24,7 +24,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
-    <div className="min-h-screen bg-[#FAF8F3] text-[#14201B]">
+    <div className="min-h-screen bg-page text-ink">
       <Header onStart={onStart} scrollTo={scrollTo} />
 
       {resume && (
@@ -38,12 +38,12 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-16 lg:pb-24">
           <div className="grid lg:grid-cols-[1.05fr_1fr] gap-12 lg:gap-12 items-center">
             <div>
-              <div className="anim-up-sm inline-flex items-center gap-2 rounded-full border border-[#E6E3DB] bg-white/70 pl-2 pr-3.5 py-1">
+              <div className="anim-up-sm inline-flex items-center gap-2 rounded-full border border-line bg-white/70 pl-2 pr-3.5 py-1">
                 <span className="font-display text-[14px] text-brand-700">साक्ष्य</span>
                 <span className="text-[12.5px] text-[#5B6660]">Evidence, by name and by design</span>
               </div>
 
-              <h1 className="anim-up-hero font-display font-normal text-[3.25rem] sm:text-[4.5rem] leading-[1.02] tracking-[-0.02em] mt-6" style={{ textWrap: "balance", animationDelay: "60ms" }}>
+              <h1 className="anim-up-hero font-display font-bold text-ink text-[3.6rem] sm:text-[5rem] leading-[1.0] tracking-[-0.025em] mt-6" style={{ textWrap: "balance", animationDelay: "60ms" }}>
                 Compliance reporting, made <span className="italic">fast and defensible</span>.
               </h1>
 
@@ -58,7 +58,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                   Start a free report
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
                 </button>
-                <button onClick={scrollTo("how")} className="inline-flex items-center gap-2 bg-white text-[#14201B] text-[15.5px] font-medium px-5 py-3 rounded-xl border border-[#E6E3DB] hover:bg-[#FCFBF7] transition-colors pressable">
+                <button onClick={scrollTo("how")} className="inline-flex items-center gap-2 bg-white text-ink text-[15.5px] font-medium px-5 py-3 rounded-xl border border-line hover:bg-[#FCFBF7] transition-colors pressable">
                   See how it works
                 </button>
               </div>
@@ -78,11 +78,11 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       </section>
 
       {/* ── Sources bar ────────────────────────────────────────────────────── */}
-      <section className="border-y border-[#E6E3DB] bg-white">
+      <section className="border-y border-line bg-white">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-6 flex flex-wrap items-center justify-center gap-x-7 gap-y-2">
           <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#8A938D]">Built on primary sources</span>
           {["SEBI BRSR Format", "ICAI 2024", "CEA factors", "IPCC 2006", "GRI · TCFD · IFRS"].map((s) => (
-            <span key={s} className="font-display text-[16px] text-[#14201B]">{s}</span>
+            <span key={s} className="font-display text-[16px] text-ink">{s}</span>
           ))}
         </div>
       </section>
@@ -97,7 +97,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           A BRSR report is a hundred-odd disclosures, scattered data, emission maths and a stack of frameworks.
           Saaksh takes each of those jobs and gives it a tool.
         </p>
-        <div className="mt-12 rounded-2xl border border-[#E6E3DB] bg-white overflow-hidden divide-y divide-[#EFEDE6]">
+        <div className="mt-12 rounded-2xl border border-line bg-white overflow-hidden divide-y divide-[#EFEDE6]">
           {[
             { pain: "A blank 108-field format, and no quick read on what's already covered", sol: "A gap-analysed action plan, every field sorted into Ready, Verify or Collect" },
             { pain: "Re-keying numbers out of last year's report by hand", sol: "An AI importer that pre-fills the figures, each shown with its source line for you to verify" },
@@ -116,7 +116,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               </div>
               <div className="flex items-start gap-3 sm:pl-8 sm:border-l border-[#EFEDE6]">
                 <Check className="text-brand-600 mt-0.5" />
-                <p className="text-[15px] text-[#14201B] leading-snug flex-1 font-medium">{r.sol}</p>
+                <p className="text-[15px] text-ink leading-snug flex-1 font-medium">{r.sol}</p>
               </div>
             </div>
           ))}
@@ -139,7 +139,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           ].map((s) => (
             <div key={s.n}>
               <p className="font-display text-[2.6rem] text-brand-500 leading-none">{s.n}</p>
-              <h3 className="text-[17px] font-semibold text-[#14201B] mt-4">{s.t}</h3>
+              <h3 className="text-[17px] font-semibold text-ink mt-4">{s.t}</h3>
               <p className={`text-[15px] ${BODY} leading-relaxed mt-2`}>{s.b}</p>
             </div>
           ))}
@@ -154,16 +154,16 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           <span className="text-[#8A6516] font-medium">Verify</span>, and what still needs to be{" "}
           <span className="text-[#A8481B] font-medium">Collected</span>. Open any field for a plain-English explanation written from the public SEBI definition.
         </p>
-        <div className="mt-5 flex items-start gap-2.5 rounded-lg border border-[#E6E3DB] bg-[#FCFBF7] px-3.5 py-3 max-w-[460px]">
+        <div className="mt-5 flex items-start gap-2.5 rounded-lg border border-line bg-[#FCFBF7] px-3.5 py-3 max-w-[460px]">
           <Spark />
           <p className="text-[13.5px] text-[#5B6660] leading-relaxed">
-            <span className="font-semibold text-[#14201B]">In plain English</span> is AI-written, once, from public definitions. No client data is involved, and the text ships static.
+            <span className="font-semibold text-ink">In plain English</span> is AI-written, once, from public definitions. No client data is involved, and the text ships static.
           </p>
         </div>
       </FeatureRow>
 
       {/* ── Materiality + Alignment (two-up) ───────────────────────────────── */}
-      <section className="bg-white border-y border-[#E6E3DB]">
+      <section className="bg-white border-y border-line">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-12 lg:gap-16">
           <div>
             <Eyebrow>Suggested materiality</Eyebrow>
@@ -186,7 +186,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           Built-in GHG, energy, water and Scope 3 screening calculators convert raw activity data into BRSR-ready figures, using CEA and IPCC factors with the version noted on every line. Export a CSV for your working file and a clean PDF brief to share.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <span className="inline-flex items-center gap-1.5 text-[14px] font-medium text-[#14201B] bg-white border border-[#E6E3DB] px-3.5 py-2 rounded-lg">Export CSV</span>
+          <span className="inline-flex items-center gap-1.5 text-[14px] font-medium text-ink bg-white border border-line px-3.5 py-2 rounded-lg">Export CSV</span>
           <span className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-white bg-forest px-3.5 py-2 rounded-lg">Client-ready PDF brief</span>
         </div>
       </FeatureRow>
@@ -235,7 +235,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           </p>
           <ul className="mt-6 space-y-2.5">
             {["Branded request emails & auto-reminders", "No-login submission with evidence attachments", "Emissions calculated with attributed factors", "Assurance-ready evidence trail — every figure traced to its owner and source"].map((f) => (
-              <li key={f} className="flex items-center gap-2.5 text-[15px] text-[#14201B]"><Check />{f}</li>
+              <li key={f} className="flex items-center gap-2.5 text-[15px] text-ink"><Check />{f}</li>
             ))}
           </ul>
           <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-5 py-3 rounded-xl hover:bg-forest-light transition-colors pressable mt-7">
@@ -248,7 +248,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       </section>
 
       {/* ── Free vs Pro comparison ─────────────────────────────────────────── */}
-      <section className="bg-white border-t border-[#E6E3DB]">
+      <section className="bg-white border-t border-line">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
           <Eyebrow>Free and Pro</Eyebrow>
           <h2 className="font-display font-normal text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>
@@ -270,7 +270,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       </section>
 
       {/* ── Saaksh Pro — the compliance copilot ────────────────────────────── */}
-      <section id="pro" className="bg-white border-t border-[#E6E3DB]">
+      <section id="pro" className="bg-white border-t border-line">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
           <Eyebrow>Saaksh Pro</Eyebrow>
           <h2 className="font-display font-normal text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>
@@ -314,7 +314,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
             { t: "Free to start", b: "The readiness tool is free and needs no login. The Pro workspace layers on when you move to collecting and reporting at scale." },
           ].map((c) => (
             <div key={c.t}>
-              <h3 className="font-display text-[20px] text-[#14201B]">{c.t}</h3>
+              <h3 className="font-display text-[20px] text-ink">{c.t}</h3>
               <p className={`text-[15px] ${BODY} leading-relaxed mt-2`}>{c.b}</p>
             </div>
           ))}
@@ -322,9 +322,9 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       </section>
 
       {/* ── Stats band ─────────────────────────────────────────────────────── */}
-      <section className="bg-[#FCFBF7] border-y border-[#E6E3DB]">
+      <section className="bg-[#FCFBF7] border-y border-line">
         <div data-reveal className="max-w-[1180px] mx-auto px-5 sm:px-8 py-16">
-          <p className="font-display font-normal text-center text-[1.9rem] sm:text-[2.4rem] leading-[1.18] tracking-[-0.02em] text-[#14201B] max-w-[660px] mx-auto" style={{ textWrap: "balance" }}>
+          <p className="font-display font-normal text-center text-[1.9rem] sm:text-[2.4rem] leading-[1.18] tracking-[-0.02em] text-ink max-w-[660px] mx-auto" style={{ textWrap: "balance" }}>
             The first week of BRSR work, done in minutes. Gap-analysed, cited, and ready to send.
           </p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
@@ -365,16 +365,16 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 /* ── Header / Footer ───────────────────────────────────────────────────────── */
 function Header({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: string) => () => void }) {
   return (
-    <header className="sticky top-0 z-50 bg-[#FAF8F3]/85 backdrop-blur-md border-b border-[#E6E3DB]">
+    <header className="sticky top-0 z-50 bg-page/85 backdrop-blur-md border-b border-line">
       <div className="max-w-[1180px] mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="w-[28px] h-[28px] rounded-lg bg-forest flex items-center justify-center"><span className="font-display text-[14px] text-white leading-none">S</span></div>
-          <span className="font-display text-[20px] text-[#14201B]">Saaksh</span>
+          <span className="font-display text-[20px] text-ink">Saaksh</span>
         </div>
         <div className="flex items-center gap-5">
-          <button onClick={scrollTo("how")} className="hidden sm:inline text-[14px] text-[#5B6660] hover:text-[#14201B] transition-colors">How it works</button>
-          <button onClick={scrollTo("pro")} className="hidden sm:inline text-[14px] text-[#5B6660] hover:text-[#14201B] transition-colors">Pro</button>
-          <a href={COMPLIANCE_CHAT} target="_blank" rel="noopener noreferrer" className="hidden sm:inline-flex items-center gap-1.5 text-[14px] text-[#5B6660] hover:text-[#14201B] transition-colors">
+          <button onClick={scrollTo("how")} className="hidden sm:inline text-[14px] text-[#5B6660] hover:text-ink transition-colors">How it works</button>
+          <button onClick={scrollTo("pro")} className="hidden sm:inline text-[14px] text-[#5B6660] hover:text-ink transition-colors">Pro</button>
+          <a href={COMPLIANCE_CHAT} target="_blank" rel="noopener noreferrer" className="hidden sm:inline-flex items-center gap-1.5 text-[14px] text-[#5B6660] hover:text-ink transition-colors">
             <span className="w-1.5 h-1.5 rounded-full bg-brand-500" /> Compliance Chat
           </a>
           <button onClick={onStart} className="inline-flex items-center bg-forest text-white text-[13.5px] font-semibold px-4 py-2 rounded-lg hover:bg-forest-light transition-colors pressable">Start a free report</button>
@@ -479,14 +479,14 @@ function Mark({ v }: { v: boolean | "soon" }) {
 const CMP_COLS = "grid grid-cols-[1fr_52px_60px] sm:grid-cols-[1fr_120px_140px]";
 function CompareTable() {
   return (
-    <div className="mt-10 rounded-2xl border border-[#E6E3DB] overflow-hidden bg-white">
+    <div className="mt-10 rounded-2xl border border-line overflow-hidden bg-white">
       {/* Header */}
-      <div className={`${CMP_COLS} items-stretch border-b border-[#E6E3DB] bg-[#FCFBF7]`}>
+      <div className={`${CMP_COLS} items-stretch border-b border-line bg-[#FCFBF7]`}>
         <div className="px-4 sm:px-6 py-3.5 flex items-end">
           <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-[#8A938D]">What you get</span>
         </div>
         <div className="py-3.5 text-center border-l border-[#EFEDE6]">
-          <p className="font-display text-[15px] text-[#14201B] leading-none">Free</p>
+          <p className="font-display text-[15px] text-ink leading-none">Free</p>
           <p className="font-mono text-[8.5px] uppercase tracking-wide text-[#0E7A56] mt-1">No login</p>
         </div>
         <div className="py-3.5 text-center bg-forest">
@@ -504,7 +504,7 @@ function CompareTable() {
           </div>
           {g.rows.map(([label, free, pro], i) => (
             <div key={label} className={`${CMP_COLS} items-center ${i < g.rows.length - 1 ? "border-b border-[#F2F0EA]" : ""}`}>
-              <p className="px-4 sm:px-6 py-3 text-[13.5px] sm:text-[14px] text-[#14201B] leading-snug">{label}</p>
+              <p className="px-4 sm:px-6 py-3 text-[13.5px] sm:text-[14px] text-ink leading-snug">{label}</p>
               <div className="py-3 flex justify-center border-l border-[#EFEDE6]"><Mark v={free} /></div>
               <div className="py-3 flex justify-center bg-[#F2F7F4]"><Mark v={pro} /></div>
             </div>
@@ -540,11 +540,11 @@ function ProPillar({ name, status, desc, flagship, ai }: { name: string; status:
   const tagCls =
     status === "live" ? "text-forest bg-brand-400"
       : status === "coming" ? "text-[#8A6516] bg-[#F6ECD8] border border-[#EAD9B0]"
-        : "text-[#8A938D] bg-white border border-[#E6E3DB]";
+        : "text-[#8A938D] bg-white border border-line";
   return (
-    <div className={`rounded-2xl p-6 ${filled ? "bg-forest text-white" : "bg-[#FAF8F3] border border-[#E6E3DB]"}`}>
+    <div className={`rounded-2xl p-6 ${filled ? "bg-forest text-white" : "bg-white border border-line"}`}>
       <div className="flex items-start justify-between gap-2">
-        <span className={`font-display text-[19px] leading-tight flex items-center gap-2 ${filled ? "text-white" : "text-[#14201B]"}`}>
+        <span className={`font-display text-[19px] leading-tight flex items-center gap-2 ${filled ? "text-white" : "text-ink"}`}>
           {name}
           {ai && <span className={`font-mono text-[8.5px] uppercase tracking-wide rounded-full px-1.5 py-0.5 ${filled ? "bg-brand-400 text-forest" : "bg-forest text-white"}`}>AI</span>}
         </span>
@@ -571,7 +571,7 @@ function FeatureRow({ eyebrow, title, panel, children }: { eyebrow: string; titl
 
 /* ── Live product panels ───────────────────────────────────────────────────── */
 function PanelCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <div className={`rounded-2xl bg-white border border-[#E6E3DB] shadow-[0_10px_40px_rgba(20,30,25,0.06)] ${className}`}>{children}</div>;
+  return <div className={`rounded-2xl bg-white border border-line shadow-[0_10px_40px_rgba(20,30,25,0.06)] ${className}`}>{children}</div>;
 }
 
 function ReadinessPanel() {
@@ -582,7 +582,7 @@ function ReadinessPanel() {
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-forest flex items-center justify-center"><span className="font-display text-[14px] text-white">S</span></div>
           <div>
-            <p className="text-[13px] font-semibold text-[#14201B] leading-tight">Acme Industries Ltd</p>
+            <p className="text-[13px] font-semibold text-ink leading-tight">Acme Industries Ltd</p>
             <p className="font-mono text-[10.5px] text-[#8A938D]">BRSR · FY 2024–25</p>
           </div>
         </div>
@@ -595,7 +595,7 @@ function ReadinessPanel() {
             <circle cx="46" cy="46" r={R} fill="none" stroke="#0E4A36" strokeWidth="8" strokeLinecap="round" strokeDasharray={C} strokeDashoffset={C * (1 - pct / 100)} />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="font-display text-[20px] text-[#14201B] leading-none">{pct}<span className="text-[11px]">%</span></span>
+            <span className="font-display text-[20px] text-ink leading-none">{pct}<span className="text-[11px]">%</span></span>
             <span className="font-mono text-[8px] uppercase tracking-wide text-[#8A938D] mt-0.5">Ready</span>
           </div>
         </div>
@@ -603,7 +603,7 @@ function ReadinessPanel() {
           {[["Ready", 71, "bg-brand-500"], ["Verify", 22, "bg-[#C2871B]"], ["Collect", 15, "bg-[#D9682E]"]].map(([l, n, c]) => (
             <div key={l as string} className="flex items-center justify-between text-[12.5px]">
               <span className="flex items-center gap-1.5 text-[#3F4A44]"><span className={`w-2 h-2 rounded-full ${c}`} />{l}</span>
-              <span className="font-mono font-semibold text-[#14201B]">{n}</span>
+              <span className="font-mono font-semibold text-ink">{n}</span>
             </div>
           ))}
         </div>
@@ -634,15 +634,15 @@ function ActionPlanPanel() {
   return (
     <PanelCard className="p-4">
       <div className="flex items-center justify-between px-1 pb-2.5 border-b border-[#F2F0EA]">
-        <p className="text-[12.5px] font-semibold text-[#14201B]">Action plan · Principle 6 — Environment</p>
+        <p className="text-[12.5px] font-semibold text-ink">Action plan · Principle 6 — Environment</p>
         <span className="font-mono text-[10.5px] text-[#8A938D]">11 fields</span>
       </div>
       <Row label="Total energy consumption (GJ)" status="Ready" dot="#18C39A" />
       <Row label="Water withdrawal by source (kL)" status="Verify" dot="#C2871B" />
-      <div className="rounded-lg border border-[#E6E3DB] my-1.5">
+      <div className="rounded-lg border border-line my-1.5">
         <div className="flex items-center gap-2.5 px-3 py-2.5">
           <span className="w-2 h-2 rounded-full" style={{ background: "#D9682E" }} />
-          <span className="text-[13px] text-[#14201B] flex-1">Scope 1 emissions (tCO₂e)</span>
+          <span className="text-[13px] text-ink flex-1">Scope 1 emissions (tCO₂e)</span>
           <span className="font-mono text-[10px] text-[#8A938D]">Essential</span>
           <StatusPill s="Collect" />
         </div>
@@ -661,7 +661,7 @@ function Row({ label, status, dot }: { label: string; status: "Ready" | "Verify"
   return (
     <div className="flex items-center gap-2.5 px-3 py-2.5">
       <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: dot }} />
-      <span className="text-[13px] text-[#14201B] flex-1">{label}</span>
+      <span className="text-[13px] text-ink flex-1">{label}</span>
       <StatusPill s={status} />
     </div>
   );
@@ -720,7 +720,7 @@ function AlignmentPanel() {
         <tbody>
           {rows.map((r) => (
             <tr key={r[0]} className="border-t border-[#F2F0EA]">
-              <td className="py-2.5 text-[13px] text-[#14201B]">{r[0]}</td>
+              <td className="py-2.5 text-[13px] text-ink">{r[0]}</td>
               {r.slice(1).map((v, i) => <td key={i} className="py-2.5 text-right font-mono text-[12px] text-[#5B6660]">{v}</td>)}
             </tr>
           ))}
@@ -743,7 +743,7 @@ function GhgCalculatorPanel() {
   return (
     <PanelCard className="p-5">
       <div className="flex items-center justify-between pb-3 border-b border-[#F2F0EA]">
-        <p className="text-[12.5px] font-semibold text-[#14201B]">GHG calculator · Scope 1 & 2</p>
+        <p className="text-[12.5px] font-semibold text-ink">GHG calculator · Scope 1 & 2</p>
         <span className="font-mono text-[10px] uppercase tracking-wide text-[#0E7A56]">live</span>
       </div>
       <div className="mt-3 space-y-3">
@@ -768,7 +768,7 @@ function Field({ label, value, onChange, factor }: { label: string; value: strin
       <label className="text-[12px] text-[#5B6660]">{label}</label>
       <div className="flex items-center gap-2 mt-1">
         <input value={value} onChange={(e) => onChange(e.target.value.replace(/[^0-9.]/g, ""))} inputMode="numeric"
-          className="flex-1 h-10 px-3 font-mono text-[14px] text-[#14201B] bg-white border border-[#E6E3DB] rounded-lg focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
+          className="flex-1 h-10 px-3 font-mono text-[14px] text-ink bg-white border border-line rounded-lg focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
         <span className="font-mono text-[11px] text-[#8A938D] whitespace-nowrap">{factor}</span>
       </div>
     </div>
@@ -784,7 +784,7 @@ function CollectPanel() {
   return (
     <PanelCard className="p-5">
       <div className="flex items-center justify-between pb-3 border-b border-[#F2F0EA]">
-        <p className="text-[12.5px] font-semibold text-[#14201B]">Data requests · Acme Industries</p>
+        <p className="text-[12.5px] font-semibold text-ink">Data requests · Acme Industries</p>
         <span className="font-mono text-[10.5px] text-[#8A938D]">3 of 5 in</span>
       </div>
       <div className="mt-2 space-y-1">
@@ -792,7 +792,7 @@ function CollectPanel() {
           <div key={r.in} className="flex items-center gap-3 py-2">
             <span className="w-8 h-8 rounded-full bg-[#E3F7F0] flex items-center justify-center font-mono text-[11px] text-[#0E4A36] flex-shrink-0">{r.in}</span>
             <div className="flex-1 min-w-0">
-              <p className="text-[13px] text-[#14201B] leading-tight">{r.name} · <span className="text-[#5B6660]">{r.dept}</span></p>
+              <p className="text-[13px] text-ink leading-tight">{r.name} · <span className="text-[#5B6660]">{r.dept}</span></p>
               <p className="font-mono text-[11px] text-[#8A938D]">{r.item}</p>
             </div>
             <span className="font-mono text-[10px] rounded-full px-2 py-0.5 whitespace-nowrap" style={{ backgroundColor: r.bg, color: r.c }}>{r.status}</span>
@@ -801,7 +801,7 @@ function CollectPanel() {
       </div>
       <div className="mt-3 rounded-lg bg-[#E3F7F0] border border-[#CFEDE1] p-3">
         <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-[#0E7A56]"><Spark />AI-drafted narrative</p>
-        <p className="text-[12px] text-[#3F4A44] leading-relaxed mt-1.5">In FY 2024–25 the company&apos;s Scope 1 and 2 emissions totalled <span className="font-semibold text-[#14201B]">92.3 tCO₂e</span>, a 4% reduction year on year, driven by the switch to grid-renewable supply at the Pune facility.</p>
+        <p className="text-[12px] text-[#3F4A44] leading-relaxed mt-1.5">In FY 2024–25 the company&apos;s Scope 1 and 2 emissions totalled <span className="font-semibold text-ink">92.3 tCO₂e</span>, a 4% reduction year on year, driven by the switch to grid-renewable supply at the Pune facility.</p>
         <p className="font-mono text-[10px] text-[#8A938D] mt-2">Every figure linked to source · nothing invented</p>
       </div>
     </PanelCard>

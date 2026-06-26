@@ -3,11 +3,17 @@
 @tailwind utilities;
 
 :root {
-  /* Evergreen & Ember tokens */
+  /* Clean Forest tokens — white canvas, dark ink, forest accent */
   --brand-500: #18C39A;   /* mint accent */
   --brand-800: #0E4A36;   /* deep evergreen */
-  --forest:    #0E4A36;   /* primary green (buttons, logo, dark sections) */
-  --ink:       #14201B;   /* heading/text ink */
+  --forest:    #0E4A36;   /* primary green (buttons, logo, rail, dark sections) */
+  --page:      #F8FAF9;   /* near-white app canvas (whisper green-grey) */
+  --surface:   #FFFFFF;   /* card surface */
+  --line:      #E8EBEA;   /* hairline border */
+  --tint:      #F1FAF6;   /* whisper-mint card tint */
+  --ink:       #10211A;   /* heading ink (near-black) */
+  --body:      #3A4742;   /* body text (>=4.5:1 on white) */
+  --muted:     #6B7772;   /* secondary text */
 
   /* Custom easing */
   --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
@@ -21,15 +27,17 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Display font — editorial headings (Newsreader serif, self-hosted; Georgia fallback) */
+/* Display headings — bold modern sans (Clean Forest). Serif retired from product UI. */
 .font-display {
-  font-family: var(--font-newsreader), 'Georgia', 'Times New Roman', serif;
+  font-family: var(--font-hanken), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 body {
   min-height: 100vh;
-  /* Cream paper canvas */
-  background-color: #FAF8F3;
+  /* Clean near-white canvas */
+  background-color: var(--page);
 }
 
 /* Background: only the atmospheric glow, no grid lines */
@@ -193,7 +201,7 @@ body::before {
 .skeleton {
   position: relative;
   overflow: hidden;
-  background: #ECE8E0;
+  background: #EAEEEC;
   border-radius: 8px;
 }
 .skeleton::after {

@@ -7,40 +7,43 @@ import { logoutAction } from "@/lib/datarequest/auth";
 // and /login keep their own standalone layouts.)
 export default function RequestsLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-[#FAF8F3]">
+    <div className="flex min-h-screen bg-page">
 
-      {/* Sidebar */}
+      {/* Sidebar — deep-forest branded rail */}
       <aside className="no-print w-[244px] flex-shrink-0 h-screen sticky top-0 hidden lg:flex flex-col
-        bg-white/55 backdrop-blur-sm border-r border-black/[0.06]">
+        bg-forest border-r border-white/10 text-white">
 
         {/* Brand → back to the readiness tool */}
-        <Link href="/" className="h-14 flex items-center gap-2.5 px-4 border-b border-black/[0.05]
-          hover:bg-stone-100/50 transition-colors">
-          <div className="w-[26px] h-[26px] rounded-md bg-forest flex items-center justify-center flex-shrink-0">
+        <Link href="/" className="h-14 flex items-center gap-2.5 px-4 border-b border-white/10
+          hover:bg-white/[0.06] transition-colors">
+          <div className="w-[26px] h-[26px] rounded-md bg-white/15 flex items-center justify-center flex-shrink-0">
             <span className="text-[11px] font-bold text-white leading-none tracking-tight">S</span>
           </div>
-          <div className="leading-tight">
-            <p className="text-[13px] font-semibold text-stone-900 tracking-[-0.01em]">Saaksh</p>
-            <p className="text-[10.5px] text-stone-400">Data collection</p>
+          <div className="leading-tight flex-1 min-w-0">
+            <div className="flex items-center gap-1.5">
+              <p className="text-[13px] font-semibold text-white tracking-[-0.01em]">Saaksh</p>
+              <span className="font-mono text-[8.5px] font-semibold uppercase tracking-[0.08em] text-brand-500 bg-white/10 rounded px-1 py-px leading-none">Pro</span>
+            </div>
+            <p className="text-[10.5px] text-white/60">Data collection</p>
           </div>
         </Link>
 
         <CollectNav />
 
         {/* Footer */}
-        <div className="px-3 py-3 border-t border-black/[0.05] space-y-1">
+        <div className="px-3 py-3 border-t border-white/10 space-y-1">
           <form action={logoutAction}>
             <button type="submit" className="inline-flex items-center gap-2 w-full px-2.5 py-2 rounded-lg text-[13px] font-medium
-              text-stone-600 hover:bg-stone-100/70 transition-colors pressable">
-              <svg className="w-4 h-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+              text-white/75 hover:bg-white/10 hover:text-white transition-colors pressable">
+              <svg className="w-4 h-4 text-white/55" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H3m0 0l4-4m-4 4l4 4M21 4v16" />
               </svg>
               Log out
             </button>
           </form>
           <div className="flex items-center gap-1.5 px-2.5 pt-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
-            <span className="text-[10.5px] text-stone-400 tracking-tight">Client data · encrypted</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0" />
+            <span className="text-[10.5px] text-white/55 tracking-tight">Client data · encrypted</span>
           </div>
         </div>
       </aside>
@@ -48,7 +51,7 @@ export default function RequestsLayout({ children }: { children: React.ReactNode
       {/* Main column */}
       <div className="flex-1 min-w-0 flex flex-col">
         <header className="no-print sticky top-0 z-40 h-14 flex items-center gap-3 px-5 sm:px-8
-          bg-[#FAF8F3]/85 backdrop-blur-md border-b border-black/[0.06]">
+          bg-page/85 backdrop-blur-md border-b border-black/[0.06]">
           {/* Mobile brand (sidebar is hidden < lg) */}
           <Link href="/" className="lg:hidden flex items-center">
             <span className="w-[24px] h-[24px] rounded-md bg-forest flex items-center justify-center">

@@ -53,9 +53,12 @@ export default function NarrativePanel({
   }
 
   return (
-    <div className="mt-5 bg-white border border-stone-200 rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
-      <div className="px-4 py-2.5 border-b border-stone-100 bg-stone-50/50 flex items-center justify-between gap-3">
-        <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-stone-500">Qualitative narrative (AI draft)</p>
+    <div className="mt-5 bg-white border border-line rounded-xl overflow-hidden shadow-[0_1px_2px_rgba(16,33,26,0.05)]">
+      <div className="px-4 py-3 border-b border-line bg-tint/60 flex items-center justify-between gap-3">
+        <div>
+          <p className="text-[13px] font-bold text-ink font-display">AI narrative draft</p>
+          <p className="text-[11.5px] text-ink-muted leading-snug mt-0.5">Drafted only from your collected data — never invented. Review before filing.</p>
+        </div>
         <button
           onClick={generate}
           disabled={loading}
@@ -68,7 +71,7 @@ export default function NarrativePanel({
 
       <div className="px-4 py-3">
         {entries.length === 0 ? (
-          <p className="text-[12.5px] text-stone-500 leading-relaxed">
+          <p className="text-[12.5px] text-ink-body leading-relaxed">
             {msg ??
               "Turn your collected figures into editable narrative prose for the principle-wise write-up. It is grounded only in what owners submitted: numbers are never invented or altered. Review and edit before filing."}
           </p>
@@ -79,10 +82,10 @@ export default function NarrativePanel({
             </div>
             <div className="space-y-3">
               {entries.map(([p, text]) => (
-                <div key={p} className="border border-stone-200 rounded-lg p-3">
+                <div key={p} className="border border-line rounded-lg p-3">
                   <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <p className="text-[12px] font-semibold text-stone-700">
-                      <span className="font-mono text-stone-400 mr-1.5">{p}</span>
+                    <p className="text-[12px] font-semibold text-ink">
+                      <span className="font-mono text-ink-muted mr-1.5">{p}</span>
                       {PRINCIPLE_LABELS[p] ?? "Principle"}
                     </p>
                     <button
@@ -92,7 +95,7 @@ export default function NarrativePanel({
                       {copied === p ? "Copied" : "Copy"}
                     </button>
                   </div>
-                  <p className="text-[12.5px] text-stone-600 leading-relaxed whitespace-pre-line">{text}</p>
+                  <p className="text-[12.5px] text-ink-body leading-relaxed whitespace-pre-line">{text}</p>
                 </div>
               ))}
             </div>

@@ -111,7 +111,7 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
   }, []);
 
   return (
-    <div className="anim-up-sm flex min-h-screen bg-[#FAF8F3]">
+    <div className="anim-up-sm flex min-h-screen bg-page">
 
       {/* ── Sidebar ────────────────────────────────────────────────────────── */}
       <Sidebar
@@ -133,7 +133,7 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
           <div className="max-w-[1180px] mx-auto">
             {/* Breadcrumb + per-screen actions */}
             <div className="flex items-center justify-between gap-4 mb-5">
-              <p className="text-[12px] text-stone-400 font-medium tracking-tight">
+              <p className="text-[12px] text-ink-muted font-medium tracking-tight">
                 BRSR Readiness · FY 2025–26
               </p>
               <button
@@ -228,8 +228,8 @@ function Sidebar({
         <div className="flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg bg-white border border-stone-200/80 shadow-sm">
           <CompanyAvatar name={report.companyName || "Your Client"} size={28} />
           <div className="leading-tight min-w-0">
-            <p className="text-[12.5px] font-semibold text-stone-800 truncate">{report.companyName || "Your Client"}</p>
-            <p className="text-[10.5px] text-stone-400 truncate">{industryLabel}</p>
+            <p className="text-[12.5px] font-semibold text-ink truncate">{report.companyName || "Your Client"}</p>
+            <p className="text-[10.5px] text-ink-muted truncate">{industryLabel}</p>
           </div>
         </div>
       </div>
@@ -334,7 +334,7 @@ function TopBar({ onSearch }: { onSearch: (q: string) => void }) {
 
   return (
     <header className="no-print sticky top-0 z-40 h-14 flex items-center gap-3 px-5 sm:px-8
-      bg-[#FAF8F3]/85 backdrop-blur-md border-b border-black/[0.06]">
+      bg-page/85 backdrop-blur-md border-b border-line">
 
       {/* Search */}
       <form
@@ -480,10 +480,10 @@ function Overview({
       {/* Title + filing source */}
       <div className="flex items-start justify-between gap-3 flex-wrap">
         <div>
-          <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">
+          <h1 className="font-display text-[26px] font-bold text-ink leading-tight tracking-tight">
             Overview
           </h1>
-          <p className="text-[13px] text-stone-500 mt-1 max-w-[68ch] leading-relaxed">
+          <p className="text-[13px] text-ink-body mt-1 max-w-[68ch] leading-relaxed">
             A live readiness picture for{" "}
             <strong className="font-semibold text-stone-700">{report.companyName || "this company"}</strong>{" "}
             across the {applicableFields} principle-wise BRSR fields (Section C) — what&apos;s already covered, what to verify, and what to collect
@@ -581,8 +581,8 @@ function Overview({
       >
         <span className="flex-shrink-0 text-[11px] font-bold font-mono px-2 py-1 rounded bg-slate-100 text-slate-600 border border-slate-200">A·B</span>
         <div className="min-w-0 flex-1">
-          <p className="text-[14px] font-semibold text-stone-800">General disclosures · Sections A &amp; B</p>
-          <p className="text-[12px] text-stone-500 mt-0.5 leading-relaxed">
+          <p className="text-[14px] font-bold text-ink">General disclosures · Sections A &amp; B</p>
+          <p className="text-[12px] text-ink-body mt-0.5 leading-relaxed">
             The {abTotal} entity facts &amp; policies every BRSR opens with — collected from the client&apos;s own
             records, separate from the Section-C gap analysis above.
           </p>
@@ -613,7 +613,7 @@ function Overview({
         {/* Per-principle breakdown */}
         <div className="lg:col-span-2 bg-white rounded-xl border border-stone-200 p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
           <div className="flex items-baseline justify-between mb-4">
-            <h3 className="text-[15px] font-semibold text-stone-800">Readiness by principle</h3>
+            <h3 className="text-[15px] font-bold text-ink">Readiness by principle</h3>
             <span className="text-[11px] text-stone-400">{breakdown.length} NGRBC principles</span>
           </div>
           <ul className="space-y-1">
@@ -652,7 +652,7 @@ function Overview({
 
         {/* Where to start */}
         <div className="bg-white rounded-xl border border-stone-200 p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
-          <h3 className="text-[15px] font-semibold text-stone-800 mb-4">Where to start</h3>
+          <h3 className="text-[15px] font-bold text-ink mb-4">Where to start</h3>
 
           {noFilings ? (
             <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
@@ -764,10 +764,10 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
       {/* Title */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">
+          <h1 className="font-display text-[26px] font-bold text-ink leading-tight tracking-tight">
             Alignment
           </h1>
-          <p className="text-[13px] text-stone-500 mt-1 max-w-[72ch] leading-relaxed">
+          <p className="text-[13px] text-ink-body mt-1 max-w-[72ch] leading-relaxed">
             How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2 and TNFD (nature) — and to the MSCI &amp; DJSI
             rating frameworks. Collect once, report across all.
           </p>

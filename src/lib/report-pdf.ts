@@ -32,7 +32,7 @@ const OWNERS: Record<string, { theme: string; chip: string; found: string }> = {
 const ORDER = Object.keys(OWNERS);
 
 type RGB = [number, number, number];
-const PAPER: RGB = [250, 248, 243];   // #FAF8F3
+const PAPER: RGB = [248, 250, 249];   // #F8FAF9 near-white
 const INK: RGB = [20, 32, 27];        // #14201B
 const BODY: RGB = [63, 74, 68];       // #3F4A44
 const SECOND: RGB = [91, 102, 96];    // #5B6660

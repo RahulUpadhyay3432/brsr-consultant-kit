@@ -5,10 +5,11 @@
 // keyword-matches the curated help KB (src/data/help_topics.json) — no AI, fully
 // on-device, so it can only surface vetted answers, never invent one.
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { searchHelp, type HelpTopic } from "@/lib/help-search";
 import helpData from "@/data/help_topics.json";
+import { askSaaksh } from "@/lib/datarequest/help-ai";
 import { WALKTHROUGH_STEPS, StepRow } from "./Walkthrough";
 
 const TOPICS = (helpData as { topics: HelpTopic[] }).topics;
@@ -26,8 +27,35 @@ export default function HelpWidget() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
+  // Submitted question drives the answer view (the AI call, with keyword fallback).
+  const [asked, setAsked] = useState("");
+  const [thinking, setThinking] = useState(false);
+  const [aiAnswer, setAiAnswer] = useState<string | null>(null);
+  // Monotonic id so a stale in-flight AI response can't overwrite a newer ask.
+  const askSeq = useRef(0);
 
-  const results = useMemo(() => (query.trim() ? searchHelp(query, TOPICS) : []), [query]);
+  // Keyword results for the submitted question — the graceful fallback when the
+  // AI is unavailable, and what we show alongside the AI answer for vetted detail.
+  const results = useMemo(() => (asked.trim() ? searchHelp(asked, TOPICS) : []), [asked]);
+
+  async function runAsk(raw: string) {
+    const q = raw.trim();
+    if (!q) return;
+    const seq = ++askSeq.current;
+    setAsked(q);
+    setOpenId(null);
+    setAiAnswer(null);
+    setThinking(true);
+    try {
+      const { answer } = await askSaaksh(q);
+      if (seq === askSeq.current) setAiAnswer(answer);
+    } catch {
+      // Server action threw — fall through to keyword results (aiAnswer stays null).
+      if (seq === askSeq.current) setAiAnswer(null);
+    } finally {
+      if (seq === askSeq.current) setThinking(false);
+    }
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -78,11 +106,12 @@ export default function HelpWidget() {
               </svg>
               <input
                 value={query}
-                onChange={(e) => { setQuery(e.target.value); setOpenId(null); }}
-                placeholder="Ask a question…"
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") runAsk(query); }}
+                placeholder="Ask Saaksh a question…"
                 aria-label="Ask a question"
                 autoFocus
-                className="w-full h-9 pl-8 pr-3 text-[13px] text-stone-800 bg-white border border-stone-200 rounded-lg
+                className="w-full h-9 pl-8 pr-3 text-[13px] text-ink bg-white border border-stone-200 rounded-lg
                   focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
               />
             </div>
@@ -90,50 +119,76 @@ export default function HelpWidget() {
 
           {/* Body */}
           <div className="flex-1 overflow-y-auto px-4 pb-4">
-            {query.trim() ? (
-              results.length ? (
-                <ul className="space-y-2 mt-2">
-                  {results.map((t) => {
-                    const isOpen = openId === t.id;
-                    return (
-                      <li key={t.id} className="rounded-lg border border-stone-200 overflow-hidden">
-                        <button
-                          onClick={() => setOpenId(isOpen ? null : t.id)}
-                          aria-expanded={isOpen}
-                          className="w-full text-left px-3 py-2.5 flex items-center justify-between gap-2 hover:bg-stone-50 transition-colors"
-                        >
-                          <span className="text-[13px] font-medium text-stone-800">{t.title}</span>
-                          <svg className={`w-3.5 h-3.5 text-stone-400 flex-shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
-                          </svg>
-                        </button>
-                        {isOpen && (
-                          <p className="px-3 pb-3 text-[12.5px] text-stone-600 leading-relaxed">{t.answer}</p>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              ) : (
-                <div className="mt-3 text-[12.5px] text-stone-500 leading-relaxed">
-                  <p>
-                    No exact match. Here&apos;s the quick sequence below, or for deep regulatory
-                    questions open{" "}
-                    <a href={COMPLIANCE_CHAT} target="_blank" rel="noopener noreferrer" className="text-brand-700 underline underline-offset-2">Compliance Chat</a>.
-                  </p>
-                  <div className="mt-4 space-y-4">
-                    {WALKTHROUGH_STEPS.map((s) => <StepRow key={s.n} step={s} />)}
+            {asked.trim() ? (
+              <div className="mt-2 space-y-3">
+                {/* AI answer surface — grounded; thinking state while awaiting. */}
+                {thinking ? (
+                  <div className="rounded-lg border border-brand-200 bg-tint px-3 py-3">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
+                      <span className="text-[12px] font-medium text-brand-700">Saaksh AI is thinking…</span>
+                    </div>
                   </div>
-                </div>
-              )
+                ) : aiAnswer ? (
+                  <div className="rounded-lg border border-brand-200 bg-tint px-3 py-3">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-brand-700 bg-white border border-brand-200 rounded px-1.5 py-0.5">Saaksh AI</span>
+                      <span className="text-[10.5px] text-ink-muted">grounded in our knowledge base — never invents</span>
+                    </div>
+                    <p className="text-[12.5px] text-ink-body leading-relaxed whitespace-pre-line">{aiAnswer}</p>
+                  </div>
+                ) : null}
+
+                {/* Keyword results — the safe fallback (also shown beside an AI answer for vetted detail). */}
+                {results.length ? (
+                  <div>
+                    {aiAnswer && (
+                      <p className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-stone-400 mb-2">From the help library</p>
+                    )}
+                    <ul className="space-y-2">
+                      {results.map((t) => {
+                        const isOpen = openId === t.id;
+                        return (
+                          <li key={t.id} className="rounded-lg border border-stone-200 overflow-hidden">
+                            <button
+                              onClick={() => setOpenId(isOpen ? null : t.id)}
+                              aria-expanded={isOpen}
+                              className="w-full text-left px-3 py-2.5 flex items-center justify-between gap-2 hover:bg-stone-50 transition-colors"
+                            >
+                              <span className="text-[13px] font-medium text-ink">{t.title}</span>
+                              <svg className={`w-3.5 h-3.5 text-stone-400 flex-shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+                              </svg>
+                            </button>
+                            {isOpen && (
+                              <p className="px-3 pb-3 text-[12.5px] text-ink-body leading-relaxed">{t.answer}</p>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                ) : !thinking && !aiAnswer ? (
+                  <div className="text-[12.5px] text-ink-muted leading-relaxed">
+                    <p>
+                      No exact match. Here&apos;s the quick sequence below, or for deep regulatory
+                      questions open{" "}
+                      <a href={COMPLIANCE_CHAT} target="_blank" rel="noopener noreferrer" className="text-brand-700 underline underline-offset-2">Compliance Chat</a>.
+                    </p>
+                    <div className="mt-4 space-y-4">
+                      {WALKTHROUGH_STEPS.map((s) => <StepRow key={s.n} step={s} />)}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
             ) : (
               <>
                 <div className="flex flex-wrap gap-1.5 mt-2 mb-4">
                   {QUICK.map((q) => (
                     <button
                       key={q}
-                      onClick={() => setQuery(q)}
-                      className="text-[11.5px] text-stone-600 bg-stone-100 hover:bg-stone-200 rounded-full px-2.5 py-1 transition-colors pressable"
+                      onClick={() => { setQuery(q); runAsk(q); }}
+                      className="text-[11.5px] text-ink-body bg-stone-100 hover:bg-stone-200 rounded-full px-2.5 py-1 transition-colors pressable"
                     >
                       {q}
                     </button>

@@ -47,10 +47,10 @@ export default function ProposalBuilder() {
     <div className="max-w-[920px] mx-auto">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-[24px] text-stone-900 tracking-tight">Proposal &amp; fee builder</h1>
-          <p className="text-[13px] text-stone-500 mt-1 max-w-[64ch] leading-relaxed">
+          <h1 className="font-display text-[24px] text-ink tracking-tight">Proposal &amp; fee builder</h1>
+          <p className="text-[13px] text-ink-body mt-1 max-w-[64ch] leading-relaxed">
             Scope an engagement and produce a client-ready proposal with a transparent fee estimate. It structures
-            <strong className="text-stone-600"> your own rates</strong> — it never asserts a market price. Generated on your device.
+            <strong className="text-ink"> your own rates</strong> — it never asserts a market price. Generated on your device.
           </p>
         </div>
         <button
@@ -65,8 +65,8 @@ export default function ProposalBuilder() {
       <div className="grid lg:grid-cols-2 gap-5 mt-6">
         {/* ── Scope inputs ─────────────────────────────────────────────── */}
         <div className="space-y-4">
-          <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)] space-y-3.5">
-            <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-stone-500">Engagement scope</p>
+          <div className="bg-white border border-line rounded-xl p-5 shadow-[0_1px_2px_rgba(16,33,26,0.05)] space-y-3.5">
+            <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-ink-muted">Engagement scope</p>
             <div className="grid sm:grid-cols-2 gap-3">
               <Labeled label="Client name"><input className={inputCls} value={inp.clientName} onChange={(e) => set("clientName", e.target.value)} placeholder="Acme Industries Ltd" /></Labeled>
               <Labeled label="Reporting period"><input className={inputCls} value={inp.reportingPeriod} onChange={(e) => set("reportingPeriod", e.target.value)} placeholder="FY 2025-26" /></Labeled>
@@ -105,21 +105,37 @@ export default function ProposalBuilder() {
             </div>
           </div>
 
-          <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)] space-y-3">
-            <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-stone-500">Your rates <span className="font-normal normal-case tracking-normal text-stone-400">— set your own numbers</span></p>
-            <div className="grid sm:grid-cols-2 gap-3">
-              <RateField label="Base BRSR engagement" value={inp.baseFee} onChange={(n) => set("baseFee", n)} />
-              <RateField label="Per additional framework" value={inp.perFramework} onChange={(n) => set("perFramework", n)} />
-              <RateField label="Scope 3 inventory" value={inp.scope3Fee} onChange={(n) => set("scope3Fee", n)} />
-              <RateField label="Value-chain collection" value={inp.valueChainFee} onChange={(n) => set("valueChainFee", n)} />
-              <RateField label="Assurance support" value={inp.assuranceFee} onChange={(n) => set("assuranceFee", n)} />
+          <div className="bg-white border border-line rounded-xl p-5 shadow-[0_1px_2px_rgba(16,33,26,0.05)] space-y-4">
+            <div>
+              <p className="text-[14px] font-bold text-ink font-display">Engagement rates</p>
+              <p className="text-[12px] text-ink-muted leading-relaxed mt-0.5">Your rate card. Every proposal is generated from these figures — adjust to your market.</p>
+            </div>
+            <div className="space-y-2">
+              <p className="text-[10.5px] font-bold uppercase tracking-[0.1em] text-ink-muted">Scope</p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <RateField label="Base BRSR engagement" value={inp.baseFee} onChange={(n) => set("baseFee", n)} />
+                <RateField label="Scope 3 inventory" value={inp.scope3Fee} onChange={(n) => set("scope3Fee", n)} />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <p className="text-[10.5px] font-bold uppercase tracking-[0.1em] text-ink-muted">Frameworks</p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <RateField label="Per additional framework" value={inp.perFramework} onChange={(n) => set("perFramework", n)} />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <p className="text-[10.5px] font-bold uppercase tracking-[0.1em] text-ink-muted">Options</p>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <RateField label="Value-chain collection" value={inp.valueChainFee} onChange={(n) => set("valueChainFee", n)} />
+                <RateField label="Assurance support" value={inp.assuranceFee} onChange={(n) => set("assuranceFee", n)} />
+              </div>
             </div>
           </div>
         </div>
 
         {/* ── Live fee estimate ────────────────────────────────────────── */}
-        <div className="lg:sticky lg:top-4 self-start bg-white border border-stone-200 rounded-xl p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
-          <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-stone-500 mb-3">Fee estimate</p>
+        <div className="lg:sticky lg:top-4 self-start bg-white border border-line rounded-xl p-5 shadow-[0_1px_2px_rgba(16,33,26,0.05)]">
+          <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-ink-muted mb-3">Fee estimate</p>
           <div className="space-y-3">
             {fee.lineItems.map((l, i) => (
               <div key={i} className="flex items-start justify-between gap-3 pb-3 border-b border-stone-100 last:border-0">

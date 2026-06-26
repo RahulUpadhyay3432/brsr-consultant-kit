@@ -31,12 +31,18 @@ const config: Config = {
         // Ember warm pop + amber (sparing accents · "Collect" / "Verify" statuses)
         ember: { DEFAULT: "#D9682E", dark: "#A8481B", bg: "#FBE7DC" },
         gold:  { DEFAULT: "#C2871B", dark: "#8A6516", bg: "#F6ECD8" },
+        // Clean Forest surfaces + text
+        page:    "#F8FAF9",
+        surface: "#FFFFFF",
+        line:    "#E8EBEA",
+        tint:    "#F1FAF6",
+        ink:     { DEFAULT: "#10211A", body: "#3A4742", muted: "#6B7772" },
       },
       fontFamily: {
         // Hanken Grotesk body · Newsreader display serif · IBM Plex Mono (self-hosted)
         sans: ["var(--font-hanken)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "system-ui", "sans-serif"],
         mono: ["var(--font-plex-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
-        display: ["var(--font-newsreader)", "Georgia", "Times New Roman", "serif"],
+        display: ["var(--font-hanken)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "system-ui", "sans-serif"],
       },
     },
   },
