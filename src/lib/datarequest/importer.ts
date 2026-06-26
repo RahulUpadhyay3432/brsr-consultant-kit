@@ -7,6 +7,7 @@
 // browser, so this never lives in the on-device free tool).
 import "server-only";
 import { groqComplete } from "./groq";
+import { REQUEST_FIELDS } from "./fields";
 
 export type Confidence = "high" | "medium" | "low";
 
@@ -151,6 +152,129 @@ export async function extractValues(
         confidence: raw.confidence,
       });
     }
+  }
+  return { suggestions, truncated };
+}
+
+// ─── Bulk import: many documents, the full BRSR skeleton, with a verifier pass ──
+// Used by the campaign's bulk-import surface (the consultant uploads one or more of
+// the client's existing reports). Same grounded extract-only discipline as above,
+// plus an anti-hallucination VERIFIER: a suggestion only survives if its value
+// string actually appears in its own source text (digits normalised). Each hit
+// carries the document it came from and full BRSR coordinates from REQUEST_FIELDS.
+
+export interface BulkSuggestion {
+  fieldId: string;
+  section: "A" | "B" | "C";
+  principle: string | null;
+  label: string;
+  unit: string | null;
+  value: string;
+  source: string;   // the exact sentence/line the value was read from
+  sourceDoc: string; // the document name the value came from
+  confidence: Confidence;
+  verified: boolean; // true only if the value literally appears in `source`
+}
+
+export interface BulkImportResult {
+  suggestions: BulkSuggestion[];
+  truncated: boolean;  // true when any document was longer than we processed
+  configured: boolean; // false when no Groq key is set
+}
+
+// Look up a field's BRSR coordinates in the full request-field skeleton.
+const FIELD_META = new Map(REQUEST_FIELDS.map((f) => [f.id, f]));
+
+// Normalise a string for the verifier: lower-case, and strip the commas/spaces that
+// separate digit groups (so "1,240,000" matches "1240000" and "1 240 000").
+function normalizeForMatch(s: string): string {
+  return s.toLowerCase().replace(/(?<=\d)[,\s](?=\d)/g, "");
+}
+
+// Does the extracted value actually appear in the source text it claims to come
+// from? Digit-group separators are ignored so formatting differences don't fail a
+// genuine match. A value with no source can't be verified → false.
+function valueAppearsInSource(value: string, source: string): boolean {
+  if (!value || !source) return false;
+  return normalizeForMatch(source).includes(normalizeForMatch(value));
+}
+
+interface BulkBest {
+  fieldId: string;
+  value: string;
+  source: string;
+  sourceDoc: string;
+  confidence: Confidence;
+}
+
+// Extract candidate-field values across several documents. For each doc, the text is
+// chunked and run through the same grounded extract-only prompt; hits are tagged with
+// the doc name. Results are merged across all docs by fieldId, keeping the
+// highest-confidence hit. A verifier then DROPS any hit whose value doesn't literally
+// appear in its source text. Best-effort: never throws.
+export async function extractValuesBulk(
+  docs: { name: string; text: string }[],
+  candidates: ImportCandidate[]
+): Promise<{ suggestions: BulkSuggestion[]; truncated: boolean }> {
+  // Dedupe candidates by fieldId for the prompt.
+  const byField = new Map<string, ImportCandidate>();
+  for (const c of candidates) {
+    if (!byField.has(c.fieldId)) byField.set(c.fieldId, c);
+  }
+  const promptCandidates = Array.from(byField.values());
+
+  const best = new Map<string, BulkBest>();
+  let truncated = false;
+
+  for (const doc of docs) {
+    const text = (doc?.text || "").trim();
+    if (!text) continue;
+    if (text.length > CHUNK_SIZE * MAX_CHUNKS) truncated = true;
+
+    const chunks: string[] = [];
+    for (let i = 0; i < text.length && chunks.length < MAX_CHUNKS; i += CHUNK_SIZE) {
+      chunks.push(text.slice(i, i + CHUNK_SIZE));
+    }
+
+    for (let i = 0; i < chunks.length; i++) {
+      const reply = await groqComplete(SYSTEM, userPrompt(promptCandidates, chunks[i]), {
+        maxTokens: 1200,
+        temperature: 0,
+        salt: i,
+      });
+      if (!reply) continue;
+      for (const raw of parseArray(reply)) {
+        const fieldId = typeof raw?.fieldId === "string" ? raw.fieldId : "";
+        const value = typeof raw?.value === "string" ? raw.value.trim() : "";
+        const source = typeof raw?.source === "string" ? raw.source.trim() : "";
+        if (!byField.has(fieldId) || !value) continue; // unknown id or empty → drop
+        const conf = normConfidence(raw?.confidence);
+        const cur = best.get(fieldId);
+        if (!cur || RANK[conf] > RANK[cur.confidence]) {
+          best.set(fieldId, { fieldId, value, source, sourceDoc: doc.name, confidence: conf });
+        }
+      }
+    }
+  }
+
+  // Verifier pass + attach BRSR coordinates. Drop anything that doesn't verify.
+  const suggestions: BulkSuggestion[] = [];
+  for (const [fieldId, raw] of Array.from(best.entries())) {
+    if (!valueAppearsInSource(raw.value, raw.source)) continue; // anti-hallucination
+    const meta = FIELD_META.get(fieldId);
+    const cand = byField.get(fieldId)!;
+    suggestions.push({
+      fieldId,
+      section: meta?.section ?? "C",
+      principle: meta?.principle ?? null,
+      label: meta?.label ?? cand.label,
+      unit: meta?.unit ?? cand.unit ?? null,
+      value: raw.value,
+      source: raw.source,
+      sourceDoc: raw.sourceDoc,
+      confidence: raw.confidence,
+      verified: true,
+    });
   }
   return { suggestions, truncated };
 }

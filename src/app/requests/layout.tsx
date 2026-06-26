@@ -1,11 +1,20 @@
 import Link from "next/link";
 import CollectNav from "@/components/datarequest/CollectNav";
 import { logoutAction } from "@/lib/datarequest/auth";
+import { listCampaigns } from "@/lib/datarequest/db";
+import type { Campaign } from "@/lib/datarequest/types";
 
 // Shared app-shell for the consultant "Collect" area — mirrors the report
 // workspace chrome so the two halves read as one product. (Recipient /submit
 // and /login keep their own standalone layouts.)
-export default function RequestsLayout({ children }: { children: React.ReactNode }) {
+export default async function RequestsLayout({ children }: { children: React.ReactNode }) {
+  let campaigns: Campaign[] = [];
+  try {
+    campaigns = await listCampaigns();
+  } catch {
+    campaigns = [];
+  }
+
   return (
     <div className="flex min-h-screen bg-page">
 
@@ -28,7 +37,7 @@ export default function RequestsLayout({ children }: { children: React.ReactNode
           </div>
         </Link>
 
-        <CollectNav />
+        <CollectNav campaigns={campaigns} />
 
         {/* Footer */}
         <div className="px-3 py-3 border-t border-white/10 space-y-1">

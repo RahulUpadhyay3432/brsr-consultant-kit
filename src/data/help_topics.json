@@ -168,6 +168,90 @@
       "category": "glossary",
       "keywords": ["deadline", "due", "date", "when", "filing", "agm", "september", "annual report", "last date"],
       "answer": "BRSR is filed as part of the annual report, which must be out before the AGM. Listed companies hold the AGM within 6 months of the financial year ending (31 March), so the effective deadline is around 30 September each year. The work mostly happens April to September. It is annual, every covered company refiles each year."
+    },
+    {
+      "id": "what-next",
+      "title": "What do I do next?",
+      "category": "howto",
+      "keywords": ["what next", "what do i do", "next step", "now what", "getting started", "where to start", "how to use saaksh", "navigate", "lost", "stuck"],
+      "answer": "Start free: on the home page click 'Start a free report', fill the short intake, and you get an instant gap analysis with a CSV and a client-ready PDF brief. Then work the Action Plan, tick items as collected, and review Materiality and Alignment. When you're ready to chase data from the client's team, move to Pro (Collect) at /requests to create a campaign and add data owners."
+    },
+    {
+      "id": "add-data-owner",
+      "title": "How do I add a data owner?",
+      "category": "howto",
+      "keywords": ["add data owner", "add owner", "data owner", "assign", "person", "contact", "team member", "collect from", "pick fields"],
+      "answer": "Open a campaign at /requests/[id] and use the '+ Add a data owner' panel. Enter their name and email (or pick from your saved contacts for that client), choose the BRSR fields you want them to provide, and send. They get a no-login secure link to a form. Each owner you add is also saved to that client's contacts so it's one tap next time."
+    },
+    {
+      "id": "collect-from-team",
+      "title": "How do I collect BRSR data from a client's team?",
+      "category": "howto",
+      "keywords": ["collect data", "collect from team", "chase data", "client team", "gather data", "request data", "send to team", "data collection", "owners"],
+      "answer": "Use Pro (Collect) at /requests. Create a campaign for the client, add the people who own each set of numbers as data owners, and assign each their BRSR fields. Saaksh sends a branded request email with a no-login link, alerts you when someone submits, and auto-reminders chase anyone pending. As values come in, emissions are auto-computed and a draft is assembled."
+    },
+    {
+      "id": "assurance-ledger",
+      "title": "What is the assurance / data-ownership ledger?",
+      "category": "howto",
+      "keywords": ["assurance", "ledger", "data ownership", "audit trail", "evidence trail", "who provided", "data owner trail", "assurance pack", "reasonable assurance", "export ledger"],
+      "answer": "On a campaign's detail page, the 'Assurance readiness' panel turns everything Collect captured into one export: for each collected data point it shows the BRSR code, the value, the named data owner and their email, whether evidence was attached, and the cited basis for any computed figure. Download it as a CSV ledger, the evidence trail BRSR Core reasonable assurance now expects. It only surfaces what was actually collected, nothing is invented."
+    },
+    {
+      "id": "how-collect-works",
+      "title": "How does Collect work?",
+      "category": "howto",
+      "keywords": ["how collect works", "collect overview", "what is collect", "collect flow", "campaign", "how does pro work", "data request product"],
+      "answer": "Collect is the Pro workflow: create a campaign for one client, add data owners and assign their BRSR fields, and Saaksh emails each a no-login link. You see live status, owners get auto-reminders, and on submit you're alerted. Submitted activity data (electricity, diesel) is auto-converted to emissions with each figure attributed to who provided it, and you can generate a grounded BRSR draft plus an assurance-ready ledger."
+    },
+    {
+      "id": "pro-vs-free",
+      "title": "What does Pro give me over the free tool?",
+      "category": "howto",
+      "keywords": ["pro", "free vs pro", "paid", "upgrade", "what is pro", "difference free pro", "pro features", "why pro", "premium"],
+      "answer": "Free is for understanding and preparing on your own device: the gap analysis, built-in GHG/energy/water calculators, suggested materiality, cross-framework mapping, plain-English AI on every field, and CSV plus PDF exports. Pro is the workspace that does the work: Collect (chase data from the client's team), the document auto-fill importer, auto-computed emissions, the assurance ledger, AI narrative draft, and the proposal and fee builder."
+    },
+    {
+      "id": "auto-fill-documents",
+      "title": "How do I auto-fill from my documents?",
+      "category": "howto",
+      "keywords": ["auto fill", "autofill", "import", "importer", "upload document", "pre-fill", "last year report", "extract", "annual report", "pull values"],
+      "answer": "On a campaign, the import panel lets you upload the client's existing report (last year's BRSR or annual report). The PDF text is read in your browser and figures are pulled out as reviewable suggestions for the fields you're collecting, each with the exact source sentence and a confidence badge. Nothing auto-applies, you tick the ones you trust and only those are saved. The AI only returns values literally present in the document."
+    },
+    {
+      "id": "generate-draft",
+      "title": "How do I generate the BRSR draft?",
+      "category": "howto",
+      "keywords": ["generate draft", "draft", "brsr draft", "build draft", "draft responses", "ai narrative", "write up", "printable draft"],
+      "answer": "Once data is in, open the campaign's 'Generate draft' to get a deterministic, printable draft of the BRSR responses, grouped by Section and Principle, with the emissions block and a 'nothing is invented' note. You can optionally generate an AI narrative: a short grounded paragraph per principle from the submitted facts, clearly labelled 'AI draft, review before filing'. It never invents or alters a number."
+    },
+    {
+      "id": "cbam-module",
+      "title": "What is the CBAM readiness module?",
+      "category": "howto",
+      "keywords": ["cbam module", "cbam readiness", "beyond brsr", "cbam check", "eu export", "cbam applies", "regulatory readiness", "ccts readiness"],
+      "answer": "The free report's 'Beyond BRSR' tab includes a CBAM readiness check (and a CCTS one for India). From the client's industry and export markets it gives a plain verdict, likely/may/unlikely to apply, a dated timeline, a readiness checklist, and cited sources. It's a readiness check to help you prepare, not a liability calculation of embedded emissions."
+    },
+    {
+      "id": "send-reminders",
+      "title": "How do I send reminders to owners?",
+      "category": "howto",
+      "keywords": ["reminder", "remind", "chase", "follow up", "nudge", "pending owners", "auto reminder", "remind all", "not responded"],
+      "answer": "Saaksh chases pending owners automatically on a cadence (a few days apart, up to a few times, with a final nudge near the deadline), so you don't have to. Each owner card shows when they were last emailed and how many reminders have gone out. You can also trigger a reminder to everyone still pending from the campaign page."
+    },
+    {
+      "id": "sample-client",
+      "title": "What is a sample client?",
+      "category": "howto",
+      "keywords": ["sample client", "sample campaign", "demo", "try collect", "example", "test campaign", "see how it works", "load sample"],
+      "answer": "A sample client is a pre-filled demo campaign so you can see how Collect works without setting up a real client. It loads a ready-made campaign with example owners and fields, so you can explore the owners list, emissions, draft, and assurance ledger before running your own. It's just for exploring, use a real campaign for actual client data."
+    },
+    {
+      "id": "proposal-builder",
+      "title": "How do I build a proposal and fee?",
+      "category": "howto",
+      "keywords": ["proposal", "fee", "pricing", "quote", "scope", "win work", "proposal builder", "fee builder", "rates", "estimate"],
+      "answer": "Under Pro, the proposal and fee builder (/requests/proposal) helps you scope and price an engagement: enter the client's scope and your own rates and you get a live, itemised fee breakdown and a downloadable branded proposal PDF. It structures your own numbers, it never asserts a market price, so adjust the figures to your market. It runs in your browser and stores nothing."
     }
   ]
 }

@@ -203,6 +203,53 @@ export async function markReminded(contactId: string, remindersSent: number): Pr
   });
 }
 
+// ─── Bulk import: a synthetic per-campaign "Imported documents" contact ──────
+// When an imported figure has no matching request item, we attach it to a single
+// placeholder contact (one per campaign) so the value still lands in the campaign,
+// the dashboard, the emissions calc and the draft. Created once and reused.
+const IMPORT_EMAIL = "imported@saaksh.local";
+
+// Returns the campaign's "Imported documents" contact, creating it if absent.
+export async function getOrCreateImportContact(campaignId: string): Promise<string> {
+  const existing = await rest(
+    `brsr_contacts?request_id=eq.${encodeURIComponent(campaignId)}&email=eq.${encodeURIComponent(IMPORT_EMAIL)}&select=id`
+  );
+  const rows = (await existing.json()) as { id: string }[];
+  if (rows[0]) return rows[0].id;
+
+  const res = await rest("brsr_contacts", {
+    method: "POST",
+    prefer: "return=representation",
+    body: JSON.stringify({
+      request_id: campaignId, name: "Imported documents", email: IMPORT_EMAIL,
+      token: randomToken(), status: "received",
+    }),
+  });
+  const [contact] = (await res.json()) as ContactRow[];
+  return contact.id;
+}
+
+// Inserts a single already-valued item under a contact (used by bulk import).
+// Writes the value + status 'received' + the field's BRSR coordinates.
+export async function addItemWithValue(contactId: string, field: RequestField, value: string): Promise<void> {
+  await rest("brsr_request_items", {
+    method: "POST",
+    body: JSON.stringify([{
+      contact_id: contactId,
+      field_id: field.id, field_label: field.label, field_unit: field.unit ?? null,
+      field_kind: field.kind, field_category: field.category ?? null,
+      field_section: field.section, field_principle: field.principle, field_indicator_type: field.indicatorType,
+      value, status: "received",
+    }]),
+  });
+}
+
+// A reasonably-unguessable token for a synthetic contact (the link is never sent,
+// but the column is non-null). Crypto-free so db.ts keeps no extra imports.
+function randomToken(): string {
+  return `import-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
 // ─── Company contacts — the per-client saved roster (brsr_company_contacts) ──
 // A reusable directory of people, scoped to a campaign. Created by the user's SQL
 // migration; everything here is best-effort so Collect keeps working before then.

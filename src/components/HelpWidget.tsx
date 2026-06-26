@@ -64,6 +64,14 @@ export default function HelpWidget() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
+  // Let any part of the app open the assistant (e.g. the Pro nav "Ask Saaksh" button
+  // dispatches window.dispatchEvent(new Event("saaksh:open-help"))).
+  useEffect(() => {
+    const onOpen = () => setOpen(true);
+    window.addEventListener("saaksh:open-help", onOpen);
+    return () => window.removeEventListener("saaksh:open-help", onOpen);
+  }, []);
+
   // No help affordance on the bare auth screen.
   if (pathname === "/login") return null;
 
@@ -81,11 +89,14 @@ export default function HelpWidget() {
           <div className="flex items-center justify-between px-4 py-3 border-b border-stone-100">
             <div className="flex items-center gap-2">
               <span className="w-6 h-6 rounded-lg bg-brand-100 border border-brand-200 flex items-center justify-center">
-                <svg className="w-3.5 h-3.5 text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.9}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.375M12 16.5h.008v.008H12V16.5z" />
+                <svg className="w-3.5 h-3.5 text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l1.6 4.3L18 9l-4.4 1.7L12 15l-1.6-4.3L6 9l4.4-1.7L12 3zM18 15l.7 1.9L20.5 18l-1.8.6L18 21l-.7-1.9L15.5 18l1.8-.6L18 15z" />
                 </svg>
               </span>
-              <p className="text-[14px] font-semibold text-stone-900">Help</p>
+              <div className="leading-tight">
+                <p className="text-[14px] font-semibold text-stone-900">Ask Saaksh</p>
+                <p className="text-[10.5px] text-ink-muted">AI assistant · grounded, never invents</p>
+              </div>
             </div>
             <button
               onClick={() => setOpen(false)}
@@ -233,8 +244,10 @@ export default function HelpWidget() {
           </svg>
         ) : (
           <>
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-400" />
-            Ask Saaksh
+            <svg className="w-4 h-4 text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l1.6 4.3L18 9l-4.4 1.7L12 15l-1.6-4.3L6 9l4.4-1.7L12 3zM18 15l.7 1.9L20.5 18l-1.8.6L18 21l-.7-1.9L15.5 18l1.8-.6L18 15z" />
+            </svg>
+            Ask Saaksh AI
           </>
         )}
       </button>
