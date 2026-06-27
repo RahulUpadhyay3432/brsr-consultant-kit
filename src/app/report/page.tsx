@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import type { ReportOutput } from "@/lib/types";
 import { generateReport } from "@/lib/report-generator";
 import { loadSavedForm, clearReportSession } from "@/lib/storage";
+import { track } from "@/lib/mixpanel";
 import ReportView from "@/components/ReportView";
 import Skeleton from "@/components/Skeleton";
 
@@ -24,7 +25,16 @@ export default function ReportPage() {
       return;
     }
     try {
-      setReport(generateReport(saved));
+      const r = generateReport(saved);
+      setReport(r);
+      track("report_generated", {
+        industry: saved.industry,
+        sector: saved.sector,
+        companySize: saved.companySize,
+        reportingMaturity: saved.reportingMaturity,
+        hasCompanyName: !!saved.companyName,
+        gapCount: r.checklist.filter((i) => i.status === "new_data_needed").length,
+      });
     } catch (err) {
       console.error("Report generation failed:", err);
       clearReportSession();

@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import HelpWidget from "@/components/HelpWidget";
+import { MixpanelProvider } from "@/components/MixpanelProvider";
 import "./globals.css";
 
 // Self-hosted (no next/font/google on this machine). Newsreader = display serif,
@@ -55,6 +56,7 @@ export default function RootLayout({
         className={`${newsreader.variable} ${hanken.variable} ${plexMono.variable} text-stone-900`}
       >
         <Analytics />
+        <MixpanelProvider />
         {children}
         <HelpWidget />
       </body>

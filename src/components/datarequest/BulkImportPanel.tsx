@@ -12,6 +12,7 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import { extractPdfText } from "@/lib/pdf-extract";
 import { extractChunkAction } from "@/lib/datarequest/actions";
+import { track } from "@/lib/mixpanel";
 import type {
   BulkSuggestion,
   DocCategory,
@@ -237,6 +238,14 @@ export default function BulkImportPanel({
       return;
     }
 
+    track("autofill_completed", {
+      figuresFound: all.length,
+      chunksTotal: chunks.length,
+      chunksFailed: failed,
+      highConfidence: all.filter((s) => s.confidence === "high").length,
+      docCount: staged.length,
+    });
+
     const initTicked: Record<string, boolean> = {};
     const initValues: Record<string, string> = {};
     for (const s of all) {
@@ -266,6 +275,7 @@ export default function BulkImportPanel({
       .filter((s) => ticked[s.fieldId])
       .map((s) => ({ fieldId: s.fieldId, value: values[s.fieldId] ?? s.value }));
     if (!accepted.length) return;
+    track("suggestions_applied", { count: accepted.length, total: suggestions?.length ?? 0 });
     startTransition(async () => {
       await applyAction(campaignId, accepted);
       // applyAction redirects server-side on success.

@@ -15,6 +15,7 @@ import TemplatesPanel from "./TemplatesPanel";
 import AnimatedNumber from "./AnimatedNumber";
 import SourcesPanel from "./SourcesPanel";
 import { downloadReportPdf } from "@/lib/report-pdf";
+import { track } from "@/lib/mixpanel";
 import { downloadCsv, exportFilename } from "@/lib/export";
 import { buildFrameworkExportRows, buildRatingsExportRows, type RatingMappingRow } from "@/lib/framework-export";
 import { PRINCIPLES } from "./checklist/constants";
@@ -137,7 +138,7 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
                 BRSR Readiness · FY 2025–26
               </p>
               <button
-                onClick={() => { downloadReportPdf(report).catch((e) => console.error("PDF export failed", e)); }}
+                onClick={() => { track("pdf_downloaded"); downloadReportPdf(report).catch((e) => console.error("PDF export failed", e)); }}
                 title="Download a clean BRSR data-request brief to share with the client"
                 className="no-print inline-flex items-center gap-1.5 text-[13.5px] font-medium
                   text-stone-600 bg-white border border-stone-200 hover:border-stone-300 hover:bg-stone-50
