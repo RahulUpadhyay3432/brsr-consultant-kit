@@ -350,7 +350,6 @@ function AutofillView(props: CampaignWorkspaceProps) {
   return (
     <BulkImportPanel
       campaignId={props.campaign.id}
-      bulkAction={props.bulkAction}
       applyAction={props.applyBulkAction}
     />
   );

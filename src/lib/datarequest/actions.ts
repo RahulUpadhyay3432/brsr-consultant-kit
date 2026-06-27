@@ -8,8 +8,9 @@ import * as db from "./db";
 import { sendRequestEmail, sendSubmissionAlert } from "./email";
 import { uploadEvidence } from "./storage";
 import { generateNarrative, type NarrativeResult } from "./narrative";
-import { extractValues, extractValuesBulk, type ImportResult, type BulkImportResult, type BulkDoc, type DocCategory } from "./importer";
+import { extractValues, extractValuesBulk, extractFromChunk, type ImportResult, type BulkImportResult, type BulkDoc, type DocCategory, type BulkSuggestion } from "./importer";
 import { groqConfigured } from "./groq";
+import { geminiConfigured } from "./gemini";
 import { extractCbam, type CbamSuggestion } from "./cbam-extract";
 import { requireConsultant } from "./guard";
 
@@ -69,6 +70,32 @@ export async function cbamExtractAction(
     return { configured: true, suggestion: await extractCbam(t) };
   } catch {
     return { configured: true, suggestion: null };
+  }
+}
+
+// Per-chunk document auto-fill. The client splits a report into page-aware chunks and
+// calls this for each in parallel (keys rotate per request), passing the fieldIds
+// already found so retries / later chunks don't re-spend tokens. Best-effort.
+export async function extractChunkAction(
+  campaignId: string,
+  chunkText: string,
+  category?: DocCategory,
+  excludeFieldIds: string[] = [],
+  sourceDoc = "document",
+): Promise<{ configured: boolean; suggestions: BulkSuggestion[] }> {
+  requireConsultant();
+  if (!geminiConfigured() && !groqConfigured()) return { configured: false, suggestions: [] };
+  const text = (chunkText || "").trim();
+  if (!text) return { configured: true, suggestions: [] };
+  const exclude = new Set(excludeFieldIds);
+  const candidates = REQUEST_FIELDS
+    .filter((f) => !exclude.has(f.id))
+    .map((f) => ({ itemId: "", fieldId: f.id, label: f.label, unit: f.unit ?? null }));
+  try {
+    const suggestions = await extractFromChunk(text, candidates, category, sourceDoc);
+    return { configured: true, suggestions };
+  } catch {
+    return { configured: true, suggestions: [] };
   }
 }
 

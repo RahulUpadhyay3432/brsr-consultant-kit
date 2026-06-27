@@ -16,6 +16,7 @@ import {
 import { REQUEST_FIELDS } from "@/lib/datarequest/fields";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60; // chunked document extraction calls can run a while
 
 export default async function CampaignDetailPage({
   params, searchParams,

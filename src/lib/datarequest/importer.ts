@@ -7,6 +7,7 @@
 // browser, so this never lives in the on-device free tool).
 import "server-only";
 import { groqComplete } from "./groq";
+import { geminiComplete } from "./gemini";
 import { REQUEST_FIELDS } from "./fields";
 
 export type Confidence = "high" | "medium" | "low";
@@ -51,7 +52,9 @@ const SYSTEM =
   '{"fieldId": string, "value": string, "source": string, "confidence": "high"|"medium"|"low"}. ' +
   "Keep the value's number and units exactly as written in the text. " +
   "(5) confidence: high = the text explicitly states this field's value; medium = a likely match but the " +
-  "wording differs; low = uncertain. When unsure, use low, but still include the source.";
+  "wording differs; low = uncertain. When unsure, use low, but still include the source. " +
+  "(6) Keep each 'source' to ONE short sentence, under 160 characters. " +
+  "(7) Scan the WHOLE provided text and return EVERY field you can find a value for, do not stop early.";
 
 function userPrompt(
   candidates: ImportCandidate[],
@@ -355,4 +358,85 @@ export async function extractValuesBulk(
     });
   }
   return { suggestions, truncated };
+}
+
+// ─── Per-chunk extraction (whole-document, parallel-friendly) ────────────────
+// Pull every complete {...} object out of a model reply, even if the surrounding
+// array was truncated (long output) or wrapped in prose/fences. String-aware so a
+// brace inside a quoted source can't throw off the nesting. Never throws.
+function salvageSuggestions(text: string): RawSuggestion[] {
+  const out: RawSuggestion[] = [];
+  let depth = 0, start = -1, inStr = false, esc = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (ch === "\\") esc = true;
+      else if (ch === '"') inStr = false;
+      continue;
+    }
+    if (ch === '"') inStr = true;
+    else if (ch === "{") { if (depth === 0) start = i; depth++; }
+    else if (ch === "}") {
+      depth--;
+      if (depth === 0 && start >= 0) {
+        try {
+          const obj = JSON.parse(text.slice(start, i + 1));
+          if (obj && typeof obj === "object") out.push(obj as RawSuggestion);
+        } catch { /* incomplete / invalid object, skip */ }
+        start = -1;
+      }
+    }
+  }
+  return out;
+}
+
+// Extract candidate-field values from ONE chunk of a document. Gemini first (huge
+// context, strong at pulling numbers out of messy table text); Groq as fallback.
+// Verifier-gated, never throws. Returns verified BulkSuggestions for this chunk only;
+// the caller merges across chunks and across documents.
+export async function extractFromChunk(
+  chunkText: string,
+  candidates: ImportCandidate[],
+  category?: DocCategory,
+  sourceDoc = "document",
+): Promise<BulkSuggestion[]> {
+  const text = (chunkText || "").trim();
+  if (!text) return [];
+
+  const byField = new Map<string, ImportCandidate>();
+  for (const c of candidates) if (!byField.has(c.fieldId)) byField.set(c.fieldId, c);
+  const promptCandidates = scopeCandidates(Array.from(byField.values()), category);
+  const docTypeLabel = category && category !== "auto" ? CATEGORY_LABEL[category] : undefined;
+  const prompt = userPrompt(promptCandidates, text, docTypeLabel);
+
+  let reply = await geminiComplete(SYSTEM, prompt, { maxOutputTokens: 8192 });
+  if (!reply) reply = await groqComplete(SYSTEM, prompt, { maxTokens: 1800, temperature: 0 });
+  if (!reply) return [];
+
+  const out: BulkSuggestion[] = [];
+  const seen = new Set<string>();
+  for (const raw of salvageSuggestions(reply)) {
+    const fieldId = typeof raw?.fieldId === "string" ? raw.fieldId : "";
+    const value = raw?.value != null && raw.value !== "" ? String(raw.value).trim() : "";
+    const source = typeof raw?.source === "string" ? raw.source.trim() : "";
+    if (!byField.has(fieldId) || !value || seen.has(fieldId)) continue;
+    if (!valueAppearsInSource(value, source)) continue; // anti-hallucination (lenient)
+    seen.add(fieldId);
+    const meta = FIELD_META.get(fieldId);
+    const cand = byField.get(fieldId)!;
+    out.push({
+      fieldId,
+      section: meta?.section ?? "C",
+      principle: meta?.principle ?? null,
+      label: meta?.label ?? cand.label,
+      unit: meta?.unit ?? cand.unit ?? null,
+      value,
+      source,
+      sourceDoc,
+      confidence: normConfidence(raw?.confidence),
+      verified: true,
+    });
+  }
+  return out;
 }

@@ -9,11 +9,11 @@
 // verifies + edits, then applies the ones they trust, nothing is saved until
 // they do, and the model never invents a number.
 
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { extractPdfText } from "@/lib/pdf-extract";
+import { extractChunkAction } from "@/lib/datarequest/actions";
 import type {
   BulkSuggestion,
-  BulkImportResult,
   DocCategory,
 } from "@/lib/datarequest/importer";
 
@@ -32,10 +32,11 @@ const CATEGORY_OPTIONS: { value: DocCategory; label: string }[] = [
   { value: "other", label: "Other" },
 ];
 
-// A file staged for import: the local File + its extracted text + chosen category.
+// A file staged for import: the local File + its extracted text (whole + per-page) + chosen category.
 interface StagedDoc {
   name: string;
   text: string;
+  pages: string[];
   category: DocCategory;
 }
 
@@ -44,6 +45,17 @@ const CONF_META: Record<Confidence, { label: string; cls: string }> = {
   medium: { label: "Medium", cls: "text-amber-700 bg-amber-50 border-amber-200" },
   low: { label: "Low", cls: "text-slate-500 bg-slate-100 border-slate-200" },
 };
+
+const RANK: Record<Confidence, number> = { high: 3, medium: 2, low: 1 };
+
+// Cycling status lines shown while the document is being read, so the wait looks alive.
+const STATUS_LINES = [
+  "Reading every page of the report…",
+  "Scanning all 9 BRSR principles…",
+  "Pulling figures and their source lines…",
+  "Cross-checking against the BRSR fields…",
+  "Almost there…",
+];
 
 const SECTION_META: Record<BulkSuggestion["section"], string> = {
   A: "Section A · General disclosures",
@@ -60,14 +72,9 @@ function rowKey(s: BulkSuggestion) {
 
 export default function BulkImportPanel({
   campaignId,
-  bulkAction,
   applyAction,
 }: {
   campaignId: string;
-  bulkAction: (
-    campaignId: string,
-    docs: { name: string; text: string; category?: DocCategory }[],
-  ) => Promise<BulkImportResult>;
   applyAction: (
     campaignId: string,
     accepted: { fieldId: string; value: string }[],
@@ -85,6 +92,15 @@ export default function BulkImportPanel({
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const [isPending, startTransition] = useTransition();
   const fileRef = useRef<HTMLInputElement>(null);
+  const [progress, setProgress] = useState<{ done: number; total: number; found: number } | null>(null);
+  const [statusIdx, setStatusIdx] = useState(0);
+
+  // Cycle the status line while a fill is running, so the wait looks alive.
+  useEffect(() => {
+    if (!progress) return;
+    const t = setInterval(() => setStatusIdx((i) => (i + 1) % STATUS_LINES.length), 2200);
+    return () => clearInterval(t);
+  }, [progress]);
 
   function reset() {
     setSuggestions(null);
@@ -113,8 +129,8 @@ export default function BulkImportPanel({
             ? "Reading your document…"
             : `Reading document ${i + 1} of ${files.length}…`,
         );
-        const { text } = await extractPdfText(files[i]);
-        if (text.trim()) docs.push({ name: files[i].name, text, category: "auto" });
+        const { text, pages } = await extractPdfText(files[i]);
+        if (text.trim()) docs.push({ name: files[i].name, text, pages, category: "auto" });
       }
       setBusy(null);
       if (!docs.length) {
@@ -139,43 +155,98 @@ export default function BulkImportPanel({
     setStaged((prev) => prev.filter((_, i) => i !== idx));
   }
 
-  // Step 2, send the tagged documents (name + text + category) for grounded extraction.
+  // Step 2: split each staged doc into page-aware chunks and extract them in PARALLEL
+  // (keys rotate per request), one retry per chunk, partial results on failure, live
+  // progress, and already-found fieldIds excluded so later chunks don't re-spend tokens.
   async function runFill() {
     if (!staged.length) return;
     setMsg(null);
     setWarn(null);
-    setBusy("Filling the BRSR skeleton from your documents…");
-    try {
-      const result = await bulkAction(
-        campaignId,
-        staged.map((d) => ({ name: d.name, text: d.text, category: d.category })),
-      );
-      setBusy(null);
-      if (!result.configured) {
-        setMsg("AI auto-fill isn't configured on this deployment yet.");
-        return;
+    setSuggestions(null);
+
+    const CHUNK_CHARS = 55000;
+    type Chunk = { docName: string; category: DocCategory; text: string };
+    const chunks: Chunk[] = [];
+    for (const d of staged) {
+      const pages = d.pages && d.pages.length ? d.pages : [d.text];
+      let buf = "";
+      for (const pg of pages) {
+        if (buf && buf.length + pg.length > CHUNK_CHARS) {
+          chunks.push({ docName: d.name, category: d.category, text: buf });
+          buf = "";
+        }
+        buf += (buf ? "\n" : "") + pg;
       }
-      if (result.suggestions.length === 0) {
-        // Soft wrong-document warning rather than a hard error.
-        setWarn(
-          "No BRSR figures found in this document, is it the right report? Try a clearer text-based PDF or the correct document (last year's BRSR or the annual report work best). You can also enter values by hand.",
-        );
-        return;
-      }
-      const initTicked: Record<string, boolean> = {};
-      const initValues: Record<string, string> = {};
-      for (const s of result.suggestions) {
-        initTicked[s.fieldId] = s.confidence !== "low";
-        initValues[s.fieldId] = s.value;
-      }
-      setTicked(initTicked);
-      setValues(initValues);
-      setSuggestions(result.suggestions);
-      setTruncated(result.truncated);
-    } catch {
-      setBusy(null);
-      setMsg("Could not read one of those files. Please try different PDFs.");
+      if (buf.trim()) chunks.push({ docName: d.name, category: d.category, text: buf });
     }
+    if (!chunks.length) {
+      setWarn("Could not read text from these files. Try a clearer text-based PDF.");
+      return;
+    }
+
+    setStatusIdx(0);
+    setProgress({ done: 0, total: chunks.length, found: 0 });
+
+    const merged = new Map<string, BulkSuggestion>();
+    let failed = 0;
+    let notConfigured = false;
+    let next = 0;
+
+    async function worker() {
+      while (next < chunks.length) {
+        const c = chunks[next++];
+        const exclude = Array.from(merged.keys());
+        let res: { configured: boolean; suggestions: BulkSuggestion[] } | null = null;
+        for (let attempt = 0; attempt < 2 && !res; attempt++) {
+          try {
+            res = await extractChunkAction(campaignId, c.text, c.category, exclude, c.docName);
+          } catch {
+            res = null;
+          }
+        }
+        if (res && !res.configured) {
+          notConfigured = true;
+        } else if (res) {
+          for (const s of res.suggestions) {
+            const cur = merged.get(s.fieldId);
+            if (!cur || RANK[s.confidence] > RANK[cur.confidence]) merged.set(s.fieldId, s);
+          }
+        } else {
+          failed++;
+        }
+        setProgress((p) => (p ? { ...p, done: p.done + 1, found: merged.size } : p));
+      }
+    }
+
+    const CONC = Math.min(4, chunks.length);
+    await Promise.all(Array.from({ length: CONC }, () => worker()));
+
+    setProgress(null);
+
+    const all = Array.from(merged.values());
+    if (all.length === 0) {
+      if (notConfigured) {
+        setMsg("AI auto-fill isn't configured on this deployment yet.");
+      } else {
+        setWarn(
+          failed > 0
+            ? "The AI had trouble reading this document. Please try again, or use a clearer text-based PDF."
+            : "No BRSR figures found in this document, is it the right report? Last year's BRSR or the annual report work best. You can also enter values by hand.",
+        );
+      }
+      return;
+    }
+
+    const initTicked: Record<string, boolean> = {};
+    const initValues: Record<string, string> = {};
+    for (const s of all) {
+      initTicked[s.fieldId] = s.confidence !== "low";
+      initValues[s.fieldId] = s.value;
+    }
+    setTicked(initTicked);
+    setValues(initValues);
+    setSuggestions(all);
+    setTruncated(failed > 0);
   }
 
   function selectAllHigh() {
@@ -247,8 +318,8 @@ export default function BulkImportPanel({
         </div>
       </div>
 
-      {/* Category-FIRST upload: pick what the document is, then choose the PDF */}
-      {!suggestions && (
+      {/* Upload area (hidden while a fill is running) */}
+      {!suggestions && !progress && (
         <div className="mt-5">
           {/* What this does, auto-fill IS collection, surfaced in Data + Readiness */}
           <p className="text-[13px] text-ink-body bg-tint border border-brand-100 rounded-lg px-3.5 py-2.5 leading-relaxed">
@@ -375,6 +446,28 @@ export default function BulkImportPanel({
               <span>{warn}</span>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Live progress while the document is being read */}
+      {progress && (
+        <div className="mt-5 rounded-xl border border-brand-200 bg-tint/60 px-4 py-4">
+          <div className="flex items-center gap-3">
+            <svg className="w-5 h-5 flex-shrink-0 animate-spin text-brand-600" viewBox="0 0 24 24" fill="none">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.4 0 0 5.4 0 12h4z" />
+            </svg>
+            <div className="min-w-0 flex-1">
+              <p className="text-[14.5px] font-semibold text-ink">{STATUS_LINES[statusIdx]}</p>
+              <p className="text-[13px] text-ink-body mt-0.5">
+                <span className="font-semibold text-brand-700 tabular-nums">{progress.found}</span> {progress.found === 1 ? "figure" : "figures"} found ·{" "}
+                <span className="tabular-nums">{progress.done}/{progress.total}</span> sections read
+              </p>
+            </div>
+          </div>
+          <div className="mt-3 h-1.5 rounded-full bg-line overflow-hidden">
+            <div className="h-full rounded-full bg-brand-500 transition-all duration-500" style={{ width: `${progress.total ? Math.round((progress.done / progress.total) * 100) : 5}%` }} />
+          </div>
         </div>
       )}
 
