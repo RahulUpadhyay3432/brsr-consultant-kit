@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // Protects the consultant area only. The free tool (/) and recipient links
-// (/submit/*) stay public — recipients must never be asked to log in.
+// (/submit/*) stay public, recipients must never be asked to log in.
 const AUTH_COOKIE = "bk_auth";
 
 export function middleware(req: NextRequest) {

@@ -30,7 +30,7 @@ export function useScrollReveal() {
     for (const el of els) {
       const r = el.getBoundingClientRect();
       const inView = r.top < window.innerHeight * 0.92 && r.bottom > 0;
-      if (inView) continue; // visible on load — never hide it
+      if (inView) continue; // visible on load, never hide it
       el.classList.add("reveal-init");
       io.observe(el);
     }

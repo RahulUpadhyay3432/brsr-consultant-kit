@@ -11,7 +11,7 @@ export default function CopyLinkButton({ link }: { link: string }) {
     try {
       await navigator.clipboard.writeText(link);
     } catch {
-      // Clipboard can be blocked (insecure context / permissions) — fall back to a prompt.
+      // Clipboard can be blocked (insecure context / permissions), fall back to a prompt.
       window.prompt("Copy this link", link);
       return;
     }

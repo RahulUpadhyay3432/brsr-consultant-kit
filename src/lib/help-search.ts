@@ -1,6 +1,6 @@
 // Pure, deterministic keyword search for the help "ask" bot. No AI: a question is
 // tokenised and scored against each topic's keywords + title. Runs on-device, so
-// it can never fabricate an answer — it only ranks the curated help_topics.json.
+// it can never fabricate an answer, it only ranks the curated help_topics.json.
 
 export interface HelpTopic {
   id: string;
@@ -10,7 +10,7 @@ export interface HelpTopic {
   answer: string;
 }
 
-// Common words that carry no matching signal — dropped so "where is the csv" and
+// Common words that carry no matching signal, dropped so "where is the csv" and
 // "csv" score the same topic.
 const STOPWORDS = new Set([
   "a", "an", "the", "is", "are", "am", "was", "were", "be", "been", "being",

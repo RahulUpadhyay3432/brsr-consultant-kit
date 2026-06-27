@@ -1,5 +1,5 @@
 "use client";
-// "Templates & guides" reference tab — a small, free, on-device library of the
+// "Templates & guides" reference tab, a small, free, on-device library of the
 // formats and how-to guidance consultants hunt for (materiality, the response
 // workbook, the hard principles, assurance-readiness). Downloads reuse the report's
 // formula-safe CSV export. Nothing leaves the browser. Cited where it states a rule.
@@ -55,7 +55,7 @@ function buildStakeholderPlan(): string[][] {
 }
 
 const TEMPLATES: { name: string; desc: string; file: string; build: () => string[][] }[] = [
-  { name: "BRSR response workbook", desc: "Every Section A, B and C disclosure (all 108 principle fields + A/B) as a blank fill-in sheet — response, data owner, evidence and status columns per row.", file: "brsr-response-workbook", build: buildResponseWorkbook },
+  { name: "BRSR response workbook", desc: "Every Section A, B and C disclosure (all 108 principle fields + A/B) as a blank fill-in sheet, response, data owner, evidence and status columns per row.", file: "brsr-response-workbook", build: buildResponseWorkbook },
   { name: "Materiality assessment grid", desc: "The scoring format for a stakeholder-driven materiality assessment: business impact × stakeholder concern, with a decision + rationale column. Three worked examples, then blank rows.", file: "materiality-assessment-template", build: buildMaterialityGrid },
   { name: "Stakeholder engagement plan", desc: "A starting plan pre-filled with the six stakeholder groups BRSR expects you to engage, with suggested methods and the ESG topics each cares about.", file: "stakeholder-engagement-plan", build: buildStakeholderPlan },
 ];
@@ -75,21 +75,21 @@ const GUIDES: Guide[] = [
           <li>Prioritise, decide what's material, and record the rationale.</li>
           <li>Get board / management sign-off and keep the documentation for assurance.</li>
         </ol>
-        <p className="mt-2">Document the process — assurers and the board will ask how topics were chosen.</p>
+        <p className="mt-2">Document the process, assurers and the board will ask how topics were chosen.</p>
       </>
     ),
     sources: [{ label: "SEBI BRSR Format", href: SEBI_BRSR_FORMAT_URL }],
   },
   {
-    title: "Answering Principle 5 — Human Rights",
+    title: "Answering Principle 5, Human Rights",
     body: (
       <>
         <p>P5 is the principle consultants most often get stuck on. It spans wages, equal opportunity, grievance redressal, and forced/child-labour safeguards across the workforce <em>and</em> the value chain. The data usually lives with HR and Legal:</p>
         <ul className="list-disc pl-5 space-y-1 mt-2">
-          <li><strong>Minimum wage & remuneration</strong> — % of employees/workers paid at or above minimum wage, gender-disaggregated median remuneration.</li>
-          <li><strong>POSH</strong> — sexual-harassment complaints filed / resolved (Sexual Harassment of Women at Workplace Act).</li>
-          <li><strong>Grievance mechanisms</strong> — coverage and number of complaints on working conditions / human rights.</li>
-          <li><strong>Due diligence</strong> — human-rights assessments of plants and value-chain partners.</li>
+          <li><strong>Minimum wage & remuneration</strong>, % of employees/workers paid at or above minimum wage, gender-disaggregated median remuneration.</li>
+          <li><strong>POSH</strong>, sexual-harassment complaints filed / resolved (Sexual Harassment of Women at Workplace Act).</li>
+          <li><strong>Grievance mechanisms</strong>, coverage and number of complaints on working conditions / human rights.</li>
+          <li><strong>Due diligence</strong>, human-rights assessments of plants and value-chain partners.</li>
         </ul>
         <p className="mt-2">Common gaps: value-chain human-rights data and grievance-mechanism coverage. Align to the UN Guiding Principles where you describe due diligence.</p>
       </>
@@ -103,14 +103,14 @@ const GUIDES: Guide[] = [
     title: "Getting ready for BRSR Core assurance",
     body: (
       <>
-        <p>The nine BRSR Core attributes carry <strong>reasonable assurance</strong> on a glide path — top 150 (FY23-24) → 250 → 500 → top 1000 (FY26-27). Assurers increasingly ask not just "is the number right?" but "show the trail behind it":</p>
+        <p>The nine BRSR Core attributes carry <strong>reasonable assurance</strong> on a glide path, top 150 (FY23-24) → 250 → 500 → top 1000 (FY26-27). Assurers increasingly ask not just "is the number right?" but "show the trail behind it":</p>
         <ul className="list-disc pl-5 space-y-1 mt-2">
-          <li><strong>Named data owners</strong> — who is accountable for each KPI.</li>
-          <li><strong>Documentation trail</strong> — the bill, register or meter reading behind every figure.</li>
-          <li><strong>Cited methodology</strong> — the factor and source behind any computed number.</li>
-          <li><strong>Internal controls</strong> — how the data is reviewed before it's reported.</li>
+          <li><strong>Named data owners</strong>, who is accountable for each KPI.</li>
+          <li><strong>Documentation trail</strong>, the bill, register or meter reading behind every figure.</li>
+          <li><strong>Cited methodology</strong>, the factor and source behind any computed number.</li>
+          <li><strong>Internal controls</strong>, how the data is reviewed before it's reported.</li>
         </ul>
-        <p className="mt-2">Saaksh's <strong>Collect</strong> tier captures exactly this — per-figure attribution, attached evidence and the cited calculation basis — as an exportable data-ownership ledger.</p>
+        <p className="mt-2">Saaksh's <strong>Collect</strong> tier captures exactly this, per-figure attribution, attached evidence and the cited calculation basis, as an exportable data-ownership ledger.</p>
       </>
     ),
     sources: [{ label: "SEBI BRSR Core circular (Jul 2023)", href: "https://www.sebi.gov.in/legal/circulars/jul-2023/brsr-core-framework-for-assurance-and-esg-disclosures-for-value-chain_73854.html" }],
@@ -123,7 +123,7 @@ export default function TemplatesPanel() {
       <div>
         <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">Templates &amp; guides</h1>
         <p className="text-[13px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
-          The formats and how-to guidance you&apos;d otherwise hunt for — ready to download and built from the same
+          The formats and how-to guidance you&apos;d otherwise hunt for, ready to download and built from the same
           cited BRSR knowledge base. Generated in your browser; nothing is uploaded.
         </p>
       </div>
@@ -146,7 +146,7 @@ export default function TemplatesPanel() {
             </div>
           ))}
         </div>
-        <p className="text-[11px] text-stone-400 leading-relaxed">Templates are starting formats, not a finished assessment — adapt them to the client and their stakeholder process.</p>
+        <p className="text-[11px] text-stone-400 leading-relaxed">Templates are starting formats, not a finished assessment, adapt them to the client and their stakeholder process.</p>
       </section>
 
       {/* How-to guides */}
@@ -161,7 +161,7 @@ export default function TemplatesPanel() {
 }
 
 // A how-to guide that expands/collapses its height smoothly (grid-rows 0fr→1fr),
-// the same pattern the Action Plan's principle sections use — vs the native
+// the same pattern the Action Plan's principle sections use, vs the native
 // <details> which snaps open.
 function GuideItem({ g }: { g: Guide }) {
   const [open, setOpen] = useState(false);

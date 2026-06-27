@@ -1,6 +1,6 @@
 // AI compliance importer (server-only). Reads the text of a client's existing
 // report (last year's BRSR / annual report) and pre-fills the figures for the
-// BRSR fields a campaign is collecting — as REVIEWABLE SUGGESTIONS a human
+// BRSR fields a campaign is collecting, as REVIEWABLE SUGGESTIONS a human
 // verifies, never an auto-write. Same no-fabrication discipline as narrative.ts:
 // the model may only return values literally present in the text, each carrying
 // the exact source sentence it came from. Paid tier (an AI call ⇒ text leaves the
@@ -47,11 +47,11 @@ const SYSTEM =
   "(2) For every value you return, copy the EXACT sentence or line it came from, verbatim, as the source. " +
   "(3) Map each value to the closest field id from the provided candidate list. Use ONLY ids from that list; " +
   "if nothing in the text matches a candidate, do not return it. " +
-  "(4) Return STRICT JSON only — a single array, no prose, no markdown fences. Each element is " +
+  "(4) Return STRICT JSON only, a single array, no prose, no markdown fences. Each element is " +
   '{"fieldId": string, "value": string, "source": string, "confidence": "high"|"medium"|"low"}. ' +
   "Keep the value's number and units exactly as written in the text. " +
   "(5) confidence: high = the text explicitly states this field's value; medium = a likely match but the " +
-  "wording differs; low = uncertain. When unsure, use low — but still include the source.";
+  "wording differs; low = uncertain. When unsure, use low, but still include the source.";
 
 function userPrompt(
   candidates: ImportCandidate[],
@@ -59,14 +59,14 @@ function userPrompt(
   docTypeLabel?: string,
 ): string {
   const list = candidates
-    .map((c) => `${c.fieldId} — ${c.label}${c.unit ? ` [${c.unit}]` : ""}`)
+    .map((c) => `${c.fieldId}, ${c.label}${c.unit ? ` [${c.unit}]` : ""}`)
     .join("\n");
   const docLine = docTypeLabel
     ? `This excerpt is from the client's ${docTypeLabel}. Focus on the figures that document type carries.\n\n`
     : "";
   return (
     docLine +
-    `Candidate BRSR fields (id — label [unit]):\n${list}\n\n` +
+    `Candidate BRSR fields (id, label [unit]):\n${list}\n\n` +
     `Report text (excerpt):\n"""\n${chunk}\n"""\n\n` +
     `Return the JSON array of figures you can find for these fields in this excerpt.`
   );
@@ -80,7 +80,7 @@ interface RawSuggestion {
 }
 
 // Pull a JSON array out of the model's reply, tolerating ```json fences or stray
-// prose. Returns [] on anything unparseable — never throws.
+// prose. Returns [] on anything unparseable, never throws.
 function parseArray(text: string): RawSuggestion[] {
   const start = text.indexOf("[");
   const end = text.lastIndexOf("]");
@@ -209,7 +209,7 @@ export interface BulkDoc {
   category?: DocCategory;
 }
 
-// Plain-English name for each category — used in the grounded prompt so the model
+// Plain-English name for each category, used in the grounded prompt so the model
 // focuses on the figures that document type actually carries.
 const CATEGORY_LABEL: Record<DocCategory, string> = {
   auto: "company report",
@@ -228,7 +228,7 @@ const FIELD_META = new Map(REQUEST_FIELDS.map((f) => [f.id, f]));
 // Scope the candidate fields to the BRSR sections/principles a given document type
 // plausibly contains, sharpening accuracy + cutting the prompt for narrow uploads.
 // BRSR / annual / other / auto stay broad (all fields). Returns the same candidate
-// objects (a subset) — never empties the list (an empty scope falls back to all).
+// objects (a subset), never empties the list (an empty scope falls back to all).
 function scopeCandidates(
   candidates: ImportCandidate[],
   category: DocCategory | undefined,

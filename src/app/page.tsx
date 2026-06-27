@@ -1,6 +1,6 @@
 "use client";
 
-// Landing route (/) — the marketing homepage. The intake form lives at /start and
+// Landing route (/), the marketing homepage. The intake form lives at /start and
 // the report workspace at /report (each a real URL so the back button, refresh and
 // bookmarks behave). If work is saved on this device, we surface a "Continue where
 // you left off" banner; the report is regenerated locally from the saved form.

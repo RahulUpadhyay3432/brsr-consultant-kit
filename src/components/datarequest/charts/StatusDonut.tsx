@@ -1,4 +1,4 @@
-// A status donut — pure inline SVG, no dependency. Each segment is an arc whose
+// A status donut, pure inline SVG, no dependency. Each segment is an arc whose
 // length is proportional to its value; a center label shows the headline figure.
 // Reduced-motion safe (static stroke, no animation). Colors are passed in by the
 // caller (so it stays presentational + matches the Clean Forest status palette).

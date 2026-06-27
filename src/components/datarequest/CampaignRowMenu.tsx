@@ -2,7 +2,7 @@
 
 // Per-card "⋯" actions menu on the collections list. Lives OUTSIDE the card's
 // <Link> (a button can't nest in an anchor), positioned over its top-right corner.
-// Delete is guarded by a native confirm — destructive + irreversible.
+// Delete is guarded by a native confirm, destructive + irreversible.
 
 import { useEffect, useRef, useState, useTransition } from "react";
 

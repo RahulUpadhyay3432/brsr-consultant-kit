@@ -57,7 +57,7 @@ export default function NarrativePanel({
       <div className="px-4 py-3 border-b border-line bg-tint/60 flex items-center justify-between gap-3">
         <div>
           <p className="text-[13px] font-bold text-ink font-display">AI narrative draft</p>
-          <p className="text-[11.5px] text-ink-muted leading-snug mt-0.5">Drafted only from your collected data — never invented. Review before filing.</p>
+          <p className="text-[11.5px] text-ink-muted leading-snug mt-0.5">Drafted only from your collected data, never invented. Review before filing.</p>
         </div>
         <button
           onClick={generate}
@@ -78,7 +78,7 @@ export default function NarrativePanel({
         ) : (
           <>
             <div className="mb-3 inline-flex items-center gap-1.5 text-[11px] font-medium text-amber-800 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> AI draft — review and edit before filing
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> AI draft, review and edit before filing
             </div>
             <div className="space-y-3">
               {entries.map(([p, text]) => (

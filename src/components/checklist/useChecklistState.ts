@@ -1,5 +1,5 @@
 // All Action Plan checklist state: filters, expand/collapse, collected tracking,
-// and the "upload last year's report" detection — plus localStorage persistence
+// and the "upload last year's report" detection, plus localStorage persistence
 // so the consultant's work (collected items + detection) survives a refresh.
 import { useState, useMemo, useRef, useEffect } from "react";
 import type { ChecklistItem } from "@/lib/types";
@@ -18,7 +18,7 @@ interface ChecklistPersist {
   showOnlyDetected: boolean;
   calcInputs?: CalcInputs;
   scope3Inputs?: Scope3Inputs;
-  // View state — persisted so a tab-switch or refresh doesn't lose the
+  // View state, persisted so a tab-switch or refresh doesn't lose the
   // consultant's filters / search / expanded sections.
   statusFilter?: StatusKey | "all";
   principleFilter?: string;
@@ -27,7 +27,7 @@ interface ChecklistPersist {
   collapsedSections?: string[];
 }
 
-// Sections A & B disclosure ids (e.g. SA-1, SB-1) — passed in so the upload
+// Sections A & B disclosure ids (e.g. SA-1, SB-1), passed in so the upload
 // detection count + "mark all detected" include policy disclosures, not just
 // the Section-C fields.
 type GeneralLike = { sectionA: { id: string }[]; sectionB: { id: string }[] };
@@ -46,25 +46,25 @@ export function useChecklistState(items: ChecklistItem[], general: GeneralLike, 
     () => new Set(Object.keys(PRINCIPLES))
   );
 
-  // ── Calculator inputs — shared across P6-E1, P6-E7, P6-E3 rows ─────────────
+  // ── Calculator inputs, shared across P6-E1, P6-E7, P6-E3 rows ─────────────
   const [calcInputs, setCalcInputs] = useState<CalcInputs>(DEFAULT_CALC_INPUTS);
 
   function setCalcInput(key: keyof CalcInputs, value: string) {
     setCalcInputs(prev => ({ ...prev, [key]: value }));
   }
 
-  // ── Scope 3 calculator inputs — the P6-L2 screening calculator ──────────────
+  // ── Scope 3 calculator inputs, the P6-L2 screening calculator ──────────────
   const [scope3Inputs, setScope3Inputs] = useState<Scope3Inputs>(DEFAULT_SCOPE3_INPUTS);
 
   function setScope3Input(key: string, value: string) {
     setScope3Inputs(prev => ({ ...prev, [key]: value }));
   }
 
-  // ── Collected state — consultant marks data they've already gathered ────────
+  // ── Collected state, consultant marks data they've already gathered ────────
   const [collectedIds,  setCollectedIds]  = useState<Set<string>>(new Set());
   const [hideCollected, setHideCollected] = useState(false);
 
-  // ── Upload last year's report — client-side detection of documented fields ──
+  // ── Upload last year's report, client-side detection of documented fields ──
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [detection,    setDetection]    = useState<DetectionResult | null>(null);
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>("idle");
@@ -72,7 +72,7 @@ export function useChecklistState(items: ChecklistItem[], general: GeneralLike, 
   const [uploadError,  setUploadError]  = useState<string>("");
   const [showOnlyDetected, setShowOnlyDetected] = useState(false);
 
-  // ── Persistence — hydrate once after mount, then save on change ─────────────
+  // ── Persistence, hydrate once after mount, then save on change ─────────────
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
     const saved = loadJSON<ChecklistPersist | null>(STORAGE_KEYS.checklist, null);
@@ -111,7 +111,7 @@ export function useChecklistState(items: ChecklistItem[], general: GeneralLike, 
   }, [hydrated, collectedIds, detection, uploadInfo, showOnlyDetected, calcInputs, scope3Inputs,
       statusFilter, principleFilter, typeFilter, search, collapsedSections]);
 
-  // ── Global search seed — a query from the app-shell top bar lands here and
+  // ── Global search seed, a query from the app-shell top bar lands here and
   //    seeds the Action Plan search (resetting filters so matches aren't hidden).
   const lastSeedRef = useRef<string | undefined>(undefined);
   useEffect(() => {
@@ -130,7 +130,7 @@ export function useChecklistState(items: ChecklistItem[], general: GeneralLike, 
     [detection]
   );
   // Only count detections that correspond to disclosures actually in this report
-  // — Section-C fields plus the Section A & B (policy) disclosures.
+  //, Section-C fields plus the Section A & B (policy) disclosures.
   const detectedInReport = useMemo(
     () => items.filter(i => detectedSet.has(i.id)).length
         + abIds.filter(id => detectedSet.has(id)).length,
@@ -144,7 +144,7 @@ export function useChecklistState(items: ChecklistItem[], general: GeneralLike, 
       const { text, pageCount } = await extractPdfText(file);
       if (!text.trim()) {
         setUploadStatus("error");
-        setUploadError("Couldn't read any text from this PDF — it may be a scanned image. Try a text-based PDF.");
+        setUploadError("Couldn't read any text from this PDF, it may be a scanned image. Try a text-based PDF.");
         return;
       }
       setDetection(detectDisclosures(text));

@@ -45,7 +45,7 @@ interface MaterialityPersist {
 export default function MaterialityMatrix({ topics, clientName }: MaterialityMatrixProps) {
   const [selectedCategory, setSelectedCategory] = useState<Category | "all">("all");
 
-  // ── Working shortlist — the consultant flags topics to carry into the
+  // ── Working shortlist, the consultant flags topics to carry into the
   //    client's stakeholder process. A working note, NOT a final assessment.
   //    Persisted client-side so it survives a refresh / tab switch.
   const [shortlisted,         setShortlisted]         = useState<Set<string>>(new Set());
@@ -89,7 +89,7 @@ export default function MaterialityMatrix({ topics, clientName }: MaterialityMat
   // starting format, not a completed assessment (matches the in-app disclaimer).
   function exportTemplate() {
     const intro =
-      "Materiality assessment — working template. Pre-filled with suggested topics for this industry; " +
+      "Materiality assessment, working template. Pre-filled with suggested topics for this industry; " +
       "complete the scoring and decision columns through your client's stakeholder-engagement process. " +
       "This is a starting format, not a completed materiality assessment.";
     const header = [
@@ -147,26 +147,26 @@ export default function MaterialityMatrix({ topics, clientName }: MaterialityMat
           </div>
           <div>
             <h3 className="text-sm font-semibold text-stone-800">
-              Suggested Material Topics — a starting point for your client&apos;s industry
+              Suggested Material Topics, a starting point for your client&apos;s industry
             </h3>
             <p className="text-xs text-stone-500 mt-1 leading-relaxed">
               SEBI&apos;s BRSR requires companies to identify which ESG topics are{" "}
-              <strong className="text-stone-700">material</strong> — topics that significantly
+              <strong className="text-stone-700">material</strong>, topics that significantly
               affect the company or matter to its stakeholders (investors, employees, communities,
               regulators). The topics below are a <strong className="text-stone-700">suggested shortlist</strong>{" "}
-              for your client&apos;s industry — a head-start, not a finished assessment.
+              for your client&apos;s industry, a head-start, not a finished assessment.
             </p>
             <p className="text-[11px] text-stone-500 mt-2">
               <strong className="text-stone-600">How to use this:</strong> Flag the ones that look relevant
               with <span className="font-medium text-brand-700">Add to shortlist</span>, cross off what
-              doesn&apos;t apply, add what&apos;s missing — then run your shortlist through the client&apos;s actual
+              doesn&apos;t apply, add what&apos;s missing, then run your shortlist through the client&apos;s actual
               stakeholder process to arrive at the final materiality disclosure.
             </p>
           </div>
         </div>
       </div>
 
-      {/* ── Honest disclaimer — this is suggested, not a completed assessment ── */}
+      {/* ── Honest disclaimer, this is suggested, not a completed assessment ── */}
       <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex items-start gap-2.5">
         <svg className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="M8 1.5l6.5 11.5h-13L8 1.5z" />
@@ -176,7 +176,7 @@ export default function MaterialityMatrix({ topics, clientName }: MaterialityMat
           <strong>This is a suggested starting list, not a completed materiality assessment.</strong>{" "}
           A BRSR-compliant assessment comes from a structured stakeholder-engagement process, and
           priorities differ between companies even within the same sector. Your shortlist below is a
-          working note to kick off that process — not a substitute for it.
+          working note to kick off that process, not a substitute for it.
         </p>
       </div>
 
@@ -380,7 +380,7 @@ function TopicCard({
         ))}
       </div>
 
-      {/* Shortlist toggle — "select", not "collect": this is a working note */}
+      {/* Shortlist toggle, "select", not "collect": this is a working note */}
       <button
         onClick={onToggleShortlist}
         aria-pressed={isShortlisted}

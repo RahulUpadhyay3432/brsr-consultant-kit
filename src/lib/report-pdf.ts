@@ -1,7 +1,7 @@
-// Client-side "BRSR data request" PDF — a clean, company-facing brief generated
+// Client-side "BRSR data request" PDF, a clean, company-facing brief generated
 // in code (jsPDF) and downloaded as a finished file. No browser print, so no
 // Chrome header/footer and no extension overlays; runs on-device (nothing
-// uploaded). It is NOT the 108-field SEBI dump — it's the gaps, in PLAIN English,
+// uploaded). It is NOT the 108-field SEBI dump, it's the gaps, in PLAIN English,
 // grouped by who owns the data, as a tick-off checklist. The full formal detail
 // lives in the CSV export.
 //
@@ -274,7 +274,7 @@ export async function downloadReportPdf(report: ReportOutput): Promise<void> {
       ? `We'll pull these from your existing filings (${filings.map((f) => FILING_LABELS[f as ExistingFiling]).join(", ")}), so there's nothing to send for them.`
       : "We'll pull these from the filings already on record, so there's nothing to send for them.";
 
-    // measure callout height — items wrap on a single column (no truncation)
+    // measure callout height, items wrap on a single column (no truncation)
     const lineH = ptToMm(9) * 1.32;
     const gapPer = 1.8;
     font(SANS, "normal", 9, BODY);
@@ -295,7 +295,7 @@ export async function downloadReportPdf(report: ReportOutput): Promise<void> {
     doc.setDrawColor(...WHITE); doc.setLineWidth(0.6);
     doc.line(M + 7.6, top + 9.5, M + 8.6, top + 10.5); doc.line(M + 8.6, top + 10.5, M + 10.5, top + 8.1);
     font(SERIF, "normal", 13, FOREST);
-    doc.text("Already covered — no action needed", M + 15, top + 11);
+    doc.text("Already covered, no action needed", M + 15, top + 11);
     // intro line
     font(SANS, "normal", 9, BODY);
     let iy = top + 17.5;

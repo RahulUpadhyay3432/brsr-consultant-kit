@@ -1,6 +1,6 @@
 "use client";
 
-// Report-workspace route (/report). The report isn't stored — it's regenerated
+// Report-workspace route (/report). The report isn't stored, it's regenerated
 // on-device from the saved intake form, so a refresh or bookmark of /report just
 // rebuilds it. With no saved form (e.g. a stale bookmark after "New report"),
 // we send the visitor home.
@@ -33,7 +33,7 @@ export default function ReportPage() {
   }, [router]);
 
   if (!report) {
-    // Workspace-shaped skeleton (sidebar + hero card) — reads as "report arriving"
+    // Workspace-shaped skeleton (sidebar + hero card), reads as "report arriving"
     // rather than a blank spinner. The real report renders on the next frame.
     return (
       <div className="min-h-screen bg-page flex">

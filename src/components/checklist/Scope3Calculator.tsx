@@ -1,7 +1,7 @@
 "use client";
 // Scope 3 screening calculator for the BRSR P6-L2 row. Activity/distance-based per
 // the GHG Protocol Scope 3 Standard; DEFRA 2024 v1.1 factors (cited per line). On
-// device — nothing leaves the browser. Screening-level: Scope 3 is a BRSR Leadership
+// device, nothing leaves the browser. Screening-level: Scope 3 is a BRSR Leadership
 // (voluntary) indicator; Category 1 (purchased goods) is intentionally not included.
 import { calcScope3, SCOPE3_GROUPS, type Scope3Inputs } from "@/lib/scope3-calculator";
 import { fmtNum, fmtIntensity, perInrStr } from "@/lib/emissions-calculator";
@@ -116,15 +116,15 @@ export default function Scope3Calculator({ inputs, turnoverCrore, onChange }: Pr
         {/* Methodology + honest caveats */}
         <div className="text-[10px] text-stone-400 leading-relaxed space-y-1 border-t border-stone-100 pt-2">
           <p>
-            <span className="font-medium text-stone-500">Method:</span> GHG Protocol Corporate Value Chain (Scope 3) Standard — activity/distance-based.
+            <span className="font-medium text-stone-500">Method:</span> GHG Protocol Corporate Value Chain (Scope 3) Standard, activity/distance-based.
             <span className="font-medium text-stone-500"> Factors:</span> DEFRA/DESNZ 2024 GHG Conversion Factors v1.1. Air includes radiative forcing; freight is direct + well-to-tank.
           </p>
           <p>
             <span className="font-medium text-stone-500">Covers</span> business travel (Cat 6), commuting (Cat 7), transport &amp; distribution (Cat 4/9) and waste (Cat 5).
-            <span className="font-medium text-stone-500"> Not included:</span> purchased goods &amp; services (Cat 1) — it needs supplier-specific or spend data; add it from supplier data for a complete inventory.
+            <span className="font-medium text-stone-500"> Not included:</span> purchased goods &amp; services (Cat 1), it needs supplier-specific or spend data; add it from supplier data for a complete inventory.
           </p>
           <p className="italic">
-            Scope 3 is a BRSR Principle 6 Leadership indicator — voluntary and not under reasonable assurance. This is a screening estimate; a certified GHG auditor should sign off on final disclosures.
+            Scope 3 is a BRSR Principle 6 Leadership indicator, voluntary and not under reasonable assurance. This is a screening estimate; a certified GHG auditor should sign off on final disclosures.
           </p>
         </div>
       </div>

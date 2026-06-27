@@ -1,9 +1,15 @@
-// Deterministic, on-device company avatar — a colored rounded square with the
+"use client";
+
+// Deterministic, on-device company avatar, a colored rounded square with the
 // company's initials. No external logo fetch, so "client data never leaves your
 // browser" stays true. The colour is derived from the name (stable across
-// sessions) so each company reads as visually distinct.
+// sessions) so each company reads as visually distinct. A bundled logo, when one
+// exists for the company, is shown instead.
 
-// Deep Vivid Blue & Coral tones — all dark enough for white initials to stay legible.
+import { useState } from "react";
+import { logoFor } from "@/lib/company-logos";
+
+// Deep Vivid Blue & Coral tones, all dark enough for white initials to stay legible.
 const AVATAR_COLORS = [
   "#0F1E33", // navy
   "#0B5FB0", // label blue
@@ -39,6 +45,30 @@ export default function CompanyAvatar({
   className?: string;
 }) {
   const label = (name && name.trim()) || "Client";
+  const [failed, setFailed] = useState(false);
+
+  // A bundled logo for known clients (e.g. Tata Motors); falls back to the monogram
+  // if the file isn't present (onError), so a missing logo never renders as broken.
+  const logo = logoFor(label);
+  if (logo && !failed) {
+    return (
+      <span
+        aria-hidden="true"
+        className={`inline-flex items-center justify-center flex-shrink-0 overflow-hidden bg-white border border-line ${rounded} ${className}`}
+        style={{ width: size, height: size }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={logo}
+          alt={label}
+          onError={() => setFailed(true)}
+          className="w-full h-full object-contain"
+          style={{ padding: Math.max(1, Math.round(size * 0.12)) }}
+        />
+      </span>
+    );
+  }
+
   const text = initialsOf(label);
   const fontSize = Math.round(size * (text.length > 1 ? 0.38 : 0.46));
   return (

@@ -1,4 +1,4 @@
-// Collect campaign summary band — a row of stat tiles surfacing the same figures
+// Collect campaign summary band, a row of stat tiles surfacing the same figures
 // the detail page already computes (collection progress, owners, evidence,
 // emissions). Presentational only; every number is passed in, nothing fabricated.
 // The progress ring is a lightweight inline SVG (no library) and is purely a visual

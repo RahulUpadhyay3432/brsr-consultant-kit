@@ -1,6 +1,6 @@
 // A stacked horizontal bar splitting Scope 1 vs Scope 2 emissions, with a legend.
 // Pure CSS (flex widths), no dependency, reduced-motion safe. Values are tCO2e
-// already computed upstream (cited GHG calc) — nothing is fabricated here.
+// already computed upstream (cited GHG calc), nothing is fabricated here.
 
 function fmt(n: number): string {
   return n.toLocaleString("en-IN", { minimumFractionDigits: 1, maximumFractionDigits: 1 });

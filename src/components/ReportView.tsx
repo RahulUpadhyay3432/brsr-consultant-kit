@@ -24,9 +24,9 @@ import esgRatingsData from "@/data/esg_ratings_mapping.json";
 
 interface ReportViewProps {
   report: ReportOutput;
-  onHome: () => void;   // Brand/logo — go to the marketing home
-  onBack: () => void;   // New report — clears the session
-  onEdit: () => void;   // Back to form — keeps answers pre-filled
+  onHome: () => void;   // Brand/logo, go to the marketing home
+  onBack: () => void;   // New report, clears the session
+  onEdit: () => void;   // Back to form, keeps answers pre-filled
 }
 
 const TABS = [
@@ -40,7 +40,7 @@ const TABS = [
 // "sources" + "templates" are reference panels, not workspace steps, so they live outside TABS.
 type TabId = (typeof TABS)[number]["id"] | "sources" | "templates";
 
-// SVG nav icons — consistent stroke weight, no emoji.
+// SVG nav icons, consistent stroke weight, no emoji.
 function TabIcon({ id, className }: { id: string; className?: string }) {
   if (id === "overview") return (
     <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
@@ -125,7 +125,7 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
         onEdit={onEdit}
       />
 
-      {/* ── Main column — top bar + scrollable content ─────────────────────── */}
+      {/* ── Main column, top bar + scrollable content ─────────────────────── */}
       <div className="flex-1 min-w-0 flex flex-col">
         <TopBar onSearch={goToPlanWithQuery} />
 
@@ -169,7 +169,7 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
   );
 }
 
-// ─── Sidebar — brand, workspace switcher, grouped nav, footer ─────────────────
+// ─── Sidebar, brand, workspace switcher, grouped nav, footer ─────────────────
 function Sidebar({
   report, industryLabel, fieldCount, activeTab, onNavigate, onHome, onBack, onEdit,
 }: {
@@ -207,7 +207,7 @@ function Sidebar({
     <aside className="no-print w-[244px] flex-shrink-0 h-screen sticky top-0 hidden lg:flex flex-col
       bg-white/55 backdrop-blur-sm border-r border-black/[0.06]">
 
-      {/* Brand — clicking returns to the marketing home (the URL changes to /) */}
+      {/* Brand, clicking returns to the marketing home (the URL changes to /) */}
       <button
         onClick={onHome}
         aria-label="Go to home"
@@ -298,7 +298,7 @@ function Sidebar({
         </button>
         <BackupWorkButton />
 
-        {/* Persistent on-device notice — work is saved in this browser only. */}
+        {/* Persistent on-device notice, work is saved in this browser only. */}
         <div className="mt-1.5 pt-2.5 px-2.5 border-t border-black/[0.05]">
           <p className="flex items-center gap-1.5 text-[12.5px] font-semibold text-stone-700">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
@@ -313,7 +313,7 @@ function Sidebar({
   );
 }
 
-// ─── Top bar — global search + utility actions ───────────────────────────────
+// ─── Top bar, global search + utility actions ───────────────────────────────
 function TopBar({ onSearch }: { onSearch: (q: string) => void }) {
   const [draft, setDraft] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -385,7 +385,7 @@ function TopBar({ onSearch }: { onSearch: (q: string) => void }) {
   );
 }
 
-// ─── Overview — the report's dashboard, mapped to our data (no dummy data) ────
+// ─── Overview, the report's dashboard, mapped to our data (no dummy data) ────
 
 // Per-principle status breakdown, derived from the live checklist.
 function principleBreakdown(report: ReportOutput) {
@@ -449,7 +449,7 @@ function Overview({
   // Sections A & B aren't gap-analysed, but they're still collected work. Read
   // the consultant's progress (collected + last-year detections) from the
   // persisted checklist state so the Overview reflects it. Re-reads on each
-  // mount — and Overview remounts on every tab switch, so it stays current.
+  // mount, and Overview remounts on every tab switch, so it stays current.
   const abTotal = report.generalDisclosures.sectionA.length + report.generalDisclosures.sectionB.length;
   const [abProgress, setAbProgress] = useState({ collected: 0, detected: 0 });
   useEffect(() => {
@@ -464,7 +464,7 @@ function Overview({
     setAbProgress({ collected, detected });
   }, [report]);
 
-  // First-run "Start here" card — shown until dismissed; persists across reports.
+  // First-run "Start here" card, shown until dismissed; persists across reports.
   const [showIntro, setShowIntro] = useState(false);
   useEffect(() => {
     setShowIntro(!loadJSON<boolean>(STORAGE_KEYS.walkthroughSeen, false));
@@ -486,7 +486,7 @@ function Overview({
           <p className="text-[14.5px] text-ink-body mt-1 max-w-[68ch] leading-relaxed">
             A live readiness picture for{" "}
             <strong className="font-semibold text-stone-700">{report.companyName || "this company"}</strong>{" "}
-            across the {applicableFields} principle-wise BRSR fields (Section C) — what&apos;s already covered, what to verify, and what to collect
+            across the {applicableFields} principle-wise BRSR fields (Section C), what&apos;s already covered, what to verify, and what to collect
             {notApplicable > 0 && <> ({notApplicable} manufacturing-only marked <span className="font-medium text-slate-500">Not applicable</span>)</>}.
           </p>
         </div>
@@ -505,7 +505,7 @@ function Overview({
 
       {showIntro && <WalkthroughCard onDismiss={dismissIntro} />}
 
-      {/* Hero readiness card — donut + segmented bar + legend */}
+      {/* Hero readiness card, donut + segmented bar + legend */}
       <div className="bg-white rounded-xl border border-stone-200 p-5 lg:p-6 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
         <div className="flex flex-col sm:flex-row items-center gap-6 lg:gap-8">
 
@@ -572,7 +572,7 @@ function Overview({
         </div>
       </div>
 
-      {/* General disclosures (Sections A & B) — collection progress, not gap-analysed */}
+      {/* General disclosures (Sections A & B), collection progress, not gap-analysed */}
       <button
         onClick={onGoToPlan}
         className="group w-full text-left bg-white rounded-xl border border-stone-200 p-4 sm:p-5
@@ -583,7 +583,7 @@ function Overview({
         <div className="min-w-0 flex-1">
           <p className="text-[15.5px] font-bold text-ink">General disclosures · Sections A &amp; B</p>
           <p className="text-[13.5px] text-ink-body mt-0.5 leading-relaxed">
-            The {abTotal} entity facts &amp; policies every BRSR opens with — collected from the client&apos;s own
+            The {abTotal} entity facts &amp; policies every BRSR opens with, collected from the client&apos;s own
             records, separate from the Section-C gap analysis above.
           </p>
         </div>
@@ -657,7 +657,7 @@ function Overview({
           {noFilings ? (
             <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
               <p className="text-[13px] text-amber-800 leading-relaxed">
-                No compliance filings selected — all {newDataNeeded} fields show as &quot;Collect fresh.&quot; Most companies
+                No compliance filings selected, all {newDataNeeded} fields show as &quot;Collect fresh.&quot; Most companies
                 already cover 15–25 of these in PCB consents, EPR registrations, or PAT certificates.
               </p>
               <button onClick={onBack}
@@ -673,13 +673,12 @@ function Overview({
               {alreadyTracked > 0 && (
                 <StartStep dot="bg-emerald-500" onClick={onGoToPlan}>
                   <strong className="font-semibold text-stone-800">Pull {alreadyTracked} ready field{alreadyTracked > 1 ? "s" : ""}</strong>{" "}
-                  straight from existing filings — cite the source and move on.
+                  straight from existing filings, cite the source and move on.
                 </StartStep>
               )}
               {biggestGap && biggestGap.collect > 0 && (
                 <StartStep dot="bg-stone-400" onClick={onGoToPlan}>
-                  <strong className="font-semibold text-stone-800">Close the {biggestGap.id} gap</strong>{" "}
-                  — {biggestGap.collect} fields to collect in {biggestGap.name}, the largest gap.
+                  <strong className="font-semibold text-stone-800">Close the {biggestGap.id} gap</strong>{" "}, {biggestGap.collect} fields to collect in {biggestGap.name}, the largest gap.
                 </StartStep>
               )}
               {partiallyTracked > 0 && (
@@ -696,7 +695,7 @@ function Overview({
   );
 }
 
-// Legend chip — dot + label + count.
+// Legend chip, dot + label + count.
 function Legend({ dot, label, n }: { dot: string; label: string; n: number }) {
   return (
     <span className="inline-flex items-center gap-1.5">
@@ -707,7 +706,7 @@ function Legend({ dot, label, n }: { dot: string; label: string; n: number }) {
   );
 }
 
-// A single "Where to start" step — clickable, routes to the Action Plan.
+// A single "Where to start" step, clickable, routes to the Action Plan.
 function StartStep({ dot, onClick, children }: { dot: string; onClick: () => void; children: React.ReactNode }) {
   return (
     <li>
@@ -721,13 +720,13 @@ function StartStep({ dot, onClick, children }: { dot: string; onClick: () => voi
   );
 }
 
-// ─── Alignment workspace — Reporting frameworks + ESG ratings, in one tab ─────
+// ─── Alignment workspace, Reporting frameworks + ESG ratings, in one tab ─────
 // Replaces the two stacked accordions (PRODUCT.md §4): one consistent nav model,
 // ratings is a peer of frameworks instead of buried below a long table.
 function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMapping[]; clientName?: string }) {
   const [sub, setSub] = useState<"frameworks" | "ratings">("frameworks");
 
-  // Export whichever crosswalk is in view — one obvious action. On-device CSV
+  // Export whichever crosswalk is in view, one obvious action. On-device CSV
   // (reuses the report's RFC-4180/formula-safe export.ts), so nothing leaves the browser.
   function exportActive() {
     if (sub === "frameworks") {
@@ -739,10 +738,10 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
   }
 
   const total    = mappings.length;
-  const withGRI  = mappings.filter(m => m.gri_standard   && m.gri_standard   !== "—").length;
-  const withTCFD = mappings.filter(m => m.tcfd_pillar    && m.tcfd_pillar    !== "—").length;
-  const withIFRS = mappings.filter(m => m.ifrs_reference && m.ifrs_reference !== "—").length;
-  const withTNFD = mappings.filter(m => m.tnfd_pillar    && m.tnfd_pillar    !== "—").length;
+  const withGRI  = mappings.filter(m => m.gri_standard   && m.gri_standard   !== ", ").length;
+  const withTCFD = mappings.filter(m => m.tcfd_pillar    && m.tcfd_pillar    !== ", ").length;
+  const withIFRS = mappings.filter(m => m.ifrs_reference && m.ifrs_reference !== ", ").length;
+  const withTNFD = mappings.filter(m => m.tnfd_pillar    && m.tnfd_pillar    !== ", ").length;
   const ratingsCount = (esgRatingsData as { mappings?: unknown[] }).mappings?.length ?? 9;
 
   const subTabs = [
@@ -768,7 +767,7 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
             Alignment
           </h1>
           <p className="text-[14.5px] text-ink-body mt-1 max-w-[72ch] leading-relaxed">
-            How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2 and TNFD (nature) — and to the MSCI &amp; DJSI
+            How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2 and TNFD (nature), and to the MSCI &amp; DJSI
             rating frameworks. Collect once, report across all.
           </p>
         </div>

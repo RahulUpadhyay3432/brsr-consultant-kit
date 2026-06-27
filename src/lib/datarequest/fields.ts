@@ -2,7 +2,7 @@ import type { RequestField } from "./types";
 import brsrData from "@/data/brsr_data_points.json";
 
 // Layer 2: the request-field list is the FULL BRSR format, flattened from the
-// same knowledge base the readiness tool uses (brsr_data_points.json) — Section
+// same knowledge base the readiness tool uses (brsr_data_points.json), Section
 // A (general), Section B (policy/management), Section C (108 principle-wise
 // indicators). Every field carries its BRSR coordinates so collected values map
 // straight back into the report. The two "activity" inputs (grid kWh, diesel
@@ -18,37 +18,37 @@ const ACTIVITY_FIELDS: RequestField[] = [
   {
     id: "P6-E1-elec", label: "Grid electricity consumed (annual)", unit: "kWh",
     kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
-    hint: "Energy / utilities manager — annual electricity bills.",
+    hint: "Energy / utilities manager, annual electricity bills.",
   },
   {
     id: "P6-E1-diesel", label: "Diesel / HSD consumed (DG sets, vehicles)", unit: "litres",
     kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
-    hint: "Facilities / admin — fuel purchase logs.",
+    hint: "Facilities / admin, fuel purchase logs.",
   },
   {
     id: "P6-E1-petrol", label: "Petrol / MS consumed (vehicles, equipment)", unit: "litres",
     kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
-    hint: "Facilities / fleet — fuel purchase logs.",
+    hint: "Facilities / fleet, fuel purchase logs.",
   },
   {
     id: "P6-E1-cng", label: "CNG / piped natural gas consumed", unit: "m³",
     kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
-    hint: "Energy manager — gas utility bills / meter readings.",
+    hint: "Energy manager, gas utility bills / meter readings.",
   },
   {
     id: "P6-E1-lpg", label: "LPG consumed (canteen, process heating)", unit: "kg",
     kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
-    hint: "Admin / EHS — LPG cylinder or bulk purchase records.",
+    hint: "Admin / EHS, LPG cylinder or bulk purchase records.",
   },
   {
     id: "P6-E1-coal", label: "Coal consumed (boilers, furnaces)", unit: "kg",
     kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
-    hint: "Plant / utilities — coal purchase and consumption logs.",
+    hint: "Plant / utilities, coal purchase and consumption logs.",
   },
   {
     id: "P6-E1-fo", label: "Furnace oil / HFO consumed (boilers, DG)", unit: "litres",
     kind: "activity", section: "C", principle: "P6", indicatorType: "essential",
-    hint: "Plant / utilities — furnace oil purchase logs.",
+    hint: "Plant / utilities, furnace oil purchase logs.",
   },
 ];
 

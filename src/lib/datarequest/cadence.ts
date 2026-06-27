@@ -16,7 +16,7 @@ const NONE: ReminderDecision = { send: false, reminderNo: 0, final: false };
 
 // Should this contact get a reminder right now?
 export function dueReminder(contact: Contact, campaign: Campaign, now: Date = new Date()): ReminderDecision {
-  if (contact.status === "received") return NONE;        // done — never chase
+  if (contact.status === "received") return NONE;        // done, never chase
   if (contact.remindersSent >= MAX_REMINDERS) return NONE; // cap reached
   if (!contact.lastEmailedAt) return NONE;               // no cadence clock yet
 

@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 // MVP gate: a single shared passcode protects the consultant area. Real
 // per-consultant accounts (Supabase Auth + RLS) arrive with the paid tier.
-// (Cookie name is also hardcoded in middleware.ts — keep them in sync.)
+// (Cookie name is also hardcoded in middleware.ts, keep them in sync.)
 const AUTH_COOKIE = "bk_auth";
 
 export async function loginAction(formData: FormData): Promise<void> {

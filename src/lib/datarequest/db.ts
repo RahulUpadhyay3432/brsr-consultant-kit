@@ -11,7 +11,7 @@ const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 function assertEnv(): { url: string; key: string } {
   if (!URL || !KEY) {
-    throw new Error("Supabase env not set — add NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY to .env.local");
+    throw new Error("Supabase env not set, add NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY to .env.local");
   }
   return { url: URL, key: KEY };
 }
@@ -42,6 +42,7 @@ interface ItemRow {
 interface ContactRow {
   id: string; name: string | null; email: string; token: string; status: string;
   last_emailed_at?: string | null; reminders_sent?: number | null;
+  received_at?: string | null;
   brsr_request_items?: ItemRow[];
 }
 interface CampaignRow {
@@ -72,6 +73,7 @@ function mapContact(r: ContactRow): Contact {
     status: (["partial", "received"].includes(r.status) ? (r.status as Contact["status"]) : "pending"),
     lastEmailedAt: r.last_emailed_at ?? null,
     remindersSent: r.reminders_sent ?? 0,
+    receivedAt: r.received_at ?? null,
     items: (r.brsr_request_items ?? []).map(mapItem),
   };
 }
@@ -135,7 +137,7 @@ export async function addContact(
   }
 }
 
-// For the recipient page — contact + items + the parent client name/deadline.
+// For the recipient page, contact + items + the parent client name/deadline.
 export async function getContactByToken(
   token: string
 ): Promise<{ contact: Contact; clientName: string; reportingPeriod: string | null; deadline: string | null; campaignId: string } | null> {
@@ -160,7 +162,7 @@ export async function updateItem(itemId: string, value: string): Promise<void> {
   });
 }
 
-// Prior-year figure — written separately from the value so it can be best-effort
+// Prior-year figure, written separately from the value so it can be best-effort
 // (the previous-FY column is supplementary to the reportable number).
 export async function setItemPrior(itemId: string, priorValue: string): Promise<void> {
   await rest(`brsr_request_items?id=eq.${encodeURIComponent(itemId)}`, {
@@ -170,7 +172,7 @@ export async function setItemPrior(itemId: string, priorValue: string): Promise<
 }
 
 // Records the supporting document an owner attached. Independent of the value
-// (status is untouched) — evidence can land with or without a number.
+// (status is untouched), evidence can land with or without a number.
 export async function setItemEvidence(itemId: string, path: string, name: string): Promise<void> {
   await rest(`brsr_request_items?id=eq.${encodeURIComponent(itemId)}`, {
     method: "PATCH",
@@ -200,6 +202,31 @@ export async function markReminded(contactId: string, remindersSent: number): Pr
   await rest(`brsr_contacts?id=eq.${encodeURIComponent(contactId)}`, {
     method: "PATCH",
     body: JSON.stringify({ last_emailed_at: new Date().toISOString(), reminders_sent: remindersSent }),
+  });
+}
+
+// Stamps when an owner's data was first received (best-effort; the received_at column
+// is optional, caller wraps this so a missing column never fails the submission).
+export async function markReceived(contactId: string): Promise<void> {
+  await rest(`brsr_contacts?id=eq.${encodeURIComponent(contactId)}`, {
+    method: "PATCH",
+    body: JSON.stringify({ received_at: new Date().toISOString() }),
+  });
+}
+
+// Update a campaign's editable settings (deadline / reporting period). Columns already
+// exist, no migration. Only the keys provided are written.
+export async function updateCampaign(
+  id: string,
+  fields: { deadline?: string | null; reportingPeriod?: string | null },
+): Promise<void> {
+  const body: Record<string, unknown> = {};
+  if ("deadline" in fields) body.deadline = fields.deadline ?? null;
+  if ("reportingPeriod" in fields) body.reporting_period = fields.reportingPeriod ?? null;
+  if (Object.keys(body).length === 0) return;
+  await rest(`brsr_requests?id=eq.${encodeURIComponent(id)}`, {
+    method: "PATCH",
+    body: JSON.stringify(body),
   });
 }
 
@@ -250,7 +277,7 @@ function randomToken(): string {
   return `import-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
-// ─── Company contacts — the per-client saved roster (brsr_company_contacts) ──
+// ─── Company contacts, the per-client saved roster (brsr_company_contacts) ──
 // A reusable directory of people, scoped to a campaign. Created by the user's SQL
 // migration; everything here is best-effort so Collect keeps working before then.
 interface CompanyContactRow {
@@ -290,7 +317,7 @@ export async function deleteCompanyContact(id: string): Promise<void> {
 
 // ─── Delete an entire campaign + all its children ───────────────────────────
 // Done in FK-safe order with explicit DELETEs (so it works whether or not the
-// child FKs are ON DELETE CASCADE — no migration required): the items under the
+// child FKs are ON DELETE CASCADE, no migration required): the items under the
 // campaign's contacts → the contacts → the saved-contacts directory → the
 // campaign row. The directory delete is best-effort (the table may not exist yet).
 export async function deleteCampaign(id: string): Promise<void> {
@@ -307,10 +334,10 @@ export async function deleteCampaign(id: string): Promise<void> {
   // 3. Delete the contacts (data owners + any synthetic "Imported documents" contact).
   await rest(`brsr_contacts?request_id=eq.${encodeURIComponent(id)}`, { method: "DELETE" });
 
-  // 4. Delete the saved-contacts directory (best-effort — table optional pre-migration).
+  // 4. Delete the saved-contacts directory (best-effort, table optional pre-migration).
   try {
     await rest(`brsr_company_contacts?request_id=eq.${encodeURIComponent(id)}`, { method: "DELETE" });
-  } catch { /* directory table absent — ignore */ }
+  } catch { /* directory table absent, ignore */ }
 
   // 5. Delete the campaign row itself.
   await rest(`brsr_requests?id=eq.${encodeURIComponent(id)}`, { method: "DELETE" });

@@ -1,7 +1,7 @@
 "use client";
 
 // The client's saved-contacts roster. Save the people you collect data from once
-// (name, email, role) — by hand or by pasting a list — then import them with one
+// (name, email, role), by hand or by pasting a list, then import them with one
 // tap when adding a data owner. Owners you add are auto-captured here too.
 
 import { useState } from "react";
@@ -91,7 +91,7 @@ export default function DirectoryPanel({
               placeholder={"One contact per line, e.g.\nPriya Sharma, priya@acme.com, HR\nRohan Mehta\trohan@acme.com\tFleet"}
               className="w-full px-3 py-2.5 text-[12.5px] text-stone-800 bg-white border border-stone-200 rounded-lg font-mono leading-relaxed focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
             <p className="text-[11px] text-stone-400 leading-relaxed">
-              Paste from the client&apos;s email/chat, or copy cells straight from Excel/Sheets (name, email, role per line — the email is all that&apos;s required).
+              Paste from the client&apos;s email/chat, or copy cells straight from Excel/Sheets (name, email, role per line, the email is all that&apos;s required).
             </p>
             <button type="submit"
               className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-white bg-forest hover:bg-forest-light px-3.5 py-2 rounded-lg transition-colors pressable">

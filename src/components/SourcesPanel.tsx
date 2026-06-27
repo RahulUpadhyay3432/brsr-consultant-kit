@@ -4,8 +4,8 @@ import { SEBI_BRSR_FORMAT_URL } from "./checklist/constants";
 
 // ─── Sources & methodology ────────────────────────────────────────────────────
 // A curated, always-current reference: every number and disclosure in the kit
-// traces to a primary source. We link to the live authoritative document — never
-// a hosted copy — so the reference can't go stale and we don't redistribute
+// traces to a primary source. We link to the live authoritative document, never
+// a hosted copy, so the reference can't go stale and we don't redistribute
 // restricted material (e.g. the ICAI Background Material).
 
 type Source = {
@@ -14,7 +14,7 @@ type Source = {
   builtAgainst: string;  // the version / edition the kit is calibrated to
   usedIn: string;        // where it surfaces in the workspace
   href?: string;         // official, live source
-  restricted?: boolean;  // distribution-restricted — cited, deliberately not hosted/linked to a copy
+  restricted?: boolean;  // distribution-restricted, cited, deliberately not hosted/linked to a copy
 };
 
 type Group = { heading: string; blurb: string; items: Source[] };
@@ -22,13 +22,13 @@ type Group = { heading: string; blurb: string; items: Source[] };
 const GROUPS: Group[] = [
   {
     heading: "Regulatory basis",
-    blurb: "What BRSR actually requires — the disclosures themselves.",
+    blurb: "What BRSR actually requires, the disclosures themselves.",
     items: [
       {
         name: "SEBI BRSR Format (Annexure II)",
-        governs: "Every Section A, B and C disclosure — the exact questions a listed entity must answer.",
+        governs: "Every Section A, B and C disclosure, the exact questions a listed entity must answer.",
         builtAgainst: "Annexure II, Jul 2023 + Mar 2025 amendment (adds P6 Green Credits)",
-        usedIn: "Action Plan — every row, and the “SEBI source” link in each expanded panel",
+        usedIn: "Action Plan, every row, and the “SEBI source” link in each expanded panel",
         href: SEBI_BRSR_FORMAT_URL,
       },
       {
@@ -42,12 +42,12 @@ const GROUPS: Group[] = [
   },
   {
     heading: "Calculation factors",
-    blurb: "The numbers behind the embedded GHG, energy and water calculators — GHG figures follow the GHG Protocol Corporate Standard (Scope 1 & 2, location-based, IPCC AR5 GWPs).",
+    blurb: "The numbers behind the embedded GHG, energy and water calculators, GHG figures follow the GHG Protocol Corporate Standard (Scope 1 & 2, location-based, IPCC AR5 GWPs).",
     items: [
       {
         name: "CEA CO₂ Baseline Database",
-        governs: "India's national grid emission factor — the basis for Scope 2 (purchased electricity).",
-        builtAgainst: "Version 21.0, Nov 2025 (FY 2024-25) — grid factor 0.710 kgCO₂/kWh",
+        governs: "India's national grid emission factor, the basis for Scope 2 (purchased electricity).",
+        builtAgainst: "Version 21.0, Nov 2025 (FY 2024-25), grid factor 0.710 kgCO₂/kWh",
         usedIn: "Scope 2 in the GHG calculators (P6-E1, P6-E7)",
         href: "https://cea.nic.in/wp-content/uploads/baseline/2025/12/User_Guide_V_21.0.pdf",
       },
@@ -62,7 +62,7 @@ const GROUPS: Group[] = [
   },
   {
     heading: "International frameworks",
-    blurb: "The crosswalk — how each BRSR disclosure maps outward. Collect once, report across all.",
+    blurb: "The crosswalk, how each BRSR disclosure maps outward. Collect once, report across all.",
     items: [
       {
         name: "GRI Standards",
@@ -130,7 +130,7 @@ function SourceCard({ s }: { s: Source }) {
           </a>
         ) : s.restricted ? (
           <span
-            title="Distribution-restricted document — cited for traceability, deliberately not hosted or copied."
+            title="Distribution-restricted document, cited for traceability, deliberately not hosted or copied."
             className="inline-flex items-center flex-shrink-0 text-[10px] font-semibold uppercase tracking-[0.08em]
               text-stone-400 bg-stone-100 border border-stone-200 rounded px-1.5 py-0.5"
           >
@@ -169,7 +169,7 @@ export default function SourcesPanel() {
         </h1>
         <p className="text-[13px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
           Every disclosure, factor and mapping in this kit traces to a primary source. Each links to the
-          live authoritative document — never a hosted copy — so the reference stays current and we never
+          live authoritative document, never a hosted copy, so the reference stays current and we never
           redistribute restricted material.
         </p>
       </div>
@@ -195,7 +195,7 @@ export default function SourcesPanel() {
             <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0" />
             <span><strong className="font-semibold text-stone-700">Cited and versioned.</strong> The regulatory
               skeleton (108 Section-C fields + Sections A/B) is reconciled against the official SEBI format and ICAI
-              Background Material — the counts match exactly.</span>
+              Background Material, the counts match exactly.</span>
           </li>
           <li className="flex gap-2.5">
             <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0" />

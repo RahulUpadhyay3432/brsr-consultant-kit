@@ -46,7 +46,7 @@ export default function ProfilePanel() {
     setSaved(false);
   };
 
-  // localStorage is client-only — hydrate after mount.
+  // localStorage is client-only, hydrate after mount.
   useEffect(() => {
     setP(loadProfile());
   }, []);
@@ -63,7 +63,7 @@ export default function ProfilePanel() {
       <p className="text-[14.5px] text-ink-body mt-1 max-w-[64ch] leading-relaxed">
         Your details and default rate card. Used to brand your client proposals and to pre-fill the fee
         builder, so you don&apos;t re-type them each time.{" "}
-        <span className="font-semibold text-ink">Saved on this device only</span> — nothing is uploaded.
+        <span className="font-semibold text-ink">Saved on this device only</span>, nothing is uploaded.
       </p>
 
       <form onSubmit={onSave} className="mt-6 space-y-5">

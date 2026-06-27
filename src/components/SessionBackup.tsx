@@ -2,7 +2,7 @@
 
 // Back up / restore the on-device session as a small file. Lets a consultant
 // move their work to another browser or device, or keep a safety copy, without
-// any account or server — the file stays with them.
+// any account or server, the file stays with them.
 
 import { useRef, useState } from "react";
 import { buildSessionBackup, restoreSessionBackup } from "@/lib/storage";

@@ -2,7 +2,7 @@
 
 // Persistent, app-wide help. A floating button (bottom-right on every page except
 // /login) opens a panel with: the "How it works" steps and an "ask" box that
-// keyword-matches the curated help KB (src/data/help_topics.json) — no AI, fully
+// keyword-matches the curated help KB (src/data/help_topics.json), no AI, fully
 // on-device, so it can only surface vetted answers, never invent one.
 
 import { useState, useMemo, useEffect, useRef, type ReactNode } from "react";
@@ -18,7 +18,7 @@ const COMPLIANCE_CHAT = "https://huggingface.co/spaces/sherlockwatson221/climate
 // ── Tiny dependency-free markdown renderer ──────────────────────────────────
 // Renders the curated/AI answers (which are written as: a summary line, then
 // "1." / "2." steps or "- " bullets, with **bold** key terms). Deliberately
-// minimal — no HTML is interpreted, only our own inline bold + list grammar.
+// minimal, no HTML is interpreted, only our own inline bold + list grammar.
 
 // Inline: split on **bold** spans (everything else is plain text).
 function renderInline(text: string, keyPrefix: string): ReactNode[] {
@@ -115,7 +115,7 @@ export default function HelpWidget() {
   // Monotonic id so a stale in-flight AI response can't overwrite a newer ask.
   const askSeq = useRef(0);
 
-  // Keyword results for the submitted question — the graceful fallback when the
+  // Keyword results for the submitted question, the graceful fallback when the
   // AI is unavailable, and what we show alongside the AI answer for vetted detail.
   const results = useMemo(() => (asked.trim() ? searchHelp(asked, TOPICS) : []), [asked]);
 
@@ -131,7 +131,7 @@ export default function HelpWidget() {
       const { answer } = await askSaaksh(q);
       if (seq === askSeq.current) setAiAnswer(answer);
     } catch {
-      // Server action threw — fall through to keyword results (aiAnswer stays null).
+      // Server action threw, fall through to keyword results (aiAnswer stays null).
       if (seq === askSeq.current) setAiAnswer(null);
     } finally {
       if (seq === askSeq.current) setThinking(false);
@@ -213,7 +213,7 @@ export default function HelpWidget() {
           <div className="flex-1 overflow-y-auto px-4 pb-4">
             {asked.trim() ? (
               <div className="mt-2 space-y-3">
-                {/* AI answer surface — neutral white card with a thin blue accent; grounded. */}
+                {/* AI answer surface, neutral white card with a thin blue accent; grounded. */}
                 {thinking ? (
                   <div className="rounded-lg border border-line bg-white border-l-2 border-l-brand-500 px-3.5 py-3">
                     <div className="flex items-center gap-1.5">
@@ -225,13 +225,13 @@ export default function HelpWidget() {
                   <div className="rounded-lg border border-line bg-white border-l-2 border-l-brand-500 px-3.5 py-3.5">
                     <div className="flex items-center gap-1.5 mb-2">
                       <span className="text-[10.5px] font-bold uppercase tracking-[0.1em] text-brand-700 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5">Saaksh AI</span>
-                      <span className="text-[11.5px] text-ink-muted">grounded — never invents</span>
+                      <span className="text-[11.5px] text-ink-muted">grounded, never invents</span>
                     </div>
                     {renderMarkdown(aiAnswer)}
                   </div>
                 ) : null}
 
-                {/* Keyword results — the safe fallback (also shown beside an AI answer for vetted detail). */}
+                {/* Keyword results, the safe fallback (also shown beside an AI answer for vetted detail). */}
                 {results.length ? (
                   <div>
                     {aiAnswer && (

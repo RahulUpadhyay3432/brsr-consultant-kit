@@ -55,7 +55,7 @@ export type StatusKey = keyof typeof STATUS_META;
 export type TypeKey   = "all" | "essential" | "leadership";
 
 // ─── SEBI source references ──────────────────────────────────────────────────
-// SEBI does not publish per-field deep links — every Section-C principle
+// SEBI does not publish per-field deep links, every Section-C principle
 // disclosure is defined in one canonical document: the updated BRSR Format
 // (Annexure II, Jul 2023). We link there and cite the ICAI Background Material
 // page (already in the data) for true per-field granularity.
@@ -82,7 +82,7 @@ export function plain(label: string): string {
     // Strip leading sub-question marker e.g. "A. " "a. " "1. "
     .replace(/^[A-Za-z0-9]\.\s+/, "")
     // Split on em-dash, semicolon, or a new lettered sub-question "? b. "
-    .split(/\s+[—–]\s+|\s*;\s+/)[0]
+    .split(/\s+[, –]\s+|\s*;\s+/)[0]
     .replace(/\?\s+[a-zA-Z]\.\s[\s\S]*/, "?")  // "...sourcing? b. Also..." → "...sourcing?"
     .trim()
     .replace(/\s+/g, " ");

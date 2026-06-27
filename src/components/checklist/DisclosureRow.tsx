@@ -14,7 +14,7 @@ import Scope3Calculator from "./Scope3Calculator";
 import explainersData from "@/data/brsr_field_explainers.json";
 
 // Pre-generated, AI-written plain-English explanation per BRSR field. Static data
-// (generated once via scripts/generate-field-explainers.mjs) — zero runtime tokens,
+// (generated once via scripts/generate-field-explainers.mjs), zero runtime tokens,
 // no network call, nothing about the client is sent anywhere.
 const EXPLAINERS = (explainersData as { explainers: Record<string, string> }).explainers;
 
@@ -25,7 +25,7 @@ const CALC_MODES: Partial<Record<string, "energy" | "ghg" | "water">> = {
   "P6-E3": "water",
 };
 
-// Pill border per status — pairs with STATUS_META bg/text for a Vanta-style status chip.
+// Pill border per status, pairs with STATUS_META bg/text for a Vanta-style status chip.
 const STATUS_PILL_BORDER: Record<StatusKey, string> = {
   already_tracked:   "border-emerald-200",
   partially_tracked: "border-amber-200",
@@ -77,7 +77,7 @@ export default function DisclosureRow({
               }`}>
               {plain(item.label)}
             </p>
-            {/* Inline gap hint — only for partially tracked, not collected */}
+            {/* Inline gap hint, only for partially tracked, not collected */}
             {item.status === "partially_tracked" && item.gap_note && !isCollected && (
               <p className="text-[10px] text-amber-600 mt-0.5 line-clamp-1 leading-snug">
                 Missing: {item.gap_note}
@@ -99,7 +99,7 @@ export default function DisclosureRow({
           </div>
         </div>
 
-        {/* Indicator type — desktop only */}
+        {/* Indicator type, desktop only */}
         <div className="hidden md:flex items-start pt-0.5 w-[90px] flex-shrink-0">
           <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded
             ${isCollected
@@ -149,7 +149,7 @@ export default function DisclosureRow({
         <div className="px-4 pb-4" style={{ paddingLeft: "calc(1rem + 22px)" }}>
           <div className="bg-stone-100/70 border border-stone-200/80 rounded-lg p-3 space-y-3">
 
-            {/* What it's asking — precomputed plain-language explainer, on-device (no live call) */}
+            {/* What it's asking, precomputed plain-language explainer, on-device (no live call) */}
             {explainer && (
               <div className="bg-white border border-stone-200 rounded-lg px-3.5 py-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
@@ -162,7 +162,7 @@ export default function DisclosureRow({
               </div>
             )}
 
-            {/* Not-applicable explainer — service-sector clients skip this */}
+            {/* Not-applicable explainer, service-sector clients skip this */}
             {isNA && (
               <div className="bg-slate-100 border border-slate-200 rounded-md px-3.5 py-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-600 mb-1.5">
@@ -172,12 +172,12 @@ export default function DisclosureRow({
                   This is a manufacturing/product-specific disclosure (e.g. stack air emissions,
                   industrial effluent, product end-of-life reclaim, or project EIAs). Pure
                   service-sector entities normally report it as <span className="font-medium">"Not applicable"</span> in their BRSR.
-                  Confirm with your client — switch <span className="font-medium">Business Type</span> to Product/Manufacturing if any of these apply.
+                  Confirm with your client, switch <span className="font-medium">Business Type</span> to Product/Manufacturing if any of these apply.
                 </p>
               </div>
             )}
 
-            {/* Detected in uploaded report — consultant confirms */}
+            {/* Detected in uploaded report, consultant confirms */}
             {isDetected && detectedMatch && (
               <div className="bg-brand-50 border border-brand-100 rounded-md px-3.5 py-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-700 mb-1.5 flex items-center gap-1.5">
@@ -198,16 +198,16 @@ export default function DisclosureRow({
                   {detectedMatch.snippet}
                 </p>
                 <p className="text-[11px] text-stone-400 mt-2 leading-relaxed">
-                  Detected from text — verify last year's disclosure is still accurate before reusing it, then mark it collected below.
+                  Detected from text, verify last year's disclosure is still accurate before reusing it, then mark it collected below.
                 </p>
               </div>
             )}
 
-            {/* ── Action card (raised) — what to actually do: pull-from, gap, how to collect ── */}
+            {/* ── Action card (raised), what to actually do: pull-from, gap, how to collect ── */}
             {(item.source_filing || item.gap_note || item.measurement_guidance) && (
             <div className="bg-white border border-stone-200 rounded-lg p-3.5 shadow-[0_1px_4px_rgba(80,60,30,0.06)] space-y-3.5">
 
-            {/* Source filing — shown when data comes from an existing compliance report */}
+            {/* Source filing, shown when data comes from an existing compliance report */}
             {item.source_filing && (
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
@@ -224,7 +224,7 @@ export default function DisclosureRow({
             {item.gap_note && (
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
-                  Gap — what's missing
+                  Gap, what's missing
                 </p>
                 <p className="text-sm text-stone-600 leading-relaxed">{item.gap_note}</p>
               </div>
@@ -243,7 +243,7 @@ export default function DisclosureRow({
             </div>
             )}
 
-            {/* Embedded calculator — its own raised card (energy P6-E1, GHG P6-E7, water P6-E3) */}
+            {/* Embedded calculator, its own raised card (energy P6-E1, GHG P6-E7, water P6-E3) */}
             {!isNA && CALC_MODES[item.id] && (
               <EmissionsCalculator
                 mode={CALC_MODES[item.id]!}
@@ -252,7 +252,7 @@ export default function DisclosureRow({
               />
             )}
 
-            {/* Scope 3 screening calculator (P6-L2) — reuses the shared turnover for intensity */}
+            {/* Scope 3 screening calculator (P6-L2), reuses the shared turnover for intensity */}
             {!isNA && item.id === "P6-L2" && (
               <Scope3Calculator
                 inputs={scope3Inputs}
@@ -261,7 +261,7 @@ export default function DisclosureRow({
               />
             )}
 
-            {/* Reference — best practices + verbatim SEBI language, source & unit.
+            {/* Reference, best practices + verbatim SEBI language, source & unit.
                 Tiered behind one disclosure so the open row leads with the next
                 ACTION (gap, how to collect, calculator), not a regulatory essay. */}
             {(() => {
@@ -274,18 +274,18 @@ export default function DisclosureRow({
                   fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
-                {hasBP ? "Best practices & SEBI reference" : "SEBI reference — verbatim language, source & unit"}
+                {hasBP ? "Best practices & SEBI reference" : "SEBI reference, verbatim language, source & unit"}
               </summary>
 
               <div className="mt-3.5 space-y-4">
 
-                {/* Best practices — principle-level, India + International. Hidden for N/A. */}
+                {/* Best practices, principle-level, India + International. Hidden for N/A. */}
                 {hasBP && (
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-2.5">
                       Best practices
                       <span className="font-normal text-stone-400 normal-case tracking-normal">
-                        {" "}— how leaders address {item.principle} ({BEST_PRACTICES[item.principle].name})
+                        {" "}, how leaders address {item.principle} ({BEST_PRACTICES[item.principle].name})
                       </span>
                     </p>
                     <div className="space-y-3">
@@ -331,7 +331,7 @@ export default function DisclosureRow({
                   <p className="text-sm text-stone-500 leading-relaxed italic">{item.label}</p>
                 </div>
 
-                {/* SEBI source — link to the official BRSR Format + page citation */}
+                {/* SEBI source, link to the official BRSR Format + page citation */}
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
                     SEBI source
@@ -348,7 +348,7 @@ export default function DisclosureRow({
                       <rect x="2.5" y="1.5" width="8" height="12" rx="1" />
                       <path d="M5 5h3M5 7.5h3M5 10h2" />
                     </svg>
-                    SEBI BRSR Format — Principle {principleNumber(item.principle)}
+                    SEBI BRSR Format, Principle {principleNumber(item.principle)}
                     <svg aria-hidden="true" className="w-2.5 h-2.5 flex-shrink-0 opacity-70" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M5.5 3h6.5v6.5M12 3L4 11" />
                     </svg>
@@ -389,11 +389,11 @@ export default function DisclosureRow({
               >
                 {isCollected ? (
                   <>
-                    {/* Checkmark draws in — key forces remount so animation fires on each collect */}
+                    {/* Checkmark draws in, key forces remount so animation fires on each collect */}
                     <svg key="checked" aria-hidden="true" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                       <path className="check-path" d="M5 13l4 4L19 7" />
                     </svg>
-                    Collected — undo
+                    Collected, undo
                   </>
                 ) : (
                   <>

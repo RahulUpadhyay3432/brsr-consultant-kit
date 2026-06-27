@@ -78,13 +78,13 @@ export default function CbamCalculator() {
 
       <div className="p-5 space-y-5">
 
-        {/* Honest note — prominent */}
+        {/* Honest note, prominent */}
         <div className="flex items-start gap-2.5 rounded-lg bg-amber-50 border border-amber-200 px-3.5 py-3">
           <svg className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M12 9v4m0 4h.01M10.3 3.86l-8.06 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3l-8.06-14a2 2 0 0 0-3.46 0z" />
           </svg>
           <p className="text-[13.5px] text-amber-900 leading-relaxed">
-            <strong className="font-semibold">Screening estimate from EU CBAM default values — not the official CBAM declaration.</strong>{" "}
+            <strong className="font-semibold">Screening estimate from EU CBAM default values, not the official CBAM declaration.</strong>{" "}
             The real declaration needs installation-specific, third-party-verified data. Verify with the producing installation&apos;s actual figures before reporting.
           </p>
         </div>
@@ -94,7 +94,7 @@ export default function CbamCalculator() {
           <div className="flex flex-wrap items-center justify-between gap-2.5">
             <div className="min-w-0">
               <p className="text-[13.5px] font-semibold text-ink">Auto-fill from a document</p>
-              <p className="text-[12.5px] text-ink-body leading-snug">Upload a production or export report — the AI reads the good + quantity. On your device; verify before relying on it.</p>
+              <p className="text-[12.5px] text-ink-body leading-snug">Upload a production or export report, the AI reads the good + quantity. On your device; verify before relying on it.</p>
             </div>
             <button
               type="button"
@@ -119,7 +119,7 @@ export default function CbamCalculator() {
           {applied && (
             <div className="mt-2.5 flex items-start gap-2 text-[12.5px] text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 leading-relaxed">
               <svg className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" /></svg>
-              <span><span className="font-semibold">Filled from {applied.doc}</span> ({applied.confidence} confidence) — verify: &ldquo;{applied.source}&rdquo;</span>
+              <span><span className="font-semibold">Filled from {applied.doc}</span> ({applied.confidence} confidence), verify: &ldquo;{applied.source}&rdquo;</span>
             </div>
           )}
           {autoMsg && <p className="mt-2.5 text-[12.5px] text-ink-body leading-relaxed">{autoMsg}</p>}
@@ -179,7 +179,7 @@ export default function CbamCalculator() {
           {est.overridden ? (
             <>Using your override factor <span className="font-mono text-ink">{fmt(est.factor, 3)} tCO₂e/{good.unit}</span> instead of the EU default.</>
           ) : (
-            <>EU default: <span className="font-mono text-ink">{good.factorDisplay}</span> — {good.note}</>
+            <>EU default: <span className="font-mono text-ink">{good.factorDisplay}</span>, {good.note}</>
           )}
         </p>
 
@@ -208,7 +208,7 @@ export default function CbamCalculator() {
                   <span className="ml-1.5 text-[14.5px] font-sans font-normal text-ink-body">tCO₂e/{good.unit}</span>
                 </p>
                 <p className="mt-2 text-[12.5px] text-ink-body leading-snug">
-                  {est.overridden ? "Your installation-specific factor." : "EU transitional default — refine with actual data."}
+                  {est.overridden ? "Your installation-specific factor." : "EU transitional default, refine with actual data."}
                 </p>
               </div>
             </div>
@@ -226,7 +226,7 @@ export default function CbamCalculator() {
             <span className="font-medium text-ink-body">Source:</span>{" "}
             {good.source}.{" "}
             <a href={good.sourceUrl} target="_blank" rel="noreferrer" className="text-brand-700 underline decoration-brand-700/30 underline-offset-2 hover:decoration-brand-700">
-              EU Commission — CBAM
+              EU Commission, CBAM
             </a>
             {" · "}Commission Implementing Regulation (EU) 2023/1773.
           </p>

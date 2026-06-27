@@ -1,4 +1,4 @@
-// Tiny localStorage helper — SSR-safe and failure-tolerant. Used to persist the
+// Tiny localStorage helper, SSR-safe and failure-tolerant. Used to persist the
 // consultant's in-progress work (the generated report + checklist state) so a
 // refresh or accidental close doesn't lose it. Everything stays on the device.
 
@@ -25,7 +25,7 @@ export function saveJSON(key: string, value: unknown): void {
   try {
     window.localStorage.setItem(PREFIX + key, JSON.stringify(value));
   } catch {
-    // Quota/serialization errors are non-fatal — persistence is best-effort.
+    // Quota/serialization errors are non-fatal, persistence is best-effort.
   }
 }
 
@@ -67,7 +67,7 @@ export function saveForm(form: IntakeFormData): void {
   saveJSON(STORAGE_KEYS.form, form);
 }
 
-// "New report" reset — clears the form, checklist state and materiality shortlist.
+// "New report" reset, clears the form, checklist state and materiality shortlist.
 // (The one-time walkthrough flag is intentionally kept.)
 export function clearReportSession(): void {
   removeKey(STORAGE_KEYS.form);
@@ -78,7 +78,7 @@ export function clearReportSession(): void {
 // ── Portable backup of the on-device session ─────────────────────────────────
 // Work lives only in this browser, so we let the consultant download a small file
 // of their session and re-import it on another browser/device (or as a safety
-// net). Still 100% on-device — the file stays with them, nothing is uploaded.
+// net). Still 100% on-device, the file stays with them, nothing is uploaded.
 
 export interface SessionBackup {
   app: "saaksh";

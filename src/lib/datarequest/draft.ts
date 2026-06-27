@@ -1,4 +1,4 @@
-// Builds a draft of BRSR responses from COLLECTED data only — deterministic,
+// Builds a draft of BRSR responses from COLLECTED data only, deterministic,
 // no fabrication. Every line is a value an owner actually submitted (or a figure
 // computed from those values via the cited calculators). Pure function so it's
 // easy to reason about / test.
@@ -42,7 +42,7 @@ export function buildDraft(campaign: Campaign): Draft {
 
   // Group submitted values into their BRSR sections/principles, de-duping
   // repeated fields. Each group keeps its sort order so the draft reads in
-  // Section A → B → C (P1..P9) order — the shape of the report itself.
+  // Section A → B → C (P1..P9) order, the shape of the report itself.
   const byGroup = new Map<string, { order: number; lines: DraftLine[] }>();
   const seen = new Set<string>();
   for (const it of received) {
@@ -69,7 +69,7 @@ export function buildDraft(campaign: Campaign): Draft {
     ? { scope1: fmtNum(ghg.scope1_tco2e), scope2: fmtNum(ghg.scope2_tco2e), total: fmtNum(ghg.total_tco2e) }
     : null;
 
-  // Supporting documents the owners attached — the assurance trail.
+  // Supporting documents the owners attached, the assurance trail.
   const evidence = allItems
     .filter((i) => i.evidenceName)
     .map((i) => ({ label: i.label, fileName: i.evidenceName! }));

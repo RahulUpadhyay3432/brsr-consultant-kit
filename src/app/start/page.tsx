@@ -41,7 +41,7 @@ export default function StartPage() {
       <header className="sticky top-0 z-50 no-print bg-page/85 backdrop-blur-md">
         <div className="max-w-[1680px] mx-auto px-4 sm:px-8 h-13 flex items-center justify-between">
 
-          {/* Wordmark + mark — clicking returns to the marketing home */}
+          {/* Wordmark + mark, clicking returns to the marketing home */}
           <button
             onClick={() => router.push("/")}
             className="flex items-center gap-2.5 py-3.5 pressable"
@@ -55,7 +55,7 @@ export default function StartPage() {
             </span>
           </button>
 
-          {/* Right side — Compliance Chat + trust signal */}
+          {/* Right side, Compliance Chat + trust signal */}
           <div className="flex items-center gap-3">
             <a
               href="https://huggingface.co/spaces/sherlockwatson221/climate-compliance"
@@ -80,7 +80,7 @@ export default function StartPage() {
             </div>
           </div>
         </div>
-        {/* Hairline separator — much subtler than border-b */}
+        {/* Hairline separator, much subtler than border-b */}
         <div className="absolute inset-x-0 bottom-0 h-px bg-black/[0.07]" />
       </header>
 
@@ -90,7 +90,7 @@ export default function StartPage() {
 
           {/* ── Hero ──────────────────────────────────────────────────── */}
           <div className="mb-10 pt-6">
-            {/* Eyebrow — enters first, sets the stage */}
+            {/* Eyebrow, enters first, sets the stage */}
             <div className="anim-up-sm mb-6" style={{ animationDelay: "0ms" }}>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full
                 bg-brand-50 border border-brand-100">
@@ -101,7 +101,7 @@ export default function StartPage() {
               </div>
             </div>
 
-            {/* Heading — hero element, larger travel, slowest timing */}
+            {/* Heading, hero element, larger travel, slowest timing */}
             <h2
               className="anim-up-hero font-display font-bold text-[2.7rem] sm:text-[4rem] text-ink
                 leading-[1.05] tracking-[-0.02em]"
@@ -114,19 +114,18 @@ export default function StartPage() {
               in seconds.
             </h2>
 
-            {/* Subtitle — secondary, follows heading */}
+            {/* Subtitle, secondary, follows heading */}
             <p
               className="anim-up-md text-ink-body mt-6 text-[17px] sm:text-[19px] max-w-[600px] leading-[1.7]"
               style={{ animationDelay: "180ms" }}
             >
-              Fill in a few details and instantly get a gap-analysed action plan —
-              what&apos;s covered, what&apos;s missing, and how to collect it — cited to
+              Fill in a few details and instantly get a gap-analysed action plan, what&apos;s covered, what&apos;s missing, and how to collect it, cited to
               SEBI &amp; ICAI, with suggested material topics and framework mappings.
               Your starting point for the engagement.
             </p>
           </div>
 
-          {/* ── Form Card — enters after hero settles ─────────────────── */}
+          {/* ── Form Card, enters after hero settles ─────────────────── */}
           <div
             className="anim-card bg-white rounded-2xl border border-line
               shadow-[0_1px_2px_rgba(16,33,26,0.05)] p-6 sm:p-10"
@@ -140,31 +139,31 @@ export default function StartPage() {
             />
           </div>
 
-          {/* Restore — bring saved work in from another browser/device via a backup file */}
+          {/* Restore, bring saved work in from another browser/device via a backup file */}
           <div className="mt-3 text-[12.5px] text-stone-500">
             Already started this on another device?{" "}
             <RestoreWorkButton onRestored={() => router.push("/report")} />
           </div>
 
-          {/* ── What you get — staggered cascade after form ───────────── */}
+          {/* ── What you get, staggered cascade after form ───────────── */}
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
               {
                 icon: <IconChecklist />, accent: "text-emerald-600", accentBg: "bg-emerald-50",
                 title: "Data Collection Checklist",
-                description: "All 108 BRSR fields with gap analysis — what's already documented in their existing filings vs what needs collecting fresh.",
+                description: "All 108 BRSR fields with gap analysis, what's already documented in their existing filings vs what needs collecting fresh.",
                 delay: "400ms",
               },
               {
                 icon: <IconScatter />, accent: "text-brand-700", accentBg: "bg-brand-50",
                 title: "Suggested Materiality",
-                description: "Suggested ESG material topics for your client's industry — a starting point for the stakeholder-driven materiality process.",
+                description: "Suggested ESG material topics for your client's industry, a starting point for the stakeholder-driven materiality process.",
                 delay: "460ms",
               },
               {
                 icon: <IconFramework />, accent: "text-violet-600", accentBg: "bg-violet-50",
                 title: "Cross-Framework Mapper",
-                description: "BRSR mapped to GRI, TCFD, and IFRS S1/S2 — collect data once, report across all frameworks.",
+                description: "BRSR mapped to GRI, TCFD, and IFRS S1/S2, collect data once, report across all frameworks.",
                 delay: "520ms",
               },
             ].map((card) => (
@@ -224,7 +223,7 @@ function FeatureCard({
     <div className="bg-white rounded-xl border border-line p-5 flex flex-col gap-4
       shadow-[0_1px_2px_rgba(16,33,26,0.05)] hover:shadow-[0_6px_20px_rgba(16,33,26,0.08)]
       transition-all duration-200 hover:-translate-y-1 group cursor-default">
-      {/* Icon in a tinted square — scales with card hover */}
+      {/* Icon in a tinted square, scales with card hover */}
       <div className={`w-8 h-8 rounded-lg ${accentBg} flex items-center justify-center flex-shrink-0
         transition-transform duration-200 group-hover:scale-110`}>
         <span className={`${accent}`} aria-hidden="true">{icon}</span>
@@ -237,7 +236,7 @@ function FeatureCard({
   );
 }
 
-/* ── SVG Icons — replacing emoji ──────────────────────────────────────────── */
+/* ── SVG Icons, replacing emoji ──────────────────────────────────────────── */
 function IconChecklist() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

@@ -1,6 +1,6 @@
 // Heuristic detection of which BRSR disclosures appear to already be documented
 // in an uploaded previous report. This runs entirely on text extracted in the
-// browser — no network, no AI. It is intentionally conservative and always
+// browser, no network, no AI. It is intentionally conservative and always
 // surfaces the matched keywords + a snippet so the consultant can confirm; it
 // never auto-marks anything as final.
 

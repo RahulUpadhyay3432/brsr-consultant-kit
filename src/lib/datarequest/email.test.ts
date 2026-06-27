@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { buildRequestEmail } from "./email";
 
-describe("buildRequestEmail — HTML escaping (XSS)", () => {
+describe("buildRequestEmail, HTML escaping (XSS)", () => {
   const { html, subject } = buildRequestEmail(
     {
       clientName: "<script>alert(1)</script>",

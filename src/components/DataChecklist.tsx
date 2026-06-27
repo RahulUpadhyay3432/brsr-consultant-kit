@@ -48,7 +48,7 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
   const essentialCount  = items.filter(i => i.indicator_type === "essential").length;
   const leadershipCount = items.filter(i => i.indicator_type === "leadership").length;
 
-  // Segmented status filter — All / Ready / Verify / Collect (+ N/A when present).
+  // Segmented status filter, All / Ready / Verify / Collect (+ N/A when present).
   const statusTabs: { key: StatusKey | "all"; label: string; count: number; dot: string | null }[] = [
     { key: "all",               label: "All",                              count: c.statusCounts.all,               dot: null },
     { key: "already_tracked",   label: STATUS_META.already_tracked.short,  count: c.statusCounts.already_tracked,   dot: STATUS_META.already_tracked.dot },
@@ -71,8 +71,8 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
             Action Plan
           </h1>
           <p className="text-[13px] text-stone-500 mt-1 max-w-[72ch] leading-relaxed">
-            The full BRSR — Section A &amp; B entity disclosures, plus the {items.length} principle fields (Section C)
-            with their gap status. Open a row for how to collect it, the SEBI source, and — for emissions — a calculator.
+            The full BRSR, Section A &amp; B entity disclosures, plus the {items.length} principle fields (Section C)
+            with their gap status. Open a row for how to collect it, the SEBI source, and, for emissions, a calculator.
           </p>
         </div>
         <button
@@ -89,7 +89,7 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
         </button>
       </div>
 
-      {/* ── Sections A & B — entity & governance disclosures ────────────────── */}
+      {/* ── Sections A & B, entity & governance disclosures ────────────────── */}
       {abVisible && (
         <GeneralDisclosuresCard
           general={general}
@@ -102,7 +102,7 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
         />
       )}
 
-      {/* ── Upload last year's report — client-side, privacy-safe ───────────── */}
+      {/* ── Upload last year's report, client-side, privacy-safe ───────────── */}
       <UploadCard
         fileInputRef={c.fileInputRef}
         uploadStatus={c.uploadStatus}
@@ -233,13 +233,13 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
             <p className="text-[13px] font-semibold text-amber-800">Everything showing as &quot;Collect fresh&quot;</p>
             <p className="text-[12px] text-amber-700 mt-0.5 leading-relaxed">
               No compliance filings were selected. Click <span className="font-semibold">New report</span>{" "}
-              and pick your client&apos;s existing filings — the tool will mark fields already covered as &quot;Ready&quot; or &quot;Verify.&quot;
+              and pick your client&apos;s existing filings, the tool will mark fields already covered as &quot;Ready&quot; or &quot;Verify.&quot;
             </p>
           </div>
         </div>
       )}
 
-      {/* ── Section C — principle-wise performance (the gap analysis) ───────── */}
+      {/* ── Section C, principle-wise performance (the gap analysis) ───────── */}
       <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-stone-400 px-0.5 pt-1">
         Section C · Principle-wise performance
       </p>
@@ -284,9 +284,9 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
   );
 }
 
-// ─── Sections A & B — entity + governance disclosures (not gap-analysed) ──────
+// ─── Sections A & B, entity + governance disclosures (not gap-analysed) ──────
 // Not gap-analysed (no filing overlaps to match against), but still *collected*
-// work — so they carry a "mark collected" toggle and, for Section B policies,
+// work, so they carry a "mark collected" toggle and, for Section B policies,
 // the same "Last year" detection as Section C.
 interface ABProps {
   collectedIds: Set<string>;
@@ -320,10 +320,10 @@ function GeneralDisclosuresCard({
         <div>
           <h3 className="text-[14px] font-semibold text-stone-800">Sections A &amp; B · Entity &amp; governance disclosures</h3>
           <p className="text-[12px] text-stone-500 mt-0.5 leading-relaxed max-w-[70ch]">
-            The {total} entity-level and policy disclosures every BRSR opens with — collected from the client&apos;s
+            The {total} entity-level and policy disclosures every BRSR opens with, collected from the client&apos;s
             own records, not gap-analysed against filings.
           </p>
-          {/* Progress — collected + last-year detection (policies recur year to year) */}
+          {/* Progress, collected + last-year detection (policies recur year to year) */}
           <div className="flex items-center gap-3 mt-2 text-[11.5px]">
             <span className="inline-flex items-center gap-1.5 text-stone-500">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
@@ -454,7 +454,7 @@ function ABRow({
               Last year
             </span>
             <span className="text-[11.5px] text-stone-400 italic ml-2">
-              matched “{detectedMatch.keywords[0]}” — verify it&apos;s still current.
+              matched “{detectedMatch.keywords[0]}”, verify it&apos;s still current.
             </span>
           </div>
         )}
@@ -470,7 +470,7 @@ function ABRow({
       <button
         onClick={onToggleCollected}
         aria-pressed={isCollected}
-        title={isCollected ? "Marked collected — click to undo" : "Mark as collected"}
+        title={isCollected ? "Marked collected, click to undo" : "Mark as collected"}
         className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-1 rounded-md text-[11px] font-semibold
           pressable transition-colors ${
             isCollected
@@ -498,7 +498,7 @@ function ABRow({
   );
 }
 
-// ─── Styled native select — keeps keyboard/native behavior, custom chrome ─────
+// ─── Styled native select, keeps keyboard/native behavior, custom chrome ─────
 function SelectFilter({
   value, onChange, options,
 }: {

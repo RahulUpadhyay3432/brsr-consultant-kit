@@ -51,7 +51,7 @@ export default function PrincipleSection({
           {info?.name ?? principle}
         </span>
         <div className="ml-auto flex items-center gap-2.5">
-          {/* Status mix mini-bar — at-a-glance readiness for this principle */}
+          {/* Status mix mini-bar, at-a-glance readiness for this principle */}
           <div className="hidden sm:flex items-stretch gap-0.5 h-1.5 w-24 flex-shrink-0"
             title={`${mix.already_tracked ?? 0} ready · ${mix.partially_tracked ?? 0} verify · ${mix.new_data_needed ?? 0} collect${mix.not_applicable ? ` · ${mix.not_applicable} N/A` : ""}`}>
             {(mix.already_tracked ?? 0) > 0 &&

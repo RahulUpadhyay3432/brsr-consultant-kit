@@ -1,4 +1,4 @@
-// Branded request email — built here, "sent" via a swappable function.
+// Branded request email, built here, "sent" via a swappable function.
 // Sends through Resend's REST API when RESEND_API_KEY is set; otherwise (or on
 // failure) writes the rendered HTML to .data/sent-emails/ so the loop still works.
 import { promises as fs } from "fs";
@@ -18,7 +18,7 @@ export interface EmailReq {
 
 // HTML-escape any user-controlled value before it goes into an email's HTML body,
 // so a client/owner name like "<script>…" can't inject markup into the recipient's
-// mail client. (Plain-text subjects are not escaped — escaping there would render
+// mail client. (Plain-text subjects are not escaped, escaping there would render
 // the entities literally.)
 function esc(s: string): string {
   return s
@@ -44,9 +44,9 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
   const clientStrong = `<strong style="color:#1a1916;">${esc(req.clientName)}</strong>`;
   const intro = isReminder
     ? (req.final
-        ? `This is a <strong style="color:#1a1916;">final reminder</strong> — we still need the data points below for ${clientStrong}'s BRSR report${deadline ? `, due ${deadline}` : ""}. It only takes a couple of minutes via the secure link.`
-        : `Just a reminder — we still need the data points below for ${clientStrong}'s BRSR report. It only takes a couple of minutes via the secure link.`)
-    : `We're preparing the BRSR (Business Responsibility &amp; Sustainability Report) for ${clientStrong} and need a few data points you're best placed to provide. It takes a couple of minutes — open the secure link below and fill them in.`;
+        ? `This is a <strong style="color:#1a1916;">final reminder</strong>, we still need the data points below for ${clientStrong}'s BRSR report${deadline ? `, due ${deadline}` : ""}. It only takes a couple of minutes via the secure link.`
+        : `Just a reminder, we still need the data points below for ${clientStrong}'s BRSR report. It only takes a couple of minutes via the secure link.`)
+    : `We're preparing the BRSR (Business Responsibility &amp; Sustainability Report) for ${clientStrong} and need a few data points you're best placed to provide. It takes a couple of minutes, open the secure link below and fill them in.`;
 
   const itemsHtml = req.items
     .map(
@@ -82,7 +82,7 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
   return { subject, html };
 }
 
-// Resend-or-stub send. Best-effort: never throws — a failed/blocked email must
+// Resend-or-stub send. Best-effort: never throws, a failed/blocked email must
 // not break the request or the recipient's submission. (Vercel FS is read-only,
 // and Resend rejects unverified-domain recipients until a domain is added.)
 async function sendEmail(to: string, subject: string, html: string, stubKey: string): Promise<void> {
@@ -113,7 +113,7 @@ async function sendEmail(to: string, subject: string, html: string, stubKey: str
     await fs.mkdir(dir, { recursive: true });
     await fs.writeFile(path.join(dir, `${stubKey}.html`), html, "utf8");
   } catch {
-    /* read-only FS (e.g. Vercel) — delivery is best-effort */
+    /* read-only FS (e.g. Vercel), delivery is best-effort */
   }
   // eslint-disable-next-line no-console
   console.log(`[email stub] → ${to} | "${subject}"`);
@@ -142,7 +142,7 @@ export async function sendSubmissionAlert(args: {
     <div style="padding:24px;">
       <p style="font-size:15px;color:#1a1916;margin:0 0 10px;"><strong>${esc(args.ownerName)}</strong> just submitted data.</p>
       <p style="font-size:14px;color:#52504a;line-height:1.6;margin:0 0 18px;">
-        For <strong style="color:#1a1916;">${esc(args.clientName)}</strong>'s BRSR report — ${args.received} of ${args.total} requested fields are now in.
+        For <strong style="color:#1a1916;">${esc(args.clientName)}</strong>'s BRSR report, ${args.received} of ${args.total} requested fields are now in.
       </p>
       <a href="${args.link}" style="display:inline-block;background:#0B6FD4;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:11px 20px;border-radius:9px;">View collection →</a>
     </div>

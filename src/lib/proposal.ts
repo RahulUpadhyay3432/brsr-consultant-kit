@@ -1,6 +1,6 @@
 // Proposal & fee builder (Pro). Helps a consultant scope + price a BRSR engagement.
 // IMPORTANT honesty stance: there is no public benchmark for Indian consultant fees,
-// so this NEVER asserts a market price. It is a structuring aid — the consultant sets
+// so this NEVER asserts a market price. It is a structuring aid, the consultant sets
 // their own base + add-on rates (editable); the rubric applies transparent multipliers
 // for scope. Every number traces to the consultant's own input. Pure functions.
 
@@ -50,7 +50,7 @@ export const SIZE_LABELS: Record<CompanySizeKey, string> = {
 export const MATURITY_LABELS: Record<MaturityKey, string> = {
   first_time: "First-time filing",
   "1_to_2_years": "1–2 years of filing",
-  "3_plus_years": "3+ years — improving",
+  "3_plus_years": "3+ years, improving",
 };
 export const FRAMEWORK_LABELS: Record<FrameworkKey, string> = {
   gri: "GRI",
@@ -60,7 +60,7 @@ export const FRAMEWORK_LABELS: Record<FrameworkKey, string> = {
   ccts: "CCTS readiness",
 };
 
-// Complexity multiplier on the base fee — larger / more-scrutinised entities are
+// Complexity multiplier on the base fee, larger / more-scrutinised entities are
 // more work. Transparent and editable only via the labelled factors below.
 const SIZE_MULT: Record<CompanySizeKey, number> = {
   listed_top_1000: 1.0,
@@ -104,7 +104,7 @@ export function estimateFee(inp: FeeInputs): FeeEstimate {
   const subtotal = lines.reduce((s, l) => s + l.amount, 0);
 
   const assumptions = [
-    "A starting estimate built from the rates you entered — adjust to your market and the specific engagement.",
+    "A starting estimate built from the rates you entered, adjust to your market and the specific engagement.",
     "Excludes third-party assurer fees, travel, and statutory/government charges.",
     inp.maturity === "first_time"
       ? "Assumes a first-time filing (more setup than a repeat cycle)."
@@ -126,7 +126,7 @@ export function buildProposalSections(inp: FeeInputs, fee: FeeEstimate): Proposa
   if (inp.scope3) deliverables.push("Scope 3 screening inventory (business travel, commuting, transport, waste).");
   for (const f of inp.frameworks) deliverables.push(`${FRAMEWORK_LABELS[f]} alignment / readiness.`);
   if (inp.valueChain) deliverables.push("Value-chain (2%+ partner) data collection.");
-  if (inp.assurance) deliverables.push("BRSR Core assurance-readiness pack — evidence trail + data-ownership ledger.");
+  if (inp.assurance) deliverables.push("BRSR Core assurance-readiness pack, evidence trail + data-ownership ledger.");
   deliverables.push("Draft BRSR responses for review and filing.");
 
   const timeline = inp.maturity === "first_time"
@@ -134,7 +134,7 @@ export function buildProposalSections(inp: FeeInputs, fee: FeeEstimate): Proposa
     : ["Weeks 1–2: refresh scope + materiality, gap analysis.", "Weeks 3–5: data collection (reusing prior systems).", "Weeks 6–8: calculations, drafting, review" + (inp.assurance ? ", assurance support." : ".")];
 
   return [
-    { title: "Scope", body: [`BRSR reporting engagement for ${inp.clientName || "the client"}${inp.reportingPeriod ? ` (${inp.reportingPeriod})` : ""} — ${SIZE_LABELS[inp.size]}, ${MATURITY_LABELS[inp.maturity].toLowerCase()}.`] },
+    { title: "Scope", body: [`BRSR reporting engagement for ${inp.clientName || "the client"}${inp.reportingPeriod ? ` (${inp.reportingPeriod})` : ""}, ${SIZE_LABELS[inp.size]}, ${MATURITY_LABELS[inp.maturity].toLowerCase()}.`] },
     { title: "Deliverables", body: deliverables },
     { title: "Indicative timeline", body: timeline },
     { title: "Assumptions", body: fee.assumptions },

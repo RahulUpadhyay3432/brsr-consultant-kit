@@ -1,10 +1,10 @@
 "use client";
 
 // Compliance importer (Collect / paid tier). Upload a client's existing report;
-// the text is extracted IN THE BROWSER (pdf.js — the file never leaves the device),
+// the text is extracted IN THE BROWSER (pdf.js, the file never leaves the device),
 // then only that text is sent to a grounded server action that returns figure
 // suggestions mapped to this campaign's fields, each with its source sentence. The
-// consultant verifies + edits, then applies the ones they trust — nothing is saved
+// consultant verifies + edits, then applies the ones they trust, nothing is saved
 // until they do, and the model never invents a number.
 
 import { useRef, useState } from "react";
@@ -45,7 +45,7 @@ export default function ImportPanel({
       const { text } = await extractPdfText(file);
       if (!text.trim()) {
         setBusy(null);
-        setMsg("This looks like a scanned PDF (no text found). Upload a text-based PDF — one you can select text in.");
+        setMsg("This looks like a scanned PDF (no text found). Upload a text-based PDF, one you can select text in.");
         return;
       }
       setBusy("Finding figures…");
@@ -102,8 +102,7 @@ export default function ImportPanel({
         </button>
       </div>
       <p className="text-[13.5px] text-stone-600 mt-0.5 mb-4 leading-relaxed">
-        Upload last year's BRSR or annual report. The figures it can find are pre-filled below for you to verify —
-        the file is read in your browser, and the AI only suggests numbers that appear in the document, with the source line shown. Nothing is invented.
+        Upload last year's BRSR or annual report. The figures it can find are pre-filled below for you to verify, the file is read in your browser, and the AI only suggests numbers that appear in the document, with the source line shown. Nothing is invented.
       </p>
 
       {/* Upload control */}
@@ -125,11 +124,11 @@ export default function ImportPanel({
       {suggestions && (
         <div>
           <div className="mb-3 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-amber-800 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> Imported — verify before applying. Nothing is saved until you apply; numbers are never invented.
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> Imported, verify before applying. Nothing is saved until you apply; numbers are never invented.
           </div>
           {truncated && (
             <p className="mb-3 text-[13px] text-stone-500 leading-relaxed">
-              Note: this is a long document — only the first part was scanned. For anything missing, upload the specific section or enter it by hand.
+              Note: this is a long document, only the first part was scanned. For anything missing, upload the specific section or enter it by hand.
             </p>
           )}
 

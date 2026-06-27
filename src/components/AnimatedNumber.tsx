@@ -1,11 +1,11 @@
 "use client";
 // A restrained number ticker: counts from 0 up to `value` with an ease-out curve,
 // for the report's "value moment" figures (readiness %, the gap counts). Purposeful,
-// not decorative — it celebrates the computed result. Renders tabular-nums so digits
+// not decorative, it celebrates the computed result. Renders tabular-nums so digits
 // don't shift. Respects prefers-reduced-motion: snaps straight to the final value.
 import { useEffect, useRef, useState } from "react";
 
-// ease-out cubic — fast then settling, matching the report's --ease-out feel.
+// ease-out cubic, fast then settling, matching the report's --ease-out feel.
 const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
 
 function prefersReducedMotion(): boolean {

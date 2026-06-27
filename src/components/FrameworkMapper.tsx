@@ -23,10 +23,10 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
         if (!searchable.includes(q)) return false;
       }
       if (filterPillar !== "all" && m.tcfd_pillar !== filterPillar) return false;
-      if (filterFramework === "gri" && (!m.gri_standard || m.gri_standard === "—")) return false;
-      if (filterFramework === "tcfd" && (!m.tcfd_pillar || m.tcfd_pillar === "—")) return false;
-      if (filterFramework === "ifrs" && (!m.ifrs_reference || m.ifrs_reference === "—")) return false;
-      if (filterFramework === "tnfd" && (!m.tnfd_pillar || m.tnfd_pillar === "—")) return false;
+      if (filterFramework === "gri" && (!m.gri_standard || m.gri_standard === ", ")) return false;
+      if (filterFramework === "tcfd" && (!m.tcfd_pillar || m.tcfd_pillar === ", ")) return false;
+      if (filterFramework === "ifrs" && (!m.ifrs_reference || m.ifrs_reference === ", ")) return false;
+      if (filterFramework === "tnfd" && (!m.tnfd_pillar || m.tnfd_pillar === ", ")) return false;
       return true;
     });
   }, [mappings, searchQuery, filterPillar, filterFramework]);
@@ -89,22 +89,22 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-stone-800 font-medium">{mapping.brsr_label}</p>
                   <div className="flex flex-wrap gap-1.5 mt-1.5">
-                    {mapping.gri_standard && mapping.gri_standard !== "—" && (
+                    {mapping.gri_standard && mapping.gri_standard !== ", " && (
                       <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
                         GRI {mapping.gri_standard}
                       </span>
                     )}
-                    {mapping.tcfd_pillar && mapping.tcfd_pillar !== "—" && (
+                    {mapping.tcfd_pillar && mapping.tcfd_pillar !== ", " && (
                       <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-violet-50 text-violet-700 border border-violet-100">
                         TCFD: {mapping.tcfd_pillar}
                       </span>
                     )}
-                    {mapping.ifrs_reference && mapping.ifrs_reference !== "—" && (
+                    {mapping.ifrs_reference && mapping.ifrs_reference !== ", " && (
                       <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
                         {mapping.ifrs_reference}
                       </span>
                     )}
-                    {mapping.tnfd_pillar && mapping.tnfd_pillar !== "—" && (
+                    {mapping.tnfd_pillar && mapping.tnfd_pillar !== ", " && (
                       <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-teal-50 text-teal-700 border border-teal-100">
                         TNFD: {mapping.tnfd_pillar}
                       </span>
@@ -123,7 +123,7 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
                 </svg>
               </button>
 
-              {/* Animated expand/collapse — smooth both ways */}
+              {/* Animated expand/collapse, smooth both ways */}
               <div
                 className={`grid overflow-hidden transition-[grid-template-rows] duration-200
                   ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
@@ -134,17 +134,17 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <span className="text-xs font-medium text-blue-600 uppercase tracking-wider">GRI</span>
-                      <p className="text-sm text-stone-700 mt-0.5">{mapping.gri_standard || "—"}</p>
+                      <p className="text-sm text-stone-700 mt-0.5">{mapping.gri_standard || ", "}</p>
                       <p className="text-xs text-stone-500 mt-0.5">{mapping.gri_label}</p>
                     </div>
                     <div>
                       <span className="text-xs font-medium text-violet-600 uppercase tracking-wider">TCFD</span>
-                      <p className="text-sm text-stone-700 mt-0.5">{mapping.tcfd_pillar || "—"}</p>
+                      <p className="text-sm text-stone-700 mt-0.5">{mapping.tcfd_pillar || ", "}</p>
                       <p className="text-xs text-stone-500 mt-0.5">{mapping.tcfd_detail}</p>
                     </div>
                     <div>
                       <span className="text-xs font-medium text-emerald-600 uppercase tracking-wider">IFRS S1/S2</span>
-                      <p className="text-sm text-stone-700 mt-0.5">{mapping.ifrs_reference || "—"}</p>
+                      <p className="text-sm text-stone-700 mt-0.5">{mapping.ifrs_reference || ", "}</p>
                     </div>
                     {mapping.tnfd_pillar && (
                       <div>

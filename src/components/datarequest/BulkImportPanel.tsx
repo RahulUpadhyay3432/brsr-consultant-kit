@@ -3,10 +3,10 @@
 // Headline "Auto-fill from your documents" surface (Collect / paid tier).
 // The consultant uploads the client's existing documents (last year's BRSR,
 // the annual report, bills, policies). Each file's text is extracted IN THE
-// BROWSER (pdf.js — the file never leaves the device); only that text is sent
+// BROWSER (pdf.js, the file never leaves the device); only that text is sent
 // to a grounded server action that returns figure suggestions across the whole
 // BRSR skeleton, each with its source line + source document. The consultant
-// verifies + edits, then applies the ones they trust — nothing is saved until
+// verifies + edits, then applies the ones they trust, nothing is saved until
 // they do, and the model never invents a number.
 
 import { useRef, useState, useTransition } from "react";
@@ -20,7 +20,7 @@ import type {
 type Confidence = BulkSuggestion["confidence"];
 
 // Per-PDF content category the consultant tags before extracting, so the AI is
-// scoped to (and told about) the right BRSR sections — sharper, more accurate hits.
+// scoped to (and told about) the right BRSR sections, sharper, more accurate hits.
 const CATEGORY_OPTIONS: { value: DocCategory; label: string }[] = [
   { value: "auto", label: "Auto-detect" },
   { value: "brsr", label: "Last year's BRSR" },
@@ -97,7 +97,7 @@ export default function BulkImportPanel({
     setWarn(null);
   }
 
-  // Step 1 — read the chosen PDFs locally and stage them with a default category.
+  // Step 1, read the chosen PDFs locally and stage them with a default category.
   // Nothing is sent yet; the consultant tags each file's type, then runs the fill.
   async function onFiles(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
@@ -119,7 +119,7 @@ export default function BulkImportPanel({
       setBusy(null);
       if (!docs.length) {
         setMsg(
-          "These look like scanned PDFs (no selectable text found). Upload text-based PDFs — ones you can select text in.",
+          "These look like scanned PDFs (no selectable text found). Upload text-based PDFs, ones you can select text in.",
         );
         return;
       }
@@ -139,7 +139,7 @@ export default function BulkImportPanel({
     setStaged((prev) => prev.filter((_, i) => i !== idx));
   }
 
-  // Step 2 — send the tagged documents (name + text + category) for grounded extraction.
+  // Step 2, send the tagged documents (name + text + category) for grounded extraction.
   async function runFill() {
     if (!staged.length) return;
     setMsg(null);
@@ -158,7 +158,7 @@ export default function BulkImportPanel({
       if (result.suggestions.length === 0) {
         // Soft wrong-document warning rather than a hard error.
         setWarn(
-          "No BRSR figures found in this document — is it the right report? Try a clearer text-based PDF or the correct document (last year's BRSR or the annual report work best). You can also enter values by hand.",
+          "No BRSR figures found in this document, is it the right report? Try a clearer text-based PDF or the correct document (last year's BRSR or the annual report work best). You can also enter values by hand.",
         );
         return;
       }
@@ -238,8 +238,8 @@ export default function BulkImportPanel({
             Auto-fill from your documents
           </h2>
           <p className="text-[14.5px] text-ink-body mt-1 leading-relaxed">
-            Already have the client&apos;s documents? Upload any of them — last year&apos;s
-            BRSR, the annual report, bills, HR sheets, policies, anything — and the AI
+            Already have the client&apos;s documents? Upload any of them, last year&apos;s
+            BRSR, the annual report, bills, HR sheets, policies, anything, and the AI
             reads each one and fills the matching BRSR fields for you to verify, across
             all 9 principles. You don&apos;t sort them; the AI does. Files stay in your
             browser; only values it finds are suggested, with the source shown.
@@ -250,14 +250,13 @@ export default function BulkImportPanel({
       {/* Category-FIRST upload: pick what the document is, then choose the PDF */}
       {!suggestions && (
         <div className="mt-5">
-          {/* What this does — auto-fill IS collection, surfaced in Data + Readiness */}
+          {/* What this does, auto-fill IS collection, surfaced in Data + Readiness */}
           <p className="text-[13px] text-ink-body bg-tint border border-brand-100 rounded-lg px-3.5 py-2.5 leading-relaxed">
-            Values you apply become this client&apos;s <span className="font-semibold text-ink">collected data</span> —
-            they fill the <span className="font-semibold text-ink">Data</span> tab and move your{" "}
+            Values you apply become this client&apos;s <span className="font-semibold text-ink">collected data</span>, they fill the <span className="font-semibold text-ink">Data</span> tab and move your{" "}
             <span className="font-semibold text-ink">Readiness</span> %.
           </p>
 
-          {/* Documents added so far — each tagged (retaggable) + removable */}
+          {/* Documents added so far, each tagged (retaggable) + removable */}
           {staged.length > 0 && (
             <div className="mt-4">
               <p className="text-[14.5px] font-semibold text-ink mb-2">
@@ -320,7 +319,7 @@ export default function BulkImportPanel({
               {staged.length ? "Add more documents" : "Choose documents"}
             </button>
             <p className="mt-2.5 text-[13px] text-ink-muted leading-relaxed">
-              Upload one or several PDFs at once — any client document works. Each is read in your browser; nothing is sent until you apply. Optionally tag a file&apos;s type above to sharpen accuracy.
+              Upload one or several PDFs at once, any client document works. Each is read in your browser; nothing is sent until you apply. Optionally tag a file&apos;s type above to sharpen accuracy.
             </p>
           </div>
 
@@ -343,7 +342,7 @@ export default function BulkImportPanel({
             </p>
           )}
 
-          {/* Fill CTA — the bottom action once at least one document is staged */}
+          {/* Fill CTA, the bottom action once at least one document is staged */}
           {staged.length > 0 && (
             <div className="flex items-center gap-3 mt-4 pt-4 border-t border-line">
               <button
@@ -388,7 +387,7 @@ export default function BulkImportPanel({
               <path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
             </svg>
             <span>
-              <span className="font-semibold">Verify before applying</span> — the AI
+              <span className="font-semibold">Verify before applying</span>, the AI
               only suggests values found in your documents, with the source shown.
               Nothing is saved until you apply.
             </span>
@@ -396,7 +395,7 @@ export default function BulkImportPanel({
 
           {truncated && (
             <p className="mt-3 text-[13px] text-ink-muted leading-relaxed">
-              Note: these are long documents — only the first part of each was
+              Note: these are long documents, only the first part of each was
               scanned. For anything missing, upload the specific section or enter
               it by hand.
             </p>

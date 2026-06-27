@@ -111,7 +111,7 @@ export default function CollectNav({ campaigns = [] }: { campaigns?: Campaign[] 
 
   return (
     <nav className="flex-1 overflow-y-auto px-3 pt-4 space-y-5">
-      {/* Ask Saaksh — opens the global help panel */}
+      {/* Ask Saaksh, opens the global help panel */}
       <button
         type="button"
         onClick={() => window.dispatchEvent(new CustomEvent("saaksh:open-help"))}

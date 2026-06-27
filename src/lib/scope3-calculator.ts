@@ -1,7 +1,7 @@
 // Pure computation for the BRSR P6-L2 Scope 3 screening calculator.
 // Activity/distance-based per the GHG Protocol Corporate Value Chain (Scope 3)
 // Standard; factors from scope3_factors.json (DEFRA 2024 v1.1, cited per-factor).
-// Screening-level — Scope 3 is a BRSR Leadership (voluntary) indicator.
+// Screening-level, Scope 3 is a BRSR Leadership (voluntary) indicator.
 import scope3Data from "@/data/scope3_factors.json";
 
 interface Factor { id: string; label: string; co2e: number; unit: string; display: string; source: string }

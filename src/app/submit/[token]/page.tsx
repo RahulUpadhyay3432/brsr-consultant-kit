@@ -82,7 +82,7 @@ export default async function SubmitPage({
               </label>
             </div>
 
-            {/* Optional supporting document — backs the figure for assurance. */}
+            {/* Optional supporting document, backs the figure for assurance. */}
             <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
               <input
                 type="file"

@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 // Daily reminder cadence (Vercel Cron, see vercel.json). For each data owner who
 // hasn't fully responded and is past the reminder interval, send one branded
-// reminder and record it. Secured by CRON_SECRET — Vercel Cron auto-injects the
+// reminder and record it. Secured by CRON_SECRET, Vercel Cron auto-injects the
 // matching Authorization header.
 export async function GET(req: NextRequest) {
   const secret = process.env.CRON_SECRET;

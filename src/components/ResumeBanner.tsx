@@ -1,12 +1,12 @@
 "use client";
 
 // "Continue where you left off" banner. Shown when in-progress work is saved on
-// this device (localStorage) but isn't currently loaded — e.g. the consultant
+// this device (localStorage) but isn't currently loaded, e.g. the consultant
 // closed the browser or restarted their laptop and came back. The work itself is
 // never lost (it lives on the device); this just gives them the door back to it.
 
 interface ResumeBannerProps {
-  companyName: string; // may be "" — the client name is an optional field
+  companyName: string; // may be "", the client name is an optional field
   onResume: () => void;
   className?: string;
 }

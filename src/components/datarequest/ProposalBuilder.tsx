@@ -61,7 +61,7 @@ export default function ProposalBuilder() {
           <h1 className="font-display text-[26px] text-ink tracking-tight">Proposal &amp; fee builder</h1>
           <p className="text-[14.5px] text-ink-body mt-1 max-w-[64ch] leading-relaxed">
             Scope an engagement and produce a client-ready proposal with a transparent fee estimate. It structures
-            <strong className="text-ink"> your own rates</strong> — it never asserts a market price. Generated on your device.
+            <strong className="text-ink"> your own rates</strong>, it never asserts a market price. Generated on your device.
           </p>
         </div>
         <button
@@ -119,7 +119,7 @@ export default function ProposalBuilder() {
           <div className="bg-white border border-line rounded-xl p-5 shadow-[0_1px_2px_rgba(16,33,26,0.05)] space-y-4">
             <div>
               <p className="text-[15.5px] font-bold text-ink font-display">Engagement rates</p>
-              <p className="text-[13.5px] text-ink-body leading-relaxed mt-0.5">Your rate card. Every proposal is generated from these figures — adjust to your market.</p>
+              <p className="text-[13.5px] text-ink-body leading-relaxed mt-0.5">Your rate card. Every proposal is generated from these figures, adjust to your market.</p>
             </div>
             <div className="space-y-2">
               <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-ink-muted">Scope</p>

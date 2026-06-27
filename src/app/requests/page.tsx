@@ -58,7 +58,7 @@ export default async function RequestsPage() {
       )}
 
       {campaigns.length === 0 ? (
-        // EMPTY STATE — guided, never blank.
+        // EMPTY STATE, guided, never blank.
         <div className="mt-6 bg-white border border-line rounded-xl px-6 py-12 text-center shadow-[0_1px_2px_rgba(16,33,26,0.05)]">
           <div className="mx-auto w-12 h-12 rounded-full bg-tint flex items-center justify-center mb-4">
             <svg className="w-6 h-6 text-brand-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
@@ -67,7 +67,7 @@ export default async function RequestsPage() {
           </div>
           <h2 className="font-display text-[20px] text-ink tracking-tight">Start with a sample, or create your first client</h2>
           <p className="text-[13.5px] text-ink-body mt-2 max-w-[460px] mx-auto leading-relaxed">
-            Tap below to load a fully-populated sample client and see Pro in action — owners, progress, emissions and a draft, instantly.
+            Tap below to load a fully-populated sample client and see Pro in action, owners, progress, emissions and a draft, instantly.
           </p>
           <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
             <form action={loadSampleClientAction}>
@@ -121,7 +121,7 @@ export default async function RequestsPage() {
                 total === 0
                   ? "No fields assigned yet"
                   : complete
-                    ? "All data in — ready to draft"
+                    ? "All data in, ready to draft"
                     : received === 0
                       ? "Awaiting first submission"
                       : `${total - received} still to collect`;

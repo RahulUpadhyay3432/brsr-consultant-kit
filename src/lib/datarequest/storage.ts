@@ -1,6 +1,6 @@
 // Supabase Storage access for evidence files (the bills / invoices / registers
 // owners attach to back their figures). Server-only, via the Storage REST API
-// with the service_role key — the bucket is PRIVATE, so recipients upload
+// with the service_role key, the bucket is PRIVATE, so recipients upload
 // through our server action and the consultant views via short-lived signed URLs.
 // No SDK dependency, mirroring db.ts.
 import "server-only";
@@ -51,7 +51,7 @@ export async function uploadEvidence(itemId: string, file: File): Promise<Upload
 }
 
 // A short-lived signed URL so the consultant can open a private file. Null on
-// failure — the caller renders a non-link fallback.
+// failure, the caller renders a non-link fallback.
 export async function signedEvidenceUrl(path: string, expiresIn = 3600): Promise<string | null> {
   try {
     const { url, key } = env();

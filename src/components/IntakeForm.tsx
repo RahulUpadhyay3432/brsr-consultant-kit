@@ -31,7 +31,7 @@ const EXPORT_MARKETS: ExportMarket[] = ["EU", "USA", "UK", "Middle East", "South
 
 // Company-size options as cards (title + one-line context) for a 2×2 grid.
 const SIZE_OPTIONS: { key: CompanySize; title: string; sub: string }[] = [
-  { key: "listed_top_1000",             title: "Listed · Top 1000",         sub: "By market cap — BRSR mandatory" },
+  { key: "listed_top_1000",             title: "Listed · Top 1000",         sub: "By market cap, BRSR mandatory" },
   { key: "listed_outside_1000",         title: "Listed · Outside top 1000", sub: "Voluntary / phased-in" },
   { key: "unlisted_supplier",           title: "Unlisted supplier",         sub: "In a listed company's value chain" },
   { key: "unlisted_not_in_value_chain", title: "Unlisted",                  sub: "Not in a listed value chain" },
@@ -99,13 +99,13 @@ export default function IntakeForm({ onSubmit, isLoading, initialData }: IntakeF
             companyName: c.name,
             industry: c.industry,
             sector: c.sector,
-            // Curated companies are large listed BRSR filers — default to Top 1000
+            // Curated companies are large listed BRSR filers, default to Top 1000
             // (overridable below).
             companySize: "listed_top_1000",
           }))}
         />
         <p className="mt-1.5 text-xs text-stone-500">
-          Pick a listed company to auto-fill its industry, business type &amp; listing status — or just type any name.
+          Pick a listed company to auto-fill its industry, business type &amp; listing status, or just type any name.
         </p>
       </div>
 
@@ -166,12 +166,12 @@ export default function IntakeForm({ onSubmit, isLoading, initialData }: IntakeF
         </div>
         <p className="mt-1.5 text-xs text-stone-500">
           Service-sector clients skip manufacturing-only disclosures (air emissions, effluent
-          discharge, product-reclaim, EIAs) — we mark those <span className="font-medium text-stone-600">Not applicable</span>.
+          discharge, product-reclaim, EIAs), we mark those <span className="font-medium text-stone-600">Not applicable</span>.
           Pre-set from your industry; change it if needed.
         </p>
       </div>
 
-      {/* ── Company Size & Listing — 2×2 card grid ───────────────────────── */}
+      {/* ── Company Size & Listing, 2×2 card grid ───────────────────────── */}
       <div>
         <label className="block text-sm font-medium text-stone-700 mb-3">
           Company Size & Listing Status <span className="text-rose-400">*</span>
@@ -272,7 +272,7 @@ export default function IntakeForm({ onSubmit, isLoading, initialData }: IntakeF
           Existing Compliance Filings
         </label>
         <p className="text-xs text-brand-800 bg-brand-50 border border-brand-100 rounded-lg px-3 py-2 mb-3">
-          <span className="font-semibold">Key field.</span> Every filing you select shows which BRSR fields are already documented in those reports — so you don't have to collect that data from scratch.
+          <span className="font-semibold">Key field.</span> Every filing you select shows which BRSR fields are already documented in those reports, so you don't have to collect that data from scratch.
         </p>
         <div className="flex flex-wrap gap-2">
           {(Object.entries(FILING_LABELS) as [ExistingFiling, string][]).map(([key, label]) => (
@@ -291,7 +291,7 @@ export default function IntakeForm({ onSubmit, isLoading, initialData }: IntakeF
           ))}
         </div>
         <p className="mt-1.5 text-xs text-stone-500">
-          Select all filings your client currently files — the tool will show what&apos;s already tracked vs what&apos;s new
+          Select all filings your client currently files, the tool will show what&apos;s already tracked vs what&apos;s new
         </p>
       </div>
 

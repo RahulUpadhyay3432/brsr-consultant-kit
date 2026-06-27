@@ -26,11 +26,28 @@ export async function createCampaignAction(formData: FormData): Promise<void> {
   if (!clientName) redirect("/requests/new?error=missing");
 
   const id = await db.createCampaign(clientName, deadline, reportingPeriod);
-  redirect(`/requests/${id}`);
+  // Land on the Auto-fill tab so a consultant who already has the client's documents
+  // can drop them straight away (instead of always emailing owners).
+  redirect(`/requests/${id}?view=autofill`);
+}
+
+// Edit a collection's deadline / reporting period after creation.
+export async function updateCampaignAction(
+  campaignId: string,
+  deadline: string | null,
+  reportingPeriod: string | null,
+): Promise<void> {
+  requireConsultant();
+  if (!campaignId) return;
+  await db.updateCampaign(campaignId, {
+    deadline: deadline && deadline.trim() ? deadline.trim() : null,
+    reportingPeriod: reportingPeriod && reportingPeriod.trim() ? reportingPeriod.trim() : null,
+  });
+  revalidatePath(`/requests/${campaignId}`);
 }
 
 // Permanently delete a campaign and all its data (owners, items, saved contacts).
-// Guarded; refreshes the collections list in place. Irreversible by design — the
+// Guarded; refreshes the collections list in place. Irreversible by design, the
 // UI confirms before calling this.
 export async function deleteCampaignAction(campaignId: string): Promise<void> {
   requireConsultant();
@@ -87,7 +104,7 @@ export async function addContactAction(
   );
 
   // Auto-capture this owner into the client's saved roster, so the directory
-  // fills itself as you add owners. Best-effort — never breaks the send.
+  // fills itself as you add owners. Best-effort, never breaks the send.
   try {
     await db.upsertCompanyContacts(campaignId, [{ name: name || null, email: email.toLowerCase(), role: null }]);
   } catch { /* directory table optional */ }
@@ -144,7 +161,7 @@ export async function deleteDirectoryContactAction(campaignId: string, formData:
   redirect(`/requests/${campaignId}`);
 }
 
-// Generate the AI narrative draft for a campaign (paid tier — /requests/* is
+// Generate the AI narrative draft for a campaign (paid tier, /requests/* is
 // passcode-gated by middleware). Grounded in collected data only; persisted
 // best-effort (the column may not exist until the migration runs), but always
 // returned so the draft can render it immediately.
@@ -154,17 +171,17 @@ export async function generateNarrativeAction(campaignId: string): Promise<Narra
   if (!campaign) return {};
   const narrative = await generateNarrative(campaign);
   if (Object.keys(narrative).length > 0) {
-    try { await db.setNarrative(campaignId, narrative); } catch { /* column missing — still return it */ }
+    try { await db.setNarrative(campaignId, narrative); } catch { /* column missing, still return it */ }
   }
   return narrative;
 }
 
 // Compliance importer (paid tier). Reads the extracted text of a client's
 // existing report and returns reviewable figure suggestions for the campaign's
-// fields — extract-only, each with its source sentence. Nothing is written here;
+// fields, extract-only, each with its source sentence. Nothing is written here;
 // the consultant applies the ones they verify via applyImportAction. Value-returning
 // action (the client passes the locally-extracted text; the document stays on the
-// consultant's device — only the text reaches the grounded model).
+// consultant's device, only the text reaches the grounded model).
 export async function importDocumentAction(campaignId: string, extractedText: string): Promise<ImportResult> {
   requireConsultant();
   if (!groqConfigured()) return { suggestions: [], truncated: false, configured: false };
@@ -183,7 +200,7 @@ export async function importDocumentAction(campaignId: string, extractedText: st
 }
 
 // Apply the imported figures the consultant ticked. Each accepted itemId gets its
-// (possibly edited) value written — same path as a collected value (status → received).
+// (possibly edited) value written, same path as a collected value (status → received).
 export async function applyImportAction(campaignId: string, formData: FormData): Promise<void> {
   requireConsultant();
   const itemIds = formData.getAll("apply").map(String);
@@ -199,7 +216,7 @@ export async function applyImportAction(campaignId: string, formData: FormData):
 // The consultant uploads one or more of the client's existing reports; the text is
 // extracted on their device and passed here. We run the grounded extract-only +
 // verifier pass against the whole BRSR format (not just the fields already assigned),
-// so a single upload can pre-fill the entire draft. Nothing is written — the
+// so a single upload can pre-fill the entire draft. Nothing is written, the
 // consultant applies the verified ones via applyBulkImportAction.
 export async function bulkImportAction(
   campaignId: string, docs: BulkDoc[]
@@ -266,25 +283,25 @@ export async function applyBulkImportAction(
 
 // Seed a fully-populated DEMO campaign so a first-time consultant can explore Collect
 // (dashboard + emissions + ledger + draft) without setting up real owners. Idempotent:
-// reuses an existing "Sample —" campaign. No emails are sent (we go straight via db).
+// reuses an existing "Sample, " campaign. No emails are sent (we go straight via db).
 export async function loadSampleClientAction(): Promise<void> {
   requireConsultant();
 
   // Reuse an existing sample rather than duplicating.
   const all = await db.listCampaigns();
-  const prior = all.find((c) => c.clientName.startsWith("Sample —"));
+  const prior = all.find((c) => c.clientName.startsWith("Sample, "));
   if (prior) redirect(`/requests/${prior.id}`);
 
   const deadline = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
   const reportingPeriod = mostRecentCompletedFy();
-  const id = await db.createCampaign("Sample — Acme Manufacturing (demo)", deadline, reportingPeriod);
+  const id = await db.createCampaign("Sample, Acme Manufacturing (demo)", deadline, reportingPeriod);
 
   const pick = (ids: string[]) => fieldsByIds(ids);
-  // Owner 1 — EHS / energy: the activity inputs so GHG computes + a few P6 fields.
+  // Owner 1, EHS / energy: the activity inputs so GHG computes + a few P6 fields.
   const owner1Ids = ["P6-E1-elec", "P6-E1-diesel", "P6-E1", "P6-E3", "P6-E7"];
-  // Owner 2 — HR: a couple of Principle 3 fields.
+  // Owner 2, HR: a couple of Principle 3 fields.
   const owner2Ids = ["P3-E1", "P3-E2", "P5-E1"];
-  // Owner 3 — Company secretary: governance fields (left pending).
+  // Owner 3, Company secretary: governance fields (left pending).
   const owner3Ids = ["P1-E1", "P1-E2", "P7-E1"];
 
   await db.addContact(id, "Priya Sharma", "priya@acme.example", randToken(), pick(owner1Ids));
@@ -380,13 +397,13 @@ export async function submitDataAction(token: string, formData: FormData): Promi
       received++; // already had a value, left unchanged
     }
 
-    // Prior-year figure is supplementary — write it best-effort so a missing
+    // Prior-year figure is supplementary, write it best-effort so a missing
     // column or hiccup never fails the owner's core submission.
     if (prior !== "") {
       try { await db.setItemPrior(item.id, prior); } catch { /* supplementary */ }
     }
 
-    // Optional supporting document — best-effort, never blocks the number.
+    // Optional supporting document, best-effort, never blocks the number.
     const file = formData.get(`file_${item.id}`);
     if (file instanceof File && file.size > 0) {
       try {
@@ -400,6 +417,11 @@ export async function submitDataAction(token: string, formData: FormData): Promi
 
   const status = received === 0 ? "pending" : received === contact.items.length ? "received" : "partial";
   await db.setContactStatus(contact.id, status);
+  // Stamp the received time the first time a contact completes (best-effort, the
+  // received_at column is optional; a missing column must never fail the submission).
+  if (status === "received" && contact.status !== "received") {
+    try { await db.markReceived(contact.id); } catch { /* optional column */ }
+  }
 
   // Alert the consultant that this owner just submitted (best-effort).
   await sendSubmissionAlert({

@@ -1,5 +1,4 @@
-// Client-side engagement-proposal PDF (jsPDF), generated in code and downloaded —
-// no browser print, nothing uploaded. Styled to the Evergreen & Ember system, the
+// Client-side engagement-proposal PDF (jsPDF), generated in code and downloaded, // no browser print, nothing uploaded. Styled to the Evergreen & Ember system, the
 // same way report-pdf.ts maps the type roles onto jsPDF's built-in fonts
 // (times = serif headings, helvetica = body, courier = mono labels).
 import { estimateFee, buildProposalSections, type FeeInputs } from "./proposal";
@@ -46,7 +45,7 @@ export async function downloadProposalPdf(
     draw(HAIR); doc.setLineWidth(0.2); doc.line(M, pageH - 14, pageW - M, pageH - 14);
     doc.setFont(MONO, "normal"); doc.setFontSize(7.5); setColor(MONOGREY);
     doc.text("Prepared with Saaksh · saaksh", M, pageH - 9);
-    doc.text("A starting estimate from your inputs — adjust to your market.", pageW - M, pageH - 9, { align: "right" });
+    doc.text("A starting estimate from your inputs, adjust to your market.", pageW - M, pageH - 9, { align: "right" });
   }
 
   // ── Header ──────────────────────────────────────────────────────────────

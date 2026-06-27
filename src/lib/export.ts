@@ -1,5 +1,5 @@
 // Client-side CSV export. Generates a working spreadsheet from the report data
-// in the browser — no upload, nothing stored, consistent with the free tool's
+// in the browser, no upload, nothing stored, consistent with the free tool's
 // "100% on-device" model. Opens directly in Excel / Google Sheets.
 
 type Cell = string | number | null | undefined;

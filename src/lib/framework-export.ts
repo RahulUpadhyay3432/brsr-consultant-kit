@@ -1,5 +1,5 @@
 // Cross-framework export. Flattens the on-device crosswalk data the Alignment tab
-// already shows into downloadable CSV rows — "collect once, report many." Pure row
+// already shows into downloadable CSV rows, "collect once, report many." Pure row
 // builders; the actual download uses downloadCsv() from export.ts. No AI, nothing
 // leaves the browser. Consistent with the free tool's 100% on-device model.
 
@@ -7,10 +7,10 @@ import type { FrameworkMapping } from "./types";
 
 // Crosswalk cells use an em-dash placeholder for "no mapping"; blank it for export.
 function dash(v: string | null | undefined): string {
-  return !v || v === "—" ? "" : v;
+  return !v || v === ", " ? "" : v;
 }
 
-// BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD — one row per mapping, every framework column.
+// BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD, one row per mapping, every framework column.
 export function buildFrameworkExportRows(mappings: FrameworkMapping[]): string[][] {
   const header = [
     "BRSR ID", "BRSR disclosure", "BRSR section",

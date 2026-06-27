@@ -25,14 +25,14 @@ function fuelFactor(fuelId: string) {
 }
 
 // The methodology statement surfaced wherever a computed emissions figure shows.
-// Accurate to what the calculator actually does — and honest about its limits.
+// Accurate to what the calculator actually does, and honest about its limits.
 export const GHG_METHODOLOGY =
-  "Calculated per the GHG Protocol Corporate Standard — Scope 1 from IPCC 2006 (Vol. 2) fuel factors, " +
+  "Calculated per the GHG Protocol Corporate Standard, Scope 1 from IPCC 2006 (Vol. 2) fuel factors, " +
   "Scope 2 from the CEA grid factor (location-based), IPCC AR5 GWPs. Covers Scope 1 & 2 only; " +
   "refresh the CEA factor each filing year.";
 
 export interface EmissionInput {
-  fieldId: string;      // the activity field id — join key for the assurance ledger
+  fieldId: string;      // the activity field id, join key for the assurance ledger
   fieldLabel: string;
   rawValue: string;     // e.g. "1,240,000 kWh"
   scope: 1 | 2;

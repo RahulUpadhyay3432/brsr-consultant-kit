@@ -17,7 +17,7 @@ export interface RequestField {
   category?: FieldCategory;
   kind: FieldKind;
   hint?: string;         // who typically owns it
-  // BRSR coordinates — where this field sits in the official format.
+  // BRSR coordinates, where this field sits in the official format.
   section: BrsrSection;             // A (general) · B (policy/mgmt) · C (principle-wise)
   principle: string | null;         // "P1".."P9" for Section C; null for A/B
   indicatorType: IndicatorType | null; // essential/leadership for Section C; null for A/B
@@ -38,7 +38,7 @@ export interface Item {
   priorValue: string | null; // previous-FY figure (BRSR needs year-on-year)
   status: "pending" | "received";
   // Supporting document the owner attached (the bill / invoice / register that
-  // backs the figure) — for assurance-readiness. Null when none uploaded.
+  // backs the figure), for assurance-readiness. Null when none uploaded.
   evidencePath: string | null;   // private Storage object path (bucket-relative)
   evidenceName: string | null;   // original filename, shown to the consultant
 }
@@ -53,6 +53,7 @@ export interface Contact {
   status: ContactStatus;
   lastEmailedAt: string | null; // ISO; last email (initial or reminder) sent
   remindersSent: number;        // reminder emails sent (excludes the initial)
+  receivedAt: string | null;    // ISO; when this owner's data was first received
   items: Item[];
 }
 
@@ -64,13 +65,13 @@ export interface Campaign {
   createdAt: string;
   contacts: Contact[];
   // AI-drafted per-principle qualitative prose (Groq), keyed by principle id
-  // ("P1".."P9"). Optional — only present once generated and the column exists.
+  // ("P1".."P9"). Optional, only present once generated and the column exists.
   narrative?: Record<string, string> | null;
 }
 
 // A reusable person saved against this client (campaign): the people the
 // consultant collects data from. Separate from Contact (a per-request "ask"
-// with assigned fields + a token) — these are just the client's roster, so a
+// with assigned fields + a token), these are just the client's roster, so a
 // data owner can be imported with one tap. Fetched best-effort (the
 // brsr_company_contacts table may not exist until the migration runs).
 export interface CompanyContact {

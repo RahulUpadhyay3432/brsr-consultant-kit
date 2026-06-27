@@ -1,5 +1,5 @@
 // Groq client (server-only) for the AI narrative draft. Uses Groq's
-// OpenAI-compatible endpoint via raw fetch — same SDK-free, best-effort,
+// OpenAI-compatible endpoint via raw fetch, same SDK-free, best-effort,
 // never-throws posture as email.ts/db.ts. The API key never leaves the server.
 import "server-only";
 
@@ -15,7 +15,7 @@ function keys(): string[] {
     process.env.GROQ_API_KEY, process.env.GROQ_API_KEY_2, process.env.GROQ_API_KEY_3,
     process.env.GROQ_API_KEY_4, process.env.GROQ_API_KEY_5, process.env.GROQ_API_KEY_6,
   ]
-    // Trim stray whitespace + strip wrapping quotes before validating — env values
+    // Trim stray whitespace + strip wrapping quotes before validating, env values
     // pasted from a table can carry a leading space or quotes, which would otherwise
     // fail the gsk_ check and silently disable every AI feature.
     .map((k) => k?.trim().replace(/^["']|["']$/g, ""))
@@ -27,7 +27,7 @@ export function groqConfigured(): boolean {
 }
 
 // Best-effort chat completion. Tries keys starting at `salt` so a free-tier 429 on
-// one key falls through to the next. Never throws — returns the assistant text, or
+// one key falls through to the next. Never throws, returns the assistant text, or
 // null if no key produced output (caller treats null as "skip / not configured").
 export async function groqComplete(
   system: string,
@@ -48,7 +48,7 @@ export async function groqComplete(
     ],
   };
   // gpt-oss reasons internally and those tokens count toward output. We want
-  // grounded prose, not analysis, so keep reasoning minimal — cheaper, and it
+  // grounded prose, not analysis, so keep reasoning minimal, cheaper, and it
   // stops the visible answer being starved of tokens.
   if (MODEL.includes("gpt-oss")) body.reasoning_effort = "low";
   const payload = JSON.stringify(body);

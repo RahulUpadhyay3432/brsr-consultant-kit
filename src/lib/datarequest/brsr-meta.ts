@@ -1,4 +1,4 @@
-// Static BRSR display metadata — deliberately free of heavy imports (no KB JSON),
+// Static BRSR display metadata, deliberately free of heavy imports (no KB JSON),
 // so it's safe to import into client components without bloating the bundle.
 
 export const SECTION_LABELS: Record<"A" | "B" | "C", string> = {

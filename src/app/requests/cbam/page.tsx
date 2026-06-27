@@ -2,7 +2,7 @@ import { requireConsultant } from "@/lib/datarequest/guard";
 import CbamCalculator from "@/components/cbam/CbamCalculator";
 import cbamData from "@/data/cbam_readiness.json";
 
-// Pro tool — gated by the /requests middleware; requireConsultant() is
+// Pro tool, gated by the /requests middleware; requireConsultant() is
 // defence-in-depth (redirects to /login if the passcode cookie is missing).
 export const dynamic = "force-dynamic";
 
@@ -16,16 +16,16 @@ export default function CbamPage() {
       <div className="w-full px-1">
         <header className="pt-1">
           <h1 className="font-display text-[26px] font-bold text-ink tracking-tight">
-            CBAM — embedded emissions (screening)
+            CBAM, embedded emissions (screening)
           </h1>
           <p className="text-[14.5px] text-ink-body mt-1.5 max-w-[68ch] leading-relaxed">
             A quick screening estimate of the embedded emissions of CBAM-covered goods, using the EU&apos;s
             published default values. It helps you ballpark a client&apos;s EU-border exposure before the heavier,
-            installation-verified declaration. Fully on your device — nothing is stored.
+            installation-verified declaration. Fully on your device, nothing is stored.
           </p>
         </header>
 
-        {/* Who's in scope — derived from cbam_readiness.json */}
+        {/* Who's in scope, derived from cbam_readiness.json */}
         <div className="mt-4 rounded-xl bg-white border border-line shadow-[0_1px_2px_rgba(16,33,26,0.05)] px-5 py-4">
           <p className="text-[12.5px] font-bold uppercase tracking-[0.1em] text-ink-muted">Who&apos;s in scope</p>
           <p className="text-[13.5px] text-ink-body mt-1.5 leading-relaxed">

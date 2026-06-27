@@ -1,6 +1,6 @@
 "use client";
 
-// The product walkthrough — one source of truth for the sequence a new user
+// The product walkthrough, one source of truth for the sequence a new user
 // should follow. WALKTHROUGH_STEPS + StepRow are reused by the first-run
 // "Start here" card here and by the always-on Help widget (HelpWidget.tsx).
 
@@ -21,7 +21,7 @@ export const WALKTHROUGH_STEPS: WalkStep[] = [
     n: 2,
     title: "Work the Action Plan",
     body:
-      "Open Action Plan to see all 108 BRSR fields colour-coded — Ready to pull, Needs verification, or Collect fresh. Expand any row for the source, how to collect it, best practices and the SEBI citation. Tick items off as you go.",
+      "Open Action Plan to see all 108 BRSR fields colour-coded, Ready to pull, Needs verification, or Collect fresh. Expand any row for the source, how to collect it, best practices and the SEBI citation. Tick items off as you go.",
   },
   {
     n: 3,

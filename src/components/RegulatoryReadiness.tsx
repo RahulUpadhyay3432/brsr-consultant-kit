@@ -1,5 +1,5 @@
 "use client";
-// "Beyond BRSR" tab — a cited readiness check for the EU CBAM and India's CCTS,
+// "Beyond BRSR" tab, a cited readiness check for the EU CBAM and India's CCTS,
 // derived from the client's industry + export markets. On-device, no AI. Shows who
 // is in scope and what to prepare; not a liability calculator.
 import type { RegulatoryReadiness, RegAssessment, RegVerdict } from "@/lib/regulatory-readiness";
@@ -62,7 +62,7 @@ function RegCard({ a }: { a: RegAssessment }) {
         </div>
       </div>
 
-      {/* Footer — honest framing + cited sources */}
+      {/* Footer, honest framing + cited sources */}
       <div className="px-5 py-3 bg-stone-50/60 border-t border-stone-100">
         <p className="text-[12.5px] text-stone-500 leading-relaxed">{a.statusNote}</p>
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1.5">
@@ -82,7 +82,7 @@ export default function RegulatoryReadiness({ regulatory }: { regulatory: Regula
       <div>
         <h1 className="font-display text-[26px] font-normal text-stone-900 leading-tight tracking-tight">Beyond BRSR</h1>
         <p className="text-[14.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
-          The other climate regulations on the horizon for Indian companies. A readiness check — whether each one is
+          The other climate regulations on the horizon for Indian companies. A readiness check, whether each one is
           in scope for this client (from their industry and export markets) and what to prepare. These are cited
           guides, not liability calculations; the quantification step comes later.
         </p>

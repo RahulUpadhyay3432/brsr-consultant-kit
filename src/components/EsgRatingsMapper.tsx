@@ -34,16 +34,16 @@ export default function EsgRatingsMapper() {
             </svg>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-stone-800">What is this? — ESG Ratings Alignment</h3>
+            <h3 className="text-sm font-semibold text-stone-800">What is this?, ESG Ratings Alignment</h3>
             <p className="text-xs text-stone-500 mt-1 leading-relaxed">
               If your client is rated by <strong className="text-stone-700">MSCI</strong> or submits to the{" "}
               <strong className="text-stone-700">S&P Global CSA / DJSI</strong> (common for large listed companies and
               global investors), the BRSR data they're already collecting feeds those ratings too. This shows{" "}
-              <strong className="text-stone-700">which BRSR principle supports which rating dimension</strong> — so the
+              <strong className="text-stone-700">which BRSR principle supports which rating dimension</strong>, so the
               same data collection effort strengthens their rating submission.
             </p>
             <p className="text-[11px] text-stone-500 mt-2">
-              Mapped at the principle level — the granularity at which MSCI and DJSI actually assess companies (by issue
+              Mapped at the principle level, the granularity at which MSCI and DJSI actually assess companies (by issue
               and criterion, not by individual disclosure line).
             </p>
           </div>

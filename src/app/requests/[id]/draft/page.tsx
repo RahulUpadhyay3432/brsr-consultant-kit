@@ -44,7 +44,7 @@ export default async function DraftPage({ params }: { params: { id: string } }) 
         </div>
       </div>
 
-      {/* Honesty note — prints with the draft */}
+      {/* Honesty note, prints with the draft */}
       <div className="mt-4 bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
         <p className="text-[12.5px] text-amber-800 leading-relaxed">
           <strong>Drafted from your collected data.</strong> Every figure below is your client&apos;s submitted value
@@ -58,8 +58,8 @@ export default async function DraftPage({ params }: { params: { id: string } }) 
       {draft.emissions && (
         <Section title="Principle 6 · GHG emissions" subtitle="Computed from submitted activity data">
           <Table>
-            <Row label="Scope 1 — fuel combustion" value={`${draft.emissions.scope1} tCO₂e`} />
-            <Row label="Scope 2 — purchased electricity" value={`${draft.emissions.scope2} tCO₂e`} />
+            <Row label="Scope 1, fuel combustion" value={`${draft.emissions.scope1} tCO₂e`} />
+            <Row label="Scope 2, purchased electricity" value={`${draft.emissions.scope2} tCO₂e`} />
             <Row label="Total (Scope 1 + 2)" value={`${draft.emissions.total} tCO₂e`} strong />
           </Table>
           {draft.emissionInputs.length > 0 && (
@@ -95,8 +95,7 @@ export default async function DraftPage({ params }: { params: { id: string } }) 
             ))}
           </Table>
           <p className="text-[11.5px] text-ink-muted leading-relaxed pt-3">
-            Source documents attached by the named data owners, each tied to its cited calculation factor —
-            the data-ownership and evidence trail an assurance provider needs. Retain these;
+            Source documents attached by the named data owners, each tied to its cited calculation factor, the data-ownership and evidence trail an assurance provider needs. Retain these;
             BRSR Core disclosures require reasonable assurance.
           </p>
         </Section>

@@ -2,7 +2,7 @@
 // BRSR Core reasonable assurance increasingly asks not just "is the number right?"
 // but "show the evidence trail and the named owner behind every KPI." Collect
 // already captures all of that (who submitted what, the attached document, and the
-// cited factor behind any computed figure) — this turns it into one exportable
+// cited factor behind any computed figure), this turns it into one exportable
 // artifact the consultant hands to the assurance provider. Pure: no DB, no fabrication.
 import type { Campaign } from "./types";
 import { emissionInputs, GHG_METHODOLOGY } from "./emissions";

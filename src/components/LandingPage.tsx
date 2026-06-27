@@ -1,6 +1,6 @@
 "use client";
 
-// Saaksh marketing homepage — Evergreen & Ember design system (Newsreader display,
+// Saaksh marketing homepage, Evergreen & Ember design system (Newsreader display,
 // Hanken Grotesk body, IBM Plex Mono labels). Rebuilt from the Claude Design mockup.
 // All product panels are live HTML/CSS/SVG (no image assets). "Start a free report"
 // hands off to the intake form via onStart.
@@ -48,8 +48,8 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               </h1>
 
               <p className={`anim-up-md text-[17.5px] sm:text-[19px] ${BODY} leading-[1.6] mt-6 max-w-[545px]`} style={{ animationDelay: "160ms" }}>
-                Saaksh turns the scramble of regulatory reporting — scattered data, emission maths, frameworks
-                to reconcile, a narrative to draft — into one cited workflow. It starts with BRSR, and grows to
+                Saaksh turns the scramble of regulatory reporting, scattered data, emission maths, frameworks
+                to reconcile, a narrative to draft, into one cited workflow. It starts with BRSR, and grows to
                 CBAM, CCTS and broader ESG.
               </p>
 
@@ -103,9 +103,9 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
             { pain: "Re-keying numbers out of last year's report by hand", sol: "An AI importer that pre-fills the figures, each shown with its source line for you to verify" },
             { pain: "Chasing data that lives with different people across the business", sol: "Branded requests with auto-reminders and no-login submission, evidence attached" },
             { pain: "Emission factors to get right, and proving the number is defensible", sol: "Calculators cited to CEA & IPCC (version on every line) and an assurance evidence trail" },
-            { pain: "One dataset, demanded by GRI, TCFD, IFRS and TNFD", sol: "Cross-framework mapping and one-click export — collect once, report many" },
+            { pain: "One dataset, demanded by GRI, TCFD, IFRS and TNFD", sol: "Cross-framework mapping and one-click export, collect once, report many" },
             { pain: "Hunting for materiality formats and how-to guidance", sol: "A templates & guides library, built from the same cited knowledge base" },
-            { pain: "New regulations landing — CBAM for exporters, CCTS carbon credits", sol: "Beyond-BRSR readiness checks: who's in scope, and what to prepare" },
+            { pain: "New regulations landing, CBAM for exporters, CCTS carbon credits", sol: "Beyond-BRSR readiness checks: who's in scope, and what to prepare" },
           ].map((r) => (
             <div key={r.pain} className="grid sm:grid-cols-2 gap-x-8 gap-y-2 px-5 sm:px-7 py-5 items-center">
               <div className="flex items-start gap-3">
@@ -135,7 +135,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           {[
             { n: "01", t: "Describe the company", b: "A short intake: sector, listing category, what's already in last year's filing. Two minutes, on your device." },
             { n: "02", t: "Get a gap-analysed report", b: "All 108 fields sorted into Ready, Verify and Collect, with suggested materiality and cross-framework mapping." },
-            { n: "03", t: "Take it into the work", b: "Export a clean PDF brief and a CSV of every data point still to collect — or move to Collect to chase it." },
+            { n: "03", t: "Take it into the work", b: "Export a clean PDF brief and a CSV of every data point still to collect, or move to Collect to chase it." },
           ].map((s) => (
             <div key={s.n}>
               <p className="font-display text-[2.6rem] text-brand-500 leading-none">{s.n}</p>
@@ -206,7 +206,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           </div>
           <div className="space-y-6">
             {[
-              { t: "Plain-English explainers", tag: "Free", b: "Every field explained from the public SEBI definition. Written once, shipped as static text — nothing about the client is ever sent anywhere." },
+              { t: "Plain-English explainers", tag: "Free", b: "Every field explained from the public SEBI definition. Written once, shipped as static text, nothing about the client is ever sent anywhere." },
               { t: "Compliance importer", tag: "Pro", b: "Reads the client's existing reports and pre-fills the figures, each shown with the source line it came from, for you to verify. It never invents a number." },
               { t: "Grounded narrative draft", tag: "Pro", b: "Turns the numbers you collected into review-ready prose. Every figure traces back to its source; gaps are flagged, not guessed." },
             ].map((p, i) => (
@@ -219,7 +219,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               </div>
             ))}
             <p className="text-[13px] text-[#9FB6AC] leading-relaxed pl-3.5 border-t border-white/10 pt-5">
-              Everything stays cited — each disclosure links to SEBI, ICAI, CEA or IPCC with the version noted. You can defend every line.
+              Everything stays cited, each disclosure links to SEBI, ICAI, CEA or IPCC with the version noted. You can defend every line.
             </p>
           </div>
         </div>
@@ -234,7 +234,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
             When the job moves from preparing to collecting, Collect requests BRSR data from the team that holds each number, with branded emails and automatic reminders. They submit through a no-login form with evidence attached, emissions are calculated with cited factors, and an AI draft turns the result into review-ready narrative.
           </p>
           <ul className="mt-6 space-y-2.5">
-            {["Branded request emails & auto-reminders", "No-login submission with evidence attachments", "Emissions calculated with attributed factors", "Assurance-ready evidence trail — every figure traced to its owner and source"].map((f) => (
+            {["Branded request emails & auto-reminders", "No-login submission with evidence attachments", "Emissions calculated with attributed factors", "Assurance-ready evidence trail, every figure traced to its owner and source"].map((f) => (
               <li key={f} className="flex items-center gap-2.5 text-[15px] text-ink"><Check />{f}</li>
             ))}
           </ul>
@@ -255,8 +255,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
             Free prepares the report. Pro runs the whole job.
           </h2>
           <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[620px]`}>
-            The whole readiness tool is genuinely free, on your device. Pro is the workspace that does the work —
-            collecting the data, the AI that reads and drafts, the assurance trail, and the tools to win and price the engagement.
+            The whole readiness tool is genuinely free, on your device. Pro is the workspace that does the work, collecting the data, the AI that reads and drafts, the assurance trail, and the tools to win and price the engagement.
           </p>
           <CompareTable />
           <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3">
@@ -264,12 +263,12 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               Request Pro access
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
             </a>
-            <p className="text-[13px] text-[#8A938D]">Early access, priced per engagement — pay only when you have a client. The free tool always stays free.</p>
+            <p className="text-[13px] text-[#8A938D]">Early access, priced per engagement, pay only when you have a client. The free tool always stays free.</p>
           </div>
         </div>
       </section>
 
-      {/* ── Saaksh Pro — the compliance copilot ────────────────────────────── */}
+      {/* ── Saaksh Pro, the compliance copilot ────────────────────────────── */}
       <section id="pro" className="bg-white border-t border-line">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
           <Eyebrow>Saaksh Pro</Eyebrow>
@@ -285,7 +284,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
             {[
               { name: "Collect", status: "live" as const, flagship: true, desc: "Chase BRSR data from the client's team with branded emails, auto-reminders, and no-login submission with evidence." },
               { name: "Compliance importer", status: "live" as const, ai: true, desc: "Upload an existing report and the numbers are pre-filled, each with its source line, for you to verify. It never invents a figure." },
-              { name: "Cross-framework export", status: "live" as const, desc: "Download the full BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD mapping (plus MSCI & DJSI) as a spreadsheet — collect once, report many. CBAM and CCTS join as they ship." },
+              { name: "Cross-framework export", status: "live" as const, desc: "Download the full BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD mapping (plus MSCI & DJSI) as a spreadsheet, collect once, report many. CBAM and CCTS join as they ship." },
               { name: "Proposal & fee builder", status: "live" as const, desc: "Turn a scope into a client-ready proposal and a transparent fee estimate, built from your own rates, so you win and price the work." },
               { name: "Multi-client workspace", status: "coming" as const, desc: "Every client's engagement in one place, instead of one report at a time." },
               { name: "Consultant network", status: "future" as const, desc: "Get matched with the companies that need a BRSR consultant. Be found, not just searching." },
@@ -430,13 +429,13 @@ function FootCol({ title, links }: { title: string; links: [string, (() => void)
 /* ── Shared bits ───────────────────────────────────────────────────────────── */
 function Dot() { return <span className="w-1.5 h-1.5 rounded-full bg-brand-500 inline-block" />; }
 
-// Free-vs-Pro comparison — Free wins the "prepare" rows; Pro wins those plus the whole
+// Free-vs-Pro comparison, Free wins the "prepare" rows; Pro wins those plus the whole
 // collect / AI / win-work stack, so the value gap is visible at a glance.
 const COMPARE: { band: string; rows: [string, boolean, boolean | "soon"][] }[] = [
   {
     band: "Prepare the report",
     rows: [
-      ["Gap-analysed action plan — all 108 fields", true, true],
+      ["Gap-analysed action plan, all 108 fields", true, true],
       ["GHG, energy, water & Scope 3 calculators, cited", true, true],
       ["Cross-framework mapping & export (GRI, TCFD, IFRS, TNFD, MSCI, DJSI)", true, true],
       ["Beyond-BRSR readiness: CBAM & CCTS in-scope checks", true, true],
@@ -452,20 +451,20 @@ const COMPARE: { band: string; rows: [string, boolean, boolean | "soon"][] }[] =
       ["Branded request emails + automatic reminders", false, true],
       ["No-login submission with evidence attached", false, true],
       ["Emissions auto-computed & attributed to source", false, true],
-      ["Assurance-readiness pack — a data-ownership ledger", false, true],
+      ["Assurance-readiness pack, a data-ownership ledger", false, true],
     ],
   },
   {
     band: "AI that does the work",
     rows: [
-      ["Compliance importer — pre-fill figures from existing reports", false, true],
+      ["Compliance importer, pre-fill figures from existing reports", false, true],
       ["Grounded AI narrative draft, review-ready", false, true],
     ],
   },
   {
     band: "Win & scale",
     rows: [
-      ["Proposal & fee builder — scope and price an engagement", false, true],
+      ["Proposal & fee builder, scope and price an engagement", false, true],
       ["Multi-client workspace", false, "soon"],
     ],
   },
@@ -474,7 +473,7 @@ function Mark({ v }: { v: boolean | "soon" }) {
   if (v === "soon") return <span className="font-mono text-[9px] uppercase tracking-wide text-[#8A6516] bg-[#F6ECD8] rounded-full px-1.5 py-0.5">soon</span>;
   return v
     ? <svg className="w-4 h-4 text-brand-600 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.6}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-    : <span className="text-[#C9CFC9] text-[15px]">—</span>;
+    : <span className="text-[#C9CFC9] text-[15px]">, </span>;
 }
 const CMP_COLS = "grid grid-cols-[1fr_52px_60px] sm:grid-cols-[1fr_120px_140px]";
 function CompareTable() {
@@ -634,7 +633,7 @@ function ActionPlanPanel() {
   return (
     <PanelCard className="p-4">
       <div className="flex items-center justify-between px-1 pb-2.5 border-b border-[#F2F0EA]">
-        <p className="text-[12.5px] font-semibold text-ink">Action plan · Principle 6 — Environment</p>
+        <p className="text-[12.5px] font-semibold text-ink">Action plan · Principle 6, Environment</p>
         <span className="font-mono text-[10.5px] text-[#8A938D]">11 fields</span>
       </div>
       <Row label="Total energy consumption (GJ)" status="Ready" dot="#1E9DF2" />
@@ -653,7 +652,7 @@ function ActionPlanPanel() {
         </div>
       </div>
       <Row label="Scope 2 emissions (tCO₂e)" status="Collect" dot="#F2674A" />
-      <Row label="Air emissions — NOx, SOx (MT)" status="Ready" dot="#1E9DF2" />
+      <Row label="Air emissions, NOx, SOx (MT)" status="Ready" dot="#1E9DF2" />
     </PanelCard>
   );
 }
@@ -704,10 +703,10 @@ function MaterialityPanel() {
 
 function AlignmentPanel() {
   const rows = [
-    ["GHG emissions", "305", "M-b", "S2·29", "—"],
-    ["Energy use", "302", "—", "S2·29", "—"],
-    ["Water withdrawal", "303", "—", "—", "C1.1"],
-    ["Board diversity", "405", "—", "—", "—"],
+    ["GHG emissions", "305", "M-b", "S2·29", ", "],
+    ["Energy use", "302", ", ", "S2·29", ", "],
+    ["Water withdrawal", "303", ", ", ", ", "C1.1"],
+    ["Board diversity", "405", ", ", ", ", ", "],
   ];
   return (
     <PanelCard className="p-5">

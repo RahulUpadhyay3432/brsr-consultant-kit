@@ -57,8 +57,7 @@ const FILING_MAP: Record<string, string[]> = {
 
 // BRSR disclosures that are genuinely manufacturing/product-specific and do not
 // apply to pure service-sector firms (IT, BFSI, consulting, etc.). For service
-// clients these are marked "not_applicable" instead of being flagged as gaps —
-// UNLESS an existing filing already covers it (real evidence wins).
+// clients these are marked "not_applicable" instead of being flagged as gaps, // UNLESS an existing filing already covers it (real evidence wins).
 // Deliberately conservative: energy, water withdrawal, GHG, waste/e-waste, LCA
 // and recycled-input all stay applicable since service firms have those too.
 const MANUFACTURING_ONLY = new Set<string>([
@@ -133,7 +132,7 @@ function generateChecklist(formData: IntakeFormData): ChecklistItem[] {
   }
 
   for (const principle of principles) {
-    // Essential indicators — always included
+    // Essential indicators, always included
     for (const indicator of principle.essential_indicators) {
       const overlap = findOverlap(indicator.id, trackedMetrics);
       items.push({
@@ -151,7 +150,7 @@ function generateChecklist(formData: IntakeFormData): ChecklistItem[] {
       });
     }
 
-    // Leadership indicators — conditional
+    // Leadership indicators, conditional
     if (showLeadership) {
       for (const indicator of principle.leadership_indicators) {
         const overlap = findOverlap(indicator.id, trackedMetrics);
@@ -176,9 +175,8 @@ function generateChecklist(formData: IntakeFormData): ChecklistItem[] {
 }
 
 // Section A (general/entity disclosures) + Section B (management & process /
-// NGRBC policy architecture). These are the same for every client — they're
-// collected from the client's own records, not gap-analysed against filings —
-// so they're surfaced verbatim from the knowledge base.
+// NGRBC policy architecture). These are the same for every client, they're
+// collected from the client's own records, not gap-analysed against filings, // so they're surfaced verbatim from the knowledge base.
 function generateGeneralDisclosures(): ReportOutput["generalDisclosures"] {
   const data = brsrData as any;
   const map = (x: any): SectionDisclosure => ({
@@ -248,7 +246,7 @@ const COMPLIANCE_ID_REMAP: Record<string, string> = {
 };
 
 function normalizeComplianceId(rawId: string): string | null {
-  // Skip Section-A disclosures — they don't map to P1–P9 indicators
+  // Skip Section-A disclosures, they don't map to P1–P9 indicators
   if (/^Section/i.test(rawId)) return null;
 
   // Look up the remap table first (handles all known numbering differences)
@@ -275,7 +273,7 @@ function getTrackedMetrics(selectedFilings: string[]): TrackedMetric[] {
         if (!rawId) continue;
 
         const brsr_id = normalizeComplianceId(rawId);
-        if (!brsr_id) continue; // Section-A or unresolvable ID — skip
+        if (!brsr_id) continue; // Section-A or unresolvable ID, skip
 
         // "full" and "direct" both mean the filing fully covers this indicator.
         // "partial", "supplementary", "indirect" all count as partially tracked.
@@ -308,7 +306,7 @@ function findOverlap(
   if (direct) return direct;
 
   // Fallback: compliance sometimes uses "P6-E9" for multiple sub-rows that all
-  // point to the same BRSR indicator — still a direct match after remapping,
+  // point to the same BRSR indicator, still a direct match after remapping,
   // but we keep a safety net for any edge cases we missed.
   const sub = trackedMetrics.find((m) => {
     if (!m.brsr_id.startsWith(indicatorId)) return false;
@@ -408,7 +406,7 @@ function generateFrameworkMappings(_formData: IntakeFormData): FrameworkMapping[
   const mappings = (frameworkData as any).mappings as FrameworkMapping[];
   const tnfd = (tnfdData as any).mappings as Record<string, { pillar: string; detail: string }>;
 
-  // Return all mappings — the UI will handle filtering. Attach the indicative
+  // Return all mappings, the UI will handle filtering. Attach the indicative
   // TNFD crosswalk where the disclosure is nature-related.
   return mappings.map((m) => ({
     brsr_id: m.brsr_id,

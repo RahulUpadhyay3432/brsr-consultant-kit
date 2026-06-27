@@ -1,4 +1,4 @@
-// "Upload last year's report" card — client-side, privacy-safe. Pure UI; all
+// "Upload last year's report" card, client-side, privacy-safe. Pure UI; all
 // extraction/detection state lives in useChecklistState.
 import type { RefObject } from "react";
 
@@ -41,7 +41,7 @@ export default function UploadCard({
           </div>
           <div className="min-w-0 flex-1">
             <h3 className="text-sm font-semibold text-stone-800">
-              Save time — upload last year's BRSR report
+              Save time, upload last year's BRSR report
             </h3>
             <p className="text-[13px] text-stone-500 mt-1 leading-relaxed">
               We'll flag what's already documented, so you only chase what's new.
@@ -49,7 +49,7 @@ export default function UploadCard({
                 <svg className="w-3 h-3" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
                   <path d="M7.5 1.5l5 2v3.5c0 3-2.2 5-5 6.5-2.8-1.5-5-3.5-5-6.5V3.5z" />
                 </svg>
-                Scanned in your browser — the file never leaves your device.
+                Scanned in your browser, the file never leaves your device.
               </span>
             </p>
             <div className="mt-2.5 flex items-center gap-2 flex-wrap">
@@ -101,7 +101,7 @@ export default function UploadCard({
             <p className="text-xs text-stone-500 mt-1 leading-relaxed">
               Scanned <span className="font-medium text-stone-600">{uploadInfo?.fileName}</span> ({uploadInfo?.pageCount} pages) locally.
               {detectedInReport > 0
-                ? <> These fields show a <span className="font-medium text-brand-700">Last year</span> tag — expand one to see the matched text, confirm it's still current, then mark it collected.</>
+                ? <> These fields show a <span className="font-medium text-brand-700">Last year</span> tag, expand one to see the matched text, confirm it's still current, then mark it collected.</>
                 : <> The PDF may be image-based, or use different wording. You can still work through the checklist normally.</>}
             </p>
             <div className="mt-2.5 flex items-center gap-2 flex-wrap">

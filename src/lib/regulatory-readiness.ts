@@ -1,6 +1,6 @@
 // Beyond-BRSR regulatory readiness: a cited applicability check for the EU CBAM
 // and India's CCTS, derived from the client's intake (industry + export markets).
-// Lightweight + on-device — who is in scope and what to prepare. NOT a liability
+// Lightweight + on-device, who is in scope and what to prepare. NOT a liability
 // calculator (embedded-emissions / GEI-gap quantification is a deferred step).
 import cbamData from "@/data/cbam_readiness.json";
 import cctsData from "@/data/ccts_readiness.json";
@@ -57,7 +57,7 @@ export function assessCbam(industry: IndustryType, exportMarkets: ExportMarket[]
     reason = `Your sector produces CBAM-covered goods (${map.goods.join(", ")}) and you export to the EU, so CBAM reporting${map.partial ? ", if the specific goods are covered," : ""} applies at the EU border.`;
   } else if (map?.covered && !exportsToEU) {
     verdict = "may_apply";
-    reason = `Your sector produces CBAM-covered goods (${map.goods.join(", ")}), but no EU export market is selected. CBAM bites only on goods entering the EU — watch this if you begin (or already do) export to the EU.`;
+    reason = `Your sector produces CBAM-covered goods (${map.goods.join(", ")}), but no EU export market is selected. CBAM bites only on goods entering the EU, watch this if you begin (or already do) export to the EU.`;
   } else if (!map?.covered && exportsToEU) {
     verdict = "may_apply";
     reason = "You export to the EU, but your sector isn't among the six CBAM-covered goods (cement, iron & steel, aluminium, fertilisers, electricity, hydrogen). Confirm none of your specific products fall under a covered category.";
@@ -90,7 +90,7 @@ export function assessCcts(industry: IndustryType): RegAssessment {
     reason = `${map.sectors.join(" / ")} is a notified CCTS GEI-target sector, so installations in this sector are obligated entities (confirm the specific plant is on the obligated list).`;
   } else if (map?.obligated && map.partial) {
     verdict = "may_apply";
-    reason = `Parts of your sector are notified under CCTS (${map.sectors.join(", ")})${map.note ? ` — ${map.note}` : ""}. Confirm whether the specific plant is an obligated entity.`;
+    reason = `Parts of your sector are notified under CCTS (${map.sectors.join(", ")})${map.note ? `, ${map.note}` : ""}. Confirm whether the specific plant is an obligated entity.`;
   } else {
     verdict = "unlikely";
     reason = "Your sector isn't among the nine notified CCTS GEI-target sectors (aluminium, cement, chlor-alkali, pulp & paper, iron & steel, fertiliser, petrochemicals, petroleum refinery, textile), so CCTS obligation is unlikely.";

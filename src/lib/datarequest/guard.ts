@@ -1,7 +1,7 @@
 // Authenticate the consultant INSIDE each sensitive server action. Next.js server
 // actions are dispatched by the `Next-Action` header and can be POSTed to ANY route,
 // so the middleware path-matcher (which only covers /requests/*) is not sufficient on
-// its own — a request to a public route like `/` could otherwise invoke a consultant
+// its own, a request to a public route like `/` could otherwise invoke a consultant
 // action unauthenticated. Each consultant-only action calls requireConsultant() as a
 // defence-in-depth layer on top of the middleware.
 import "server-only";

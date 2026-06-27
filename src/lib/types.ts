@@ -79,7 +79,7 @@ export interface ChecklistItem {
   page?: number | string; // ICAI Background Material page reference for SEBI source citation
 }
 
-// Section A / B disclosure — entity-level and management-process disclosures.
+// Section A / B disclosure, entity-level and management-process disclosures.
 // Unlike the Section-C principle indicators these are factual / policy items
 // collected from the client's own records, not gap-analysed against filings.
 export interface SectionDisclosure {
@@ -110,7 +110,7 @@ export interface FrameworkMapping {
   tcfd_pillar: string;
   tcfd_detail: string;
   ifrs_reference: string;
-  // TNFD (nature-related) — only present on the nature-relevant rows; from the
+  // TNFD (nature-related), only present on the nature-relevant rows; from the
   // indicative tnfd_mappings.json overlay. Undefined where there's no mapping.
   tnfd_pillar?: string;
   tnfd_detail?: string;
@@ -170,16 +170,16 @@ export function inferDefaultSector(industry: IndustryType): SectorType {
 }
 
 export const COMPANY_SIZE_LABELS: Record<CompanySize, string> = {
-  listed_top_1000: "Listed — Top 1000 by market cap",
-  listed_outside_1000: "Listed — Outside top 1000",
-  unlisted_supplier: "Unlisted — Supplier to listed company",
-  unlisted_not_in_value_chain: "Unlisted — Not in value chain",
+  listed_top_1000: "Listed, Top 1000 by market cap",
+  listed_outside_1000: "Listed, Outside top 1000",
+  unlisted_supplier: "Unlisted, Supplier to listed company",
+  unlisted_not_in_value_chain: "Unlisted, Not in value chain",
 };
 
 export const MATURITY_LABELS: Record<ReportingMaturity, string> = {
   first_time: "First-time filing",
   "1_to_2_years": "1–2 years of filing",
-  "3_plus_years": "3+ years — improving quality",
+  "3_plus_years": "3+ years, improving quality",
 };
 
 export const FILING_LABELS: Record<ExistingFiling, string> = {

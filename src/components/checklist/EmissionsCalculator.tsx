@@ -135,7 +135,7 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
         {showEnergyInputs && (
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-stone-500 mb-2">
-              Fuels <span className="text-stone-400 normal-case tracking-normal font-normal">— enter quantities for fuels used (leave others blank)</span>
+              Fuels <span className="text-stone-400 normal-case tracking-normal font-normal">, enter quantities for fuels used (leave others blank)</span>
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               <Field label="Diesel (HSD)" unit="L"  value={inputs.diesel_l}      onChange={set("diesel_l")}      />
@@ -166,13 +166,13 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
         {/* ── Turnover (intensity denominator, shared across all modes) ──────── */}
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-stone-500 mb-2">
-            Annual turnover <span className="text-stone-400 normal-case tracking-normal font-normal">— optional, for intensity</span>
+            Annual turnover <span className="text-stone-400 normal-case tracking-normal font-normal">, optional, for intensity</span>
           </p>
           <div className="max-w-[200px]">
             <Field label="Turnover" unit="₹ crore" value={inputs.turnover_crore} onChange={set("turnover_crore")} />
           </div>
           <p className="text-[10px] text-stone-400 mt-1">
-            Shared across energy, GHG, and water intensity calculations — enter once.
+            Shared across energy, GHG, and water intensity calculations, enter once.
           </p>
         </div>
 
@@ -234,7 +234,7 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
                   <div>
                     <ResultRow label="Scope 2 (grid electricity)" value={fmtNum(ghg.scope2_tco2e, 2)} unit="tCO₂e" />
                     <p className="text-[10px] text-stone-400 pl-0 mt-0.5 leading-snug">
-                      Factor: {factorsData.scope2_grid.factor_display} — {factorsData.scope2_grid.source_short}
+                      Factor: {factorsData.scope2_grid.factor_display}, {factorsData.scope2_grid.source_short}
                     </p>
                   </div>
                   <div className="border-t border-stone-200 pt-1.5 mt-1.5 space-y-1.5">
@@ -300,7 +300,7 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
           )}
           <p className="italic">
             Verify emission factors against latest IPCC, CEA, and BEE publications each filing year.
-            These numbers are indicative — a certified GHG auditor should sign off on final disclosures.
+            These numbers are indicative, a certified GHG auditor should sign off on final disclosures.
           </p>
         </div>
 

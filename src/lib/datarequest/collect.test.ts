@@ -75,7 +75,7 @@ describe("campaignEmissions", () => {
       contact([received("P6-E1-diesel", "10000")], { id: "a", name: "Plant A" }),
       contact([received("P6-E1-diesel", "8000")], { id: "b", name: "Plant B" }),
     ]);
-    // 18,000 L × 2.68 / 1000 = 48.24 t — both owners counted, not just the last
+    // 18,000 L × 2.68 / 1000 = 48.24 t, both owners counted, not just the last
     expect(campaignEmissions(c)!.scope1_tco2e).toBeCloseTo(48.24, 3);
     const attributionTotal = emissionInputs(c).reduce((s, i) => s + i.tco2e, 0);
     expect(campaignEmissions(c)!.total_tco2e).toBeCloseTo(attributionTotal, 6);

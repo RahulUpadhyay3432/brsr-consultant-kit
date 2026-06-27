@@ -4,7 +4,7 @@ import { logoutAction } from "@/lib/datarequest/auth";
 import { listCampaigns } from "@/lib/datarequest/db";
 import type { Campaign } from "@/lib/datarequest/types";
 
-// Shared app-shell for the consultant "Collect" area — mirrors the report
+// Shared app-shell for the consultant "Collect" area, mirrors the report
 // workspace chrome so the two halves read as one product. (Recipient /submit
 // and /login keep their own standalone layouts.)
 export default async function RequestsLayout({ children }: { children: React.ReactNode }) {
@@ -18,7 +18,7 @@ export default async function RequestsLayout({ children }: { children: React.Rea
   return (
     <div className="flex min-h-screen bg-page">
 
-      {/* Sidebar — deep-forest branded rail */}
+      {/* Sidebar, deep-forest branded rail */}
       <aside className="no-print w-[244px] flex-shrink-0 h-screen sticky top-0 hidden lg:flex flex-col
         bg-forest border-r border-white/10 text-white">
 

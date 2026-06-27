@@ -1,5 +1,5 @@
 // Pure computation for BRSR P6 calculators: GHG Scope 1 & 2, energy intensity, water intensity.
-// All emission factors live in emission_factors.json — cited per-factor in EmissionsCalculator UI.
+// All emission factors live in emission_factors.json, cited per-factor in EmissionsCalculator UI.
 import factorsData from "@/data/emission_factors.json";
 
 export interface CalcInputs {
@@ -9,7 +9,7 @@ export interface CalcInputs {
   // Fuels (P6-E1 energy + P6-E7 Scope 1)
   diesel_l: string;
   petrol_l: string;
-  gas_m3: string;          // CNG / piped natural gas — same emission factor
+  gas_m3: string;          // CNG / piped natural gas, same emission factor
   lpg_kg: string;
   coal_kg: string;
   furnace_oil_l: string;

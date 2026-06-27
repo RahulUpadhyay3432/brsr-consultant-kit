@@ -1,11 +1,11 @@
 "use client";
 
-// The Collect campaign workspace — the Pro multi-view surface for one client.
+// The Collect campaign workspace, the Pro multi-view surface for one client.
 // A header (client identity + actions) over a VIEW-TAB switcher
 // (Overview · Owners · Data · Emissions · Draft). All data is passed in from the
 // server page (no refetch here); we only switch which view renders. Every number
 // is real (status / value / priorValue / lastEmailedAt / remindersSent / evidence /
-// computed emissions) — nothing is fabricated.
+// computed emissions), nothing is fabricated.
 
 import { useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
@@ -19,6 +19,7 @@ import AssurancePackButton from "@/components/datarequest/AssurancePackButton";
 import AddOwnerPanel from "@/components/datarequest/AddOwnerPanel";
 import DirectoryPanel from "@/components/datarequest/DirectoryPanel";
 import BulkImportPanel from "@/components/datarequest/BulkImportPanel";
+import CampaignSettingsButton from "@/components/datarequest/CampaignSettingsButton";
 import { PRINCIPLE_LABELS, SECTION_LABELS, PRINCIPLE_ORDER } from "@/lib/datarequest/brsr-meta";
 import type { Campaign, Contact, Item, ContactStatus, CompanyContact, RequestField } from "@/lib/datarequest/types";
 import type { EmissionInput } from "@/lib/datarequest/emissions";
@@ -46,7 +47,12 @@ function relativeDays(iso: string | null): string | null {
 }
 
 function emailStatus(c: Contact): string {
-  if (c.status === "received") return "Data received";
+  if (c.status === "received") {
+    const sent = relativeDays(c.lastEmailedAt);
+    const got = relativeDays(c.receivedAt);
+    if (got) return `Sent ${sent ?? "earlier"} · Received ${got}`;
+    return sent ? `Sent ${sent} · received` : "Data received";
+  }
   const when = relativeDays(c.lastEmailedAt);
   if (!when) return "Not emailed yet";
   const reminders = c.remindersSent > 0
@@ -138,6 +144,7 @@ export default function CampaignWorkspace(props: CampaignWorkspaceProps) {
                   {props.daysToDeadline != null && props.daysToDeadline >= 0 && <span className="text-ink-muted"> · {props.daysToDeadline}d</span>}
                 </Chip>
               )}
+              <CampaignSettingsButton campaignId={campaign.id} deadline={campaign.deadline} reportingPeriod={campaign.reportingPeriod} />
             </div>
           </div>
         </div>
@@ -219,66 +226,76 @@ function ReadinessView(props: CampaignWorkspaceProps) {
     return s;
   }, [campaign]);
 
-  const total = fields.length;
-  const coveredCount = fields.filter((f) => collected.has(f.id)).length;
-  const pct = total > 0 ? Math.round((coveredCount / total) * 100) : 0;
+  // Headline readiness is over the 108 Section-C disclosures, the SAME denominator
+  // and scale as the free report. The free tool PREDICTS these from a client's filings;
+  // here we count the ones actually COLLECTED. Sections A & B (and the 7 granular P6
+  // activity inputs) are shown separately and excluded from the headline %.
+  const sectionC = fields.filter((f) => f.section === "C" && f.kind !== "activity");
+  const coveredC = sectionC.filter((f) => collected.has(f.id)).length;
+  const pct = sectionC.length > 0 ? Math.round((coveredC / sectionC.length) * 100) : 0;
+  const toCollect = sectionC.length - coveredC;
 
-  // Group the full BRSR skeleton by Section → Principle.
-  const sections: ("A" | "B" | "C")[] = ["A", "B", "C"];
-  const grouped = sections
-    .map((sec) => {
-      const inSec = fields.filter((f) => (f.section ?? "C") === sec);
-      if (sec === "C") {
-        const byP = PRINCIPLE_ORDER
-          .map((p) => ({ key: p, label: `${p} · ${PRINCIPLE_LABELS[p] ?? ""}`, rows: inSec.filter((f) => f.principle === p) }))
-          .filter((g) => g.rows.length > 0);
-        const noP = inSec.filter((f) => !f.principle);
-        if (noP.length) byP.push({ key: "C-other", label: "General", rows: noP });
-        return { sec, groups: byP };
-      }
-      return { sec, groups: inSec.length ? [{ key: sec, label: SECTION_LABELS[sec], rows: inSec }] : [] };
-    })
-    .filter((s) => s.groups.length > 0);
+  const principleGroups = PRINCIPLE_ORDER
+    .map((p) => ({ key: p, label: `${p} · ${PRINCIPLE_LABELS[p] ?? ""}`, rows: sectionC.filter((f) => f.principle === p) }))
+    .filter((g) => g.rows.length > 0);
+  const abRows = fields.filter((f) => (f.section === "A" || f.section === "B") && f.kind !== "activity");
+  const abCovered = abRows.filter((f) => collected.has(f.id)).length;
 
   return (
     <div className="space-y-4">
       <Card>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-ink-muted">BRSR readiness</p>
+            <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-ink-muted">BRSR readiness · Section C</p>
             <p className="text-[34px] font-bold text-ink tabular-nums leading-none mt-1.5"><AnimatedNumber value={pct} />%</p>
             <p className="text-[14px] text-ink-body mt-1.5">
-              <span className="font-semibold text-ink tabular-nums">{coveredCount}</span> of {total} BRSR fields covered ·{" "}
-              <span className="font-semibold text-ember-dark tabular-nums">{total - coveredCount}</span> still to collect
+              <span className="font-semibold text-emerald-700 tabular-nums">{coveredC}</span> ready ·{" "}
+              <span className="font-semibold text-ember-dark tabular-nums">{toCollect}</span> to collect
+              <span className="text-ink-muted"> · of {sectionC.length} Section-C disclosures</span>
             </p>
           </div>
           <button
             onClick={() => setOnlyMissing((v) => !v)}
             className="text-[13px] font-semibold text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-3 py-1.5 rounded-lg transition-colors pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
           >
-            {onlyMissing ? "Show all fields" : "Show only the gaps"}
+            {onlyMissing ? "Show all" : "Show only the gaps"}
           </button>
         </div>
-        <div className="mt-4"><ProgressBar value={coveredCount} total={total} /></div>
+        <div className="mt-4"><ProgressBar value={coveredC} total={sectionC.length} /></div>
         <p className="text-[13.5px] text-ink-body mt-3 leading-relaxed">
-          Covered = a value already collected for that field — from a data owner, or auto-filled from your documents.
-          Use <span className="font-semibold text-ink">Auto-fill from your documents</span> above to close the gaps in one upload.
+          The free tool predicts readiness from a client&apos;s existing filings; here it reflects the data you&apos;ve actually collected, over the same {sectionC.length} Section-C disclosures. <span className="font-semibold text-ink">Ready</span> means a value is in (from an owner, or auto-filled from a document); use <span className="font-semibold text-ink">Auto-fill</span> to close the gaps.
         </p>
       </Card>
 
-      {grouped.map(({ sec, groups }) => (
-        <div key={sec}>
-          <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-ink-muted mb-2">{SECTION_LABELS[sec]}</p>
-          <div className="space-y-2">
-            {groups.map((g) => {
-              const cov = g.rows.filter((f) => collected.has(f.id)).length;
-              const rows = onlyMissing ? g.rows.filter((f) => !collected.has(f.id)) : g.rows;
-              if (!rows.length) return null;
-              return <ReadinessGroup key={g.key} title={g.label} covered={cov} total={g.rows.length} rows={rows} collected={collected} />;
-            })}
-          </div>
+      {/* Section C, principle by principle (the headline scope) */}
+      <div>
+        <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-ink-muted mb-2">Section C · Principle-wise performance</p>
+        <div className="space-y-2">
+          {principleGroups.map((g) => {
+            const cov = g.rows.filter((f) => collected.has(f.id)).length;
+            const rows = onlyMissing ? g.rows.filter((f) => !collected.has(f.id)) : g.rows;
+            if (!rows.length) return null;
+            return <ReadinessGroup key={g.key} title={g.label} covered={cov} total={g.rows.length} rows={rows} collected={collected} />;
+          })}
         </div>
-      ))}
+      </div>
+
+      {/* Sections A & B, general disclosures, tracked separately from the headline % */}
+      {abRows.length > 0 && (onlyMissing ? abRows.some((f) => !collected.has(f.id)) : true) && (
+        <div>
+          <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-ink-muted mb-2">
+            General disclosures · Sections A &amp; B{" "}
+            <span className="font-normal normal-case tracking-normal text-ink-muted/70">(tracked separately)</span>
+          </p>
+          <ReadinessGroup
+            title="Sections A & B"
+            covered={abCovered}
+            total={abRows.length}
+            rows={onlyMissing ? abRows.filter((f) => !collected.has(f.id)) : abRows}
+            collected={collected}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -296,7 +313,7 @@ function ReadinessGroup({
         <svg className={`w-4 h-4 text-ink-muted transition-transform flex-shrink-0 ${open ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
         <span className="flex-1 text-[14px] font-semibold text-ink truncate">{title}</span>
         <div className="hidden sm:block w-24 h-1.5 rounded-full bg-line overflow-hidden">
-          <div className="h-full rounded-full bg-brand-500" style={{ width: `${total ? (covered / total) * 100 : 0}%` }} />
+          <div className="h-full rounded-full bg-emerald-500" style={{ width: `${total ? (covered / total) * 100 : 0}%` }} />
         </div>
         <span className="text-[13px] text-ink-muted tabular-nums whitespace-nowrap">{covered}/{total}</span>
       </button>
@@ -311,11 +328,11 @@ function ReadinessGroup({
                 {has ? (
                   <span className="inline-flex items-center gap-1 flex-shrink-0 text-[12px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
                     <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
-                    Covered
+                    Ready
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1 flex-shrink-0 text-[12px] font-medium text-ink-muted bg-page border border-line px-2 py-0.5 rounded-full">
-                    To collect
+                  <span className="inline-flex items-center gap-1 flex-shrink-0 text-[12px] font-medium text-ember-dark bg-ember-bg border border-ember/30 px-2 py-0.5 rounded-full">
+                    Collect
                   </span>
                 )}
               </div>
@@ -328,7 +345,7 @@ function ReadinessGroup({
 }
 
 // The single "Auto-fill from your documents" space (was a separate panel above the
-// header — now a workspace tab, below the company identity, so there's ONE place).
+// header, now a workspace tab, below the company identity, so there's ONE place).
 function AutofillView(props: CampaignWorkspaceProps) {
   return (
     <BulkImportPanel
@@ -349,7 +366,7 @@ function AutofillCta({ onGoView }: { onGoView: (key: ViewKey) => void }) {
         <div className="min-w-0">
           <p className="text-[15.5px] font-bold text-ink font-display">Already have the client&apos;s documents?</p>
           <p className="text-[13.5px] text-ink-body mt-1 leading-relaxed">
-            Upload last year&apos;s BRSR, the annual report, bills or policies and let the AI fill the BRSR for you — then chase only what&apos;s still missing.
+            Upload last year&apos;s BRSR, the annual report, bills or policies and let the AI fill the BRSR for you, then chase only what&apos;s still missing.
           </p>
           <button onClick={() => onGoView("autofill")} className="mt-3 inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-4 py-2 rounded-lg hover:bg-forest-light transition-colors pressable focus:outline-none focus:ring-2 focus:ring-brand-400">
             Auto-fill from documents
@@ -406,7 +423,7 @@ function OverviewView(
         {props.daysToDeadline != null && (
           <Kpi label="Deadline">
             <span className="text-[26px] font-bold text-ink tabular-nums">
-              {props.daysToDeadline >= 0 ? <AnimatedNumber value={props.daysToDeadline} /> : "—"}
+              {props.daysToDeadline >= 0 ? <AnimatedNumber value={props.daysToDeadline} /> : ", "}
             </span>
             <span className="block text-[12.5px] text-ink-body mt-0.5">{props.daysToDeadline >= 0 ? "days left" : "past due"}</span>
           </Kpi>
@@ -482,7 +499,7 @@ function ToolsArea(props: CampaignWorkspaceProps) {
       <p className="text-[14.5px] font-semibold text-ink">Tools</p>
       <p className="text-[13.5px] text-ink-body mt-1 mb-3 leading-relaxed">
         Every collected figure is traceable to who submitted it, the document that backs it, and the cited factor behind any
-        calculation — the data-ownership trail a reasonable-assurance review asks for.
+        calculation, the data-ownership trail a reasonable-assurance review asks for.
       </p>
       {allItems.length > 0 && (
         <div className="flex flex-wrap items-center gap-2 mb-3">
@@ -599,7 +616,7 @@ function ItemRow({ item: it, evidenceUrl }: { item: Item; evidenceUrl?: string }
         )
       )}
       <span className="text-[14.5px] tabular-nums whitespace-nowrap text-right">
-        {it.value ? <span className="font-semibold text-ink">{it.value}</span> : <span className="text-stone-300">—</span>}
+        {it.value ? <span className="font-semibold text-ink">{it.value}</span> : <span className="text-stone-300">, </span>}
         {it.priorValue && <span className="text-ink-muted"> · prev {it.priorValue}</span>}
       </span>
     </div>
@@ -735,7 +752,7 @@ function PrincipleGroup({
   );
 }
 
-// One field row in the Data view — click to expand a full detail panel.
+// One field row in the Data view, click to expand a full detail panel.
 // The collapsed row shows the full (wrapping, never truncated) label; the
 // expanded panel restates every coordinate the consultant might want.
 function DataFieldRow({ item, owner, evidenceUrl }: { item: Item; owner: string; evidenceUrl?: string }) {
@@ -766,7 +783,7 @@ function DataFieldRow({ item, owner, evidenceUrl }: { item: Item; owner: string;
           )
         )}
         <span className="text-[14.5px] tabular-nums whitespace-nowrap text-right">
-          {item.value ? <span className="font-semibold text-ink">{item.value}{item.unit && <span className="text-ink-muted font-normal"> {item.unit}</span>}</span> : <span className="text-stone-300">—</span>}
+          {item.value ? <span className="font-semibold text-ink">{item.value}{item.unit && <span className="text-ink-muted font-normal"> {item.unit}</span>}</span> : <span className="text-stone-300">, </span>}
           {item.priorValue && <span className="text-ink-muted"> · prev {item.priorValue}</span>}
         </span>
         <svg className={`mt-0.5 w-4 h-4 text-ink-muted transition-transform flex-shrink-0 ${open ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
@@ -777,12 +794,12 @@ function DataFieldRow({ item, owner, evidenceUrl }: { item: Item; owner: string;
           <p className="text-[14.5px] text-ink leading-relaxed font-medium">{item.label}</p>
           <dl className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-3">
             <DetailField label="Field code" value={item.fieldId} mono />
-            <DetailField label="Section" value={item.section ? SECTION_LABELS[item.section] : "—"} />
-            <DetailField label="Principle" value={item.principle ? `${item.principle}${PRINCIPLE_LABELS[item.principle] ? ` · ${PRINCIPLE_LABELS[item.principle]}` : ""}` : "—"} />
+            <DetailField label="Section" value={item.section ? SECTION_LABELS[item.section] : ", "} />
+            <DetailField label="Principle" value={item.principle ? `${item.principle}${PRINCIPLE_LABELS[item.principle] ? ` · ${PRINCIPLE_LABELS[item.principle]}` : ""}` : ", "} />
             <DetailField label="Submitted by" value={owner} />
             <DetailField label="Status" value={st.label} />
             <DetailField label="Value" value={item.value ? `${item.value}${item.unit ? ` ${item.unit}` : ""}` : "Not submitted yet"} />
-            <DetailField label="Prior-year value" value={item.priorValue ? `${item.priorValue}${item.unit ? ` ${item.unit}` : ""}` : "—"} />
+            <DetailField label="Prior-year value" value={item.priorValue ? `${item.priorValue}${item.unit ? ` ${item.unit}` : ""}` : ", "} />
             {item.indicatorType && <DetailField label="Indicator" value={item.indicatorType === "essential" ? "Essential" : "Leadership"} />}
             <div>
               <dt className="text-[12px] font-semibold uppercase tracking-[0.08em] text-ink-muted">Evidence</dt>
@@ -905,7 +922,7 @@ function DraftView(props: CampaignWorkspaceProps) {
       <p className="text-[15.5px] font-semibold text-ink">BRSR draft</p>
       <p className="text-[14px] text-ink-body mt-1.5 max-w-[64ch] leading-relaxed">
         Generate a printable BRSR draft from the {received} collected {received === 1 ? "value" : "values"}, grouped by
-        Section and Principle, with the emissions block and a "nothing is invented" basis line. Deterministic — only
+        Section and Principle, with the emissions block and a "nothing is invented" basis line. Deterministic, only
         submitted values and figures computed from them via cited factors.
       </p>
       <Link
