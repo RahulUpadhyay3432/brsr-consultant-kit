@@ -133,13 +133,13 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
           <div className="max-w-[1180px] mx-auto">
             {/* Breadcrumb + per-screen actions */}
             <div className="flex items-center justify-between gap-4 mb-5">
-              <p className="text-[12px] text-ink-muted font-medium tracking-tight">
+              <p className="text-[13.5px] text-ink-body font-medium tracking-tight">
                 BRSR Readiness · FY 2025–26
               </p>
               <button
                 onClick={() => { downloadReportPdf(report).catch((e) => console.error("PDF export failed", e)); }}
                 title="Download a clean BRSR data-request brief to share with the client"
-                className="no-print inline-flex items-center gap-1.5 text-[12.5px] font-medium
+                className="no-print inline-flex items-center gap-1.5 text-[13.5px] font-medium
                   text-stone-600 bg-white border border-stone-200 hover:border-stone-300 hover:bg-stone-50
                   px-3 py-1.5 rounded-lg pressable transition-colors shadow-sm"
               >
@@ -218,8 +218,8 @@ function Sidebar({
           <span className="text-[11px] font-bold text-white leading-none tracking-tight">S</span>
         </div>
         <div className="leading-tight">
-          <p className="text-[13px] font-semibold text-stone-900 tracking-[-0.01em]">Saaksh</p>
-          <p className="text-[10.5px] text-stone-400">Readiness workspace</p>
+          <p className="text-[14px] font-semibold text-stone-900 tracking-[-0.01em]">Saaksh</p>
+          <p className="text-[12px] text-stone-500">Readiness workspace</p>
         </div>
       </button>
 
@@ -228,8 +228,8 @@ function Sidebar({
         <div className="flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg bg-white border border-stone-200/80 shadow-sm">
           <CompanyAvatar name={report.companyName || "Your Client"} size={28} />
           <div className="leading-tight min-w-0">
-            <p className="text-[12.5px] font-semibold text-ink truncate">{report.companyName || "Your Client"}</p>
-            <p className="text-[10.5px] text-ink-muted truncate">{industryLabel}</p>
+            <p className="text-[13.5px] font-semibold text-ink truncate">{report.companyName || "Your Client"}</p>
+            <p className="text-[12px] text-ink-muted truncate">{industryLabel}</p>
           </div>
         </div>
       </div>
@@ -237,7 +237,7 @@ function Sidebar({
       {/* Nav groups */}
       <nav role="tablist" aria-label="Workspace" className="flex-1 overflow-y-auto px-3 pt-4 space-y-5">
         <div>
-          <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Workspace</p>
+          <p className="px-2.5 mb-1.5 text-[11.5px] font-bold uppercase tracking-[0.14em] text-stone-500">Workspace</p>
           <div className="space-y-0.5">
             {TABS.map(tab =>
               navItem(tab, tab.id === "checklist"
@@ -248,7 +248,7 @@ function Sidebar({
         </div>
 
         <div>
-          <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Reference</p>
+          <p className="px-2.5 mb-1.5 text-[11.5px] font-bold uppercase tracking-[0.14em] text-stone-500">Reference</p>
           <div className="space-y-0.5">
             {navItem({ id: "templates", label: "Templates" })}
             {navItem({ id: "sources", label: "Sources" })}
@@ -256,7 +256,7 @@ function Sidebar({
         </div>
 
         <div>
-          <p className="px-2.5 mb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-stone-400">Collect data</p>
+          <p className="px-2.5 mb-1.5 text-[11.5px] font-bold uppercase tracking-[0.14em] text-stone-500">Collect data</p>
           <div className="space-y-0.5">
             <Link
               href="/requests"
@@ -265,7 +265,7 @@ function Sidebar({
             >
               <TabIcon id="collect" className="flex-shrink-0 text-stone-400 group-hover:text-stone-500" />
               <span className="flex-1 text-left">Collect</span>
-              <span className="font-mono text-[8.5px] uppercase tracking-[0.08em] font-semibold text-[#0B6B4F] bg-[#E3F7F0] rounded px-1.5 py-0.5 leading-none flex-shrink-0">Pro</span>
+              <span className="font-mono text-[9.5px] uppercase tracking-[0.08em] font-semibold text-[#0B5FB0] bg-[#EAF4FE] rounded px-1.5 py-0.5 leading-none flex-shrink-0">Pro</span>
               <svg className="w-3 h-3 text-stone-300 group-hover:text-stone-500 transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>
@@ -300,11 +300,11 @@ function Sidebar({
 
         {/* Persistent on-device notice — work is saved in this browser only. */}
         <div className="mt-1.5 pt-2.5 px-2.5 border-t border-black/[0.05]">
-          <p className="flex items-center gap-1.5 text-[11px] font-semibold text-stone-600">
+          <p className="flex items-center gap-1.5 text-[12.5px] font-semibold text-stone-700">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
             Saved on this device
           </p>
-          <p className="text-[10.5px] text-stone-400 leading-relaxed mt-1">
+          <p className="text-[12px] text-stone-500 leading-relaxed mt-1">
             Your work stays in this browser, so a refresh or restart is safe. Clearing your browser data or switching browsers starts fresh, so back it up (or export the PDF/CSV) to keep a copy.
           </p>
         </div>
@@ -352,7 +352,7 @@ function TopBar({ onSearch }: { onSearch: (q: string) => void }) {
             placeholder="Search fields, frameworks, topics…"
             aria-label="Search the workspace"
             className="w-full h-9 pl-9 pr-9 rounded-lg bg-white border border-stone-200
-              text-[13px] text-stone-700 placeholder:text-stone-400
+              text-[14.5px] text-stone-700 placeholder:text-stone-400
               focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors shadow-sm"
           />
           <kbd className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[11px] font-medium text-stone-400
@@ -369,7 +369,7 @@ function TopBar({ onSearch }: { onSearch: (q: string) => void }) {
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-1.5 px-3 h-9 rounded-lg
-            border border-stone-200 bg-white text-[12.5px] font-medium text-stone-600
+            border border-stone-200 bg-white text-[13.5px] font-medium text-stone-600
             hover:border-brand-400 hover:text-brand-700 hover:bg-brand-50 transition-colors pressable shadow-sm"
         >
           <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
@@ -483,7 +483,7 @@ function Overview({
           <h1 className="font-display text-[26px] font-bold text-ink leading-tight tracking-tight">
             Overview
           </h1>
-          <p className="text-[13px] text-ink-body mt-1 max-w-[68ch] leading-relaxed">
+          <p className="text-[14.5px] text-ink-body mt-1 max-w-[68ch] leading-relaxed">
             A live readiness picture for{" "}
             <strong className="font-semibold text-stone-700">{report.companyName || "this company"}</strong>{" "}
             across the {applicableFields} principle-wise BRSR fields (Section C) — what&apos;s already covered, what to verify, and what to collect
@@ -562,11 +562,11 @@ function Overview({
           {stats.map((s, i) => (
             <div key={i} className="stagger-item rounded-lg" style={{ animationDelay: `${i * 60}ms` }}>
               <p className={`text-[2rem] font-semibold leading-none tabular-nums ${s.num}`}><AnimatedNumber value={s.n} /></p>
-              <p className="flex items-center gap-1.5 text-[13px] font-semibold text-stone-700 mt-2">
+              <p className="flex items-center gap-1.5 text-[14.5px] font-semibold text-stone-700 mt-2">
                 <span className={`w-2 h-2 rounded-full flex-shrink-0 ${s.dot}`} />
                 {s.label}
               </p>
-              <p className="text-[11px] text-stone-400 mt-0.5">{s.sub}</p>
+              <p className="text-[12.5px] text-stone-500 mt-0.5">{s.sub}</p>
             </div>
           ))}
         </div>
@@ -581,8 +581,8 @@ function Overview({
       >
         <span className="flex-shrink-0 text-[11px] font-bold font-mono px-2 py-1 rounded bg-slate-100 text-slate-600 border border-slate-200">A·B</span>
         <div className="min-w-0 flex-1">
-          <p className="text-[14px] font-bold text-ink">General disclosures · Sections A &amp; B</p>
-          <p className="text-[12px] text-ink-body mt-0.5 leading-relaxed">
+          <p className="text-[15.5px] font-bold text-ink">General disclosures · Sections A &amp; B</p>
+          <p className="text-[13.5px] text-ink-body mt-0.5 leading-relaxed">
             The {abTotal} entity facts &amp; policies every BRSR opens with — collected from the client&apos;s own
             records, separate from the Section-C gap analysis above.
           </p>
@@ -613,8 +613,8 @@ function Overview({
         {/* Per-principle breakdown */}
         <div className="lg:col-span-2 bg-white rounded-xl border border-stone-200 p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
           <div className="flex items-baseline justify-between mb-4">
-            <h3 className="text-[15px] font-bold text-ink">Readiness by principle</h3>
-            <span className="text-[11px] text-stone-400">{breakdown.length} NGRBC principles</span>
+            <h3 className="text-[16.5px] font-bold text-ink">Readiness by principle</h3>
+            <span className="text-[12.5px] text-stone-500">{breakdown.length} NGRBC principles</span>
           </div>
           <ul className="space-y-1">
             {breakdown.map(p => (
@@ -626,8 +626,8 @@ function Overview({
                 >
                   <span className="flex-shrink-0 w-8 text-[11px] font-bold text-stone-400 tabular-nums">{p.id}</span>
                   <span className="flex-1 min-w-0">
-                    <span className="block text-[13px] font-medium text-stone-800 truncate">{p.name}</span>
-                    <span className="block text-[11px] text-stone-400">{p.total} fields</span>
+                    <span className="block text-[14.5px] font-medium text-stone-800 truncate">{p.name}</span>
+                    <span className="block text-[12.5px] text-stone-500">{p.total} fields</span>
                   </span>
                   {/* mini stacked bar */}
                   <span className="hidden sm:flex items-stretch gap-0.5 h-2 w-28 flex-shrink-0">
@@ -652,7 +652,7 @@ function Overview({
 
         {/* Where to start */}
         <div className="bg-white rounded-xl border border-stone-200 p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
-          <h3 className="text-[15px] font-bold text-ink mb-4">Where to start</h3>
+          <h3 className="text-[16.5px] font-bold text-ink mb-4">Where to start</h3>
 
           {noFilings ? (
             <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
@@ -713,7 +713,7 @@ function StartStep({ dot, onClick, children }: { dot: string; onClick: () => voi
     <li>
       <button onClick={onClick} className="group w-full flex items-start gap-3 text-left pressable">
         <span className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ${dot}`} />
-        <span className="text-[13px] text-stone-600 leading-relaxed group-hover:text-stone-800 transition-colors">
+        <span className="text-[14.5px] text-stone-600 leading-relaxed group-hover:text-stone-800 transition-colors">
           {children}
         </span>
       </button>
@@ -767,14 +767,14 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
           <h1 className="font-display text-[26px] font-bold text-ink leading-tight tracking-tight">
             Alignment
           </h1>
-          <p className="text-[13px] text-ink-body mt-1 max-w-[72ch] leading-relaxed">
+          <p className="text-[14.5px] text-ink-body mt-1 max-w-[72ch] leading-relaxed">
             How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2 and TNFD (nature) — and to the MSCI &amp; DJSI
             rating frameworks. Collect once, report across all.
           </p>
         </div>
         <button
           onClick={exportActive}
-          className="flex-shrink-0 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-brand-700 bg-brand-50
+          className="flex-shrink-0 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-brand-700 bg-brand-50
             border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors pressable whitespace-nowrap"
           title={sub === "frameworks" ? "Download the full BRSR↔GRI↔TCFD↔IFRS↔TNFD mapping as a spreadsheet" : "Download the MSCI & DJSI ratings alignment as a spreadsheet"}
         >
@@ -811,7 +811,7 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
             {statCards.map((s, i) => (
               <div key={i} className="stagger-item bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)]" style={{ animationDelay: `${i * 45}ms` }}>
                 <p className={`text-[2rem] font-semibold leading-none tabular-nums ${s.tone}`}><AnimatedNumber value={s.n} /></p>
-                <p className="text-[12.5px] font-medium text-stone-500 mt-2">{s.label}</p>
+                <p className="text-[13.5px] font-medium text-stone-600 mt-2">{s.label}</p>
               </div>
             ))}
           </div>

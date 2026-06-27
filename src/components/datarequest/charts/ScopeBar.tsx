@@ -18,17 +18,17 @@ export default function ScopeBar({ scope1, scope2 }: { scope1: number; scope2: n
         {s2 > 0 && <div className="h-full bg-brand-500 transition-[width] duration-500" style={{ width: `${s2}%` }} />}
       </div>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-3">
-        <span className="flex items-center gap-1.5 text-[12px] text-ink-body">
+        <span className="flex items-center gap-1.5 text-[13.5px] text-ink-body">
           <span className="w-2.5 h-2.5 rounded-sm bg-forest flex-shrink-0" />
           Scope 1 (fuel)
-          <span className="text-ink-muted tabular-nums">{fmt(scope1)} t</span>
+          <span className="text-ink-body tabular-nums">{fmt(scope1)} t</span>
         </span>
-        <span className="flex items-center gap-1.5 text-[12px] text-ink-body">
+        <span className="flex items-center gap-1.5 text-[13.5px] text-ink-body">
           <span className="w-2.5 h-2.5 rounded-sm bg-brand-500 flex-shrink-0" />
           Scope 2 (electricity)
-          <span className="text-ink-muted tabular-nums">{fmt(scope2)} t</span>
+          <span className="text-ink-body tabular-nums">{fmt(scope2)} t</span>
         </span>
-        <span className="flex items-center gap-1.5 text-[12px] font-semibold text-ink ml-auto">
+        <span className="flex items-center gap-1.5 text-[13.5px] font-semibold text-ink ml-auto">
           Total <span className="tabular-nums">{fmt(total)} tCO₂e</span>
         </span>
       </div>

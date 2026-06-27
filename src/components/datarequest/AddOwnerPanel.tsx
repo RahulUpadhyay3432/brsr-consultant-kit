@@ -79,7 +79,7 @@ export default function AddOwnerPanel({
     return (
       <button
         onClick={() => setOpen(true)}
-        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-[13.5px] font-semibold
+        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-[15px] font-semibold
           text-stone-600 bg-white border border-dashed border-stone-300 hover:border-brand-400 hover:text-brand-700
           hover:bg-brand-50/40 transition-colors pressable"
       >
@@ -97,16 +97,16 @@ export default function AddOwnerPanel({
   return (
     <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[14px] font-semibold text-stone-800">Add a data owner</p>
-        <button onClick={() => setOpen(false)} className="text-[12.5px] text-stone-400 hover:text-stone-600 transition-colors">Cancel</button>
+        <p className="text-[15.5px] font-semibold text-stone-800">Add a data owner</p>
+        <button onClick={() => setOpen(false)} className="text-[13.5px] text-stone-500 hover:text-stone-700 transition-colors">Cancel</button>
       </div>
-      <p className="text-[12px] text-stone-500 mt-0.5 mb-4">
+      <p className="text-[13.5px] text-stone-600 mt-0.5 mb-4">
         Assign the BRSR fields this person owns: the energy manager for electricity &amp; fuel, EHS for water, HR for
         headcount. Each field carries its Section and indicator code. Add owners one at a time.
       </p>
 
       {error && (
-        <p className="shake mb-4 text-[13px] text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3.5 py-2.5">
+        <p className="shake mb-4 text-[14.5px] text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3.5 py-2.5">
           Add an email and select at least one field.
         </p>
       )}
@@ -115,7 +115,7 @@ export default function AddOwnerPanel({
         {/* One-tap import from the client's saved roster */}
         {directory.length > 0 && (
           <div className="space-y-1.5">
-            <p className="text-[11.5px] font-medium text-stone-500">Pick from saved contacts</p>
+            <p className="text-[13px] font-medium text-stone-600">Pick from saved contacts</p>
             <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto">
               {directory.map((c) => (
                 <button
@@ -123,10 +123,10 @@ export default function AddOwnerPanel({
                   type="button"
                   onClick={() => { setName(c.name || ""); setEmail(c.email); }}
                   title={c.email}
-                  className="inline-flex items-center gap-1.5 text-[12px] text-stone-700 bg-stone-50 hover:bg-brand-50 border border-stone-200 hover:border-brand-200 px-2.5 py-1 rounded-full transition-colors pressable"
+                  className="inline-flex items-center gap-1.5 text-[13.5px] text-stone-700 bg-stone-50 hover:bg-brand-50 border border-stone-200 hover:border-brand-200 px-2.5 py-1 rounded-full transition-colors pressable"
                 >
                   <span className="font-medium">{c.name || c.email}</span>
-                  {c.role && <span className="text-[10px] text-stone-400">{c.role}</span>}
+                  {c.role && <span className="text-[11.5px] text-stone-500">{c.role}</span>}
                 </button>
               ))}
             </div>
@@ -135,9 +135,9 @@ export default function AddOwnerPanel({
 
         <div className="grid sm:grid-cols-2 gap-3">
           <input name="name" placeholder="Name (optional)" value={name} onChange={(e) => setName(e.target.value)}
-            className="h-10 px-3 text-[13.5px] text-stone-800 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
+            className="h-10 px-3 text-[15px] text-stone-800 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
           <input name="email" type="email" required placeholder="Email *" value={email} onChange={(e) => setEmail(e.target.value)}
-            className="h-10 px-3 text-[13.5px] text-stone-800 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
+            className="h-10 px-3 text-[15px] text-stone-800 bg-white border border-stone-200 rounded-lg focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors" />
         </div>
 
         {/* Search + selected count */}
@@ -149,10 +149,10 @@ export default function AddOwnerPanel({
             <input
               value={query} onChange={(e) => setQuery(e.target.value)}
               placeholder={`Search ${fields.length} BRSR fields by code or label…`}
-              className="h-9 w-full pl-9 pr-3 text-[13px] text-stone-800 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:bg-white focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
+              className="h-9 w-full pl-9 pr-3 text-[14.5px] text-stone-800 bg-stone-50 border border-stone-200 rounded-lg focus:outline-none focus:bg-white focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
             />
           </div>
-          <span className="text-[12px] text-stone-500 whitespace-nowrap tabular-nums">
+          <span className="text-[13.5px] text-stone-600 whitespace-nowrap tabular-nums">
             {selected.size} selected
           </span>
         </div>
@@ -160,7 +160,7 @@ export default function AddOwnerPanel({
         {/* Grouped, collapsible field list */}
         <div className="max-h-[420px] overflow-y-auto rounded-lg border border-stone-200 divide-y divide-stone-100">
           {groups.length === 0 && (
-            <p className="px-4 py-6 text-center text-[13px] text-stone-400">No fields match “{query}”.</p>
+            <p className="px-4 py-6 text-center text-[14.5px] text-stone-500">No fields match “{query}”.</p>
           )}
           {groups.map((g) => {
             const sel = g.fields.filter((f) => selected.has(f.id)).length;
@@ -172,15 +172,15 @@ export default function AddOwnerPanel({
                   className="w-full flex items-center gap-2.5 px-3.5 py-2.5 text-left hover:bg-stone-50 transition-colors"
                 >
                   {g.sub
-                    ? <span className="text-[11px] font-bold font-mono text-stone-500 w-7 shrink-0">{g.title}</span>
+                    ? <span className="text-[12.5px] font-bold font-mono text-stone-500 w-7 shrink-0">{g.title}</span>
                     : null}
-                  <span className="flex-1 text-[12.5px] font-semibold text-stone-700">
+                  <span className="flex-1 text-[13.5px] font-semibold text-stone-700">
                     {g.sub ?? g.title}
                   </span>
                   {sel > 0 && (
-                    <span className="text-[10.5px] font-semibold text-brand-700 bg-brand-50 border border-brand-100 px-1.5 py-0.5 rounded-full tabular-nums">{sel}</span>
+                    <span className="text-[12px] font-semibold text-brand-700 bg-brand-50 border border-brand-100 px-1.5 py-0.5 rounded-full tabular-nums">{sel}</span>
                   )}
-                  <span className="text-[11px] text-stone-400 tabular-nums">{g.fields.length}</span>
+                  <span className="text-[12.5px] text-stone-500 tabular-nums">{g.fields.length}</span>
                   <svg className={`w-3.5 h-3.5 text-stone-400 transition-transform ${isOpen(g.key) ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                   </svg>
@@ -198,11 +198,11 @@ export default function AddOwnerPanel({
                           <input
                             type="checkbox" name="fields" value={f.id}
                             checked={checked} onChange={() => toggleField(f.id)}
-                            className="mt-0.5 accent-[#0E4A36]"
+                            className="mt-0.5 accent-[#0B6FD4]"
                           />
                           <span className="min-w-0 flex-1">
                             <span className="flex items-center gap-1.5 flex-wrap">
-                              <span className="text-[10.5px] font-mono font-semibold text-stone-500">{f.id}</span>
+                              <span className="text-[12px] font-mono font-semibold text-stone-500">{f.id}</span>
                               {f.indicatorType && (
                                 <span className={`text-[9px] font-semibold px-1 py-0.5 rounded-full border ${f.indicatorType === "essential" ? "text-stone-600 bg-stone-100 border-stone-200" : "text-amber-700 bg-amber-50 border-amber-100"}`}>
                                   {f.indicatorType === "essential" ? "Essential" : "Leadership"}
@@ -212,8 +212,8 @@ export default function AddOwnerPanel({
                                 <span className="text-[9px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-100 px-1 py-0.5 rounded-full">activity · auto-calc</span>
                               )}
                             </span>
-                            <span className="block text-[12.5px] text-stone-700 leading-snug mt-0.5">
-                              {f.label}{f.unit && <span className="text-stone-400"> · {f.unit}</span>}
+                            <span className="block text-[13.5px] text-stone-700 leading-snug mt-0.5">
+                              {f.label}{f.unit && <span className="text-stone-500"> · {f.unit}</span>}
                             </span>
                           </span>
                         </label>
@@ -226,7 +226,7 @@ export default function AddOwnerPanel({
           })}
         </div>
 
-        <button type="submit" className="inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest-light transition-colors pressable disabled:opacity-50" disabled={selected.size === 0}>
+        <button type="submit" className="inline-flex items-center gap-2 bg-forest text-white text-[15.5px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest-light transition-colors pressable disabled:opacity-50" disabled={selected.size === 0}>
           Send request →
         </button>
       </form>

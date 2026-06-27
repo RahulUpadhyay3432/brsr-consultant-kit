@@ -15,8 +15,8 @@ export default function ProgressBar({
     <div>
       {label && (
         <div className="flex items-center justify-between gap-3 mb-1.5">
-          <span className="text-[11.5px] font-medium text-ink-body">{label}</span>
-          <span className="text-[11.5px] text-ink-muted tabular-nums whitespace-nowrap">
+          <span className="text-[13px] font-medium text-ink-body">{label}</span>
+          <span className="text-[13px] text-ink-body tabular-nums whitespace-nowrap">
             {value}/{total} · {pct}%
           </span>
         </div>

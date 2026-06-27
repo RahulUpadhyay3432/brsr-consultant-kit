@@ -109,8 +109,8 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           ].map((r) => (
             <div key={r.pain} className="grid sm:grid-cols-2 gap-x-8 gap-y-2 px-5 sm:px-7 py-5 items-center">
               <div className="flex items-start gap-3">
-                <span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-[#FBE7DC] flex items-center justify-center">
-                  <svg className="w-3 h-3 text-[#A8481B]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+                <span className="mt-1 flex-shrink-0 w-5 h-5 rounded-full bg-[#FDEBE7] flex items-center justify-center">
+                  <svg className="w-3 h-3 text-[#C2432A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
                 </span>
                 <p className="text-[15px] text-[#5B6660] leading-snug">{r.pain}</p>
               </div>
@@ -152,7 +152,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           Every disclosure is matched against last year&apos;s filing and sorted: what&apos;s{" "}
           <span className="text-brand-700 font-medium">Ready</span>, what to{" "}
           <span className="text-[#8A6516] font-medium">Verify</span>, and what still needs to be{" "}
-          <span className="text-[#A8481B] font-medium">Collected</span>. Open any field for a plain-English explanation written from the public SEBI definition.
+          <span className="text-[#C2432A] font-medium">Collected</span>. Open any field for a plain-English explanation written from the public SEBI definition.
         </p>
         <div className="mt-5 flex items-start gap-2.5 rounded-lg border border-line bg-[#FCFBF7] px-3.5 py-3 max-w-[460px]">
           <Spark />
@@ -228,7 +228,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       {/* ── Collect (paid tier) ────────────────────────────────────────────── */}
       <section id="collect" className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-center">
         <div>
-          <span className="inline-flex items-center font-mono text-[11px] uppercase tracking-[0.12em] text-[#A8481B] bg-[#FBE7DC] border border-[#F2CDBA] rounded px-2 py-1">Collect · paid tier</span>
+          <span className="inline-flex items-center font-mono text-[11px] uppercase tracking-[0.12em] text-[#C2432A] bg-[#FDEBE7] border border-[#F8CFC5] rounded px-2 py-1">Collect · paid tier</span>
           <h2 className="font-display font-normal text-[2.4rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.02em] mt-4">Chase the data without chasing people.</h2>
           <p className={`text-[16.5px] ${BODY} leading-relaxed mt-5 max-w-[470px]`}>
             When the job moves from preparing to collecting, Collect requests BRSR data from the team that holds each number, with branded emails and automatic reminders. They submit through a no-login form with evidence attached, emissions are calculated with cited factors, and an AI draft turns the result into review-ready narrative.
@@ -386,7 +386,7 @@ function Header({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: str
 
 function Footer({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: string) => () => void }) {
   return (
-    <footer className="bg-[#0B1A14] text-white">
+    <footer className="bg-[#0A1422] text-white">
       <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="lg:col-span-1">
           <div className="flex items-center gap-2.5">
@@ -487,7 +487,7 @@ function CompareTable() {
         </div>
         <div className="py-3.5 text-center border-l border-[#EFEDE6]">
           <p className="font-display text-[15px] text-ink leading-none">Free</p>
-          <p className="font-mono text-[8.5px] uppercase tracking-wide text-[#0E7A56] mt-1">No login</p>
+          <p className="font-mono text-[8.5px] uppercase tracking-wide text-[#10A572] mt-1">No login</p>
         </div>
         <div className="py-3.5 text-center bg-forest">
           <p className="font-display text-[15px] text-white leading-none">Pro</p>
@@ -586,13 +586,13 @@ function ReadinessPanel() {
             <p className="font-mono text-[10.5px] text-[#8A938D]">BRSR · FY 2024–25</p>
           </div>
         </div>
-        <span className="font-mono text-[10px] uppercase tracking-wide text-[#A8481B] bg-[#FBE7DC] rounded px-2 py-1">Draft</span>
+        <span className="font-mono text-[10px] uppercase tracking-wide text-[#C2432A] bg-[#FDEBE7] rounded px-2 py-1">Draft</span>
       </div>
       <div className="flex items-center gap-5 mt-4 pt-4 border-t border-[#F2F0EA]">
         <div className="relative flex-shrink-0" style={{ width: 92, height: 92 }}>
           <svg width="92" height="92" viewBox="0 0 92 92" className="-rotate-90">
             <circle cx="46" cy="46" r={R} fill="none" stroke="#EFEDE6" strokeWidth="8" />
-            <circle cx="46" cy="46" r={R} fill="none" stroke="#0E4A36" strokeWidth="8" strokeLinecap="round" strokeDasharray={C} strokeDashoffset={C * (1 - pct / 100)} />
+            <circle cx="46" cy="46" r={R} fill="none" stroke="#0B6FD4" strokeWidth="8" strokeLinecap="round" strokeDasharray={C} strokeDashoffset={C * (1 - pct / 100)} />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className="font-display text-[20px] text-ink leading-none">{pct}<span className="text-[11px]">%</span></span>
@@ -600,7 +600,7 @@ function ReadinessPanel() {
           </div>
         </div>
         <div className="flex-1 space-y-1.5">
-          {[["Ready", 71, "bg-brand-500"], ["Verify", 22, "bg-[#C2871B]"], ["Collect", 15, "bg-[#D9682E]"]].map(([l, n, c]) => (
+          {[["Ready", 71, "bg-brand-500"], ["Verify", 22, "bg-[#C2871B]"], ["Collect", 15, "bg-[#F2674A]"]].map(([l, n, c]) => (
             <div key={l as string} className="flex items-center justify-between text-[12.5px]">
               <span className="flex items-center gap-1.5 text-[#3F4A44]"><span className={`w-2 h-2 rounded-full ${c}`} />{l}</span>
               <span className="font-mono font-semibold text-ink">{n}</span>
@@ -610,7 +610,7 @@ function ReadinessPanel() {
       </div>
       <p className="font-mono text-[10.5px] text-[#8A938D] mt-3 pt-3 border-t border-[#F2F0EA]">108 disclosure fields · 9 principles</p>
       <div className="mt-2 space-y-1.5">
-        {[["P6", "Environment", "Collect", "#D9682E"], ["P3", "Employee wellbeing", "Verify", "#C2871B"], ["P1", "Ethics & transparency", "Ready", "#0E7A56"]].map(([p, name, st, c]) => (
+        {[["P6", "Environment", "Collect", "#F2674A"], ["P3", "Employee wellbeing", "Verify", "#C2871B"], ["P1", "Ethics & transparency", "Ready", "#10A572"]].map(([p, name, st, c]) => (
           <div key={p as string} className="flex items-center gap-3 text-[12px]">
             <span className="font-mono text-[10px] text-[#8A938D] w-5">{p}</span>
             <span className="text-[#3F4A44] flex-1">{name}</span>
@@ -625,7 +625,7 @@ function ReadinessPanel() {
 }
 
 function StatusPill({ s }: { s: "Ready" | "Verify" | "Collect" }) {
-  const map = { Ready: ["#E3F7F0", "#0E7A56"], Verify: ["#F6ECD8", "#8A6516"], Collect: ["#FBE7DC", "#A8481B"] } as const;
+  const map = { Ready: ["#EAF4FE", "#10A572"], Verify: ["#F6ECD8", "#8A6516"], Collect: ["#FDEBE7", "#C2432A"] } as const;
   const [bg, fg] = map[s];
   return <span className="font-mono text-[10px] rounded-full px-2 py-0.5" style={{ backgroundColor: bg, color: fg }}>{s}</span>;
 }
@@ -637,23 +637,23 @@ function ActionPlanPanel() {
         <p className="text-[12.5px] font-semibold text-ink">Action plan · Principle 6 — Environment</p>
         <span className="font-mono text-[10.5px] text-[#8A938D]">11 fields</span>
       </div>
-      <Row label="Total energy consumption (GJ)" status="Ready" dot="#18C39A" />
+      <Row label="Total energy consumption (GJ)" status="Ready" dot="#1E9DF2" />
       <Row label="Water withdrawal by source (kL)" status="Verify" dot="#C2871B" />
       <div className="rounded-lg border border-line my-1.5">
         <div className="flex items-center gap-2.5 px-3 py-2.5">
-          <span className="w-2 h-2 rounded-full" style={{ background: "#D9682E" }} />
+          <span className="w-2 h-2 rounded-full" style={{ background: "#F2674A" }} />
           <span className="text-[13px] text-ink flex-1">Scope 1 emissions (tCO₂e)</span>
           <span className="font-mono text-[10px] text-[#8A938D]">Essential</span>
           <StatusPill s="Collect" />
         </div>
-        <div className="mx-3 mb-3 rounded-lg bg-[#E3F7F0] border border-[#CFEDE1] p-3">
-          <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-[#0E7A56]"><Spark />In plain English</p>
-          <p className="text-[12px] text-[#3F4A44] leading-relaxed mt-1.5">Direct greenhouse gases from sources the company owns or controls: fuel burned in boilers, furnaces and company vehicles. Report the total in tonnes of CO₂-equivalent, using CEA and IPCC factors.</p>
+        <div className="mx-3 mb-3 rounded-lg bg-[#EAF4FE] border border-[#CDE2F6] p-3">
+          <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-[#10A572]"><Spark />In plain English</p>
+          <p className="text-[13px] text-[#3F4A44] leading-relaxed mt-1.5">Direct greenhouse gases from sources the company owns or controls: fuel burned in boilers, furnaces and company vehicles. Report the total in tonnes of CO₂-equivalent, using CEA and IPCC factors.</p>
           <p className="font-mono text-[10px] text-[#8A938D] mt-2">Source · SEBI BRSR Format, P6 Q7</p>
         </div>
       </div>
-      <Row label="Scope 2 emissions (tCO₂e)" status="Collect" dot="#D9682E" />
-      <Row label="Air emissions — NOx, SOx (MT)" status="Ready" dot="#18C39A" />
+      <Row label="Scope 2 emissions (tCO₂e)" status="Collect" dot="#F2674A" />
+      <Row label="Air emissions — NOx, SOx (MT)" status="Ready" dot="#1E9DF2" />
     </PanelCard>
   );
 }
@@ -669,11 +669,11 @@ function Row({ label, status, dot }: { label: string; status: "Ready" | "Verify"
 
 function MaterialityPanel() {
   const pts = [
-    { n: 1, x: 220, y: 40, c: "#D9682E", label: "Climate & GHG emissions" },
-    { n: 2, x: 190, y: 95, c: "#0E4A36", label: "Energy management" },
-    { n: 3, x: 150, y: 70, c: "#0E4A36", label: "Water & effluents" },
-    { n: 4, x: 120, y: 130, c: "#18C39A", label: "Employee health & safety" },
-    { n: 5, x: 175, y: 150, c: "#18C39A", label: "Business ethics" },
+    { n: 1, x: 220, y: 40, c: "#F2674A", label: "Climate & GHG emissions" },
+    { n: 2, x: 190, y: 95, c: "#0F1E33", label: "Energy management" },
+    { n: 3, x: 150, y: 70, c: "#0F1E33", label: "Water & effluents" },
+    { n: 4, x: 120, y: 130, c: "#1E9DF2", label: "Employee health & safety" },
+    { n: 5, x: 175, y: 150, c: "#1E9DF2", label: "Business ethics" },
     { n: 6, x: 95, y: 175, c: "#8A938D", label: "Waste & circularity" },
   ];
   return (
@@ -728,7 +728,7 @@ function AlignmentPanel() {
       </table>
       <div className="flex items-center gap-2 mt-3 pt-3 border-t border-[#F2F0EA]">
         <span className="font-mono text-[10.5px] text-[#8A938D]">Ratings</span>
-        {["MSCI", "DJSI"].map((r) => <span key={r} className="font-mono text-[10.5px] text-[#0E7A56] bg-[#E3F7F0] rounded px-1.5 py-0.5">{r}</span>)}
+        {["MSCI", "DJSI"].map((r) => <span key={r} className="font-mono text-[10.5px] text-[#10A572] bg-[#EAF4FE] rounded px-1.5 py-0.5">{r}</span>)}
       </div>
     </PanelCard>
   );
@@ -744,7 +744,7 @@ function GhgCalculatorPanel() {
     <PanelCard className="p-5">
       <div className="flex items-center justify-between pb-3 border-b border-[#F2F0EA]">
         <p className="text-[12.5px] font-semibold text-ink">GHG calculator · Scope 1 & 2</p>
-        <span className="font-mono text-[10px] uppercase tracking-wide text-[#0E7A56]">live</span>
+        <span className="font-mono text-[10px] uppercase tracking-wide text-[#10A572]">live</span>
       </div>
       <div className="mt-3 space-y-3">
         <Field label="Diesel consumed (litres / year)" value={diesel} onChange={setDiesel} factor="× 2.68 kg/L" />
@@ -777,9 +777,9 @@ function Field({ label, value, onChange, factor }: { label: string; value: strin
 
 function CollectPanel() {
   const reqs = [
-    { in: "PR", name: "Priya R.", dept: "Facilities", item: "Energy bills · FY24", status: "Submitted", c: "#0E7A56", bg: "#E3F7F0" },
+    { in: "PR", name: "Priya R.", dept: "Facilities", item: "Energy bills · FY24", status: "Submitted", c: "#10A572", bg: "#EAF4FE" },
     { in: "RM", name: "Rohan M.", dept: "Fleet", item: "Diesel & fuel logs", status: "Reminder sent", c: "#8A6516", bg: "#F6ECD8" },
-    { in: "AN", name: "Anita N.", dept: "Utilities", item: "Water meter readings", status: "Awaiting", c: "#A8481B", bg: "#FBE7DC" },
+    { in: "AN", name: "Anita N.", dept: "Utilities", item: "Water meter readings", status: "Awaiting", c: "#C2432A", bg: "#FDEBE7" },
   ];
   return (
     <PanelCard className="p-5">
@@ -790,7 +790,7 @@ function CollectPanel() {
       <div className="mt-2 space-y-1">
         {reqs.map((r) => (
           <div key={r.in} className="flex items-center gap-3 py-2">
-            <span className="w-8 h-8 rounded-full bg-[#E3F7F0] flex items-center justify-center font-mono text-[11px] text-[#0E4A36] flex-shrink-0">{r.in}</span>
+            <span className="w-8 h-8 rounded-full bg-[#EAF4FE] flex items-center justify-center font-mono text-[11px] text-[#0F1E33] flex-shrink-0">{r.in}</span>
             <div className="flex-1 min-w-0">
               <p className="text-[13px] text-ink leading-tight">{r.name} · <span className="text-[#5B6660]">{r.dept}</span></p>
               <p className="font-mono text-[11px] text-[#8A938D]">{r.item}</p>
@@ -799,9 +799,9 @@ function CollectPanel() {
           </div>
         ))}
       </div>
-      <div className="mt-3 rounded-lg bg-[#E3F7F0] border border-[#CFEDE1] p-3">
-        <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-[#0E7A56]"><Spark />AI-drafted narrative</p>
-        <p className="text-[12px] text-[#3F4A44] leading-relaxed mt-1.5">In FY 2024–25 the company&apos;s Scope 1 and 2 emissions totalled <span className="font-semibold text-ink">92.3 tCO₂e</span>, a 4% reduction year on year, driven by the switch to grid-renewable supply at the Pune facility.</p>
+      <div className="mt-3 rounded-lg bg-[#EAF4FE] border border-[#CDE2F6] p-3">
+        <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-[#10A572]"><Spark />AI-drafted narrative</p>
+        <p className="text-[13px] text-[#3F4A44] leading-relaxed mt-1.5">In FY 2024–25 the company&apos;s Scope 1 and 2 emissions totalled <span className="font-semibold text-ink">92.3 tCO₂e</span>, a 4% reduction year on year, driven by the switch to grid-renewable supply at the Pune facility.</p>
         <p className="font-mono text-[10px] text-[#8A938D] mt-2">Every figure linked to source · nothing invented</p>
       </div>
     </PanelCard>

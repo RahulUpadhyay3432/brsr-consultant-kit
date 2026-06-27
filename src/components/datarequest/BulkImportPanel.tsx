@@ -14,9 +14,30 @@ import { extractPdfText } from "@/lib/pdf-extract";
 import type {
   BulkSuggestion,
   BulkImportResult,
+  DocCategory,
 } from "@/lib/datarequest/importer";
 
 type Confidence = BulkSuggestion["confidence"];
+
+// Per-PDF content category the consultant tags before extracting, so the AI is
+// scoped to (and told about) the right BRSR sections — sharper, more accurate hits.
+const CATEGORY_OPTIONS: { value: DocCategory; label: string }[] = [
+  { value: "auto", label: "Auto-detect" },
+  { value: "brsr", label: "Last year's BRSR" },
+  { value: "annual", label: "Annual report" },
+  { value: "energy", label: "Energy & fuel bills" },
+  { value: "hr", label: "HR & headcount" },
+  { value: "water", label: "Water & waste" },
+  { value: "policies", label: "Policies & governance" },
+  { value: "other", label: "Other" },
+];
+
+// A file staged for import: the local File + its extracted text + chosen category.
+interface StagedDoc {
+  name: string;
+  text: string;
+  category: DocCategory;
+}
 
 const CONF_META: Record<Confidence, { label: string; cls: string }> = {
   high: { label: "High", cls: "text-emerald-700 bg-emerald-50 border-emerald-200" },
@@ -45,7 +66,7 @@ export default function BulkImportPanel({
   campaignId: string;
   bulkAction: (
     campaignId: string,
-    docs: { name: string; text: string }[],
+    docs: { name: string; text: string; category?: DocCategory }[],
   ) => Promise<BulkImportResult>;
   applyAction: (
     campaignId: string,
@@ -54,6 +75,8 @@ export default function BulkImportPanel({
 }) {
   const [busy, setBusy] = useState<string | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
+  const [warn, setWarn] = useState<string | null>(null);
+  const [staged, setStaged] = useState<StagedDoc[]>([]);
   const [suggestions, setSuggestions] = useState<BulkSuggestion[] | null>(null);
   const [truncated, setTruncated] = useState(false);
   // ticked rows + per-row edited values, keyed by fieldId
@@ -65,20 +88,25 @@ export default function BulkImportPanel({
 
   function reset() {
     setSuggestions(null);
+    setStaged([]);
     setTruncated(false);
     setTicked({});
     setValues({});
     setCollapsed({});
     setMsg(null);
+    setWarn(null);
   }
 
+  // Step 1 — read the chosen PDFs locally and stage them with a default category.
+  // Nothing is sent yet; the consultant tags each file's type, then runs the fill.
   async function onFiles(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
     if (files.length) e.target.value = ""; // allow re-selecting the same file later
     if (!files.length) return;
-    reset();
+    setMsg(null);
+    setWarn(null);
     try {
-      const docs: { name: string; text: string }[] = [];
+      const docs: StagedDoc[] = [];
       for (let i = 0; i < files.length; i++) {
         setBusy(
           files.length === 1
@@ -86,25 +114,51 @@ export default function BulkImportPanel({
             : `Reading document ${i + 1} of ${files.length}…`,
         );
         const { text } = await extractPdfText(files[i]);
-        if (text.trim()) docs.push({ name: files[i].name, text });
+        if (text.trim()) docs.push({ name: files[i].name, text, category: "auto" });
       }
+      setBusy(null);
       if (!docs.length) {
-        setBusy(null);
         setMsg(
           "These look like scanned PDFs (no selectable text found). Upload text-based PDFs — ones you can select text in.",
         );
         return;
       }
-      setBusy("Filling the BRSR skeleton from your documents…");
-      const result = await bulkAction(campaignId, docs);
+      // Append to any already-staged files so several batches can be tagged together.
+      setStaged((prev) => [...prev, ...docs]);
+    } catch {
+      setBusy(null);
+      setMsg("Could not read one of those files. Please try different PDFs.");
+    }
+  }
+
+  function setCategory(idx: number, category: DocCategory) {
+    setStaged((prev) => prev.map((d, i) => (i === idx ? { ...d, category } : d)));
+  }
+
+  function removeStaged(idx: number) {
+    setStaged((prev) => prev.filter((_, i) => i !== idx));
+  }
+
+  // Step 2 — send the tagged documents (name + text + category) for grounded extraction.
+  async function runFill() {
+    if (!staged.length) return;
+    setMsg(null);
+    setWarn(null);
+    setBusy("Filling the BRSR skeleton from your documents…");
+    try {
+      const result = await bulkAction(
+        campaignId,
+        staged.map((d) => ({ name: d.name, text: d.text, category: d.category })),
+      );
       setBusy(null);
       if (!result.configured) {
         setMsg("AI auto-fill isn't configured on this deployment yet.");
         return;
       }
       if (result.suggestions.length === 0) {
-        setMsg(
-          "The AI didn't find any BRSR figures in these documents. Try a report that contains the numbers (last year's BRSR or the annual report work best), or enter values by hand.",
+        // Soft wrong-document warning rather than a hard error.
+        setWarn(
+          "No BRSR figures found in this document — is it the right report? Try a clearer text-based PDF or the correct document (last year's BRSR or the annual report work best). You can also enter values by hand.",
         );
         return;
       }
@@ -180,10 +234,10 @@ export default function BulkImportPanel({
           </svg>
         </span>
         <div className="min-w-0">
-          <h2 className="font-display text-[19px] font-bold text-ink leading-tight">
+          <h2 className="font-display text-[21px] font-bold text-ink leading-tight">
             Auto-fill from your documents
           </h2>
-          <p className="text-[13px] text-ink-body mt-1 leading-relaxed">
+          <p className="text-[14.5px] text-ink-body mt-1 leading-relaxed">
             Already have the client&apos;s documents? Upload last year&apos;s BRSR,
             the annual report, bills or policies and the AI fills the BRSR
             skeleton for you to verify. Files stay in your browser; the AI only
@@ -192,14 +246,14 @@ export default function BulkImportPanel({
         </div>
       </div>
 
-      {/* Upload control */}
+      {/* Upload control + staged-file list with per-file category tagging */}
       {!suggestions && (
         <div className="mt-5">
           <button
             type="button"
             onClick={() => fileRef.current?.click()}
             disabled={!!busy}
-            className="inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest/90 disabled:opacity-60 transition-colors duration-200 pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
+            className="inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest/90 disabled:opacity-60 transition-colors duration-200 pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
           >
             {busy ? (
               <>
@@ -214,7 +268,7 @@ export default function BulkImportPanel({
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M12 16V4m0 0L8 8m4-4l4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
                 </svg>
-                Choose PDFs
+                {staged.length ? "Add more PDFs" : "Choose PDFs"}
               </>
             )}
           </button>
@@ -226,11 +280,97 @@ export default function BulkImportPanel({
             onChange={onFiles}
             className="hidden"
           />
-          <p className="mt-2.5 text-[12px] text-ink-muted leading-relaxed">
+          <p className="mt-2.5 text-[13px] text-ink-muted leading-relaxed">
             You can select several PDFs at once. Each is read locally in your browser before anything is sent.
           </p>
+
+          {/* Staged files — tag each with its content type for a sharper, more accurate fill. */}
+          {staged.length > 0 && (
+            <div className="mt-4">
+              <p className="text-[13px] font-semibold text-ink mb-2">
+                Tag each document so the AI reads the right sections
+              </p>
+              <div className="space-y-2">
+                {staged.map((d, idx) => (
+                  <div
+                    key={`${d.name}-${idx}`}
+                    className="flex items-center gap-3 px-3.5 py-2.5 bg-page border border-line rounded-lg"
+                  >
+                    <svg className="w-4 h-4 flex-shrink-0 text-ink-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      <path d="M14 2v6h6" />
+                    </svg>
+                    <span className="min-w-0 flex-1 text-[13.5px] text-ink-body truncate" title={d.name}>
+                      {d.name}
+                    </span>
+                    <label className="flex items-center gap-1.5 flex-shrink-0">
+                      <span className="text-[12px] text-ink-muted">Type</span>
+                      <select
+                        value={d.category}
+                        onChange={(e) => setCategory(idx, e.target.value as DocCategory)}
+                        className="h-8 px-2 text-[13px] text-ink bg-white border border-line rounded-md focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-400 transition-colors duration-150"
+                      >
+                        {CATEGORY_OPTIONS.map((o) => (
+                          <option key={o.value} value={o.value}>{o.label}</option>
+                        ))}
+                      </select>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => removeStaged(idx)}
+                      className="flex-shrink-0 text-ink-muted hover:text-ember transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-brand-400 rounded p-1"
+                      title="Remove this file"
+                      aria-label={`Remove ${d.name}`}
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M18 6 6 18M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex items-center gap-3 mt-4">
+                <button
+                  type="button"
+                  onClick={runFill}
+                  disabled={!!busy}
+                  className="inline-flex items-center gap-2 bg-brand-600 text-white text-[15px] font-semibold px-5 py-2.5 rounded-lg hover:bg-brand-700 disabled:opacity-60 transition-colors duration-200 pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
+                >
+                  {busy ? (
+                    <>
+                      <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.4 0 0 5.4 0 12h4z" />
+                      </svg>
+                      {busy}
+                    </>
+                  ) : (
+                    <>Fill from {staged.length} {staged.length === 1 ? "document" : "documents"} →</>
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setStaged([])}
+                  disabled={!!busy}
+                  className="text-[13px] text-ink-muted hover:text-ink-body disabled:opacity-50 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-brand-400 rounded px-1"
+                >
+                  Clear
+                </button>
+              </div>
+            </div>
+          )}
+
           {msg && (
-            <p className="mt-3 text-[12.5px] text-ink-body leading-relaxed">{msg}</p>
+            <p className="mt-3 text-[13.5px] text-ink-body leading-relaxed">{msg}</p>
+          )}
+          {warn && (
+            <div className="mt-3 flex items-start gap-2.5 text-[13px] text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-3.5 py-2.5 leading-relaxed">
+              <svg className="w-4 h-4 mt-0.5 flex-shrink-0 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+              </svg>
+              <span>{warn}</span>
+            </div>
           )}
         </div>
       )}
@@ -239,7 +379,7 @@ export default function BulkImportPanel({
       {suggestions && (
         <div className="mt-5">
           {/* Amber verify banner */}
-          <div className="flex items-start gap-2.5 text-[12px] text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-3.5 py-2.5 leading-relaxed">
+          <div className="flex items-start gap-2.5 text-[13px] text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-3.5 py-2.5 leading-relaxed">
             <svg className="w-4 h-4 mt-0.5 flex-shrink-0 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
             </svg>
@@ -251,7 +391,7 @@ export default function BulkImportPanel({
           </div>
 
           {truncated && (
-            <p className="mt-3 text-[11.5px] text-ink-muted leading-relaxed">
+            <p className="mt-3 text-[13px] text-ink-muted leading-relaxed">
               Note: these are long documents — only the first part of each was
               scanned. For anything missing, upload the specific section or enter
               it by hand.
@@ -260,7 +400,7 @@ export default function BulkImportPanel({
 
           {/* Toolbar */}
           <div className="flex items-center justify-between gap-3 mt-4 mb-2">
-            <p className="text-[12.5px] text-ink-muted">
+            <p className="text-[13.5px] text-ink-body">
               <span className="font-semibold text-ink">{suggestions.length}</span>{" "}
               {suggestions.length === 1 ? "suggestion" : "suggestions"} ·{" "}
               <span className="font-semibold text-brand-700 tabular-nums">{acceptedCount}</span>{" "}
@@ -269,7 +409,7 @@ export default function BulkImportPanel({
             <button
               type="button"
               onClick={selectAllHigh}
-              className="text-[12px] font-semibold text-brand-700 hover:text-brand-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-brand-400 rounded px-1"
+              className="text-[13px] font-semibold text-brand-700 hover:text-brand-800 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-brand-400 rounded px-1"
             >
               Select all high-confidence
             </button>
@@ -290,11 +430,11 @@ export default function BulkImportPanel({
                     }
                     className="w-full flex items-center justify-between gap-3 px-4 py-2.5 bg-tint hover:bg-tint/70 transition-colors duration-150 text-left focus:outline-none focus:ring-2 focus:ring-brand-400"
                   >
-                    <span className="text-[12.5px] font-semibold text-ink">
+                    <span className="text-[13.5px] font-semibold text-ink">
                       {SECTION_META[sec]}
                     </span>
                     <span className="flex items-center gap-2 flex-shrink-0">
-                      <span className="text-[11px] font-mono text-ink-muted tabular-nums">{secCount}</span>
+                      <span className="text-[12.5px] font-mono text-ink-body tabular-nums">{secCount}</span>
                       <svg
                         className={`w-4 h-4 text-ink-muted transition-transform duration-200 ${secCollapsed ? "" : "rotate-180"}`}
                         fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"
@@ -309,10 +449,10 @@ export default function BulkImportPanel({
                       {principles.map((g) => (
                         <div key={g.principle}>
                           <div className="px-4 pt-3 pb-1.5 flex items-center gap-2">
-                            <span className="text-[11px] font-semibold uppercase tracking-wide text-ink-muted">
+                            <span className="text-[12.5px] font-semibold uppercase tracking-wide text-ink-body">
                               {g.principle}
                             </span>
-                            <span className="text-[10px] font-mono text-ink-muted tabular-nums">
+                            <span className="text-[11.5px] font-mono text-ink-muted tabular-nums">
                               ({g.rows.length})
                             </span>
                           </div>
@@ -330,33 +470,33 @@ export default function BulkImportPanel({
                                     onChange={(e) =>
                                       setTicked((p) => ({ ...p, [s.fieldId]: e.target.checked }))
                                     }
-                                    className="mt-1 accent-[#0E4A36] focus:outline-none focus:ring-2 focus:ring-brand-400 rounded"
+                                    className="mt-1 accent-[#0B6FD4] focus:outline-none focus:ring-2 focus:ring-brand-400 rounded"
                                   />
                                   <span className="min-w-0 flex-1">
                                     <span className="flex items-center gap-1.5 flex-wrap">
-                                      <span className="text-[10.5px] font-mono font-semibold text-ink-muted">
+                                      <span className="text-[12px] font-mono font-semibold text-ink-body">
                                         {s.fieldId}
                                       </span>
-                                      <span className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-full border ${CONF_META[s.confidence].cls}`}>
+                                      <span className={`text-[10.5px] font-semibold px-1.5 py-0.5 rounded-full border ${CONF_META[s.confidence].cls}`}>
                                         {CONF_META[s.confidence].label} confidence
                                       </span>
                                     </span>
                                     <span
-                                      className="block text-[12.5px] text-ink-body leading-snug mt-0.5"
+                                      className="block text-[13.5px] text-ink leading-snug mt-0.5"
                                       title={s.label}
                                     >
                                       {s.label}
                                     </span>
                                     {s.source && (
                                       <span
-                                        className="block text-[11px] text-ink-muted italic leading-snug mt-1 line-clamp-2"
+                                        className="block text-[12.5px] text-ink-body italic leading-snug mt-1 line-clamp-2"
                                         title={s.source}
                                       >
                                         &ldquo;{s.source}&rdquo;
                                       </span>
                                     )}
                                     {s.sourceDoc && (
-                                      <span className="flex items-center gap-1 text-[10.5px] text-ink-muted mt-1" title={s.sourceDoc}>
+                                      <span className="flex items-center gap-1 text-[12px] text-ink-muted mt-1" title={s.sourceDoc}>
                                         <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
                                           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                                           <path d="M14 2v6h6" />
@@ -374,11 +514,11 @@ export default function BulkImportPanel({
                                       onChange={(e) =>
                                         setValues((p) => ({ ...p, [s.fieldId]: e.target.value }))
                                       }
-                                      className="w-24 h-8 px-2 text-[13px] text-ink text-right tabular-nums bg-white border border-line rounded-md focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-400 transition-colors duration-150"
+                                      className="w-24 h-8 px-2 text-[14px] text-ink text-right tabular-nums bg-white border border-line rounded-md focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-400 transition-colors duration-150"
                                     />
                                     {s.unit && (
                                       <span
-                                        className="text-[11px] text-ink-muted whitespace-nowrap w-10 truncate"
+                                        className="text-[12px] text-ink-muted whitespace-nowrap w-10 truncate"
                                         title={s.unit}
                                       >
                                         {s.unit}
@@ -404,7 +544,7 @@ export default function BulkImportPanel({
               type="button"
               onClick={apply}
               disabled={acceptedCount === 0 || isPending}
-              className="inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
+              className="inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200 pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
             >
               {isPending ? (
                 <>
@@ -422,7 +562,7 @@ export default function BulkImportPanel({
               type="button"
               onClick={reset}
               disabled={isPending}
-              className="text-[12.5px] text-ink-muted hover:text-ink-body disabled:opacity-50 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-brand-400 rounded px-1"
+              className="text-[13.5px] text-ink-muted hover:text-ink-body disabled:opacity-50 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-brand-400 rounded px-1"
             >
               Upload different files
             </button>

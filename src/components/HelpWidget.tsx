@@ -5,7 +5,7 @@
 // keyword-matches the curated help KB (src/data/help_topics.json) — no AI, fully
 // on-device, so it can only surface vetted answers, never invent one.
 
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useEffect, useRef, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { searchHelp, type HelpTopic } from "@/lib/help-search";
 import helpData from "@/data/help_topics.json";
@@ -14,6 +14,87 @@ import { WALKTHROUGH_STEPS, StepRow } from "./Walkthrough";
 
 const TOPICS = (helpData as { topics: HelpTopic[] }).topics;
 const COMPLIANCE_CHAT = "https://huggingface.co/spaces/sherlockwatson221/climate-compliance";
+
+// ── Tiny dependency-free markdown renderer ──────────────────────────────────
+// Renders the curated/AI answers (which are written as: a summary line, then
+// "1." / "2." steps or "- " bullets, with **bold** key terms). Deliberately
+// minimal — no HTML is interpreted, only our own inline bold + list grammar.
+
+// Inline: split on **bold** spans (everything else is plain text).
+function renderInline(text: string, keyPrefix: string): ReactNode[] {
+  const out: ReactNode[] = [];
+  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  parts.forEach((part, i) => {
+    if (!part) return;
+    if (part.startsWith("**") && part.endsWith("**")) {
+      out.push(
+        <strong key={`${keyPrefix}-b-${i}`} className="font-semibold text-ink">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    } else {
+      out.push(<span key={`${keyPrefix}-t-${i}`}>{part}</span>);
+    }
+  });
+  return out;
+}
+
+// Block: group consecutive list lines into <ol>/<ul>; blank lines = spacing;
+// everything else is a paragraph.
+function renderMarkdown(answer: string): ReactNode {
+  const lines = answer.replace(/\r\n/g, "\n").split("\n");
+  const blocks: ReactNode[] = [];
+  let list: { ordered: boolean; items: string[] } | null = null;
+  let key = 0;
+
+  const flush = () => {
+    if (!list) return;
+    const items = list.items;
+    if (list.ordered) {
+      blocks.push(
+        <ol key={`ol-${key++}`} className="list-decimal pl-5 space-y-1.5 marker:text-brand-600 marker:font-semibold">
+          {items.map((it, i) => (
+            <li key={i} className="text-[14px] text-ink-body leading-relaxed pl-0.5">{renderInline(it, `li-${i}`)}</li>
+          ))}
+        </ol>
+      );
+    } else {
+      blocks.push(
+        <ul key={`ul-${key++}`} className="list-disc pl-5 space-y-1.5 marker:text-brand-600">
+          {items.map((it, i) => (
+            <li key={i} className="text-[14px] text-ink-body leading-relaxed pl-0.5">{renderInline(it, `li-${i}`)}</li>
+          ))}
+        </ul>
+      );
+    }
+    list = null;
+  };
+
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (!line) { flush(); continue; }
+    const ordered = /^\d+[.)]\s+/.test(line);
+    const bullet = /^[-*•]\s+/.test(line);
+    if (ordered || bullet) {
+      const wantOrdered = ordered;
+      const content = line.replace(ordered ? /^\d+[.)]\s+/ : /^[-*•]\s+/, "");
+      if (!list || list.ordered !== wantOrdered) {
+        flush();
+        list = { ordered: wantOrdered, items: [] };
+      }
+      list.items.push(content);
+    } else {
+      flush();
+      blocks.push(
+        <p key={`p-${key++}`} className="text-[14px] text-ink-body leading-relaxed">
+          {renderInline(line, `p-${key}`)}
+        </p>
+      );
+    }
+  }
+  flush();
+  return <div className="space-y-2">{blocks}</div>;
+}
 
 const QUICK = [
   "What do Ready, Verify and Collect mean?",
@@ -86,16 +167,16 @@ export default function HelpWidget() {
           aria-label="Help"
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-stone-100">
-            <div className="flex items-center gap-2">
-              <span className="w-6 h-6 rounded-lg bg-brand-100 border border-brand-200 flex items-center justify-center">
-                <svg className="w-3.5 h-3.5 text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+          <div className="flex items-center justify-between px-4 py-3 border-b border-line">
+            <div className="flex items-center gap-2.5">
+              <span className="w-7 h-7 rounded-lg bg-brand-600 flex items-center justify-center">
+                <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l1.6 4.3L18 9l-4.4 1.7L12 15l-1.6-4.3L6 9l4.4-1.7L12 3zM18 15l.7 1.9L20.5 18l-1.8.6L18 21l-.7-1.9L15.5 18l1.8-.6L18 15z" />
                 </svg>
               </span>
               <div className="leading-tight">
-                <p className="text-[14px] font-semibold text-stone-900">Ask Saaksh</p>
-                <p className="text-[10.5px] text-ink-muted">AI assistant · grounded, never invents</p>
+                <p className="text-[15px] font-semibold text-ink">Ask Saaksh AI</p>
+                <p className="text-[12px] text-ink-muted">Grounded assistant · never invents</p>
               </div>
             </div>
             <button
@@ -122,8 +203,8 @@ export default function HelpWidget() {
                 placeholder="Ask Saaksh a question…"
                 aria-label="Ask a question"
                 autoFocus
-                className="w-full h-9 pl-8 pr-3 text-[13px] text-ink bg-white border border-stone-200 rounded-lg
-                  focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
+                className="w-full h-10 pl-8 pr-3 text-[14px] text-ink bg-white border border-line rounded-lg
+                  focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 transition-colors"
               />
             </div>
           </div>
@@ -132,21 +213,21 @@ export default function HelpWidget() {
           <div className="flex-1 overflow-y-auto px-4 pb-4">
             {asked.trim() ? (
               <div className="mt-2 space-y-3">
-                {/* AI answer surface — grounded; thinking state while awaiting. */}
+                {/* AI answer surface — neutral white card with a thin blue accent; grounded. */}
                 {thinking ? (
-                  <div className="rounded-lg border border-brand-200 bg-tint px-3 py-3">
+                  <div className="rounded-lg border border-line bg-white border-l-2 border-l-brand-500 px-3.5 py-3">
                     <div className="flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
-                      <span className="text-[12px] font-medium text-brand-700">Saaksh AI is thinking…</span>
+                      <span className="text-[13px] font-medium text-brand-700">Saaksh AI is thinking…</span>
                     </div>
                   </div>
                 ) : aiAnswer ? (
-                  <div className="rounded-lg border border-brand-200 bg-tint px-3 py-3">
-                    <div className="flex items-center gap-1.5 mb-1.5">
-                      <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-brand-700 bg-white border border-brand-200 rounded px-1.5 py-0.5">Saaksh AI</span>
-                      <span className="text-[10.5px] text-ink-muted">grounded in our knowledge base — never invents</span>
+                  <div className="rounded-lg border border-line bg-white border-l-2 border-l-brand-500 px-3.5 py-3.5">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <span className="text-[10.5px] font-bold uppercase tracking-[0.1em] text-brand-700 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5">Saaksh AI</span>
+                      <span className="text-[11.5px] text-ink-muted">grounded — never invents</span>
                     </div>
-                    <p className="text-[12.5px] text-ink-body leading-relaxed whitespace-pre-line">{aiAnswer}</p>
+                    {renderMarkdown(aiAnswer)}
                   </div>
                 ) : null}
 
@@ -154,25 +235,25 @@ export default function HelpWidget() {
                 {results.length ? (
                   <div>
                     {aiAnswer && (
-                      <p className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-stone-400 mb-2">From the help library</p>
+                      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-ink-muted mb-2">From the help library</p>
                     )}
                     <ul className="space-y-2">
                       {results.map((t) => {
                         const isOpen = openId === t.id;
                         return (
-                          <li key={t.id} className="rounded-lg border border-stone-200 overflow-hidden">
+                          <li key={t.id} className="rounded-lg border border-line overflow-hidden">
                             <button
                               onClick={() => setOpenId(isOpen ? null : t.id)}
                               aria-expanded={isOpen}
-                              className="w-full text-left px-3 py-2.5 flex items-center justify-between gap-2 hover:bg-stone-50 transition-colors"
+                              className="w-full text-left px-3 py-2.5 flex items-center justify-between gap-2 hover:bg-brand-50/60 transition-colors"
                             >
-                              <span className="text-[13px] font-medium text-ink">{t.title}</span>
-                              <svg className={`w-3.5 h-3.5 text-stone-400 flex-shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                              <span className="text-[14px] font-medium text-ink">{t.title}</span>
+                              <svg className={`w-3.5 h-3.5 text-ink-muted flex-shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
                               </svg>
                             </button>
                             {isOpen && (
-                              <p className="px-3 pb-3 text-[12.5px] text-ink-body leading-relaxed">{t.answer}</p>
+                              <div className="px-3 pb-3">{renderMarkdown(t.answer)}</div>
                             )}
                           </li>
                         );
@@ -180,7 +261,7 @@ export default function HelpWidget() {
                     </ul>
                   </div>
                 ) : !thinking && !aiAnswer ? (
-                  <div className="text-[12.5px] text-ink-muted leading-relaxed">
+                  <div className="text-[13.5px] text-ink-body leading-relaxed">
                     <p>
                       No exact match. Here&apos;s the quick sequence below, or for deep regulatory
                       questions open{" "}
@@ -199,13 +280,13 @@ export default function HelpWidget() {
                     <button
                       key={q}
                       onClick={() => { setQuery(q); runAsk(q); }}
-                      className="text-[11.5px] text-ink-body bg-stone-100 hover:bg-stone-200 rounded-full px-2.5 py-1 transition-colors pressable"
+                      className="text-[12.5px] text-ink-body bg-brand-50 hover:bg-brand-100 border border-brand-100 rounded-full px-2.5 py-1 transition-colors pressable"
                     >
                       {q}
                     </button>
                   ))}
                 </div>
-                <p className="text-[10.5px] font-bold uppercase tracking-[0.12em] text-stone-400 mb-3">How it works</p>
+                <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-ink-muted mb-3">How it works</p>
                 <div className="space-y-4">
                   {WALKTHROUGH_STEPS.map((s) => <StepRow key={s.n} step={s} />)}
                 </div>
@@ -214,13 +295,13 @@ export default function HelpWidget() {
           </div>
 
           {/* Footer */}
-          <div className="px-4 py-2.5 border-t border-stone-100 flex items-center justify-between">
-            <span className="text-[11px] text-stone-400">Stuck on a regulation?</span>
+          <div className="px-4 py-2.5 border-t border-line flex items-center justify-between">
+            <span className="text-[12px] text-ink-muted">Stuck on a regulation?</span>
             <a
               href={COMPLIANCE_CHAT}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[11.5px] font-medium text-brand-700 hover:text-brand-800 inline-flex items-center gap-1"
+              className="text-[12.5px] font-medium text-brand-700 hover:text-brand-800 inline-flex items-center gap-1"
             >
               Compliance Chat
               <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -235,8 +316,8 @@ export default function HelpWidget() {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close help" : "Ask Saaksh"}
-        className="fixed z-[100] bottom-4 right-4 sm:right-6 inline-flex items-center gap-2 rounded-full bg-forest text-white
-          pl-3.5 pr-4 py-2.5 text-[13px] font-semibold shadow-[0_8px_24px_rgba(20,30,25,0.28)] hover:bg-forest-light transition-colors pressable"
+        className="fixed z-[100] bottom-4 right-4 sm:right-6 inline-flex items-center gap-2 rounded-full bg-brand-600 text-white
+          pl-3.5 pr-4 py-2.5 text-[14px] font-semibold shadow-[0_8px_24px_rgba(11,111,212,0.32)] hover:bg-brand-700 transition-colors pressable"
       >
         {open ? (
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
@@ -244,7 +325,7 @@ export default function HelpWidget() {
           </svg>
         ) : (
           <>
-            <svg className="w-4 h-4 text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
+            <svg className="w-4 h-4 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l1.6 4.3L18 9l-4.4 1.7L12 15l-1.6-4.3L6 9l4.4-1.7L12 3zM18 15l.7 1.9L20.5 18l-1.8.6L18 21l-.7-1.9L15.5 18l1.8-.6L18 15z" />
             </svg>
             Ask Saaksh AI

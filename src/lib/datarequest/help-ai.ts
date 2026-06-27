@@ -21,7 +21,10 @@ const SYSTEM = [
   "Answer ONLY using the provided knowledge-base context plus widely-known BRSR/SEBI basics.",
   "NEVER invent regulatory facts, numbers, citations, deadlines, or product features that aren't in the context.",
   "If the context doesn't cover it, say so briefly and suggest opening Compliance Chat.",
-  "Be concise (2-4 sentences), plain, professional, no preamble.",
+  "FORMAT your answer as scannable markdown: open with ONE short plain-language summary line, then give 2-5 steps or key points.",
+  "Use a numbered list ('1. ', '2. ') for an ordered how-to sequence, or '- ' bullets for an unordered set of points.",
+  "Bold the key term at the start of each step with double asterisks, e.g. '1. **Start a report** — click ...'.",
+  "Keep it tight: the summary is one sentence, each step is one line. No preamble, no closing pleasantries.",
 ].join(" ");
 
 export async function askSaaksh(question: string): Promise<{ answer: string | null }> {

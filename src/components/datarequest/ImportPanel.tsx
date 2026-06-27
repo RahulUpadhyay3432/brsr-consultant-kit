@@ -70,7 +70,7 @@ export default function ImportPanel({
   if (!open) {
     if (!hasItems) {
       return (
-        <p className="text-[12px] text-stone-400 text-center px-4 py-2 leading-relaxed">
+        <p className="text-[13.5px] text-stone-500 text-center px-4 py-2 leading-relaxed">
           Tip: add a data owner with their fields first, then you can import an existing report to pre-fill those figures.
         </p>
       );
@@ -78,7 +78,7 @@ export default function ImportPanel({
     return (
       <button
         onClick={() => setOpen(true)}
-        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-[13.5px] font-semibold
+        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-[15px] font-semibold
           text-stone-600 bg-white border border-dashed border-stone-300 hover:border-brand-400 hover:text-brand-700
           hover:bg-brand-50/40 transition-colors pressable"
       >
@@ -93,15 +93,15 @@ export default function ImportPanel({
   return (
     <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
       <div className="flex items-center justify-between gap-3">
-        <p className="text-[14px] font-semibold text-stone-800">Import from an existing report</p>
+        <p className="text-[15.5px] font-semibold text-stone-800">Import from an existing report</p>
         <button
           onClick={() => { setOpen(false); setSuggestions(null); setMsg(null); setBusy(null); }}
-          className="text-[12.5px] text-stone-400 hover:text-stone-600 transition-colors"
+          className="text-[13.5px] text-stone-500 hover:text-stone-700 transition-colors"
         >
           Cancel
         </button>
       </div>
-      <p className="text-[12px] text-stone-500 mt-0.5 mb-4 leading-relaxed">
+      <p className="text-[13.5px] text-stone-600 mt-0.5 mb-4 leading-relaxed">
         Upload last year's BRSR or annual report. The figures it can find are pre-filled below for you to verify —
         the file is read in your browser, and the AI only suggests numbers that appear in the document, with the source line shown. Nothing is invented.
       </p>
@@ -112,23 +112,23 @@ export default function ImportPanel({
           <button
             onClick={() => fileRef.current?.click()}
             disabled={!!busy}
-            className="inline-flex items-center gap-2 bg-forest text-white text-[13.5px] font-semibold px-4 py-2.5 rounded-lg hover:bg-forest-light disabled:opacity-60 transition-colors pressable"
+            className="inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-4 py-2.5 rounded-lg hover:bg-forest-light disabled:opacity-60 transition-colors pressable"
           >
             {busy ?? "Choose a PDF"}
           </button>
           <input ref={fileRef} type="file" accept="application/pdf" onChange={onFile} className="hidden" />
-          {msg && <p className="mt-3 text-[12.5px] text-stone-600 leading-relaxed">{msg}</p>}
+          {msg && <p className="mt-3 text-[13.5px] text-stone-600 leading-relaxed">{msg}</p>}
         </div>
       )}
 
       {/* Review surface */}
       {suggestions && (
         <div>
-          <div className="mb-3 inline-flex items-center gap-1.5 text-[11px] font-medium text-amber-800 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-1">
+          <div className="mb-3 inline-flex items-center gap-1.5 text-[12.5px] font-medium text-amber-800 bg-amber-50 border border-amber-200 rounded-full px-2.5 py-1">
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> Imported — verify before applying. Nothing is saved until you apply; numbers are never invented.
           </div>
           {truncated && (
-            <p className="mb-3 text-[11.5px] text-stone-500 leading-relaxed">
+            <p className="mb-3 text-[13px] text-stone-500 leading-relaxed">
               Note: this is a long document — only the first part was scanned. For anything missing, upload the specific section or enter it by hand.
             </p>
           )}
@@ -144,18 +144,18 @@ export default function ImportPanel({
                   name="apply"
                   value={s.itemId}
                   defaultChecked={s.confidence !== "low"}
-                  className="mt-1 accent-[#0E4A36]"
+                  className="mt-1 accent-[#0B6FD4]"
                 />
                 <span className="min-w-0 flex-1">
                   <span className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-[10.5px] font-mono font-semibold text-stone-500">{s.fieldId}</span>
+                    <span className="text-[12px] font-mono font-semibold text-stone-500">{s.fieldId}</span>
                     <span className={`text-[9px] font-semibold px-1 py-0.5 rounded-full border ${CONF_META[s.confidence].cls}`}>
                       {CONF_META[s.confidence].label} confidence
                     </span>
                   </span>
-                  <span className="block text-[12.5px] text-stone-700 leading-snug mt-0.5">{s.label}</span>
+                  <span className="block text-[13.5px] text-stone-700 leading-snug mt-0.5">{s.label}</span>
                   {s.source && (
-                    <span className="block text-[11px] text-stone-400 italic leading-snug mt-1 line-clamp-2" title={s.source}>
+                    <span className="block text-[12.5px] text-stone-500 italic leading-snug mt-1 line-clamp-2" title={s.source}>
                       “{s.source}”
                     </span>
                   )}
@@ -165,9 +165,9 @@ export default function ImportPanel({
                     name={`value_${s.itemId}`}
                     defaultValue={s.value}
                     onClick={(e) => e.preventDefault()}
-                    className="w-24 h-8 px-2 text-[13px] text-stone-800 text-right tabular-nums bg-white border border-stone-200 rounded-md focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
+                    className="w-24 h-8 px-2 text-[14.5px] text-stone-800 text-right tabular-nums bg-white border border-stone-200 rounded-md focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
                   />
-                  {s.unit && <span className="text-[11px] text-stone-400 whitespace-nowrap w-10 truncate" title={s.unit}>{s.unit}</span>}
+                  {s.unit && <span className="text-[12.5px] text-stone-500 whitespace-nowrap w-10 truncate" title={s.unit}>{s.unit}</span>}
                 </span>
               </label>
             ))}
@@ -175,14 +175,14 @@ export default function ImportPanel({
             <div className="flex items-center gap-3 pt-2">
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest-light transition-colors pressable"
+                className="inline-flex items-center gap-2 bg-forest text-white text-[15.5px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest-light transition-colors pressable"
               >
                 Apply ticked figures →
               </button>
               <button
                 type="button"
                 onClick={() => { setSuggestions(null); setMsg(null); }}
-                className="text-[12.5px] text-stone-500 hover:text-stone-700 transition-colors"
+                className="text-[13.5px] text-stone-500 hover:text-stone-700 transition-colors"
               >
                 Import a different file
               </button>

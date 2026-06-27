@@ -26,14 +26,14 @@ import type { ImportResult } from "@/lib/datarequest/importer";
 type Action = (formData: FormData) => void | Promise<void>;
 
 const STATUS_META: Record<ContactStatus, { label: string; cls: string; dot: string }> = {
-  pending: { label: "Awaiting", cls: "text-ember-dark bg-ember-bg border-ember/30", dot: "#D9682E" },
+  pending: { label: "Awaiting", cls: "text-ember-dark bg-ember-bg border-ember/30", dot: "#F2674A" },
   partial: { label: "Partial", cls: "text-amber-700 bg-amber-50 border-amber-200", dot: "#D9A015" },
   received: { label: "Received", cls: "text-emerald-700 bg-emerald-50 border-emerald-200", dot: "#10A572" },
 };
 
 const ITEM_STATUS = {
   received: { label: "Received", cls: "text-emerald-700 bg-emerald-50 border-emerald-200", dot: "#10A572" },
-  pending: { label: "Awaiting", cls: "text-ember-dark bg-ember-bg border-ember/30", dot: "#D9682E" },
+  pending: { label: "Awaiting", cls: "text-ember-dark bg-ember-bg border-ember/30", dot: "#F2674A" },
 } as const;
 
 function relativeDays(iso: string | null): string | null {
@@ -111,7 +111,7 @@ export default function CampaignWorkspace(props: CampaignWorkspaceProps) {
         <div className="flex items-start gap-3 min-w-0">
           <CompanyAvatar name={campaign.clientName} size={44} rounded="rounded-xl" className="mt-0.5" />
           <div className="min-w-0">
-            <h1 className="font-display text-[26px] font-bold text-ink tracking-tight leading-tight">{campaign.clientName}</h1>
+            <h1 className="font-display text-[28px] font-bold text-ink tracking-tight leading-tight">{campaign.clientName}</h1>
             <div className="flex flex-wrap items-center gap-1.5 mt-2">
               {campaign.reportingPeriod && <Chip>{campaign.reportingPeriod}</Chip>}
               <Chip>{campaign.contacts.length} {campaign.contacts.length === 1 ? "owner" : "owners"}</Chip>
@@ -129,7 +129,7 @@ export default function CampaignWorkspace(props: CampaignWorkspaceProps) {
             <button
               onClick={remindAll}
               disabled={pending}
-              className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-ink-body bg-white border border-line hover:border-stone-300 px-3.5 py-2 rounded-lg transition-colors pressable disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-brand-400"
+              className="inline-flex items-center gap-1.5 text-[14.5px] font-semibold text-ink-body bg-white border border-line hover:border-stone-300 px-3.5 py-2 rounded-lg transition-colors pressable disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-brand-400"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 11-2.6-6.4M21 3v6h-6" /></svg>
               {pending ? "Reminding…" : "Remind all pending"}
@@ -138,7 +138,7 @@ export default function CampaignWorkspace(props: CampaignWorkspaceProps) {
           {allItems.length > 0 && (
             <Link
               href={`/requests/${campaign.id}/draft`}
-              className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-white bg-forest hover:bg-forest-light px-3.5 py-2 rounded-lg transition-colors pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
+              className="inline-flex items-center gap-1.5 text-[14.5px] font-semibold text-white bg-forest hover:bg-forest-light px-3.5 py-2 rounded-lg transition-colors pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
             >
               Generate draft
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
@@ -154,8 +154,8 @@ export default function CampaignWorkspace(props: CampaignWorkspaceProps) {
             <button
               key={v.key}
               onClick={() => setView(v.key)}
-              className={`relative px-3.5 py-2.5 text-[13px] font-semibold whitespace-nowrap transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 rounded-t-md ${
-                view === v.key ? "text-ink" : "text-ink-muted hover:text-ink-body"
+              className={`relative px-3.5 py-2.5 text-[14.5px] font-semibold whitespace-nowrap transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 rounded-t-md ${
+                view === v.key ? "text-ink" : "text-ink-body hover:text-ink"
               }`}
             >
               {v.label}
@@ -179,7 +179,7 @@ export default function CampaignWorkspace(props: CampaignWorkspaceProps) {
 
 function Chip({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center text-[12px] font-medium text-ink-body bg-white border border-line rounded-full px-2.5 py-0.5">
+    <span className="inline-flex items-center text-[13.5px] font-medium text-ink-body bg-white border border-line rounded-full px-2.5 py-0.5">
       {children}
     </span>
   );
@@ -194,7 +194,7 @@ function OverviewView(
   const allItems = campaign.contacts.flatMap((c) => c.items);
   const segments = [
     { value: props.received, color: "#10A572", label: "Received" },
-    { value: props.awaiting, color: "#D9682E", label: "Awaiting" },
+    { value: props.awaiting, color: "#F2674A", label: "Awaiting" },
   ].filter((s) => s.value > 0 || allItems.length === 0);
   const pct = allItems.length > 0 ? Math.round((props.received / allItems.length) * 100) : 0;
 
@@ -212,29 +212,29 @@ function OverviewView(
       {/* KPI tiles */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         <Kpi label="Collected">
-          <span className="text-[24px] font-bold text-ink tabular-nums"><AnimatedNumber value={pct} />%</span>
-          <span className="block text-[11.5px] text-ink-muted mt-0.5 tabular-nums">{props.received}/{allItems.length}</span>
+          <span className="text-[26px] font-bold text-ink tabular-nums"><AnimatedNumber value={pct} />%</span>
+          <span className="block text-[12.5px] text-ink-body mt-0.5 tabular-nums">{props.received}/{allItems.length}</span>
         </Kpi>
         <Kpi label="Owners">
-          <span className="text-[24px] font-bold text-ink tabular-nums"><AnimatedNumber value={assurance.owners} /></span>
-          <span className="block text-[11.5px] text-ink-muted mt-0.5">{assurance.owners === 1 ? "person" : "people"}</span>
+          <span className="text-[26px] font-bold text-ink tabular-nums"><AnimatedNumber value={assurance.owners} /></span>
+          <span className="block text-[12.5px] text-ink-body mt-0.5">{assurance.owners === 1 ? "person" : "people"}</span>
         </Kpi>
         <Kpi label="Evidence">
-          <span className="text-[24px] font-bold text-ink tabular-nums"><AnimatedNumber value={assurance.withEvidence} /></span>
-          <span className="block text-[11.5px] text-ink-muted mt-0.5">{assurance.withEvidence === 1 ? "document" : "documents"}</span>
+          <span className="text-[26px] font-bold text-ink tabular-nums"><AnimatedNumber value={assurance.withEvidence} /></span>
+          <span className="block text-[12.5px] text-ink-body mt-0.5">{assurance.withEvidence === 1 ? "document" : "documents"}</span>
         </Kpi>
         {ghg && (
           <Kpi label="Emissions">
-            <span className="text-[24px] font-bold text-ink tabular-nums"><AnimatedNumber value={ghg.total_tco2e} decimals={1} /></span>
-            <span className="block text-[11.5px] text-ink-muted mt-0.5">tCO₂e total</span>
+            <span className="text-[26px] font-bold text-ink tabular-nums"><AnimatedNumber value={ghg.total_tco2e} decimals={1} /></span>
+            <span className="block text-[12.5px] text-ink-body mt-0.5">tCO₂e total</span>
           </Kpi>
         )}
         {props.daysToDeadline != null && (
           <Kpi label="Deadline">
-            <span className="text-[24px] font-bold text-ink tabular-nums">
+            <span className="text-[26px] font-bold text-ink tabular-nums">
               {props.daysToDeadline >= 0 ? <AnimatedNumber value={props.daysToDeadline} /> : "—"}
             </span>
-            <span className="block text-[11.5px] text-ink-muted mt-0.5">{props.daysToDeadline >= 0 ? "days left" : "past due"}</span>
+            <span className="block text-[12.5px] text-ink-body mt-0.5">{props.daysToDeadline >= 0 ? "days left" : "past due"}</span>
           </Kpi>
         )}
       </div>
@@ -242,14 +242,14 @@ function OverviewView(
       {/* Progress bar + status donut */}
       <div className="grid lg:grid-cols-[1.4fr_1fr] gap-3">
         <Card>
-          <p className="text-[13px] font-semibold text-ink mb-3">Collection progress</p>
+          <p className="text-[14.5px] font-semibold text-ink mb-3">Collection progress</p>
           <ProgressBar value={props.received} total={allItems.length} label="Data points received" />
-          <p className="text-[11.5px] text-ink-muted mt-3 leading-relaxed">
+          <p className="text-[12.5px] text-ink-body mt-3 leading-relaxed">
             Across {campaign.contacts.length} {campaign.contacts.length === 1 ? "owner" : "owners"}. Owners are reminded automatically until they respond.
           </p>
         </Card>
         <Card>
-          <p className="text-[13px] font-semibold text-ink mb-3">By status</p>
+          <p className="text-[14.5px] font-semibold text-ink mb-3">By status</p>
           <StatusDonut
             segments={segments.length ? segments : [{ value: allItems.length, color: "#E8EBEA", label: "Awaiting" }]}
             centerLabel={`${pct}%`}
@@ -262,12 +262,12 @@ function OverviewView(
       {/* Tracking panel */}
       <Card>
         <div className="flex items-center justify-between gap-3 mb-3">
-          <p className="text-[13px] font-semibold text-ink">Owner tracking</p>
+          <p className="text-[14.5px] font-semibold text-ink">Owner tracking</p>
           {props.hasPending && (
             <button
               onClick={props.onRemindAll}
               disabled={props.reminding}
-              className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-2.5 py-1 rounded-lg transition-colors pressable disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-brand-400"
+              className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-2.5 py-1 rounded-lg transition-colors pressable disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-brand-400"
             >
               {props.reminding ? "Reminding…" : "Remind all pending"}
             </button>
@@ -281,11 +281,11 @@ function OverviewView(
               <div key={c.id} className="flex items-center gap-3 py-2.5">
                 <CompanyAvatar name={c.name || c.email} size={28} />
                 <div className="min-w-0 flex-1">
-                  <p className="text-[13px] font-semibold text-ink truncate">{c.name || c.email}</p>
-                  <p className="text-[11.5px] text-ink-muted truncate">{emailStatus(c)}</p>
+                  <p className="text-[14.5px] font-semibold text-ink truncate">{c.name || c.email}</p>
+                  <p className="text-[12.5px] text-ink-body truncate">{emailStatus(c)}</p>
                 </div>
-                <span className="text-[11.5px] text-ink-muted tabular-nums whitespace-nowrap hidden sm:inline">{got}/{c.items.length}</span>
-                <span className={`text-[10.5px] font-semibold px-2 py-0.5 rounded-full border whitespace-nowrap inline-flex items-center gap-1 ${meta.cls}`}>
+                <span className="text-[12.5px] text-ink-body tabular-nums whitespace-nowrap hidden sm:inline">{got}/{c.items.length}</span>
+                <span className={`text-[12px] font-semibold px-2 py-0.5 rounded-full border whitespace-nowrap inline-flex items-center gap-1 ${meta.cls}`}>
                   <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: meta.dot }} />
                   {meta.label}
                 </span>
@@ -305,20 +305,20 @@ function ToolsArea(props: CampaignWorkspaceProps) {
   const allItems = campaign.contacts.flatMap((c) => c.items);
   return (
     <Card>
-      <p className="text-[13px] font-semibold text-ink">Tools</p>
-      <p className="text-[12px] text-ink-body mt-1 mb-3 leading-relaxed max-w-[58ch]">
+      <p className="text-[14.5px] font-semibold text-ink">Tools</p>
+      <p className="text-[13.5px] text-ink-body mt-1 mb-3 leading-relaxed">
         Every collected figure is traceable to who submitted it, the document that backs it, and the cited factor behind any
         calculation — the data-ownership trail a reasonable-assurance review asks for.
       </p>
       {allItems.length > 0 && (
         <div className="flex flex-wrap items-center gap-2 mb-3">
-          <span className="text-[12px] font-medium text-ink-body bg-tint border border-line rounded-full px-2.5 py-1 tabular-nums">
+          <span className="text-[13.5px] font-medium text-ink-body bg-tint border border-line rounded-full px-2.5 py-1 tabular-nums">
             <AnimatedNumber value={assurance.collected} />/<AnimatedNumber value={assurance.total} /> collected
           </span>
-          <span className="text-[12px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-1 tabular-nums">
+          <span className="text-[13.5px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-1 tabular-nums">
             <AnimatedNumber value={assurance.withEvidence} /> with evidence
           </span>
-          <span className="text-[12px] font-medium text-ink-body bg-tint border border-line rounded-full px-2.5 py-1 tabular-nums">
+          <span className="text-[13.5px] font-medium text-ink-body bg-tint border border-line rounded-full px-2.5 py-1 tabular-nums">
             <AnimatedNumber value={assurance.owners} /> data {assurance.owners === 1 ? "owner" : "owners"}
           </span>
         </div>
@@ -369,17 +369,17 @@ function OwnerRow({ contact: c, link, evidenceUrls }: { contact: Contact; link: 
       >
         <CompanyAvatar name={c.name || c.email} size={30} />
         <div className="min-w-0 flex-1">
-          <p className="text-[13.5px] font-semibold text-ink truncate">{c.name || c.email}</p>
-          {c.name && <p className="text-[11.5px] text-ink-muted truncate">{c.email}</p>}
+          <p className="text-[15px] font-semibold text-ink truncate">{c.name || c.email}</p>
+          {c.name && <p className="text-[12.5px] text-ink-body truncate">{c.email}</p>}
         </div>
         <div className="hidden sm:flex items-center gap-2 flex-shrink-0 w-32">
           <div className="flex-1 h-1.5 rounded-full bg-line overflow-hidden">
             <div className="h-full rounded-full bg-brand-500 transition-[width] duration-500" style={{ width: `${pct}%` }} />
           </div>
-          <span className="text-[11.5px] text-ink-muted tabular-nums whitespace-nowrap">{got}/{c.items.length}</span>
+          <span className="text-[12.5px] text-ink-body tabular-nums whitespace-nowrap">{got}/{c.items.length}</span>
         </div>
-        <span className="sm:hidden text-[12px] text-ink-muted tabular-nums">{got}/{c.items.length}</span>
-        <span className={`text-[10.5px] font-semibold px-2 py-0.5 rounded-full border whitespace-nowrap inline-flex items-center gap-1 ${meta.cls}`}>
+        <span className="sm:hidden text-[13.5px] text-ink-body tabular-nums">{got}/{c.items.length}</span>
+        <span className={`text-[12px] font-semibold px-2 py-0.5 rounded-full border whitespace-nowrap inline-flex items-center gap-1 ${meta.cls}`}>
           <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: meta.dot }} />
           {meta.label}
         </span>
@@ -396,7 +396,7 @@ function OwnerRow({ contact: c, link, evidenceUrls }: { contact: Contact; link: 
 
       <div className="flex items-center justify-between gap-3 px-4 py-2.5 bg-tint/60 border-t border-line">
         <CopyLinkButton link={link} />
-        <span className="text-[11.5px] text-ink-muted whitespace-nowrap">{emailStatus(c)}</span>
+        <span className="text-[12.5px] text-ink-body whitespace-nowrap">{emailStatus(c)}</span>
       </div>
     </div>
   );
@@ -408,26 +408,26 @@ function ItemRow({ item: it, evidenceUrl }: { item: Item; evidenceUrl?: string }
     <div className="flex items-center gap-3 px-4 py-2.5 border-t border-line first:border-t-0 hover:bg-tint/40 transition-colors">
       <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: st.dot }} />
       {it.section && (
-        <span className="flex-shrink-0 text-[10px] font-mono font-semibold text-ink-muted bg-tint border border-line px-1.5 py-0.5 rounded" title={`Section ${it.section}${it.principle ? ` · ${it.principle}` : ""}`}>
+        <span className="flex-shrink-0 text-[11.5px] font-mono font-semibold text-ink-body bg-tint border border-line px-1.5 py-0.5 rounded" title={`Section ${it.section}${it.principle ? ` · ${it.principle}` : ""}`}>
           {it.fieldId}
         </span>
       )}
-      <span className="flex-1 min-w-0 text-[13px] text-ink-body truncate" title={it.label}>
+      <span className="flex-1 min-w-0 text-[14.5px] text-ink-body" title={it.label}>
         {it.label}{it.unit && <span className="text-ink-muted"> · {it.unit}</span>}
       </span>
       {it.evidencePath && (
         evidenceUrl ? (
           <a href={evidenceUrl} target="_blank" rel="noreferrer" title={it.evidenceName ?? "View evidence"}
-            className="inline-flex items-center gap-1 flex-shrink-0 text-[11px] font-medium text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-1.5 py-0.5 rounded-md transition-colors pressable">
+            className="inline-flex items-center gap-1 flex-shrink-0 text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-1.5 py-0.5 rounded-md transition-colors pressable">
             <EvidenceIcon /> Evidence
           </a>
         ) : (
-          <span className="inline-flex items-center gap-1 flex-shrink-0 text-[11px] text-stone-400" title={it.evidenceName ?? "Evidence attached"}>
+          <span className="inline-flex items-center gap-1 flex-shrink-0 text-[12.5px] text-stone-400" title={it.evidenceName ?? "Evidence attached"}>
             <EvidenceIcon /> Attached
           </span>
         )
       )}
-      <span className="text-[13px] tabular-nums whitespace-nowrap text-right">
+      <span className="text-[14.5px] tabular-nums whitespace-nowrap text-right">
         {it.value ? <span className="font-semibold text-ink">{it.value}</span> : <span className="text-stone-300">—</span>}
         {it.priorValue && <span className="text-ink-muted"> · prev {it.priorValue}</span>}
       </span>
@@ -494,7 +494,7 @@ function DataView(props: CampaignWorkspaceProps) {
           <input
             value={query} onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by code or label…"
-            className="h-9 w-full pl-9 pr-3 text-[13px] text-ink bg-white border border-line rounded-lg focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
+            className="h-9 w-full pl-9 pr-3 text-[14.5px] text-ink bg-white border border-line rounded-lg focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
           />
         </div>
         <div className="flex items-center gap-1 bg-white border border-line rounded-lg p-0.5">
@@ -502,8 +502,8 @@ function DataView(props: CampaignWorkspaceProps) {
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-2.5 py-1.5 text-[12px] font-medium rounded-md transition-colors capitalize focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 ${
-                filter === f ? "bg-forest text-white" : "text-ink-muted hover:text-ink-body"
+              className={`px-2.5 py-1.5 text-[13.5px] font-medium rounded-md transition-colors capitalize focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 ${
+                filter === f ? "bg-forest text-white" : "text-ink-body hover:text-ink"
               }`}
             >
               {f === "pending" ? "Awaiting" : f}
@@ -513,11 +513,11 @@ function DataView(props: CampaignWorkspaceProps) {
       </div>
 
       {grouped.length === 0 ? (
-        <p className="text-[13px] text-ink-muted text-center py-10 bg-white border border-line rounded-xl">No data points match your search.</p>
+        <p className="text-[14.5px] text-ink-body text-center py-10 bg-white border border-line rounded-xl">No data points match your search.</p>
       ) : (
         grouped.map(({ sec, groups }) => (
           <div key={sec}>
-            <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-ink-muted mb-2">{SECTION_LABELS[sec]}</p>
+            <p className="text-[12.5px] font-bold uppercase tracking-[0.1em] text-ink-body mb-2">{SECTION_LABELS[sec]}</p>
             <div className="space-y-2">
               {groups.map((g, gi) => (
                 <PrincipleGroup
@@ -547,41 +547,98 @@ function PrincipleGroup({
         className="w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-tint/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
       >
         <svg className={`w-3.5 h-3.5 text-ink-muted transition-transform flex-shrink-0 ${open ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-        <span className="flex-1 text-[13px] font-semibold text-ink truncate">{title}</span>
+        <span className="flex-1 text-[14.5px] font-semibold text-ink">{title}</span>
         <div className="hidden sm:block w-24 h-1.5 rounded-full bg-line overflow-hidden">
           <div className="h-full rounded-full bg-brand-500" style={{ width: `${rows.length ? (filled / rows.length) * 100 : 0}%` }} />
         </div>
-        <span className="text-[11.5px] text-ink-muted tabular-nums whitespace-nowrap">{filled}/{rows.length}</span>
+        <span className="text-[12.5px] text-ink-body tabular-nums whitespace-nowrap">{filled}/{rows.length}</span>
       </button>
       {open && (
         <div className="border-t border-line">
           {rows.map(({ item, owner }) => (
-            <div key={item.id} className="flex items-center gap-3 px-4 py-2.5 border-t border-line first:border-t-0 hover:bg-tint/40 transition-colors">
-              <span className="flex-shrink-0 text-[10px] font-mono font-semibold text-ink-muted bg-tint border border-line px-1.5 py-0.5 rounded">{item.fieldId}</span>
-              <span className="flex-1 min-w-0 text-[13px] text-ink-body truncate" title={item.label}>
-                {item.label}
-                <span className="text-ink-muted"> · {owner}</span>
-              </span>
-              {item.evidencePath && (
-                evidenceUrls[item.id] ? (
-                  <a href={evidenceUrls[item.id]} target="_blank" rel="noreferrer" title={item.evidenceName ?? "View evidence"}
-                    className="inline-flex items-center gap-1 flex-shrink-0 text-[11px] font-medium text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-1.5 py-0.5 rounded-md transition-colors pressable">
-                    <EvidenceIcon /> Evidence
-                  </a>
-                ) : (
-                  <span className="inline-flex items-center gap-1 flex-shrink-0 text-[11px] text-stone-400" title={item.evidenceName ?? "Evidence attached"}>
-                    <EvidenceIcon /> Attached
-                  </span>
-                )
-              )}
-              <span className="text-[13px] tabular-nums whitespace-nowrap text-right">
-                {item.value ? <span className="font-semibold text-ink">{item.value}{item.unit && <span className="text-ink-muted font-normal"> {item.unit}</span>}</span> : <span className="text-stone-300">—</span>}
-                {item.priorValue && <span className="text-ink-muted"> · prev {item.priorValue}</span>}
-              </span>
-            </div>
+            <DataFieldRow key={item.id} item={item} owner={owner} evidenceUrl={evidenceUrls[item.id]} />
           ))}
         </div>
       )}
+    </div>
+  );
+}
+
+// One field row in the Data view — click to expand a full detail panel.
+// The collapsed row shows the full (wrapping, never truncated) label; the
+// expanded panel restates every coordinate the consultant might want.
+function DataFieldRow({ item, owner, evidenceUrl }: { item: Item; owner: string; evidenceUrl?: string }) {
+  const [open, setOpen] = useState(false);
+  const st = item.status === "received" ? ITEM_STATUS.received : ITEM_STATUS.pending;
+  return (
+    <div className="border-t border-line first:border-t-0">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-start gap-3 px-4 py-2.5 text-left hover:bg-tint/40 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
+      >
+        <span className="mt-1 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: st.dot }} />
+        <span className="flex-shrink-0 mt-px text-[11.5px] font-mono font-semibold text-ink-body bg-tint border border-line px-1.5 py-0.5 rounded">{item.fieldId}</span>
+        <span className="flex-1 min-w-0 text-[14.5px] text-ink-body">
+          {item.label}
+          <span className="text-ink-muted"> · {owner}</span>
+        </span>
+        {item.evidencePath && (
+          evidenceUrl ? (
+            <a href={evidenceUrl} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} title={item.evidenceName ?? "View evidence"}
+              className="inline-flex items-center gap-1 flex-shrink-0 text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-1.5 py-0.5 rounded-md transition-colors pressable">
+              <EvidenceIcon /> Evidence
+            </a>
+          ) : (
+            <span className="inline-flex items-center gap-1 flex-shrink-0 text-[12.5px] text-stone-400" title={item.evidenceName ?? "Evidence attached"}>
+              <EvidenceIcon /> Attached
+            </span>
+          )
+        )}
+        <span className="text-[14.5px] tabular-nums whitespace-nowrap text-right">
+          {item.value ? <span className="font-semibold text-ink">{item.value}{item.unit && <span className="text-ink-muted font-normal"> {item.unit}</span>}</span> : <span className="text-stone-300">—</span>}
+          {item.priorValue && <span className="text-ink-muted"> · prev {item.priorValue}</span>}
+        </span>
+        <svg className={`mt-0.5 w-4 h-4 text-ink-muted transition-transform flex-shrink-0 ${open ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+      </button>
+
+      {open && (
+        <div className="anim-up-sm px-4 pb-4 pt-1 bg-tint/40">
+          <p className="text-[14.5px] text-ink leading-relaxed font-medium">{item.label}</p>
+          <dl className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-3">
+            <DetailField label="Field code" value={item.fieldId} mono />
+            <DetailField label="Section" value={item.section ? SECTION_LABELS[item.section] : "—"} />
+            <DetailField label="Principle" value={item.principle ? `${item.principle}${PRINCIPLE_LABELS[item.principle] ? ` · ${PRINCIPLE_LABELS[item.principle]}` : ""}` : "—"} />
+            <DetailField label="Submitted by" value={owner} />
+            <DetailField label="Status" value={st.label} />
+            <DetailField label="Value" value={item.value ? `${item.value}${item.unit ? ` ${item.unit}` : ""}` : "Not submitted yet"} />
+            <DetailField label="Prior-year value" value={item.priorValue ? `${item.priorValue}${item.unit ? ` ${item.unit}` : ""}` : "—"} />
+            {item.indicatorType && <DetailField label="Indicator" value={item.indicatorType === "essential" ? "Essential" : "Leadership"} />}
+            <div>
+              <dt className="text-[12px] font-semibold uppercase tracking-[0.08em] text-ink-muted">Evidence</dt>
+              <dd className="mt-1 text-[14px] text-ink">
+                {item.evidencePath ? (
+                  evidenceUrl ? (
+                    <a href={evidenceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-brand-700 font-medium hover:underline">
+                      <EvidenceIcon /> {item.evidenceName ?? "View document"}
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 text-ink-body"><EvidenceIcon /> {item.evidenceName ?? "Attached"}</span>
+                  )
+                ) : "No document attached"}
+              </dd>
+            </div>
+          </dl>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DetailField({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+  return (
+    <div>
+      <dt className="text-[12px] font-semibold uppercase tracking-[0.08em] text-ink-muted">{label}</dt>
+      <dd className={`mt-1 text-[14px] text-ink ${mono ? "font-mono" : ""}`}>{value}</dd>
     </div>
   );
 }
@@ -596,8 +653,8 @@ function EmissionsView(props: CampaignWorkspaceProps) {
         <div className="mx-auto w-10 h-10 rounded-full bg-tint border border-brand-100 flex items-center justify-center">
           <svg className="w-5 h-5 text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 17l6-6 4 4 8-8" /><path d="M21 7v6h-6" /></svg>
         </div>
-        <p className="text-[14px] font-semibold text-ink mt-3">No emissions computed yet</p>
-        <p className="text-[13px] text-ink-body mt-1.5 max-w-[46ch] mx-auto leading-relaxed">
+        <p className="text-[15.5px] font-semibold text-ink mt-3">No emissions computed yet</p>
+        <p className="text-[14px] text-ink-body mt-1.5 max-w-[46ch] mx-auto leading-relaxed">
           Assign an activity field (grid electricity or fuel) to a data owner. Once they submit the raw activity data,
           Scope 1 &amp; 2 are calculated here from the cited CEA &amp; IPCC factors.
         </p>
@@ -608,7 +665,7 @@ function EmissionsView(props: CampaignWorkspaceProps) {
   return (
     <div className="space-y-3">
       <div className="bg-forest text-white rounded-xl p-5">
-        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-white/50 mb-3">Calculated emissions · from collected activity data</p>
+        <p className="text-[12.5px] font-bold uppercase tracking-[0.12em] text-white/60 mb-3">Calculated emissions · from collected activity data</p>
         <div className="grid grid-cols-3 gap-4">
           <Metric label="Scope 1 (fuel)" value={ghg.scope1_tco2e} unit="tCO₂e" />
           <Metric label="Scope 2 (electricity)" value={ghg.scope2_tco2e} unit="tCO₂e" />
@@ -619,14 +676,14 @@ function EmissionsView(props: CampaignWorkspaceProps) {
         </div>
         <div className="mt-4 pt-4 border-t border-white/10 space-y-2">
           {inputs.map((inp, i) => (
-            <p key={i} className="text-[11.5px] text-white/55 leading-relaxed">
-              <span className="text-white/85 font-medium">Scope {inp.scope} · {fmtT(inp.tco2e)} tCO₂e</span>
+            <p key={i} className="text-[12.5px] text-white/65 leading-relaxed">
+              <span className="text-white/90 font-medium">Scope {inp.scope} · {fmtT(inp.tco2e)} tCO₂e</span>
               {"  ←  "}{inp.rawValue}
-              <span className="text-white/35"> · </span>submitted by {inp.submittedBy}
-              <span className="text-white/35"> · </span>{inp.factor}
+              <span className="text-white/40"> · </span>submitted by {inp.submittedBy}
+              <span className="text-white/40"> · </span>{inp.factor}
             </p>
           ))}
-          <p className="text-[11px] text-white/40 leading-relaxed pt-1.5">{methodology}</p>
+          <p className="text-[12px] text-white/50 leading-relaxed pt-1.5">{methodology}</p>
         </div>
       </div>
     </div>
@@ -645,11 +702,11 @@ function ScopeBarOnDark({ scope1, scope2 }: { scope1: number; scope2: number }) 
         {s2 > 0 && <div className="h-full bg-brand-400" style={{ width: `${s2}%` }} />}
       </div>
       <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 mt-2.5">
-        <span className="flex items-center gap-1.5 text-[11.5px] text-white/70">
-          <span className="w-2.5 h-2.5 rounded-sm bg-white/70 flex-shrink-0" /> Scope 1 <span className="text-white/45 tabular-nums">{fmtT(scope1)} t</span>
+        <span className="flex items-center gap-1.5 text-[12.5px] text-white/75">
+          <span className="w-2.5 h-2.5 rounded-sm bg-white/70 flex-shrink-0" /> Scope 1 <span className="text-white/55 tabular-nums">{fmtT(scope1)} t</span>
         </span>
-        <span className="flex items-center gap-1.5 text-[11.5px] text-white/70">
-          <span className="w-2.5 h-2.5 rounded-sm bg-brand-400 flex-shrink-0" /> Scope 2 <span className="text-white/45 tabular-nums">{fmtT(scope2)} t</span>
+        <span className="flex items-center gap-1.5 text-[12.5px] text-white/75">
+          <span className="w-2.5 h-2.5 rounded-sm bg-brand-400 flex-shrink-0" /> Scope 2 <span className="text-white/55 tabular-nums">{fmtT(scope2)} t</span>
         </span>
       </div>
     </div>
@@ -659,9 +716,9 @@ function ScopeBarOnDark({ scope1, scope2 }: { scope1: number; scope2: number }) 
 function Metric({ label, value, unit, accent }: { label: string; value: number; unit: string; accent?: boolean }) {
   return (
     <div>
-      <p className={`text-[24px] font-semibold leading-none tabular-nums ${accent ? "text-brand-400" : "text-white"}`}><AnimatedNumber value={value} decimals={1} /></p>
-      <p className="text-[11px] text-white/50 mt-1.5">{unit}</p>
-      <p className="text-[11.5px] text-white/70 mt-0.5">{label}</p>
+      <p className={`text-[26px] font-semibold leading-none tabular-nums ${accent ? "text-brand-400" : "text-white"}`}><AnimatedNumber value={value} decimals={1} /></p>
+      <p className="text-[12px] text-white/60 mt-1.5">{unit}</p>
+      <p className="text-[12.5px] text-white/80 mt-0.5">{label}</p>
     </div>
   );
 }
@@ -674,15 +731,15 @@ function DraftView(props: CampaignWorkspaceProps) {
   const received = allItems.filter((i) => i.status === "received").length;
   return (
     <Card>
-      <p className="text-[14px] font-semibold text-ink">BRSR draft</p>
-      <p className="text-[12.5px] text-ink-body mt-1.5 max-w-[58ch] leading-relaxed">
+      <p className="text-[15.5px] font-semibold text-ink">BRSR draft</p>
+      <p className="text-[14px] text-ink-body mt-1.5 max-w-[64ch] leading-relaxed">
         Generate a printable BRSR draft from the {received} collected {received === 1 ? "value" : "values"}, grouped by
         Section and Principle, with the emissions block and a "nothing is invented" basis line. Deterministic — only
         submitted values and figures computed from them via cited factors.
       </p>
       <Link
         href={`/requests/${campaign.id}/draft`}
-        className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-white bg-forest hover:bg-forest-light px-4 py-2.5 rounded-lg transition-colors pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
+        className="mt-4 inline-flex items-center gap-1.5 text-[14.5px] font-semibold text-white bg-forest hover:bg-forest-light px-4 py-2.5 rounded-lg transition-colors pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
       >
         Generate the BRSR draft from collected data
         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
@@ -700,7 +757,7 @@ function Card({ children }: { children: React.ReactNode }) {
 function Kpi({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="bg-white border border-line rounded-xl px-4 py-3.5 shadow-[0_1px_2px_rgba(16,33,26,0.05)]">
-      <p className="text-[10.5px] font-semibold uppercase tracking-[0.1em] text-ink-muted">{label}</p>
+      <p className="text-[12px] font-semibold uppercase tracking-[0.1em] text-ink-muted">{label}</p>
       <div className="mt-1.5">{children}</div>
     </div>
   );
@@ -712,12 +769,12 @@ function EmptyOwners() {
       <div className="mx-auto w-10 h-10 rounded-full bg-white border border-brand-100 flex items-center justify-center">
         <svg className="w-5 h-5 text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M19 8v6M22 11h-6" /></svg>
       </div>
-      <p className="text-[14px] font-semibold text-ink mt-3">No data owners yet</p>
-      <p className="text-[13px] text-ink-body mt-1.5 max-w-[44ch] mx-auto leading-relaxed">
+      <p className="text-[15.5px] font-semibold text-ink mt-3">No data owners yet</p>
+      <p className="text-[14px] text-ink-body mt-1.5 max-w-[44ch] mx-auto leading-relaxed">
         Add the people who hold each number: the energy manager for electricity and fuel, HR for headcount, EHS for
         water. Each gets their own secure link and is reminded automatically until they respond.
       </p>
-      <p className="text-[12px] text-ink-muted mt-2">Open the <span className="font-semibold text-ink-body">Owners</span> tab to add one.</p>
+      <p className="text-[13.5px] text-ink-body mt-2">Open the <span className="font-semibold text-ink">Owners</span> tab to add one.</p>
     </div>
   );
 }

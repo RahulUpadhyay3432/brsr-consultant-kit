@@ -7,7 +7,7 @@ import * as db from "./db";
 import { sendRequestEmail, sendSubmissionAlert } from "./email";
 import { uploadEvidence } from "./storage";
 import { generateNarrative, type NarrativeResult } from "./narrative";
-import { extractValues, extractValuesBulk, type ImportResult, type BulkImportResult } from "./importer";
+import { extractValues, extractValuesBulk, type ImportResult, type BulkImportResult, type BulkDoc, type DocCategory } from "./importer";
 import { groqConfigured } from "./groq";
 import { requireConsultant } from "./guard";
 
@@ -174,13 +174,21 @@ export async function applyImportAction(campaignId: string, formData: FormData):
 // so a single upload can pre-fill the entire draft. Nothing is written — the
 // consultant applies the verified ones via applyBulkImportAction.
 export async function bulkImportAction(
-  campaignId: string, docs: { name: string; text: string }[]
+  campaignId: string, docs: BulkDoc[]
 ): Promise<BulkImportResult> {
   requireConsultant();
   if (!groqConfigured()) return { suggestions: [], truncated: false, configured: false };
 
-  const cleaned = (docs || [])
-    .map((d) => ({ name: String(d?.name || "document").trim() || "document", text: String(d?.text || "").trim() }))
+  const ALLOWED: DocCategory[] = ["auto", "brsr", "annual", "energy", "hr", "water", "policies", "other"];
+  const normCategory = (c: unknown): DocCategory =>
+    ALLOWED.includes(c as DocCategory) ? (c as DocCategory) : "auto";
+
+  const cleaned: BulkDoc[] = (docs || [])
+    .map((d) => ({
+      name: String(d?.name || "document").trim() || "document",
+      text: String(d?.text || "").trim(),
+      category: normCategory(d?.category),
+    }))
     .filter((d) => d.text.length > 0);
   if (cleaned.length === 0) return { suggestions: [], truncated: false, configured: true };
 

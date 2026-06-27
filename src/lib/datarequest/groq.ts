@@ -14,7 +14,12 @@ function keys(): string[] {
   return [
     process.env.GROQ_API_KEY, process.env.GROQ_API_KEY_2, process.env.GROQ_API_KEY_3,
     process.env.GROQ_API_KEY_4, process.env.GROQ_API_KEY_5, process.env.GROQ_API_KEY_6,
-  ].filter((k): k is string => !!k && k.startsWith("gsk_"));
+  ]
+    // Trim stray whitespace + strip wrapping quotes before validating — env values
+    // pasted from a table can carry a leading space or quotes, which would otherwise
+    // fail the gsk_ check and silently disable every AI feature.
+    .map((k) => k?.trim().replace(/^["']|["']$/g, ""))
+    .filter((k): k is string => !!k && k.startsWith("gsk_"));
 }
 
 export function groqConfigured(): boolean {

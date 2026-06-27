@@ -3,17 +3,17 @@
 @tailwind utilities;
 
 :root {
-  /* Clean Forest tokens — white canvas, dark ink, forest accent */
-  --brand-500: #18C39A;   /* mint accent */
-  --brand-800: #0E4A36;   /* deep evergreen */
-  --forest:    #0E4A36;   /* primary green (buttons, logo, rail, dark sections) */
-  --page:      #F8FAF9;   /* near-white app canvas (whisper green-grey) */
+  /* Vivid Blue + Coral tokens — white canvas, navy anchor, blue accent, near-black text */
+  --brand-500: #1E9DF2;   /* bright blue accent */
+  --brand-800: #0C4C8E;   /* deep blue */
+  --forest:    #0F1E33;   /* deep navy (rail, dark cards, dark sections) */
+  --page:      #FBFCFE;   /* clean near-white canvas */
   --surface:   #FFFFFF;   /* card surface */
-  --line:      #E8EBEA;   /* hairline border */
-  --tint:      #F1FAF6;   /* whisper-mint card tint */
-  --ink:       #10211A;   /* heading ink (near-black) */
-  --body:      #3A4742;   /* body text (>=4.5:1 on white) */
-  --muted:     #6B7772;   /* secondary text */
+  --line:      #E5E9F0;   /* hairline border */
+  --tint:      #EAF4FE;   /* whisper-blue card tint */
+  --ink:       #0F172A;   /* heading ink (near-black) */
+  --body:      #28303B;   /* body text (near-black, strong contrast) */
+  --muted:     #5B6573;   /* secondary text */
 
   /* Custom easing */
   --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);
@@ -43,7 +43,7 @@ body {
 /* Background: only the atmospheric glow, no grid lines */
 .bg-grid {
   background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(24, 195, 154, 0.07) 0%, transparent 65%);
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(11, 111, 212, 0.06) 0%, transparent 65%);
 }
 
 /* Hairline accent at the top — 1px, intentional */
@@ -55,7 +55,7 @@ body::before {
   left: 0;
   right: 0;
   height: 1.5px;
-  background: linear-gradient(90deg, var(--brand-500) 0%, #0E4A36 55%);
+  background: linear-gradient(90deg, var(--brand-500) 0%, #0F1E33 55%);
   z-index: 200;
   pointer-events: none;
 }
@@ -68,7 +68,7 @@ body::before {
   background-color: #F6ECD8; color: #8A6516; border: 1px solid #EAD8B0;
 }
 .badge-new {
-  background-color: #FBE7DC; color: #A8481B; border: 1px solid #F2CDBA;
+  background-color: #FFF1ED; color: #C24428; border: 1px solid #F8C9BD;
 }
 
 /* Pressable: physical press feedback on all interactive elements */

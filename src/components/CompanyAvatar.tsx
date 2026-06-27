@@ -3,15 +3,15 @@
 // browser" stays true. The colour is derived from the name (stable across
 // sessions) so each company reads as visually distinct.
 
-// Deep Evergreen & Ember tones — all dark enough for white initials to stay legible.
+// Deep Vivid Blue & Coral tones — all dark enough for white initials to stay legible.
 const AVATAR_COLORS = [
-  "#0E4A36", // forest
-  "#0B6B4F", // label green
-  "#11655C", // teal
-  "#3F4A44", // slate
-  "#A6571C", // ember / rust
+  "#0F1E33", // navy
+  "#0B5FB0", // label blue
+  "#0B6FD4", // primary blue
+  "#1E5C8A", // steel blue
+  "#C24A33", // coral / rust
   "#8A6112", // bronze / gold
-  "#5A4636", // taupe
+  "#3F4A58", // slate
 ];
 
 function initialsOf(name: string): string {

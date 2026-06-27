@@ -56,22 +56,22 @@ export default function StatusDonut({
     <div className="flex items-center gap-4">
       <div className="relative flex-shrink-0" style={{ width: size, height: size }}>
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90" aria-hidden="true">
-          <circle cx={cx} cy={cy} r={r} fill="none" stroke="#E8EBEA" strokeWidth={stroke} />
+          <circle cx={cx} cy={cy} r={r} fill="none" stroke="#E5E9F0" strokeWidth={stroke} />
           {total > 0 && arcs}
         </svg>
         {(centerLabel || centerSub) && (
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-            {centerLabel && <span className="text-[22px] font-bold text-ink leading-none tabular-nums">{centerLabel}</span>}
-            {centerSub && <span className="text-[10px] text-ink-muted mt-1 uppercase tracking-[0.08em]">{centerSub}</span>}
+            {centerLabel && <span className="text-[24px] font-bold text-ink leading-none tabular-nums">{centerLabel}</span>}
+            {centerSub && <span className="text-[11.5px] text-ink-muted mt-1 uppercase tracking-[0.08em]">{centerSub}</span>}
           </div>
         )}
       </div>
       <ul className="space-y-1.5 min-w-0">
         {segments.map((seg, i) => (
-          <li key={i} className="flex items-center gap-2 text-[12px]">
+          <li key={i} className="flex items-center gap-2 text-[13.5px]">
             <span className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ backgroundColor: seg.color }} />
             <span className="text-ink-body truncate">{seg.label}</span>
-            <span className="text-ink-muted tabular-nums ml-auto pl-2">{seg.value}</span>
+            <span className="text-ink-body tabular-nums ml-auto pl-2">{seg.value}</span>
           </li>
         ))}
       </ul>

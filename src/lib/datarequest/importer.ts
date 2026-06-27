@@ -53,11 +53,19 @@ const SYSTEM =
   "(5) confidence: high = the text explicitly states this field's value; medium = a likely match but the " +
   "wording differs; low = uncertain. When unsure, use low — but still include the source.";
 
-function userPrompt(candidates: ImportCandidate[], chunk: string): string {
+function userPrompt(
+  candidates: ImportCandidate[],
+  chunk: string,
+  docTypeLabel?: string,
+): string {
   const list = candidates
     .map((c) => `${c.fieldId} — ${c.label}${c.unit ? ` [${c.unit}]` : ""}`)
     .join("\n");
+  const docLine = docTypeLabel
+    ? `This excerpt is from the client's ${docTypeLabel}. Focus on the figures that document type carries.\n\n`
+    : "";
   return (
+    docLine +
     `Candidate BRSR fields (id — label [unit]):\n${list}\n\n` +
     `Report text (excerpt):\n"""\n${chunk}\n"""\n\n` +
     `Return the JSON array of figures you can find for these fields in this excerpt.`
@@ -182,8 +190,72 @@ export interface BulkImportResult {
   configured: boolean; // false when no Groq key is set
 }
 
+// A per-document content category the consultant tags on upload, so extraction is
+// scoped to the BRSR sections that document type plausibly contains, and the model
+// is told what it's reading. "auto" / undefined = let the model see all fields.
+export type DocCategory =
+  | "auto"
+  | "brsr"
+  | "annual"
+  | "energy"
+  | "hr"
+  | "water"
+  | "policies"
+  | "other";
+
+export interface BulkDoc {
+  name: string;
+  text: string;
+  category?: DocCategory;
+}
+
+// Plain-English name for each category — used in the grounded prompt so the model
+// focuses on the figures that document type actually carries.
+const CATEGORY_LABEL: Record<DocCategory, string> = {
+  auto: "company report",
+  brsr: "last year's BRSR report",
+  annual: "annual report",
+  energy: "energy and fuel bills",
+  hr: "HR and headcount records",
+  water: "water and waste records",
+  policies: "policies and governance document",
+  other: "company document",
+};
+
 // Look up a field's BRSR coordinates in the full request-field skeleton.
 const FIELD_META = new Map(REQUEST_FIELDS.map((f) => [f.id, f]));
+
+// Scope the candidate fields to the BRSR sections/principles a given document type
+// plausibly contains, sharpening accuracy + cutting the prompt for narrow uploads.
+// BRSR / annual / other / auto stay broad (all fields). Returns the same candidate
+// objects (a subset) — never empties the list (an empty scope falls back to all).
+function scopeCandidates(
+  candidates: ImportCandidate[],
+  category: DocCategory | undefined,
+): ImportCandidate[] {
+  if (!category || category === "auto" || category === "brsr" || category === "annual" || category === "other") {
+    return candidates;
+  }
+  const inScope = (fieldId: string): boolean => {
+    const meta = FIELD_META.get(fieldId);
+    const principle = meta?.principle ?? null;
+    if (category === "energy") {
+      // Energy & emissions live on Principle 6, incl. the P6-E1-* activity inputs.
+      return principle === "P6";
+    }
+    if (category === "hr") {
+      // Headcount / wellbeing / human rights → Principles 3 and 5.
+      return principle === "P3" || principle === "P5";
+    }
+    if (category === "water") {
+      // Water & waste are Principle 6 indicators.
+      return principle === "P6";
+    }
+    return true;
+  };
+  const scoped = candidates.filter((c) => inScope(c.fieldId));
+  return scoped.length > 0 ? scoped : candidates;
+}
 
 // Normalise a string for the verifier: lower-case, and strip the commas/spaces that
 // separate digit groups (so "1,240,000" matches "1240000" and "1 240 000").
@@ -213,7 +285,7 @@ interface BulkBest {
 // highest-confidence hit. A verifier then DROPS any hit whose value doesn't literally
 // appear in its source text. Best-effort: never throws.
 export async function extractValuesBulk(
-  docs: { name: string; text: string }[],
+  docs: BulkDoc[],
   candidates: ImportCandidate[]
 ): Promise<{ suggestions: BulkSuggestion[]; truncated: boolean }> {
   // Dedupe candidates by fieldId for the prompt.
@@ -221,7 +293,7 @@ export async function extractValuesBulk(
   for (const c of candidates) {
     if (!byField.has(c.fieldId)) byField.set(c.fieldId, c);
   }
-  const promptCandidates = Array.from(byField.values());
+  const allCandidates = Array.from(byField.values());
 
   const best = new Map<string, BulkBest>();
   let truncated = false;
@@ -231,13 +303,19 @@ export async function extractValuesBulk(
     if (!text) continue;
     if (text.length > CHUNK_SIZE * MAX_CHUNKS) truncated = true;
 
+    // Scope candidates + name the document type per this doc's category.
+    const category = doc?.category;
+    const promptCandidates = scopeCandidates(allCandidates, category);
+    const docTypeLabel =
+      category && category !== "auto" ? CATEGORY_LABEL[category] : undefined;
+
     const chunks: string[] = [];
     for (let i = 0; i < text.length && chunks.length < MAX_CHUNKS; i += CHUNK_SIZE) {
       chunks.push(text.slice(i, i + CHUNK_SIZE));
     }
 
     for (let i = 0; i < chunks.length; i++) {
-      const reply = await groqComplete(SYSTEM, userPrompt(promptCandidates, chunks[i]), {
+      const reply = await groqComplete(SYSTEM, userPrompt(promptCandidates, chunks[i], docTypeLabel), {
         maxTokens: 1200,
         temperature: 0,
         salt: i,
