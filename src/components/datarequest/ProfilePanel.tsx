@@ -58,7 +58,7 @@ export default function ProfilePanel() {
   }
 
   return (
-    <div className="max-w-[820px] mx-auto">
+    <div className="max-w-[1100px] mx-auto">
       <h1 className="font-display text-[26px] text-ink tracking-tight">Your profile</h1>
       <p className="text-[14.5px] text-ink-body mt-1 max-w-[64ch] leading-relaxed">
         Your details and default rate card. Used to brand your client proposals and to pre-fill the fee

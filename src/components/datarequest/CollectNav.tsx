@@ -1,9 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import type { Campaign } from "@/lib/datarequest/types";
+
+// The per-client workspace sections, deep-linked via ?view= so each (incl. Readiness)
+// is its own entry in the sidebar and reachable directly.
+const SECTIONS: { key: string; label: string }[] = [
+  { key: "overview", label: "Overview" },
+  { key: "autofill", label: "Auto-fill" },
+  { key: "readiness", label: "Readiness" },
+  { key: "owners", label: "Owners" },
+  { key: "data", label: "Data" },
+  { key: "emissions", label: "Emissions" },
+];
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -34,12 +45,15 @@ function Item({ href, active, icon, badge, children, onClick, depth = 0 }: {
 
 function CampaignRow({ campaign }: { campaign: Campaign }) {
   const path = usePathname();
+  const searchParams = useSearchParams();
   const items = campaign.contacts.flatMap((c) => c.items);
   const received = items.filter((i) => i.status === "received").length;
   const onThis = path.startsWith(`/requests/${campaign.id}`);
   const [open, setOpen] = useState(onThis);
   const expanded = open || onThis;
   const rowActive = path === `/requests/${campaign.id}`;
+  const onDraft = path === `/requests/${campaign.id}/draft`;
+  const currentView = searchParams.get("view") || "overview";
 
   return (
     <div>
@@ -77,8 +91,10 @@ function CampaignRow({ campaign }: { campaign: Campaign }) {
       </div>
       {expanded && (
         <div className="mt-0.5 space-y-0.5">
-          <Item href={`/requests/${campaign.id}`} active={rowActive} depth={1}>Owners</Item>
-          <Item href={`/requests/${campaign.id}/draft`} active={path === `/requests/${campaign.id}/draft`} depth={1}>Data</Item>
+          {SECTIONS.map((s) => (
+            <Item key={s.key} href={`/requests/${campaign.id}?view=${s.key}`} active={rowActive && currentView === s.key} depth={1}>{s.label}</Item>
+          ))}
+          <Item href={`/requests/${campaign.id}/draft`} active={onDraft} depth={1}>Draft</Item>
         </div>
       )}
     </div>
@@ -87,6 +103,7 @@ function CampaignRow({ campaign }: { campaign: Campaign }) {
 
 export default function CollectNav({ campaigns = [] }: { campaigns?: Campaign[] }) {
   const path = usePathname();
+  const dashboardActive = path === "/requests";
   const newActive = path === "/requests/new";
   const proposalActive = path.startsWith("/requests/proposal");
   const cbamActive = path.startsWith("/requests/cbam");
@@ -109,6 +126,7 @@ export default function CollectNav({ campaigns = [] }: { campaigns?: Campaign[] 
       <div>
         <SectionLabel>Collections</SectionLabel>
         <div className="space-y-0.5">
+          <Item href="/requests" active={dashboardActive} icon={<IconGrid />}>Dashboard</Item>
           <Item href="/requests/new" active={newActive} icon={<IconPlus />}>New collection</Item>
           {campaigns.length === 0 ? (
             <p className="px-2.5 py-1.5 text-[12px] text-white/45 leading-snug">
@@ -144,7 +162,7 @@ export default function CollectNav({ campaigns = [] }: { campaigns?: Campaign[] 
       <div>
         <SectionLabel>Tool</SectionLabel>
         <div className="space-y-0.5">
-          <Item href="/" active={false} icon={<IconBack />}>Readiness</Item>
+          <Item href="/" active={false} icon={<IconBack />}>Free readiness tool</Item>
         </div>
       </div>
     </nav>
@@ -190,6 +208,13 @@ function IconUser() {
   return (
     <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="7.5" cy="4.5" r="2.5" /><path d="M2.5 13c0-2.5 2.2-4 5-4s5 1.5 5 4" />
+    </svg>
+  );
+}
+function IconGrid() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="1.5" y="1.5" width="5" height="5" rx="1" /><rect x="8.5" y="1.5" width="5" height="5" rx="1" /><rect x="1.5" y="8.5" width="5" height="5" rx="1" /><rect x="8.5" y="8.5" width="5" height="5" rx="1" />
     </svg>
   );
 }

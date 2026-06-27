@@ -55,7 +55,7 @@ export default function ProposalBuilder() {
   const fee = estimateFee(inp);
 
   return (
-    <div className="max-w-[920px] mx-auto">
+    <div className="max-w-[1280px] mx-auto">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="font-display text-[26px] text-ink tracking-tight">Proposal &amp; fee builder</h1>

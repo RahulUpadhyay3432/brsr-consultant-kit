@@ -6,15 +6,39 @@ import CampaignRowMenu from "@/components/datarequest/CampaignRowMenu";
 
 export const dynamic = "force-dynamic";
 
+function DashTile({ label, value, sub, accent }: { label: string; value: string; sub: string; accent?: boolean }) {
+  return (
+    <div className="bg-white border border-line rounded-xl px-4 py-3.5 shadow-[0_1px_2px_rgba(16,33,26,0.05)]">
+      <p className="text-[11.5px] font-bold uppercase tracking-[0.1em] text-ink-muted">{label}</p>
+      <p className={`text-[28px] font-bold tabular-nums leading-tight mt-1 ${accent ? "text-brand-700" : "text-ink"}`}>{value}</p>
+      <p className="text-[12.5px] text-ink-body mt-0.5">{sub}</p>
+    </div>
+  );
+}
+
 export default async function RequestsPage() {
   const campaigns = await listCampaigns();
 
+  // Cross-client summary for the dashboard tiles (all computed from real data).
+  const allItems = campaigns.flatMap((c) => c.contacts.flatMap((ct) => ct.items));
+  const totalAssigned = allItems.length;
+  const totalReceived = allItems.filter((i) => i.status === "received").length;
+  const overallPct = totalAssigned ? Math.round((totalReceived / totalAssigned) * 100) : 0;
+  const readyToDraft = campaigns.filter((c) => {
+    const it = c.contacts.flatMap((x) => x.items);
+    return it.length > 0 && it.every((i) => i.status === "received");
+  }).length;
+  const awaiting = campaigns.filter((c) => {
+    const it = c.contacts.flatMap((x) => x.items);
+    return it.length > 0 && it.some((i) => i.status !== "received");
+  }).length;
+
   return (
-    <div className="max-w-[820px] mx-auto">
+    <div className="w-full">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-[26px] text-ink tracking-tight">Data collections</h1>
-          <p className="text-[13.5px] text-ink-muted mt-1">One per client. Track who&apos;s sent their data.</p>
+          <h1 className="font-display text-[26px] text-ink tracking-tight">Dashboard</h1>
+          <p className="text-[13.5px] text-ink-muted mt-1">Your BRSR clients at a glance.</p>
         </div>
         <Link
           href="/requests/new"
@@ -23,6 +47,15 @@ export default async function RequestsPage() {
           New collection
         </Link>
       </div>
+
+      {campaigns.length > 0 && (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-6">
+          <DashTile label="Clients" value={String(campaigns.length)} sub="active" />
+          <DashTile label="Data collected" value={`${overallPct}%`} sub={`${totalReceived}/${totalAssigned} fields`} accent />
+          <DashTile label="Awaiting" value={String(awaiting)} sub={awaiting === 1 ? "client to chase" : "clients to chase"} />
+          <DashTile label="Ready to draft" value={String(readyToDraft)} sub={readyToDraft === 1 ? "client" : "clients"} />
+        </div>
+      )}
 
       {campaigns.length === 0 ? (
         // EMPTY STATE — guided, never blank.
@@ -58,7 +91,8 @@ export default async function RequestsPage() {
         </div>
       ) : (
         <>
-          <div className="mt-5 flex justify-end">
+          <div className="mt-7 flex items-center justify-between gap-3">
+            <h2 className="font-display text-[17px] font-bold text-ink">Collections</h2>
             <form action={loadSampleClientAction}>
               <button
                 type="submit"
@@ -72,7 +106,7 @@ export default async function RequestsPage() {
             </form>
           </div>
 
-          <div className="mt-2 space-y-2.5">
+          <div className="mt-3 space-y-2.5">
             {campaigns.map((c) => {
               const items = c.contacts.flatMap((ct) => ct.items);
               const received = items.filter((i) => i.status === "received").length;

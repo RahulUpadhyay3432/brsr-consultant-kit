@@ -107,11 +107,11 @@ export default function StartPage() {
                 leading-[1.05] tracking-[-0.02em]"
               style={{ textWrap: "balance", animationDelay: "70ms" }}
             >
-              Generate your client&apos;s
+              Your client&apos;s BRSR,
               <br />
-              <span className="italic text-brand-700">BRSR Readiness Report</span>
+              <span className="italic text-brand-700">gap-analysed and cited,</span>
               <br />
-              in under a minute.
+              in seconds.
             </h2>
 
             {/* Subtitle — secondary, follows heading */}
@@ -119,9 +119,10 @@ export default function StartPage() {
               className="anim-up-md text-ink-body mt-6 text-[17px] sm:text-[19px] max-w-[600px] leading-[1.7]"
               style={{ animationDelay: "180ms" }}
             >
-              Fill in a few details below. Get a gap-analysis checklist,
-              suggested material topics, and cross-framework
-              mappings — all ready for your client meeting.
+              Fill in a few details and instantly get a gap-analysed action plan —
+              what&apos;s covered, what&apos;s missing, and how to collect it — cited to
+              SEBI &amp; ICAI, with suggested material topics and framework mappings.
+              Your starting point for the engagement.
             </p>
           </div>
 

@@ -10,6 +10,7 @@ import { uploadEvidence } from "./storage";
 import { generateNarrative, type NarrativeResult } from "./narrative";
 import { extractValues, extractValuesBulk, type ImportResult, type BulkImportResult, type BulkDoc, type DocCategory } from "./importer";
 import { groqConfigured } from "./groq";
+import { extractCbam, type CbamSuggestion } from "./cbam-extract";
 import { requireConsultant } from "./guard";
 
 function baseUrl(): string {
@@ -36,6 +37,22 @@ export async function deleteCampaignAction(campaignId: string): Promise<void> {
   if (!campaignId) return;
   await db.deleteCampaign(campaignId);
   revalidatePath("/requests");
+}
+
+// CBAM screening auto-fill: extract the covered good + production/export quantity from
+// an uploaded document (text extracted on-device first). Grounded, best-effort.
+export async function cbamExtractAction(
+  text: string,
+): Promise<{ configured: boolean; suggestion: CbamSuggestion | null }> {
+  requireConsultant();
+  if (!groqConfigured()) return { configured: false, suggestion: null };
+  const t = (text || "").trim();
+  if (!t) return { configured: true, suggestion: null };
+  try {
+    return { configured: true, suggestion: await extractCbam(t) };
+  } catch {
+    return { configured: true, suggestion: null };
+  }
 }
 
 // 2) Consultant adds a data owner to a campaign and sends them a request.

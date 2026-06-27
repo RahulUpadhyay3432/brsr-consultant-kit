@@ -32,19 +32,6 @@ const CATEGORY_OPTIONS: { value: DocCategory; label: string }[] = [
   { value: "other", label: "Other" },
 ];
 
-// The category-FIRST picker shown before a file is chosen: the meaningful document
-// types, each with a one-line "what the AI reads" hint so the consultant tags up
-// front (the choice scopes which BRSR fields the AI extracts — sharper, more accurate).
-const CATEGORY_PICKS: { value: DocCategory; label: string; hint: string }[] = [
-  { value: "brsr",     label: "Last year's BRSR",      hint: "Every section — the richest source" },
-  { value: "annual",   label: "Annual report",         hint: "Financials, governance, energy use" },
-  { value: "energy",   label: "Energy & fuel bills",   hint: "Electricity & diesel → your Scope 1 & 2 calc" },
-  { value: "hr",       label: "HR & headcount",        hint: "Workforce & diversity (P3, P5)" },
-  { value: "water",    label: "Water & waste",         hint: "Consumption & discharge (P6)" },
-  { value: "policies", label: "Policies & governance", hint: "Section B policies, board oversight" },
-  { value: "auto",     label: "Not sure / mixed",      hint: "Scan the document for any BRSR figures" },
-];
-
 // A file staged for import: the local File + its extracted text + chosen category.
 interface StagedDoc {
   name: string;
@@ -90,8 +77,6 @@ export default function BulkImportPanel({
   const [msg, setMsg] = useState<string | null>(null);
   const [warn, setWarn] = useState<string | null>(null);
   const [staged, setStaged] = useState<StagedDoc[]>([]);
-  // The category chosen at the picker, applied to the next file(s) selected.
-  const [pendingCategory, setPendingCategory] = useState<DocCategory>("auto");
   const [suggestions, setSuggestions] = useState<BulkSuggestion[] | null>(null);
   const [truncated, setTruncated] = useState(false);
   // ticked rows + per-row edited values, keyed by fieldId
@@ -129,7 +114,7 @@ export default function BulkImportPanel({
             : `Reading document ${i + 1} of ${files.length}…`,
         );
         const { text } = await extractPdfText(files[i]);
-        if (text.trim()) docs.push({ name: files[i].name, text, category: pendingCategory });
+        if (text.trim()) docs.push({ name: files[i].name, text, category: "auto" });
       }
       setBusy(null);
       if (!docs.length) {
@@ -253,10 +238,11 @@ export default function BulkImportPanel({
             Auto-fill from your documents
           </h2>
           <p className="text-[14.5px] text-ink-body mt-1 leading-relaxed">
-            Already have the client&apos;s documents? Upload last year&apos;s BRSR,
-            the annual report, bills or policies — you tag each file&apos;s type and the
-            AI fills the BRSR skeleton for you to verify. Files stay in your browser;
-            the AI only suggests values it finds, with the source shown.
+            Already have the client&apos;s documents? Upload any of them — last year&apos;s
+            BRSR, the annual report, bills, HR sheets, policies, anything — and the AI
+            reads each one and fills the matching BRSR fields for you to verify, across
+            all 9 principles. You don&apos;t sort them; the AI does. Files stay in your
+            browser; only values it finds are suggested, with the source shown.
           </p>
         </div>
       </div>
@@ -319,33 +305,23 @@ export default function BulkImportPanel({
             </div>
           )}
 
-          {/* The category picker — the FIRST decision. Pick a type → file dialog opens for it. */}
+          {/* Upload-first: drop any documents; the AI sorts them. Category (on each
+              staged file above) is an OPTIONAL accuracy refinement, never required. */}
           <div className="mt-4">
-            <p className="text-[14.5px] font-semibold text-ink mb-1">
-              {staged.length ? "Add another document" : "What are you uploading?"}
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={!!busy}
+              className="inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest-light disabled:opacity-60 transition-colors duration-200 pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 16V4m0 0L8 8m4-4l4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
+              </svg>
+              {staged.length ? "Add more documents" : "Choose documents"}
+            </button>
+            <p className="mt-2.5 text-[13px] text-ink-muted leading-relaxed">
+              Upload one or several PDFs at once — any client document works. Each is read in your browser; nothing is sent until you apply. Optionally tag a file&apos;s type above to sharpen accuracy.
             </p>
-            <p className="text-[13px] text-ink-muted mb-3 leading-relaxed">
-              Pick the document type, then choose the PDF. Tagging it tells the AI which BRSR fields to read — far more accurate. Files are read in your browser; nothing is sent until you apply.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-              {CATEGORY_PICKS.map((c) => (
-                <button
-                  key={c.value}
-                  type="button"
-                  disabled={!!busy}
-                  onClick={() => { setPendingCategory(c.value); fileRef.current?.click(); }}
-                  className="text-left px-4 py-3 rounded-xl border border-line bg-white hover:border-brand-300 hover:bg-tint/50 transition-colors duration-150 pressable focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:opacity-60"
-                >
-                  <span className="flex items-center gap-2">
-                    <svg className="w-4 h-4 flex-shrink-0 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 16V4m0 0L8 8m4-4l4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
-                    </svg>
-                    <span className="text-[14px] font-semibold text-ink">{c.label}</span>
-                  </span>
-                  <span className="block text-[12.5px] text-ink-muted mt-1 leading-snug">{c.hint}</span>
-                </button>
-              ))}
-            </div>
           </div>
 
           <input

@@ -5,13 +5,10 @@ import { buildAssuranceLedger, assuranceStats } from "@/lib/datarequest/assuranc
 import { exportFilename } from "@/lib/export";
 import { signCampaignEvidence } from "@/lib/datarequest/storage";
 import CampaignWorkspace from "@/components/datarequest/CampaignWorkspace";
-import BulkImportPanel from "@/components/datarequest/BulkImportPanel";
 import {
   addContactAction,
   addDirectoryContactsAction,
   deleteDirectoryContactAction,
-  importDocumentAction,
-  applyImportAction,
   remindAllPendingAction,
   bulkImportAction,
   applyBulkImportAction,
@@ -52,24 +49,13 @@ export default async function CampaignDetailPage({
   const addOwner = addContactAction.bind(null, campaign.id, campaign.clientName, campaign.deadline, campaign.reportingPeriod);
   const addContact = addDirectoryContactsAction.bind(null, campaign.id);
   const deleteContact = deleteDirectoryContactAction.bind(null, campaign.id);
-  const importDoc = importDocumentAction.bind(null, campaign.id);
-  const applyImport = applyImportAction.bind(null, campaign.id);
   const remindAll = remindAllPendingAction.bind(null, campaign.id);
 
   return (
-    <div className="max-w-[1600px] mx-auto bg-page">
+    <div className="bg-page">
       <a href="/requests" className="text-[14.5px] text-ink-body hover:text-ink">← All collections</a>
 
-      {/* Headline "bring your documents" surface — bulk import across the campaign. */}
       <div className="mt-4">
-        <BulkImportPanel
-          campaignId={campaign.id}
-          bulkAction={bulkImportAction}
-          applyAction={applyBulkImportAction}
-        />
-      </div>
-
-      <div className="mt-5">
         <CampaignWorkspace
           campaign={campaign}
           base={base}
@@ -87,8 +73,8 @@ export default async function CampaignDetailPage({
           addOwnerAction={addOwner}
           addContactAction={addContact}
           deleteContactAction={deleteContact}
-          importAction={importDoc}
-          applyImportAction={applyImport}
+          bulkAction={bulkImportAction}
+          applyBulkAction={applyBulkImportAction}
           remindAllPendingAction={remindAll}
         />
       </div>

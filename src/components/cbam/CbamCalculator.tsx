@@ -4,11 +4,13 @@
 // a live result card (total embedded tCO₂e + per-tonne intensity) with a cited
 // methodology footnote and a prominent honest "screening, not the declaration" note.
 // Fully on-device; nothing is stored.
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   CBAM_GOODS, estimateCbam,
   type CbamGoodId,
 } from "@/lib/cbam-calculator";
+import { extractPdfText } from "@/lib/pdf-extract";
+import { cbamExtractAction } from "@/lib/datarequest/actions";
 
 function fmt(n: number, dp = 2): string {
   return n.toLocaleString("en-IN", { minimumFractionDigits: dp, maximumFractionDigits: dp });
@@ -18,6 +20,32 @@ export default function CbamCalculator() {
   const [goodId, setGoodId] = useState<CbamGoodId>("iron_steel");
   const [tonnesStr, setTonnesStr] = useState("");
   const [overrideStr, setOverrideStr] = useState("");
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [applied, setApplied] = useState<{ source: string; confidence: string; doc: string } | null>(null);
+  const [autoMsg, setAutoMsg] = useState<string | null>(null);
+
+  async function onFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setBusy("Reading your document…"); setAutoMsg(null); setApplied(null);
+    try {
+      const { text } = await extractPdfText(file);
+      if (!text.trim()) { setBusy(null); setAutoMsg("That looks like a scanned PDF (no selectable text). Try a text-based PDF."); return; }
+      setBusy("Finding the CBAM figures…");
+      const { configured, suggestion } = await cbamExtractAction(text);
+      setBusy(null);
+      if (!configured) { setAutoMsg("AI auto-fill isn't configured on this deployment yet."); return; }
+      if (!suggestion) { setAutoMsg("No CBAM covered-good quantity found in this document. Enter it by hand, or try the production / export report."); return; }
+      setGoodId(suggestion.goodId as CbamGoodId);
+      setTonnesStr(String(suggestion.tonnes));
+      if (suggestion.overrideFactor) setOverrideStr(String(suggestion.overrideFactor));
+      setApplied({ source: suggestion.source, confidence: suggestion.confidence, doc: file.name });
+    } catch {
+      setBusy(null); setAutoMsg("Could not read that file. Try a different text-based PDF.");
+    }
+  }
 
   const tonnes = parseFloat(tonnesStr);
   const override = parseFloat(overrideStr);
@@ -59,6 +87,42 @@ export default function CbamCalculator() {
             <strong className="font-semibold">Screening estimate from EU CBAM default values — not the official CBAM declaration.</strong>{" "}
             The real declaration needs installation-specific, third-party-verified data. Verify with the producing installation&apos;s actual figures before reporting.
           </p>
+        </div>
+
+        {/* Auto-fill from a document */}
+        <div className="rounded-lg border border-line bg-tint/40 px-3.5 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-2.5">
+            <div className="min-w-0">
+              <p className="text-[13.5px] font-semibold text-ink">Auto-fill from a document</p>
+              <p className="text-[12.5px] text-ink-body leading-snug">Upload a production or export report — the AI reads the good + quantity. On your device; verify before relying on it.</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={!!busy}
+              className="inline-flex items-center gap-1.5 bg-forest text-white text-[13.5px] font-semibold px-3.5 py-2 rounded-lg hover:bg-forest-light disabled:opacity-60 transition-colors pressable focus:outline-none focus:ring-2 focus:ring-brand-400 flex-shrink-0"
+            >
+              {busy ? (
+                <>
+                  <svg className="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.4 0 0 5.4 0 12h4z" /></svg>
+                  {busy}
+                </>
+              ) : (
+                <>
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><path d="M12 16V4m0 0L8 8m4-4l4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" /></svg>
+                  Choose document
+                </>
+              )}
+            </button>
+          </div>
+          <input ref={fileRef} type="file" accept="application/pdf" onChange={onFile} className="hidden" />
+          {applied && (
+            <div className="mt-2.5 flex items-start gap-2 text-[12.5px] text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 leading-relaxed">
+              <svg className="w-3.5 h-3.5 mt-0.5 flex-shrink-0 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><path d="M12 9v4m0 4h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" /></svg>
+              <span><span className="font-semibold">Filled from {applied.doc}</span> ({applied.confidence} confidence) — verify: &ldquo;{applied.source}&rdquo;</span>
+            </div>
+          )}
+          {autoMsg && <p className="mt-2.5 text-[12.5px] text-ink-body leading-relaxed">{autoMsg}</p>}
         </div>
 
         {/* Inputs */}

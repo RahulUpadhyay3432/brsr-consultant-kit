@@ -13,7 +13,7 @@ export default function CbamPage() {
 
   return (
     <div className="bg-page min-h-full">
-      <div className="max-w-[920px] mx-auto px-1">
+      <div className="w-full px-1">
         <header className="pt-1">
           <h1 className="font-display text-[26px] font-bold text-ink tracking-tight">
             CBAM — embedded emissions (screening)

@@ -7,8 +7,9 @@
 // is real (status / value / priorValue / lastEmailedAt / remindersSent / evidence /
 // computed emissions) — nothing is fabricated.
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import CompanyAvatar from "@/components/CompanyAvatar";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import ProgressBar from "@/components/datarequest/charts/ProgressBar";
@@ -17,11 +18,11 @@ import CopyLinkButton from "@/components/datarequest/CopyLinkButton";
 import AssurancePackButton from "@/components/datarequest/AssurancePackButton";
 import AddOwnerPanel from "@/components/datarequest/AddOwnerPanel";
 import DirectoryPanel from "@/components/datarequest/DirectoryPanel";
-import ImportPanel from "@/components/datarequest/ImportPanel";
+import BulkImportPanel from "@/components/datarequest/BulkImportPanel";
 import { PRINCIPLE_LABELS, SECTION_LABELS, PRINCIPLE_ORDER } from "@/lib/datarequest/brsr-meta";
 import type { Campaign, Contact, Item, ContactStatus, CompanyContact, RequestField } from "@/lib/datarequest/types";
 import type { EmissionInput } from "@/lib/datarequest/emissions";
-import type { ImportResult } from "@/lib/datarequest/importer";
+import type { BulkImportResult, DocCategory } from "@/lib/datarequest/importer";
 
 type Action = (formData: FormData) => void | Promise<void>;
 
@@ -58,9 +59,10 @@ function fmtT(n: number): string {
   return n.toLocaleString("en-IN", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 }
 
-type ViewKey = "overview" | "readiness" | "owners" | "data" | "emissions" | "draft";
+type ViewKey = "overview" | "autofill" | "readiness" | "owners" | "data" | "emissions" | "draft";
 const VIEWS: { key: ViewKey; label: string }[] = [
   { key: "overview", label: "Overview" },
+  { key: "autofill", label: "Auto-fill" },
   { key: "readiness", label: "Readiness" },
   { key: "owners", label: "Owners" },
   { key: "data", label: "Data" },
@@ -86,14 +88,28 @@ export interface CampaignWorkspaceProps {
   addOwnerAction: Action;
   addContactAction: Action;
   deleteContactAction: Action;
-  importAction: (text: string) => Promise<ImportResult>;
-  applyImportAction: Action;
+  bulkAction: (campaignId: string, docs: { name: string; text: string; category?: DocCategory }[]) => Promise<BulkImportResult>;
+  applyBulkAction: (campaignId: string, accepted: { fieldId: string; value: string }[]) => Promise<void>;
   remindAllPendingAction: () => Promise<void>;
 }
 
 export default function CampaignWorkspace(props: CampaignWorkspaceProps) {
   const { campaign } = props;
-  const [view, setView] = useState<ViewKey>("overview");
+  // The active view is reflected in the URL (?view=) so the sidebar can deep-link to
+  // each section and a tab is shareable. Tab clicks update the URL without a refetch
+  // (history.replaceState); a sidebar deep-link (a real navigation) is picked up via
+  // the effect below.
+  const searchParams = useSearchParams();
+  const urlView: ViewKey = (() => {
+    const v = searchParams.get("view");
+    return VIEWS.some((x) => x.key === v) ? (v as ViewKey) : "overview";
+  })();
+  const [view, setView] = useState<ViewKey>(urlView);
+  useEffect(() => { setView(urlView); }, [urlView]);
+  const goView = (key: ViewKey) => {
+    setView(key);
+    if (typeof window !== "undefined") window.history.replaceState(null, "", `/requests/${campaign.id}?view=${key}`);
+  };
   const [pending, startTransition] = useTransition();
 
   const allItems = useMemo(() => campaign.contacts.flatMap((c) => c.items), [campaign]);
@@ -154,7 +170,7 @@ export default function CampaignWorkspace(props: CampaignWorkspaceProps) {
           {VIEWS.map((v) => (
             <button
               key={v.key}
-              onClick={() => setView(v.key)}
+              onClick={() => goView(v.key)}
               className={`relative px-3.5 py-2.5 text-[14.5px] font-semibold whitespace-nowrap transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 rounded-t-md ${
                 view === v.key ? "text-ink" : "text-ink-body hover:text-ink"
               }`}
@@ -168,7 +184,8 @@ export default function CampaignWorkspace(props: CampaignWorkspaceProps) {
 
       {/* Active view (tab-fade on switch) */}
       <div key={view} className="anim-up-sm mt-5">
-        {view === "overview" && <OverviewView {...props} received={received} awaiting={awaiting} hasPending={hasPending} onRemindAll={remindAll} reminding={pending} />}
+        {view === "overview" && <OverviewView {...props} received={received} awaiting={awaiting} hasPending={hasPending} onRemindAll={remindAll} reminding={pending} onGoView={goView} />}
+        {view === "autofill" && <AutofillView {...props} />}
         {view === "readiness" && <ReadinessView {...props} />}
         {view === "owners" && <OwnersView {...props} />}
         {view === "data" && <DataView {...props} />}
@@ -310,8 +327,42 @@ function ReadinessGroup({
   );
 }
 
+// The single "Auto-fill from your documents" space (was a separate panel above the
+// header — now a workspace tab, below the company identity, so there's ONE place).
+function AutofillView(props: CampaignWorkspaceProps) {
+  return (
+    <BulkImportPanel
+      campaignId={props.campaign.id}
+      bulkAction={props.bulkAction}
+      applyAction={props.applyBulkAction}
+    />
+  );
+}
+
+function AutofillCta({ onGoView }: { onGoView: (key: ViewKey) => void }) {
+  return (
+    <Card>
+      <div className="flex items-start gap-3">
+        <span className="mt-0.5 inline-flex items-center justify-center w-9 h-9 rounded-lg bg-tint text-brand-700 flex-shrink-0">
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><path d="M12 16V4m0 0L8 8m4-4l4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" /></svg>
+        </span>
+        <div className="min-w-0">
+          <p className="text-[15.5px] font-bold text-ink font-display">Already have the client&apos;s documents?</p>
+          <p className="text-[13.5px] text-ink-body mt-1 leading-relaxed">
+            Upload last year&apos;s BRSR, the annual report, bills or policies and let the AI fill the BRSR for you — then chase only what&apos;s still missing.
+          </p>
+          <button onClick={() => onGoView("autofill")} className="mt-3 inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-4 py-2 rounded-lg hover:bg-forest-light transition-colors pressable focus:outline-none focus:ring-2 focus:ring-brand-400">
+            Auto-fill from documents
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </button>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
 function OverviewView(
-  props: CampaignWorkspaceProps & { received: number; awaiting: number; hasPending: boolean; onRemindAll: () => void; reminding: boolean },
+  props: CampaignWorkspaceProps & { received: number; awaiting: number; hasPending: boolean; onRemindAll: () => void; reminding: boolean; onGoView: (key: ViewKey) => void },
 ) {
   const { campaign, ghg, assurance } = props;
   const allItems = campaign.contacts.flatMap((c) => c.items);
@@ -324,8 +375,8 @@ function OverviewView(
   if (allItems.length === 0) {
     return (
       <div className="space-y-5">
+        <AutofillCta onGoView={props.onGoView} />
         <EmptyOwners />
-        <ToolsArea {...props} />
       </div>
     );
   }
@@ -450,9 +501,6 @@ function ToolsArea(props: CampaignWorkspaceProps) {
         {assurance.collected > 0 && (
           <AssurancePackButton rows={props.ledger} filename={props.ledgerFilename} />
         )}
-      </div>
-      <div className="mt-3">
-        <ImportPanel importAction={props.importAction} applyAction={props.applyImportAction} hasItems={allItems.length > 0} />
       </div>
     </Card>
   );
