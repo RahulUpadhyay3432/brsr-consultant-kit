@@ -3,12 +3,13 @@
 // transparent fee breakdown and a downloadable branded proposal PDF. Fully
 // client-side; nothing is stored. Honest: it structures YOUR rates, it does not
 // assert a market price.
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   estimateFee, DEFAULT_FEE_INPUTS, SIZE_LABELS, MATURITY_LABELS, FRAMEWORK_LABELS,
   type FeeInputs, type CompanySizeKey, type MaturityKey, type FrameworkKey,
 } from "@/lib/proposal";
 import { downloadProposalPdf } from "@/lib/proposal-pdf";
+import { loadProfile } from "@/lib/datarequest/profile";
 
 const FRAMEWORKS = Object.keys(FRAMEWORK_LABELS) as FrameworkKey[];
 
@@ -41,6 +42,16 @@ export default function ProposalBuilder() {
   const set = <K extends keyof FeeInputs>(k: K, v: FeeInputs[K]) => setInp((p) => ({ ...p, [k]: v }));
   const toggleFw = (f: FrameworkKey) => set("frameworks", inp.frameworks.includes(f) ? inp.frameworks.filter((x) => x !== f) : [...inp.frameworks, f]);
 
+  // Seed the editable rates from the consultant's saved profile (on-device).
+  useEffect(() => {
+    const pr = loadProfile();
+    setInp((prev) => ({
+      ...prev,
+      baseFee: pr.baseFee, perFramework: pr.perFramework, scope3Fee: pr.scope3Fee,
+      valueChainFee: pr.valueChainFee, assuranceFee: pr.assuranceFee,
+    }));
+  }, []);
+
   const fee = estimateFee(inp);
 
   return (
@@ -54,7 +65,7 @@ export default function ProposalBuilder() {
           </p>
         </div>
         <button
-          onClick={() => downloadProposalPdf(inp)}
+          onClick={() => downloadProposalPdf(inp, loadProfile())}
           className="flex-shrink-0 inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-4 py-2.5 rounded-lg hover:bg-forest-light transition-colors pressable"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" /></svg>

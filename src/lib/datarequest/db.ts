@@ -287,3 +287,31 @@ export async function upsertCompanyContacts(
 export async function deleteCompanyContact(id: string): Promise<void> {
   await rest(`brsr_company_contacts?id=eq.${encodeURIComponent(id)}`, { method: "DELETE" });
 }
+
+// ─── Delete an entire campaign + all its children ───────────────────────────
+// Done in FK-safe order with explicit DELETEs (so it works whether or not the
+// child FKs are ON DELETE CASCADE — no migration required): the items under the
+// campaign's contacts → the contacts → the saved-contacts directory → the
+// campaign row. The directory delete is best-effort (the table may not exist yet).
+export async function deleteCampaign(id: string): Promise<void> {
+  // 1. Collect the campaign's contact ids so their items can be cleared first.
+  const cres = await rest(`brsr_contacts?request_id=eq.${encodeURIComponent(id)}&select=id`);
+  const contactIds = ((await cres.json()) as { id: string }[]).map((r) => r.id);
+
+  // 2. Delete the items belonging to those contacts.
+  if (contactIds.length) {
+    const inList = contactIds.map((c) => encodeURIComponent(c)).join(",");
+    await rest(`brsr_request_items?contact_id=in.(${inList})`, { method: "DELETE" });
+  }
+
+  // 3. Delete the contacts (data owners + any synthetic "Imported documents" contact).
+  await rest(`brsr_contacts?request_id=eq.${encodeURIComponent(id)}`, { method: "DELETE" });
+
+  // 4. Delete the saved-contacts directory (best-effort — table optional pre-migration).
+  try {
+    await rest(`brsr_company_contacts?request_id=eq.${encodeURIComponent(id)}`, { method: "DELETE" });
+  } catch { /* directory table absent — ignore */ }
+
+  // 5. Delete the campaign row itself.
+  await rest(`brsr_requests?id=eq.${encodeURIComponent(id)}`, { method: "DELETE" });
+}

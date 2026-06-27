@@ -32,6 +32,19 @@ const CATEGORY_OPTIONS: { value: DocCategory; label: string }[] = [
   { value: "other", label: "Other" },
 ];
 
+// The category-FIRST picker shown before a file is chosen: the meaningful document
+// types, each with a one-line "what the AI reads" hint so the consultant tags up
+// front (the choice scopes which BRSR fields the AI extracts — sharper, more accurate).
+const CATEGORY_PICKS: { value: DocCategory; label: string; hint: string }[] = [
+  { value: "brsr",     label: "Last year's BRSR",      hint: "Every section — the richest source" },
+  { value: "annual",   label: "Annual report",         hint: "Financials, governance, energy use" },
+  { value: "energy",   label: "Energy & fuel bills",   hint: "Electricity & diesel → your Scope 1 & 2 calc" },
+  { value: "hr",       label: "HR & headcount",        hint: "Workforce & diversity (P3, P5)" },
+  { value: "water",    label: "Water & waste",         hint: "Consumption & discharge (P6)" },
+  { value: "policies", label: "Policies & governance", hint: "Section B policies, board oversight" },
+  { value: "auto",     label: "Not sure / mixed",      hint: "Scan the document for any BRSR figures" },
+];
+
 // A file staged for import: the local File + its extracted text + chosen category.
 interface StagedDoc {
   name: string;
@@ -77,6 +90,8 @@ export default function BulkImportPanel({
   const [msg, setMsg] = useState<string | null>(null);
   const [warn, setWarn] = useState<string | null>(null);
   const [staged, setStaged] = useState<StagedDoc[]>([]);
+  // The category chosen at the picker, applied to the next file(s) selected.
+  const [pendingCategory, setPendingCategory] = useState<DocCategory>("auto");
   const [suggestions, setSuggestions] = useState<BulkSuggestion[] | null>(null);
   const [truncated, setTruncated] = useState(false);
   // ticked rows + per-row edited values, keyed by fieldId
@@ -114,7 +129,7 @@ export default function BulkImportPanel({
             : `Reading document ${i + 1} of ${files.length}…`,
         );
         const { text } = await extractPdfText(files[i]);
-        if (text.trim()) docs.push({ name: files[i].name, text, category: "auto" });
+        if (text.trim()) docs.push({ name: files[i].name, text, category: pendingCategory });
       }
       setBusy(null);
       if (!docs.length) {
@@ -246,52 +261,21 @@ export default function BulkImportPanel({
         </div>
       </div>
 
-      {/* Upload control + staged-file list with per-file category tagging */}
+      {/* Category-FIRST upload: pick what the document is, then choose the PDF */}
       {!suggestions && (
         <div className="mt-5">
-          <button
-            type="button"
-            onClick={() => fileRef.current?.click()}
-            disabled={!!busy}
-            className="inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest/90 disabled:opacity-60 transition-colors duration-200 pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
-          >
-            {busy ? (
-              <>
-                <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.4 0 0 5.4 0 12h4z" />
-                </svg>
-                {busy}
-              </>
-            ) : (
-              <>
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 16V4m0 0L8 8m4-4l4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
-                </svg>
-                {staged.length ? "Add more PDFs" : "Choose PDFs"}
-              </>
-            )}
-          </button>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="application/pdf"
-            multiple
-            onChange={onFiles}
-            className="hidden"
-          />
-          <p className="mt-2.5 text-[13px] text-ink-muted leading-relaxed">
-            You can select several PDFs at once. Each is read locally in your browser before anything is sent.
+          {/* What this does — auto-fill IS collection, surfaced in Data + Readiness */}
+          <p className="text-[13px] text-ink-body bg-tint border border-brand-100 rounded-lg px-3.5 py-2.5 leading-relaxed">
+            Values you apply become this client&apos;s <span className="font-semibold text-ink">collected data</span> —
+            they fill the <span className="font-semibold text-ink">Data</span> tab and move your{" "}
+            <span className="font-semibold text-ink">Readiness</span> %.
           </p>
 
-          {/* Staged files — tag each with its content type for a sharper, more accurate fill. */}
+          {/* Documents added so far — each tagged (retaggable) + removable */}
           {staged.length > 0 && (
             <div className="mt-4">
-              <p className="text-[14.5px] font-semibold text-ink mb-1">
-                Tag each document&apos;s type
-              </p>
-              <p className="text-[13px] text-ink-muted mb-2.5 leading-relaxed">
-                Telling the AI what each file is (last year&apos;s BRSR, energy bills, HR data…) makes the fill far more accurate.
+              <p className="text-[14.5px] font-semibold text-ink mb-2">
+                {staged.length} {staged.length === 1 ? "document" : "documents"} ready
               </p>
               <div className="space-y-2">
                 {staged.map((d, idx) => (
@@ -332,35 +316,76 @@ export default function BulkImportPanel({
                   </div>
                 ))}
               </div>
+            </div>
+          )}
 
-              <div className="flex items-center gap-3 mt-4">
+          {/* The category picker — the FIRST decision. Pick a type → file dialog opens for it. */}
+          <div className="mt-4">
+            <p className="text-[14.5px] font-semibold text-ink mb-1">
+              {staged.length ? "Add another document" : "What are you uploading?"}
+            </p>
+            <p className="text-[13px] text-ink-muted mb-3 leading-relaxed">
+              Pick the document type, then choose the PDF. Tagging it tells the AI which BRSR fields to read — far more accurate. Files are read in your browser; nothing is sent until you apply.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+              {CATEGORY_PICKS.map((c) => (
                 <button
+                  key={c.value}
                   type="button"
-                  onClick={runFill}
                   disabled={!!busy}
-                  className="inline-flex items-center gap-2 bg-brand-600 text-white text-[15px] font-semibold px-5 py-2.5 rounded-lg hover:bg-brand-700 disabled:opacity-60 transition-colors duration-200 pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
+                  onClick={() => { setPendingCategory(c.value); fileRef.current?.click(); }}
+                  className="text-left px-4 py-3 rounded-xl border border-line bg-white hover:border-brand-300 hover:bg-tint/50 transition-colors duration-150 pressable focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:opacity-60"
                 >
-                  {busy ? (
-                    <>
-                      <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.4 0 0 5.4 0 12h4z" />
-                      </svg>
-                      {busy}
-                    </>
-                  ) : (
-                    <>Fill from {staged.length} {staged.length === 1 ? "document" : "documents"} →</>
-                  )}
+                  <span className="flex items-center gap-2">
+                    <svg className="w-4 h-4 flex-shrink-0 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 16V4m0 0L8 8m4-4l4 4M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
+                    </svg>
+                    <span className="text-[14px] font-semibold text-ink">{c.label}</span>
+                  </span>
+                  <span className="block text-[12.5px] text-ink-muted mt-1 leading-snug">{c.hint}</span>
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setStaged([])}
-                  disabled={!!busy}
-                  className="text-[13px] text-ink-muted hover:text-ink-body disabled:opacity-50 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-brand-400 rounded px-1"
-                >
-                  Clear
-                </button>
-              </div>
+              ))}
+            </div>
+          </div>
+
+          <input
+            ref={fileRef}
+            type="file"
+            accept="application/pdf"
+            multiple
+            onChange={onFiles}
+            className="hidden"
+          />
+
+          {busy && (
+            <p className="mt-3 flex items-center gap-2 text-[13.5px] text-ink-body">
+              <svg className="w-4 h-4 animate-spin text-brand-600" viewBox="0 0 24 24" fill="none">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.4 0 0 5.4 0 12h4z" />
+              </svg>
+              {busy}
+            </p>
+          )}
+
+          {/* Fill CTA — the bottom action once at least one document is staged */}
+          {staged.length > 0 && (
+            <div className="flex items-center gap-3 mt-4 pt-4 border-t border-line">
+              <button
+                type="button"
+                onClick={runFill}
+                disabled={!!busy}
+                className="inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-5 py-2.5 rounded-lg hover:bg-forest-light disabled:opacity-60 transition-colors duration-200 pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                Fill from {staged.length} {staged.length === 1 ? "document" : "documents"} →
+              </button>
+              <button
+                type="button"
+                onClick={() => setStaged([])}
+                disabled={!!busy}
+                className="text-[13px] text-ink-muted hover:text-ink-body disabled:opacity-50 transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-brand-400 rounded px-1"
+              >
+                Clear all
+              </button>
             </div>
           )}
 

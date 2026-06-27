@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { listCampaigns } from "@/lib/datarequest/db";
-import { loadSampleClientAction } from "@/lib/datarequest/actions";
+import { loadSampleClientAction, deleteCampaignAction } from "@/lib/datarequest/actions";
 import CompanyAvatar from "@/components/CompanyAvatar";
+import CampaignRowMenu from "@/components/datarequest/CampaignRowMenu";
 
 export const dynamic = "force-dynamic";
 
@@ -97,61 +98,56 @@ export default async function RequestsPage() {
                   : "text-amber-600";
 
               return (
-                <Link
-                  key={c.id}
-                  href={`/requests/${c.id}`}
-                  className="group block bg-white border border-line rounded-xl px-4 py-3.5 hover:border-ink-muted/30 hover:bg-tint/40 transition-colors shadow-[0_1px_2px_rgba(16,33,26,0.05)] pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
-                >
-                  <div className="flex items-center gap-3.5">
-                    <CompanyAvatar name={c.clientName} size={36} rounded="rounded-lg" />
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <p className="text-[14.5px] font-semibold text-ink truncate" title={c.clientName}>
-                          {c.clientName}
+                <div key={c.id} className="relative">
+                  <Link
+                    href={`/requests/${c.id}`}
+                    className="group block bg-white border border-line rounded-xl px-4 py-3.5 hover:border-ink-muted/30 hover:bg-tint/40 transition-colors shadow-[0_1px_2px_rgba(16,33,26,0.05)] pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
+                  >
+                    <div className="flex items-center gap-3.5 pr-9">
+                      <CompanyAvatar name={c.clientName} size={36} rounded="rounded-lg" />
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <p className="text-[14.5px] font-semibold text-ink truncate" title={c.clientName}>
+                            {c.clientName}
+                          </p>
+                          {c.reportingPeriod && (
+                            <span className="flex-shrink-0 text-[10.5px] font-mono font-medium text-brand-700 bg-tint px-1.5 py-0.5 rounded">
+                              {c.reportingPeriod}
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-[12px] text-ink-muted truncate mt-0.5">
+                          {owners} {owners === 1 ? "owner" : "owners"}
+                          {dueLabel && <> · due {dueLabel}</>}
+                          {" · "}
+                          <span className={hintColor}>{statusHint}</span>
                         </p>
-                        {c.reportingPeriod && (
-                          <span className="flex-shrink-0 text-[10.5px] font-mono font-medium text-brand-700 bg-tint px-1.5 py-0.5 rounded">
-                            {c.reportingPeriod}
-                          </span>
-                        )}
                       </div>
-                      <p className="text-[12px] text-ink-muted truncate mt-0.5">
-                        {owners} {owners === 1 ? "owner" : "owners"}
-                        {dueLabel && <> · due {dueLabel}</>}
-                        {" · "}
-                        <span className={hintColor}>{statusHint}</span>
-                      </p>
                     </div>
-                    <svg
-                      className="w-4 h-4 text-ink-muted/40 group-hover:text-ink-muted flex-shrink-0 transition-colors self-start mt-1"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
 
-                  <div className="mt-3 flex items-center gap-3 pl-[50px]">
-                    <div
-                      className="flex-1 h-1.5 rounded-full bg-line overflow-hidden"
-                      role="progressbar"
-                      aria-valuenow={pct}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      aria-label={total > 0 ? `${received} of ${total} fields received` : "No fields assigned yet"}
-                    >
+                    <div className="mt-3 flex items-center gap-3 pl-[50px]">
                       <div
-                        className={`h-full rounded-full transition-all duration-300 ${complete ? "bg-emerald-500" : "bg-brand-500"}`}
-                        style={{ width: `${total > 0 ? Math.max(pct, received > 0 ? 6 : 0) : 0}%` }}
-                      />
+                        className="flex-1 h-1.5 rounded-full bg-line overflow-hidden"
+                        role="progressbar"
+                        aria-valuenow={pct}
+                        aria-valuemin={0}
+                        aria-valuemax={100}
+                        aria-label={total > 0 ? `${received} of ${total} fields received` : "No fields assigned yet"}
+                      >
+                        <div
+                          className={`h-full rounded-full transition-all duration-300 ${complete ? "bg-emerald-500" : "bg-brand-500"}`}
+                          style={{ width: `${total > 0 ? Math.max(pct, received > 0 ? 6 : 0) : 0}%` }}
+                        />
+                      </div>
+                      <span className="text-[12px] text-ink-muted tabular-nums flex-shrink-0 w-14 text-right">
+                        {total > 0 ? `${received}/${total}` : "0 fields"}
+                      </span>
                     </div>
-                    <span className="text-[12px] text-ink-muted tabular-nums flex-shrink-0 w-14 text-right">
-                      {total > 0 ? `${received}/${total}` : "0 fields"}
-                    </span>
+                  </Link>
+                  <div className="absolute top-3 right-3">
+                    <CampaignRowMenu campaignId={c.id} clientName={c.clientName} deleteAction={deleteCampaignAction} />
                   </div>
-                </Link>
+                </div>
               );
             })}
           </div>

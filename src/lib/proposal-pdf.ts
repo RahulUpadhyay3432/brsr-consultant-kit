@@ -20,7 +20,10 @@ function inr(n: number): string {
   return "INR " + Math.round(n).toLocaleString("en-IN");
 }
 
-export async function downloadProposalPdf(inp: FeeInputs): Promise<void> {
+export async function downloadProposalPdf(
+  inp: FeeInputs,
+  preparedBy?: { name?: string; firm?: string; email?: string; phone?: string }
+): Promise<void> {
   const fee = estimateFee(inp);
   const sections = buildProposalSections(inp, fee);
 
@@ -105,6 +108,22 @@ export async function downloadProposalPdf(inp: FeeInputs): Promise<void> {
   doc.setFont(SERIF, "bold"); doc.setFontSize(12); setColor(FOREST);
   doc.text(inr(fee.subtotal), pageW - M - 3, y + 1.5, { align: "right" });
   y += 12;
+
+  // ── Prepared by (consultant identity from the on-device profile) ─────────
+  if (preparedBy && (preparedBy.name || preparedBy.firm)) {
+    ensure(20);
+    y += 2;
+    draw(HAIR); doc.setLineWidth(0.3); doc.line(M, y, pageW - M, y); y += 6;
+    doc.setFont(MONO, "bold"); doc.setFontSize(8.5); setColor(LABELGREEN);
+    doc.text("PREPARED BY", M, y); y += 5.5;
+    doc.setFont(SANS, "bold"); doc.setFontSize(10.5); setColor(INK);
+    doc.text([preparedBy.name, preparedBy.firm].filter(Boolean).join(", "), M, y); y += 4.8;
+    const contact = [preparedBy.email, preparedBy.phone].filter(Boolean).join("   ·   ");
+    if (contact) {
+      doc.setFont(SANS, "normal"); doc.setFontSize(8.5); setColor(SECOND);
+      doc.text(contact, M, y); y += 4;
+    }
+  }
 
   footer();
   const slug = (inp.clientName || "client").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");

@@ -57,7 +57,7 @@ export default async function CampaignDetailPage({
   const remindAll = remindAllPendingAction.bind(null, campaign.id);
 
   return (
-    <div className="max-w-[1280px] mx-auto bg-page">
+    <div className="max-w-[1600px] mx-auto bg-page">
       <a href="/requests" className="text-[14.5px] text-ink-body hover:text-ink">← All collections</a>
 
       {/* Headline "bring your documents" surface — bulk import across the campaign. */}

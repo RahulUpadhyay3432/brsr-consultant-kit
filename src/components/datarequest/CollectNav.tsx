@@ -90,6 +90,7 @@ export default function CollectNav({ campaigns = [] }: { campaigns?: Campaign[] 
   const newActive = path === "/requests/new";
   const proposalActive = path.startsWith("/requests/proposal");
   const cbamActive = path.startsWith("/requests/cbam");
+  const profileActive = path.startsWith("/requests/profile");
 
   return (
     <nav className="flex-1 overflow-y-auto px-3 pt-4 space-y-5">
@@ -130,6 +131,13 @@ export default function CollectNav({ campaigns = [] }: { campaigns?: Campaign[] 
         <SectionLabel>Beyond BRSR</SectionLabel>
         <div className="space-y-0.5">
           <Item href="/requests/cbam" active={cbamActive} icon={<IconGlobe />}>CBAM</Item>
+        </div>
+      </div>
+
+      <div>
+        <SectionLabel>Account</SectionLabel>
+        <div className="space-y-0.5">
+          <Item href="/requests/profile" active={profileActive} icon={<IconUser />}>Profile</Item>
         </div>
       </div>
 
@@ -175,6 +183,13 @@ function IconBack() {
   return (
     <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
       <path d="M8 3.5L4 7.5l4 4M4 7.5h7" />
+    </svg>
+  );
+}
+function IconUser() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="7.5" cy="4.5" r="2.5" /><path d="M2.5 13c0-2.5 2.2-4 5-4s5 1.5 5 4" />
     </svg>
   );
 }

@@ -2,6 +2,7 @@
 
 import { randomBytes } from "crypto";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { fieldsByIds, REQUEST_FIELDS } from "./fields";
 import * as db from "./db";
 import { sendRequestEmail, sendSubmissionAlert } from "./email";
@@ -25,6 +26,16 @@ export async function createCampaignAction(formData: FormData): Promise<void> {
 
   const id = await db.createCampaign(clientName, deadline, reportingPeriod);
   redirect(`/requests/${id}`);
+}
+
+// Permanently delete a campaign and all its data (owners, items, saved contacts).
+// Guarded; refreshes the collections list in place. Irreversible by design — the
+// UI confirms before calling this.
+export async function deleteCampaignAction(campaignId: string): Promise<void> {
+  requireConsultant();
+  if (!campaignId) return;
+  await db.deleteCampaign(campaignId);
+  revalidatePath("/requests");
 }
 
 // 2) Consultant adds a data owner to a campaign and sends them a request.
