@@ -164,7 +164,7 @@ export default function BulkImportPanel({
     setWarn(null);
     setSuggestions(null);
 
-    const CHUNK_CHARS = 55000;
+    const CHUNK_CHARS = 38000;
     type Chunk = { docName: string; category: DocCategory; text: string };
     const chunks: Chunk[] = [];
     for (const d of staged) {
@@ -218,7 +218,7 @@ export default function BulkImportPanel({
       }
     }
 
-    const CONC = Math.min(4, chunks.length);
+    const CONC = Math.min(8, chunks.length);
     await Promise.all(Array.from({ length: CONC }, () => worker()));
 
     setProgress(null);
