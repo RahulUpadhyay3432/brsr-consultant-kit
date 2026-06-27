@@ -410,7 +410,10 @@ export async function extractFromChunk(
   const docTypeLabel = category && category !== "auto" ? CATEGORY_LABEL[category] : undefined;
   const prompt = userPrompt(promptCandidates, text, docTypeLabel);
 
-  let reply = await geminiComplete(SYSTEM, prompt, { maxOutputTokens: 8192 });
+  // Cap output so generation stays fast and well under the function timeout. Chunks
+  // are small enough that this fits their figures; the salvaging parser recovers any
+  // complete objects if a dense chunk is truncated.
+  let reply = await geminiComplete(SYSTEM, prompt, { maxOutputTokens: 4000 });
   if (!reply) reply = await groqComplete(SYSTEM, prompt, { maxTokens: 1800, temperature: 0 });
   if (!reply) return [];
 
