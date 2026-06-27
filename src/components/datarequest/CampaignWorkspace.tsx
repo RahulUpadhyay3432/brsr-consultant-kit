@@ -58,9 +58,10 @@ function fmtT(n: number): string {
   return n.toLocaleString("en-IN", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 }
 
-type ViewKey = "overview" | "owners" | "data" | "emissions" | "draft";
+type ViewKey = "overview" | "readiness" | "owners" | "data" | "emissions" | "draft";
 const VIEWS: { key: ViewKey; label: string }[] = [
   { key: "overview", label: "Overview" },
+  { key: "readiness", label: "Readiness" },
   { key: "owners", label: "Owners" },
   { key: "data", label: "Data" },
   { key: "emissions", label: "Emissions" },
@@ -168,6 +169,7 @@ export default function CampaignWorkspace(props: CampaignWorkspaceProps) {
       {/* Active view (tab-fade on switch) */}
       <div key={view} className="anim-up-sm mt-5">
         {view === "overview" && <OverviewView {...props} received={received} awaiting={awaiting} hasPending={hasPending} onRemindAll={remindAll} reminding={pending} />}
+        {view === "readiness" && <ReadinessView {...props} />}
         {view === "owners" && <OwnersView {...props} />}
         {view === "data" && <DataView {...props} />}
         {view === "emissions" && <EmissionsView {...props} />}
@@ -186,6 +188,127 @@ function Chip({ children }: { children: React.ReactNode }) {
 }
 
 /* ─────────────────────────── OVERVIEW ─────────────────────────── */
+
+function ReadinessView(props: CampaignWorkspaceProps) {
+  const { campaign, fields } = props;
+  const [onlyMissing, setOnlyMissing] = useState(false);
+
+  // fieldIds that already have a real collected value (from owners or auto-fill).
+  const collected = useMemo(() => {
+    const s = new Set<string>();
+    for (const c of campaign.contacts)
+      for (const it of c.items)
+        if (it.status === "received" && it.value && it.value.trim()) s.add(it.fieldId);
+    return s;
+  }, [campaign]);
+
+  const total = fields.length;
+  const coveredCount = fields.filter((f) => collected.has(f.id)).length;
+  const pct = total > 0 ? Math.round((coveredCount / total) * 100) : 0;
+
+  // Group the full BRSR skeleton by Section → Principle.
+  const sections: ("A" | "B" | "C")[] = ["A", "B", "C"];
+  const grouped = sections
+    .map((sec) => {
+      const inSec = fields.filter((f) => (f.section ?? "C") === sec);
+      if (sec === "C") {
+        const byP = PRINCIPLE_ORDER
+          .map((p) => ({ key: p, label: `${p} · ${PRINCIPLE_LABELS[p] ?? ""}`, rows: inSec.filter((f) => f.principle === p) }))
+          .filter((g) => g.rows.length > 0);
+        const noP = inSec.filter((f) => !f.principle);
+        if (noP.length) byP.push({ key: "C-other", label: "General", rows: noP });
+        return { sec, groups: byP };
+      }
+      return { sec, groups: inSec.length ? [{ key: sec, label: SECTION_LABELS[sec], rows: inSec }] : [] };
+    })
+    .filter((s) => s.groups.length > 0);
+
+  return (
+    <div className="space-y-4">
+      <Card>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-ink-muted">BRSR readiness</p>
+            <p className="text-[34px] font-bold text-ink tabular-nums leading-none mt-1.5"><AnimatedNumber value={pct} />%</p>
+            <p className="text-[14px] text-ink-body mt-1.5">
+              <span className="font-semibold text-ink tabular-nums">{coveredCount}</span> of {total} BRSR fields covered ·{" "}
+              <span className="font-semibold text-ember-dark tabular-nums">{total - coveredCount}</span> still to collect
+            </p>
+          </div>
+          <button
+            onClick={() => setOnlyMissing((v) => !v)}
+            className="text-[13px] font-semibold text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-3 py-1.5 rounded-lg transition-colors pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
+          >
+            {onlyMissing ? "Show all fields" : "Show only the gaps"}
+          </button>
+        </div>
+        <div className="mt-4"><ProgressBar value={coveredCount} total={total} /></div>
+        <p className="text-[13.5px] text-ink-body mt-3 leading-relaxed">
+          Covered = a value already collected for that field — from a data owner, or auto-filled from your documents.
+          Use <span className="font-semibold text-ink">Auto-fill from your documents</span> above to close the gaps in one upload.
+        </p>
+      </Card>
+
+      {grouped.map(({ sec, groups }) => (
+        <div key={sec}>
+          <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-ink-muted mb-2">{SECTION_LABELS[sec]}</p>
+          <div className="space-y-2">
+            {groups.map((g) => {
+              const cov = g.rows.filter((f) => collected.has(f.id)).length;
+              const rows = onlyMissing ? g.rows.filter((f) => !collected.has(f.id)) : g.rows;
+              if (!rows.length) return null;
+              return <ReadinessGroup key={g.key} title={g.label} covered={cov} total={g.rows.length} rows={rows} collected={collected} />;
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ReadinessGroup({
+  title, covered, total, rows, collected,
+}: { title: string; covered: number; total: number; rows: RequestField[]; collected: Set<string> }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="bg-white border border-line rounded-xl overflow-hidden shadow-[0_1px_2px_rgba(16,33,26,0.05)]">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-tint/60 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-400"
+      >
+        <svg className={`w-4 h-4 text-ink-muted transition-transform flex-shrink-0 ${open ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+        <span className="flex-1 text-[14px] font-semibold text-ink truncate">{title}</span>
+        <div className="hidden sm:block w-24 h-1.5 rounded-full bg-line overflow-hidden">
+          <div className="h-full rounded-full bg-brand-500" style={{ width: `${total ? (covered / total) * 100 : 0}%` }} />
+        </div>
+        <span className="text-[13px] text-ink-muted tabular-nums whitespace-nowrap">{covered}/{total}</span>
+      </button>
+      {open && (
+        <div className="border-t border-line divide-y divide-line">
+          {rows.map((f) => {
+            const has = collected.has(f.id);
+            return (
+              <div key={f.id} className="flex items-center gap-3 px-4 py-2.5 hover:bg-tint/40 transition-colors">
+                <span className="flex-shrink-0 text-[11.5px] font-mono font-semibold text-ink-muted bg-tint border border-line px-1.5 py-0.5 rounded">{f.id}</span>
+                <span className="flex-1 min-w-0 text-[14px] text-ink-body" title={f.label}>{f.label}{f.unit && <span className="text-ink-muted"> · {f.unit}</span>}</span>
+                {has ? (
+                  <span className="inline-flex items-center gap-1 flex-shrink-0 text-[12px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+                    Covered
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 flex-shrink-0 text-[12px] font-medium text-ink-muted bg-page border border-line px-2 py-0.5 rounded-full">
+                    To collect
+                  </span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function OverviewView(
   props: CampaignWorkspaceProps & { received: number; awaiting: number; hasPending: boolean; onRemindAll: () => void; reminding: boolean },

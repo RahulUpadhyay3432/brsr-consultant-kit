@@ -239,9 +239,9 @@ export default function BulkImportPanel({
           </h2>
           <p className="text-[14.5px] text-ink-body mt-1 leading-relaxed">
             Already have the client&apos;s documents? Upload last year&apos;s BRSR,
-            the annual report, bills or policies and the AI fills the BRSR
-            skeleton for you to verify. Files stay in your browser; the AI only
-            suggests values it finds, with the source shown.
+            the annual report, bills or policies — you tag each file&apos;s type and the
+            AI fills the BRSR skeleton for you to verify. Files stay in your browser;
+            the AI only suggests values it finds, with the source shown.
           </p>
         </div>
       </div>
@@ -287,8 +287,11 @@ export default function BulkImportPanel({
           {/* Staged files — tag each with its content type for a sharper, more accurate fill. */}
           {staged.length > 0 && (
             <div className="mt-4">
-              <p className="text-[13px] font-semibold text-ink mb-2">
-                Tag each document so the AI reads the right sections
+              <p className="text-[14.5px] font-semibold text-ink mb-1">
+                Tag each document&apos;s type
+              </p>
+              <p className="text-[13px] text-ink-muted mb-2.5 leading-relaxed">
+                Telling the AI what each file is (last year&apos;s BRSR, energy bills, HR data…) makes the fill far more accurate.
               </p>
               <div className="space-y-2">
                 {staged.map((d, idx) => (
