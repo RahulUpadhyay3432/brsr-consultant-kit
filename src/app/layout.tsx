@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Analytics } from "@vercel/analytics/react";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import HelpWidget from "@/components/HelpWidget";
-import { MixpanelProvider } from "@/components/MixpanelProvider";
+import { AnalyticsGate } from "@/components/AnalyticsGate";
+import ConsentBanner from "@/components/ConsentBanner";
 import "./globals.css";
 
 // Self-hosted (no next/font/google on this machine). Newsreader = display serif,
@@ -55,12 +54,11 @@ export default function RootLayout({
       <body
         className={`${newsreader.variable} ${hanken.variable} ${plexMono.variable} text-stone-900`}
       >
-        <Analytics />
-        <MixpanelProvider />
         {children}
         <HelpWidget />
+        <ConsentBanner />
+        <AnalyticsGate />
       </body>
-      <GoogleAnalytics gaId="G-GJBBQ6YPZL" />
     </html>
   );
 }

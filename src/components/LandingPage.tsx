@@ -6,7 +6,9 @@
 // hands off to the intake form via onStart.
 
 import { useState } from "react";
+import Link from "next/link";
 import ResumeBanner from "@/components/ResumeBanner";
+import CookieSettingsLink from "@/components/CookieSettingsLink";
 import { REQUEST_ACCESS_URL } from "@/lib/links";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 
@@ -402,6 +404,23 @@ function Footer({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: str
           <a href="https://www.linkedin.com/in/rahul-upadhyay-a7aa12207/" target="_blank" rel="noopener noreferrer" className="block text-[14px] text-[#BFD3CA] hover:text-white mt-2.5">Rahul Upadhyay</a>
           <a href="mailto:rahulu626@gmail.com" className="block text-[14px] text-[#BFD3CA] hover:text-white mt-1">rahulu626@gmail.com</a>
           <p className="text-[11.5px] text-[#5B6660] mt-4">ICAI BRSR 2024 · SEBI Circulars · MoEFCC Rules</p>
+        </div>
+      </div>
+      {/* Legal & trust bar */}
+      <div className="border-t border-white/10">
+        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-5 flex flex-wrap items-center gap-x-5 gap-y-2">
+          {[
+            ["/privacy", "Privacy"],
+            ["/terms", "Terms"],
+            ["/dpa", "Data processing"],
+            ["/security", "Security"],
+            ["/methodology", "Methodology"],
+            ["/status", "Status"],
+          ].map(([href, label]) => (
+            <Link key={href} href={href} className="text-[13px] text-[#9FB6AC] hover:text-white transition-colors">{label}</Link>
+          ))}
+          <CookieSettingsLink className="text-[13px] text-[#9FB6AC] hover:text-white transition-colors" />
+          <span className="text-[12px] text-[#5B6660] sm:ml-auto">Client data never leaves your browser · Cited to SEBI &amp; ICAI</span>
         </div>
       </div>
     </footer>
