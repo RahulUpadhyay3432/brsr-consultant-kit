@@ -66,7 +66,7 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
         </select>
       </div>
 
-      <p className="text-xs text-stone-500">
+      <p className="text-[13.5px] text-stone-600">
         Showing <span className="font-medium text-stone-700">{filtered.length}</span> of {mappings.length} BRSR disclosures that have at least one international framework counterpart
       </p>
 
@@ -135,12 +135,12 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
                     <div>
                       <span className="text-xs font-medium text-blue-600 uppercase tracking-wider">GRI</span>
                       <p className="text-sm text-stone-700 mt-0.5">{mapping.gri_standard || ", "}</p>
-                      <p className="text-xs text-stone-500 mt-0.5">{mapping.gri_label}</p>
+                      <p className="text-[12.5px] text-stone-600 mt-0.5">{mapping.gri_label}</p>
                     </div>
                     <div>
                       <span className="text-xs font-medium text-violet-600 uppercase tracking-wider">TCFD</span>
                       <p className="text-sm text-stone-700 mt-0.5">{mapping.tcfd_pillar || ", "}</p>
-                      <p className="text-xs text-stone-500 mt-0.5">{mapping.tcfd_detail}</p>
+                      <p className="text-[12.5px] text-stone-600 mt-0.5">{mapping.tcfd_detail}</p>
                     </div>
                     <div>
                       <span className="text-xs font-medium text-emerald-600 uppercase tracking-wider">IFRS S1/S2</span>
@@ -150,18 +150,18 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
                       <div>
                         <span className="text-xs font-medium text-teal-600 uppercase tracking-wider">TNFD (nature)</span>
                         <p className="text-sm text-stone-700 mt-0.5">{mapping.tnfd_pillar}</p>
-                        <p className="text-xs text-stone-500 mt-0.5">{mapping.tnfd_detail}</p>
+                        <p className="text-[12.5px] text-stone-600 mt-0.5">{mapping.tnfd_detail}</p>
                       </div>
                     )}
                     <div>
-                      <span className="text-xs font-medium text-stone-500 uppercase tracking-wider">BRSR Section (where it appears)</span>
+                      <span className="text-xs font-medium text-stone-600 uppercase tracking-wider">BRSR Section (where it appears)</span>
                       <p className="text-sm text-stone-700 mt-0.5">{mapping.brsr_section}</p>
                     </div>
                   </div>
                   {mapping.notes && (
                     <div className="bg-stone-50 border border-stone-100 rounded-lg p-3">
-                      <span className="text-xs font-medium text-stone-500 uppercase tracking-wider">How the frameworks compare</span>
-                      <p className="text-sm text-stone-600 mt-0.5 leading-relaxed">{mapping.notes}</p>
+                      <span className="text-xs font-medium text-stone-600 uppercase tracking-wider">How the frameworks compare</span>
+                      <p className="text-[14px] text-stone-600 mt-0.5 leading-relaxed">{mapping.notes}</p>
                     </div>
                   )}
                 </div>

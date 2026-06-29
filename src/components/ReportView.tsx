@@ -493,7 +493,7 @@ function Overview({
         </div>
         {!noFilings && (
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-[11px] text-stone-400">Based on:</span>
+            <span className="text-[12px] text-stone-500">Based on:</span>
             {filings.map(f => (
               <span key={f} className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium
                 bg-white text-stone-600 border border-stone-200">
@@ -614,7 +614,7 @@ function Overview({
         {/* Per-principle breakdown */}
         <div className="lg:col-span-2 bg-white rounded-xl border border-stone-200 p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
           <div className="flex items-baseline justify-between mb-4">
-            <h3 className="text-[16.5px] font-bold text-ink">Readiness by principle</h3>
+            <h3 className="text-[17px] font-bold text-ink">Readiness by principle</h3>
             <span className="text-[12.5px] text-stone-500">{breakdown.length} NGRBC principles</span>
           </div>
           <ul className="space-y-1">
@@ -625,10 +625,10 @@ function Overview({
                   className="group w-full flex items-center gap-3 px-2 py-2 -mx-2 rounded-lg text-left
                     hover:bg-stone-50 transition-colors pressable"
                 >
-                  <span className="flex-shrink-0 w-8 text-[11px] font-bold text-stone-400 tabular-nums">{p.id}</span>
+                  <span className="flex-shrink-0 w-8 text-[11px] font-bold text-stone-500 tabular-nums">{p.id}</span>
                   <span className="flex-1 min-w-0">
-                    <span className="block text-[14.5px] font-medium text-stone-800 truncate">{p.name}</span>
-                    <span className="block text-[12.5px] text-stone-500">{p.total} fields</span>
+                    <span className="block text-[14px] font-medium text-stone-800 truncate">{p.name}</span>
+                    <span className="block text-[12.5px] text-stone-600">{p.total} fields</span>
                   </span>
                   {/* mini stacked bar */}
                   <span className="hidden sm:flex items-stretch gap-0.5 h-2 w-28 flex-shrink-0">
@@ -653,7 +653,7 @@ function Overview({
 
         {/* Where to start */}
         <div className="bg-white rounded-xl border border-stone-200 p-5 shadow-[0_1px_3px_rgba(80,60,30,0.04)]">
-          <h3 className="text-[16.5px] font-bold text-ink mb-4">Where to start</h3>
+          <h3 className="text-[17px] font-bold text-ink mb-4">Where to start</h3>
 
           {noFilings ? (
             <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">

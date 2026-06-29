@@ -146,18 +146,18 @@ export default function MaterialityMatrix({ topics, clientName }: MaterialityMat
             </svg>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-stone-800">
+            <h3 className="text-[17px] font-bold text-stone-900">
               Suggested Material Topics, a starting point for your client&apos;s industry
             </h3>
-            <p className="text-xs text-stone-500 mt-1 leading-relaxed">
+            <p className="text-[13.5px] text-stone-600 mt-1 leading-relaxed">
               SEBI&apos;s BRSR requires companies to identify which ESG topics are{" "}
-              <strong className="text-stone-700">material</strong>, topics that significantly
+              <strong className="text-stone-800">material</strong>, topics that significantly
               affect the company or matter to its stakeholders (investors, employees, communities,
-              regulators). The topics below are a <strong className="text-stone-700">suggested shortlist</strong>{" "}
+              regulators). The topics below are a <strong className="text-stone-800">suggested shortlist</strong>{" "}
               for your client&apos;s industry, a head-start, not a finished assessment.
             </p>
-            <p className="text-[11px] text-stone-500 mt-2">
-              <strong className="text-stone-600">How to use this:</strong> Flag the ones that look relevant
+            <p className="text-[13.5px] text-stone-600 mt-2 leading-relaxed">
+              <strong className="text-stone-700">How to use this:</strong> Flag the ones that look relevant
               with <span className="font-medium text-brand-700">Add to shortlist</span>, cross off what
               doesn&apos;t apply, add what&apos;s missing, then run your shortlist through the client&apos;s actual
               stakeholder process to arrive at the final materiality disclosure.
@@ -190,13 +190,13 @@ export default function MaterialityMatrix({ topics, clientName }: MaterialityMat
             </svg>
           </div>
           <div className="min-w-0">
-            <p className="text-[13px] font-semibold text-stone-800">
+            <p className="text-[15px] font-semibold text-stone-900">
               Your working shortlist
               <span className="ml-2 text-[11px] font-bold tabular-nums text-brand-700 bg-brand-50 border border-brand-100 px-1.5 py-0.5 rounded-full">
                 {shortlistedCount}
               </span>
             </p>
-            <p className="text-[11.5px] text-stone-500 mt-0.5 leading-relaxed">
+            <p className="text-[13.5px] text-stone-600 mt-0.5 leading-relaxed">
               {shortlistedCount > 0
                 ? <>{shortlistedCount} topic{shortlistedCount === 1 ? "" : "s"} flagged to carry into the client&apos;s materiality process.</>
                 : <>Tap <span className="font-medium text-brand-700">Add to shortlist</span> on the topics you&apos;ll take into the client&apos;s stakeholder process.</>}
@@ -283,7 +283,7 @@ export default function MaterialityMatrix({ topics, clientName }: MaterialityMat
       {/* ── Topic sections, grouped by E / S / G ─────────────────────────── */}
       {filtered.length === 0 ? (
         <div className="text-center py-16">
-          <p className="text-sm text-stone-400">No topics on your shortlist in this category.</p>
+          <p className="text-[13.5px] text-stone-500">No topics on your shortlist in this category.</p>
           <button
             onClick={() => setShowShortlistedOnly(false)}
             className="mt-2 text-xs text-brand-700 hover:underline font-medium"
@@ -326,10 +326,10 @@ function CategorySection({
       {/* Section heading */}
       <div className="flex items-center gap-2 mb-3">
         <span className={`w-2 h-2 rounded-full flex-shrink-0 ${meta.dot}`} />
-        <span className={`text-[11px] font-bold uppercase tracking-[0.12em] ${meta.color}`}>
+        <span className={`text-[13px] font-bold uppercase tracking-[0.12em] ${meta.color}`}>
           {meta.label}
         </span>
-        <span className="text-[11px] text-stone-400">
+        <span className="text-[12px] text-stone-500">
           {topics.length} {topics.length === 1 ? "topic" : "topics"}
         </span>
       </div>
@@ -363,8 +363,8 @@ function TopicCard({
     <div className={`bg-white border rounded-xl p-4 flex flex-col gap-3 transition-shadow
       ${isShortlisted ? "border-brand-300 ring-2 ring-brand-500/25 shadow-[0_1px_4px_rgba(0,116,90,0.10)]" : meta.border}`}>
       <div>
-        <p className={`text-sm font-semibold leading-snug ${meta.color}`}>{topic.topic}</p>
-        <p className="text-xs text-stone-500 mt-1.5 leading-relaxed">{topic.why_material}</p>
+        <p className={`text-[15px] font-semibold leading-snug ${meta.color}`}>{topic.topic}</p>
+        <p className="text-[13px] text-stone-600 mt-1.5 leading-relaxed">{topic.why_material}</p>
       </div>
 
       {/* BRSR principle chips */}

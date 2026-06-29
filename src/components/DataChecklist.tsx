@@ -67,10 +67,10 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
       {/* ── Title ───────────────────────────────────────────────────────────── */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">
+          <h1 className="font-display text-[26px] font-bold text-stone-900 leading-tight tracking-tight">
             Action Plan
           </h1>
-          <p className="text-[13px] text-stone-500 mt-1 max-w-[72ch] leading-relaxed">
+          <p className="text-[14px] text-stone-600 mt-1 max-w-[72ch] leading-relaxed">
             The full BRSR, Section A &amp; B entity disclosures, plus the {items.length} principle fields (Section C)
             with their gap status. Open a row for how to collect it, the SEBI source, and, for emissions, a calculator.
           </p>
@@ -197,7 +197,7 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
 
       {/* ── Result count + hide-collected ───────────────────────────────────── */}
       <div className="flex items-center gap-3 flex-wrap">
-        <p className="text-[13px] text-stone-500">
+        <p className="text-[13px] text-stone-600">
           Showing <span className="font-semibold text-stone-700 tabular-nums">{c.filtered.length}</span>{" "}
           of <span className="font-semibold text-stone-700 tabular-nums">{items.length}</span> fields
         </p>
@@ -240,7 +240,7 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
       )}
 
       {/* ── Section C, principle-wise performance (the gap analysis) ───────── */}
-      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-stone-400 px-0.5 pt-1">
+      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-stone-500 px-0.5 pt-1">
         Section C · Principle-wise performance
       </p>
       <div className="border border-stone-200 rounded-xl overflow-hidden bg-white">
@@ -253,7 +253,7 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
 
         {c.filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <p className="text-stone-400 text-sm mb-2">No fields match your filters.</p>
+            <p className="text-stone-500 text-[13.5px] mb-2">No fields match your filters.</p>
             <button onClick={c.clearFilters} className="text-xs text-brand-700 hover:underline font-medium">
               Clear all filters
             </button>
@@ -318,8 +318,8 @@ function GeneralDisclosuresCard({
     <div className="border border-stone-200 rounded-xl overflow-hidden bg-white">
       <div className="px-4 py-3 border-b border-stone-100 flex items-start justify-between gap-3 flex-wrap">
         <div>
-          <h3 className="text-[14px] font-semibold text-stone-800">Sections A &amp; B · Entity &amp; governance disclosures</h3>
-          <p className="text-[12px] text-stone-500 mt-0.5 leading-relaxed max-w-[70ch]">
+          <h3 className="text-[15px] font-semibold text-stone-900">Sections A &amp; B · Entity &amp; governance disclosures</h3>
+          <p className="text-[13px] text-stone-600 mt-0.5 leading-relaxed max-w-[70ch]">
             The {total} entity-level and policy disclosures every BRSR opens with, collected from the client&apos;s
             own records, not gap-analysed against filings.
           </p>
@@ -390,7 +390,7 @@ function SectionBlock({
               {collectedHere}/{items.length} done
             </span>
           )}
-          <span className="text-[11px] text-stone-400 tabular-nums">{items.length} items</span>
+          <span className="text-[12px] text-stone-500 tabular-nums">{items.length} items</span>
           <svg aria-hidden="true"
             className={`w-4 h-4 text-stone-400 transition-transform duration-200 flex-shrink-0 ${showOpen ? "" : "-rotate-90"}`}
             fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -404,8 +404,8 @@ function SectionBlock({
         style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
       >
         <div className="min-h-0 overflow-hidden">
-          <p className="px-4 py-2 text-[11.5px] text-stone-500 bg-stone-50/70 border-y border-stone-100">
-            <span className="font-medium text-stone-600">Where to collect:</span> {hint}
+          <p className="px-4 py-2 text-[13px] text-stone-600 bg-stone-50/70 border-y border-stone-100">
+            <span className="font-medium text-stone-700">Where to collect:</span> {hint}
           </p>
           {items.map((d, i) => (
             <ABRow
@@ -437,7 +437,7 @@ function ABRow({
   return (
     <div className={`flex items-start gap-3 px-4 py-2.5 border-b border-stone-100 last:border-b-0
       ${isCollected ? "bg-stone-100/50" : isOdd ? "bg-stone-50/40" : ""}`}>
-      <span className="text-[10px] font-bold font-mono text-stone-400 flex-shrink-0 w-[82px] pt-1">{d.id}</span>
+      <span className="text-[11px] font-bold font-mono text-stone-500 flex-shrink-0 w-[82px] pt-1">{d.id}</span>
 
       <div className="flex-1 min-w-0">
         <span className={`text-[13px] leading-relaxed ${isCollected ? "line-through text-stone-400" : "text-stone-700"}`}>
@@ -453,7 +453,7 @@ function ABRow({
               </svg>
               Last year
             </span>
-            <span className="text-[11.5px] text-stone-400 italic ml-2">
+            <span className="text-[12px] text-stone-600 italic ml-2">
               matched “{detectedMatch.keywords[0]}”, verify it&apos;s still current.
             </span>
           </div>
@@ -461,7 +461,7 @@ function ABRow({
       </div>
 
       {d.page != null && (
-        <span className="hidden sm:block text-[10px] text-stone-400 flex-shrink-0 whitespace-nowrap pt-1">
+        <span className="hidden sm:block text-[11px] text-stone-500 flex-shrink-0 whitespace-nowrap pt-1">
           {typeof d.page === "number" ? `ICAI p.${d.page}` : d.page}
         </span>
       )}

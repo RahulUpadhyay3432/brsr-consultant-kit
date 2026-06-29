@@ -79,12 +79,12 @@ export default function DisclosureRow({
             </p>
             {/* Inline gap hint, only for partially tracked, not collected */}
             {item.status === "partially_tracked" && item.gap_note && !isCollected && (
-              <p className="text-[10px] text-amber-600 mt-0.5 line-clamp-1 leading-snug">
+              <p className="text-[11px] text-amber-600 mt-0.5 line-clamp-2 leading-snug">
                 Missing: {item.gap_note}
               </p>
             )}
             <div className="flex items-center gap-1.5 mt-0.5">
-              <p className="text-[10px] text-stone-400 font-mono">{item.id}</p>
+              <p className="text-[11px] text-stone-500 font-mono">{item.id}</p>
               {isDetected && !isCollected && (
                 <span className="inline-flex items-center gap-1 text-[9px] font-semibold text-brand-700
                   bg-brand-50 border border-brand-100 px-1.5 py-0.5 rounded-full leading-none">
@@ -156,7 +156,7 @@ export default function DisclosureRow({
                   What it&apos;s asking
                 </p>
                 <p className="text-sm text-stone-600 leading-relaxed">{explainer}</p>
-                <p className="text-[10px] text-stone-400 mt-1.5 leading-relaxed">
+                <p className="text-[11.5px] text-stone-500 mt-1.5 leading-relaxed">
                   General explanation to aid understanding, not legal advice. Written from the public SEBI/ICAI definition; nothing about your client is used.
                 </p>
               </div>
@@ -197,7 +197,7 @@ export default function DisclosureRow({
                 <p className="text-[13px] text-stone-500 italic leading-relaxed mt-1.5 border-l-2 border-brand-200 pl-2.5">
                   {detectedMatch.snippet}
                 </p>
-                <p className="text-[11px] text-stone-400 mt-2 leading-relaxed">
+                <p className="text-[12px] text-stone-500 mt-2 leading-relaxed">
                   Detected from text, verify last year's disclosure is still accurate before reusing it, then mark it collected below.
                 </p>
               </div>
@@ -269,7 +269,7 @@ export default function DisclosureRow({
               return (
             <details className="group bg-white/60 border border-stone-200/70 rounded-lg px-3.5 py-3">
               <summary className="flex items-center gap-1.5 cursor-pointer list-none [&::-webkit-details-marker]:hidden
-                text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-500 hover:text-stone-800 transition-colors">
+                text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-600 hover:text-stone-800 transition-colors">
                 <svg aria-hidden="true" className="w-3 h-3 flex-shrink-0 transition-transform duration-200 group-open:rotate-90"
                   fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -284,7 +284,7 @@ export default function DisclosureRow({
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-2.5">
                       Best practices
-                      <span className="font-normal text-stone-400 normal-case tracking-normal">
+                      <span className="font-normal text-stone-500 normal-case tracking-normal">
                         {" "}, how leaders address {item.principle} ({BEST_PRACTICES[item.principle].name})
                       </span>
                     </p>
@@ -353,7 +353,7 @@ export default function DisclosureRow({
                       <path d="M5.5 3h6.5v6.5M12 3L4 11" />
                     </svg>
                   </a>
-                  <p className="text-[11px] text-stone-400 mt-2 leading-relaxed">
+                  <p className="text-[12px] text-stone-500 mt-2 leading-relaxed">
                     Official SEBI disclosure format (Annexure II, 2023).
                     {item.page ? <> Cross-reference: ICAI Background Material, p.{item.page}.</> : null}
                   </p>
@@ -361,8 +361,8 @@ export default function DisclosureRow({
 
                 {/* Unit */}
                 {item.unit && (
-                  <p className="text-[11px] text-stone-400">
-                    Unit: <span className="font-medium text-stone-500">{item.unit}</span>
+                  <p className="text-[12px] text-stone-500">
+                    Unit: <span className="font-medium text-stone-700">{item.unit}</span>
                   </p>
                 )}
               </div>
@@ -373,7 +373,7 @@ export default function DisclosureRow({
             {/* ── Mark as collected ──────────────────────────────────────── */}
             {!isNA && (
             <div className="flex items-center justify-between gap-3 px-0.5 pt-1">
-              <p className="text-[11px] text-stone-400 leading-relaxed">
+              <p className="text-[12px] text-stone-500 leading-relaxed">
                 {isCollected
                   ? "You've marked this data as collected."
                   : "Already have this data? Mark it as collected to track your progress."}

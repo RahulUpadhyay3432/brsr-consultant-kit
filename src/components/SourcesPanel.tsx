@@ -116,7 +116,7 @@ function SourceCard({ s }: { s: Source }) {
     <div className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)]
       hover:border-stone-300 transition-[border-color] duration-150">
       <div className="flex items-start justify-between gap-3">
-        <p className="text-[14px] font-semibold text-stone-800 leading-snug">{s.name}</p>
+        <p className="text-[15px] font-semibold text-stone-900 leading-snug">{s.name}</p>
         {s.href ? (
           <a
             href={s.href}
@@ -132,14 +132,14 @@ function SourceCard({ s }: { s: Source }) {
           <span
             title="Distribution-restricted document, cited for traceability, deliberately not hosted or copied."
             className="inline-flex items-center flex-shrink-0 text-[10px] font-semibold uppercase tracking-[0.08em]
-              text-stone-400 bg-stone-100 border border-stone-200 rounded px-1.5 py-0.5"
+              text-stone-500 bg-stone-100 border border-stone-200 rounded px-1.5 py-0.5"
           >
             Cited · not hosted
           </span>
         ) : null}
       </div>
 
-      <p className="text-[12.5px] text-stone-500 mt-1.5 leading-relaxed">{s.governs}</p>
+      <p className="text-[13.5px] text-stone-600 mt-1.5 leading-relaxed">{s.governs}</p>
 
       <div className="mt-3 pt-3 border-t border-stone-100 space-y-1.5">
         <MetaRow label="Built against" value={s.builtAgainst} />
@@ -152,8 +152,8 @@ function SourceCard({ s }: { s: Source }) {
 function MetaRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-baseline gap-2">
-      <span className="flex-shrink-0 w-[88px] text-[10px] font-bold uppercase tracking-[0.1em] text-stone-400">{label}</span>
-      <span className="text-[12px] text-stone-600 leading-snug">{value}</span>
+      <span className="flex-shrink-0 w-[88px] text-[10px] font-bold uppercase tracking-[0.1em] text-stone-500">{label}</span>
+      <span className="text-[13px] text-stone-600 leading-snug">{value}</span>
     </div>
   );
 }
@@ -167,7 +167,7 @@ export default function SourcesPanel() {
         <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">
           Sources &amp; methodology
         </h1>
-        <p className="text-[13px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
+        <p className="text-[13.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
           Every disclosure, factor and mapping in this kit traces to a primary source. Each links to the
           live authoritative document, never a hosted copy, so the reference stays current and we never
           redistribute restricted material.
@@ -178,8 +178,8 @@ export default function SourcesPanel() {
       {GROUPS.map((g) => (
         <section key={g.heading} className="space-y-3">
           <div>
-            <h2 className="text-[15px] font-semibold text-stone-800">{g.heading}</h2>
-            <p className="text-[12.5px] text-stone-500 mt-0.5">{g.blurb}</p>
+            <h2 className="text-[17px] font-bold text-stone-900">{g.heading}</h2>
+            <p className="text-[13px] text-stone-600 mt-0.5">{g.blurb}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {g.items.map((s) => <SourceCard key={s.name} s={s} />)}

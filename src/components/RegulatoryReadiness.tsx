@@ -18,7 +18,7 @@ function RegCard({ a }: { a: RegAssessment }) {
       <div className="px-5 py-4 border-b border-stone-100">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h3 className="font-display text-[21px] text-stone-900 leading-tight">{a.name}</h3>
+            <h3 className="font-display text-[17px] font-semibold text-stone-900 leading-tight">{a.name}</h3>
             <p className="text-[13.5px] text-stone-600 mt-1.5 max-w-[64ch] leading-relaxed">{a.what}</p>
           </div>
           <span className={`flex-shrink-0 inline-flex items-center gap-1.5 text-[12.5px] font-semibold px-2.5 py-1 rounded-full border ${v.cls}`}>

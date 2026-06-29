@@ -36,18 +36,18 @@ export default function PrincipleSection({
   }, {} as Record<StatusKey, number>);
 
   return (
-    <div className={isFirst ? "" : "border-t-2 border-stone-200"}>
+    <div className={isFirst ? "" : "border-t border-stone-200"}>
       <button
         onClick={onCollapse}
         aria-expanded={!collapsed}
         className="w-full flex items-center gap-2 px-4 py-2.5 bg-stone-100 border-b border-stone-200
-          hover:bg-stone-150 transition-colors text-left group pressable"
+          hover:bg-stone-200 transition-colors text-left group pressable"
       >
         <span className={`text-[11px] font-bold font-mono px-2 py-0.5 rounded
           ${info?.bg ?? "bg-stone-200"} ${info?.color ?? "text-stone-700"} border ${info?.border ?? "border-stone-300"}`}>
           {principle}
         </span>
-        <span className="text-sm font-semibold text-stone-700 group-hover:text-stone-900">
+        <span className="text-[15px] font-semibold text-stone-800 group-hover:text-stone-900">
           {info?.name ?? principle}
         </span>
         <div className="ml-auto flex items-center gap-2.5">

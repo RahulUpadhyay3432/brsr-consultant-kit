@@ -40,10 +40,10 @@ export default function UploadCard({
             </svg>
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="text-sm font-semibold text-stone-800">
+            <h3 className="text-[15px] font-semibold text-stone-900">
               Save time, upload last year's BRSR report
             </h3>
-            <p className="text-[13px] text-stone-500 mt-1 leading-relaxed">
+            <p className="text-[13.5px] text-stone-600 mt-1 leading-relaxed">
               We'll flag what's already documented, so you only chase what's new.
               <span className="inline-flex items-center gap-1 text-emerald-700 font-medium ml-1">
                 <svg className="w-3 h-3" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -78,7 +78,7 @@ export default function UploadCard({
                   </>
                 )}
               </button>
-              <span className="text-[10px] text-stone-400">Text-based PDF · processed locally · nothing uploaded</span>
+              <span className="text-[12px] text-stone-500">Text-based PDF · processed locally · nothing uploaded</span>
             </div>
             {uploadStatus === "error" && (
               <p className="mt-2 text-xs text-rose-600 leading-relaxed">{uploadError}</p>
@@ -93,12 +93,12 @@ export default function UploadCard({
             </svg>
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="text-sm font-semibold text-stone-800">
+            <h3 className="text-[15px] font-semibold text-stone-900">
               {detectedInReport > 0
                 ? <>Found <span className="text-emerald-700">{detectedInReport}</span> disclosure{detectedInReport === 1 ? "" : "s"} already documented in last year's report</>
                 : <>No recurring disclosures detected automatically</>}
             </h3>
-            <p className="text-xs text-stone-500 mt-1 leading-relaxed">
+            <p className="text-[13px] text-stone-600 mt-1 leading-relaxed">
               Scanned <span className="font-medium text-stone-600">{uploadInfo?.fileName}</span> ({uploadInfo?.pageCount} pages) locally.
               {detectedInReport > 0
                 ? <> These fields show a <span className="font-medium text-brand-700">Last year</span> tag, expand one to see the matched text, confirm it's still current, then mark it collected.</>
