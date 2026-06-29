@@ -100,7 +100,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         <div className="mt-12 rounded-2xl border border-line bg-white overflow-hidden divide-y divide-[#EFEDE6]">
           {[
             { pain: "A blank 108-field format, and no quick read on what's already covered", sol: "A gap-analysed action plan, every field sorted into Ready, Verify or Collect" },
-            { pain: "Re-keying numbers out of last year's report by hand", sol: "An AI importer that pre-fills the figures, each shown with its source line for you to verify" },
+            { pain: "Re-keying figures out of an 80-page annual report or last year's BRSR by hand", sol: "Upload the whole document: AI reads every page, distributes figures across all 108 fields, each shown with its source line" },
             { pain: "Chasing data that lives with different people across the business", sol: "Branded requests with auto-reminders and no-login submission, evidence attached" },
             { pain: "Emission factors to get right, and proving the number is defensible", sol: "Calculators cited to CEA & IPCC (version on every line) and an assurance evidence trail" },
             { pain: "One dataset, demanded by GRI, TCFD, IFRS and TNFD", sol: "Cross-framework mapping and one-click export, collect once, report many" },
@@ -207,7 +207,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           <div className="space-y-6">
             {[
               { t: "Plain-English explainers", tag: "Free", b: "Every field explained from the public SEBI definition. Written once, shipped as static text, nothing about the client is ever sent anywhere." },
-              { t: "Compliance importer", tag: "Pro", b: "Reads the client's existing reports and pre-fills the figures, each shown with the source line it came from, for you to verify. It never invents a number." },
+              { t: "Compliance importer", tag: "Pro", b: "Reads the client's entire document, whether 10 pages or 80, and pre-fills figures across all 108 BRSR fields. Every value shows the exact sentence it came from. It never invents a number." },
               { t: "Grounded narrative draft", tag: "Pro", b: "Turns the numbers you collected into review-ready prose. Every figure traces back to its source; gaps are flagged, not guessed." },
             ].map((p, i) => (
               <div key={p.t} className={i > 0 ? "border-t border-white/10 pt-6" : ""}>
@@ -234,7 +234,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
             When the job moves from preparing to collecting, Collect requests BRSR data from the team that holds each number, with branded emails and automatic reminders. They submit through a no-login form with evidence attached, emissions are calculated with cited factors, and an AI draft turns the result into review-ready narrative.
           </p>
           <ul className="mt-6 space-y-2.5">
-            {["Branded request emails & auto-reminders", "No-login submission with evidence attachments", "Emissions calculated with attributed factors", "Assurance-ready evidence trail, every figure traced to its owner and source"].map((f) => (
+            {["Per-client workspace: readiness %, data view, emissions, assurance and draft in one place", "Branded request emails & auto-reminders", "No-login submission with evidence attachments", "Emissions calculated with attributed factors", "Assurance-ready evidence trail, every figure traced to its owner and source"].map((f) => (
               <li key={f} className="flex items-center gap-2.5 text-[15px] text-ink"><Check />{f}</li>
             ))}
           </ul>
@@ -277,16 +277,17 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           </h2>
           <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[620px]`}>
             The free tool prepares the report. Pro does the work: winning and pricing the engagement,
-            collecting the data, computing and drafting, and reporting across frameworks. Collect, the AI
-            compliance importer, cross-framework export and the proposal builder are live today, and it keeps growing.
+            collecting the data, computing and drafting, reporting across frameworks. Collect, the AI
+            compliance importer (reads entire documents, every page), the multi-client workspace, cross-framework export
+            and the proposal builder are all live today.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
             {[
               { name: "Collect", status: "live" as const, flagship: true, desc: "Chase BRSR data from the client's team with branded emails, auto-reminders, and no-login submission with evidence." },
-              { name: "Compliance importer", status: "live" as const, ai: true, desc: "Upload an existing report and the numbers are pre-filled, each with its source line, for you to verify. It never invents a figure." },
+              { name: "Compliance importer", status: "live" as const, ai: true, desc: "Drop in last year's BRSR, an annual report, or any client document. AI reads every page and distributes figures across all 108 fields, each with its source line. Nothing applies until you review it." },
               { name: "Cross-framework export", status: "live" as const, desc: "Download the full BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD mapping (plus MSCI & DJSI) as a spreadsheet, collect once, report many. CBAM and CCTS join as they ship." },
               { name: "Proposal & fee builder", status: "live" as const, desc: "Turn a scope into a client-ready proposal and a transparent fee estimate, built from your own rates, so you win and price the work." },
-              { name: "Multi-client workspace", status: "coming" as const, desc: "Every client's engagement in one place, instead of one report at a time." },
+              { name: "Multi-client workspace", status: "live" as const, desc: "Every client's engagement in one place: a cross-client overview plus a full per-client workspace with readiness, data, emissions, assurance and draft tabs." },
               { name: "Consultant network", status: "future" as const, desc: "Get matched with the companies that need a BRSR consultant. Be found, not just searching." },
             ].map((p) => (
               <ProPillar key={p.name} name={p.name} status={p.status} desc={p.desc} flagship={"flagship" in p ? p.flagship : undefined} ai={"ai" in p ? p.ai : undefined} />
@@ -457,7 +458,7 @@ const COMPARE: { band: string; rows: [string, boolean, boolean | "soon"][] }[] =
   {
     band: "AI that does the work",
     rows: [
-      ["Compliance importer, pre-fill figures from existing reports", false, true],
+      ["Compliance importer, reads entire documents (80+ pages) across all 108 fields", false, true],
       ["Grounded AI narrative draft, review-ready", false, true],
     ],
   },
@@ -465,7 +466,7 @@ const COMPARE: { band: string; rows: [string, boolean, boolean | "soon"][] }[] =
     band: "Win & scale",
     rows: [
       ["Proposal & fee builder, scope and price an engagement", false, true],
-      ["Multi-client workspace", false, "soon"],
+      ["Multi-client workspace with per-client readiness, data & draft tabs", false, true],
     ],
   },
 ];
