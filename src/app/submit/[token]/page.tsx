@@ -1,5 +1,6 @@
 import { getContactByToken } from "@/lib/datarequest/db";
 import { submitDataAction } from "@/lib/datarequest/actions";
+import SubmitItemRow from "@/components/datarequest/SubmitItemRow";
 
 export const dynamic = "force-dynamic";
 
@@ -55,55 +56,20 @@ export default async function SubmitPage({
 
       <form action={submit} className="mt-6 space-y-3 w-full">
         {contact.items.map((it) => (
-          <div key={it.id} className="bg-white border border-line rounded-xl px-4 py-3.5">
-            <span className="block text-[13.5px] font-semibold text-ink">
-              {it.label}{it.unit && <span className="text-stone-400 font-normal"> ({it.unit})</span>}
-            </span>
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              <label className="block">
-                <span className="block text-[11px] font-medium text-stone-500 mb-1">{thisYearLabel}</span>
-                <input
-                  name={`f_${it.id}`}
-                  defaultValue={it.value ?? ""}
-                  placeholder="Enter value"
-                  className="w-full h-10 px-3 text-[13.5px] text-stone-800 bg-stone-50 border border-stone-200 rounded-lg
-                    focus:outline-none focus:bg-white focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
-                />
-              </label>
-              <label className="block">
-                <span className="block text-[11px] text-stone-400 mb-1">{prevYearLabel} (optional)</span>
-                <input
-                  name={`pf_${it.id}`}
-                  defaultValue={it.priorValue ?? ""}
-                  placeholder="Last year"
-                  className="w-full h-10 px-3 text-[13.5px] text-stone-700 bg-stone-50 border border-stone-200 rounded-lg
-                    focus:outline-none focus:bg-white focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
-                />
-              </label>
-            </div>
-
-            {/* Optional supporting document, backs the figure for assurance. */}
-            <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
-              <input
-                type="file"
-                name={`file_${it.id}`}
-                accept=".pdf,image/*,.xlsx,.xls,.csv"
-                aria-label={`Attach the supporting bill or invoice for ${it.label}`}
-                className="block max-w-full text-[12px] text-stone-400 cursor-pointer
-                  file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border file:border-stone-200
-                  file:text-[12px] file:font-medium file:text-stone-600 file:bg-stone-50 hover:file:bg-stone-100
-                  file:cursor-pointer file:transition-colors"
-              />
-              {it.evidenceName ? (
-                <span className="inline-flex items-center gap-1.5 text-[11.5px] text-emerald-700">
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
-                  {it.evidenceName} attached
-                </span>
-              ) : (
-                <span className="text-[11.5px] text-stone-400">Attach the bill / invoice (optional)</span>
-              )}
-            </div>
-          </div>
+          <SubmitItemRow
+            key={it.id}
+            item={{
+              id: it.id,
+              label: it.label,
+              unit: it.unit,
+              kind: it.kind,
+              value: it.value,
+              priorValue: it.priorValue,
+              evidenceName: it.evidenceName,
+            }}
+            thisYearLabel={thisYearLabel}
+            prevYearLabel={prevYearLabel}
+          />
         ))}
 
         <div className="pt-2 flex items-center gap-3">

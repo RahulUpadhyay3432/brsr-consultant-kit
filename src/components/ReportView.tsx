@@ -18,6 +18,7 @@ import { downloadReportPdf } from "@/lib/report-pdf";
 import { track } from "@/lib/mixpanel";
 import { downloadCsv, exportFilename } from "@/lib/export";
 import { buildFrameworkExportRows, buildRatingsExportRows, type RatingMappingRow } from "@/lib/framework-export";
+import { downloadTableDocx } from "@/lib/report-docx";
 import { PRINCIPLES } from "./checklist/constants";
 import { loadJSON, saveJSON, STORAGE_KEYS } from "@/lib/storage";
 import { WalkthroughCard } from "./Walkthrough";
@@ -729,13 +730,36 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
 
   // Export whichever crosswalk is in view, one obvious action. On-device CSV
   // (reuses the report's RFC-4180/formula-safe export.ts), so nothing leaves the browser.
-  function exportActive() {
+  function activeRows(): { rows: string[][]; file: string; title: string } {
     if (sub === "frameworks") {
-      downloadCsv(exportFilename("brsr-framework-mapping", clientName), buildFrameworkExportRows(mappings));
-    } else {
-      const ratings = (esgRatingsData as { mappings: RatingMappingRow[] }).mappings ?? [];
-      downloadCsv(exportFilename("brsr-ratings-alignment", clientName), buildRatingsExportRows(ratings));
+      return {
+        rows: buildFrameworkExportRows(mappings),
+        file: "brsr-framework-mapping",
+        title: "BRSR cross-framework mapping",
+      };
     }
+    const ratings = (esgRatingsData as { mappings: RatingMappingRow[] }).mappings ?? [];
+    return {
+      rows: buildRatingsExportRows(ratings),
+      file: "brsr-ratings-alignment",
+      title: "BRSR ESG-ratings alignment (MSCI & DJSI)",
+    };
+  }
+
+  function exportActive() {
+    const { rows, file } = activeRows();
+    downloadCsv(exportFilename(file, clientName), rows);
+  }
+
+  function exportActiveDocx() {
+    const { rows, file, title } = activeRows();
+    void downloadTableDocx({
+      filename: exportFilename(file, clientName).replace(/\.csv$/, ""),
+      title,
+      subtitle: clientName ? `Prepared for ${clientName}. Collect once, report across frameworks.` : "Collect once, report across frameworks.",
+      rows,
+      footnote: "An editable starting point, review and adapt to the client before use.",
+    });
   }
 
   const total    = mappings.length;
@@ -772,17 +796,30 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
             rating frameworks. Collect once, report across all.
           </p>
         </div>
-        <button
-          onClick={exportActive}
-          className="flex-shrink-0 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-brand-700 bg-brand-50
-            border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors pressable whitespace-nowrap"
-          title={sub === "frameworks" ? "Download the full BRSR↔GRI↔TCFD↔IFRS↔TNFD mapping as a spreadsheet" : "Download the MSCI & DJSI ratings alignment as a spreadsheet"}
-        >
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
-          </svg>
-          Export {sub === "frameworks" ? "mapping" : "ratings"} (CSV)
-        </button>
+        <div className="flex-shrink-0 flex items-center gap-2">
+          <button
+            onClick={exportActive}
+            className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-brand-700 bg-brand-50
+              border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors pressable whitespace-nowrap"
+            title={sub === "frameworks" ? "Download the full BRSR↔GRI↔TCFD↔IFRS↔TNFD mapping as a spreadsheet" : "Download the MSCI & DJSI ratings alignment as a spreadsheet"}
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
+            </svg>
+            CSV
+          </button>
+          <button
+            onClick={exportActiveDocx}
+            className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-stone-700 bg-white
+              border border-stone-200 hover:border-stone-300 hover:bg-stone-50 px-2.5 py-1.5 rounded-lg transition-colors pressable whitespace-nowrap"
+            title={sub === "frameworks" ? "Download the framework mapping as an editable Word document" : "Download the ratings alignment as an editable Word document"}
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 12h6M9 16h6M9 8h2M5 3h9l5 5v11a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+            </svg>
+            Word
+          </button>
+        </div>
       </div>
 
       {/* Sub-tabs */}
