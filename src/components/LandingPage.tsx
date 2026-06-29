@@ -88,7 +88,11 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                 </button>
               </div>
 
-              <p className="anim-up-md flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-[12px] text-ink-muted mt-6" style={{ animationDelay: "320ms" }}>
+              <p className="anim-up-md text-[13.5px] text-ink-muted mt-5" style={{ animationDelay: "300ms" }}>
+                Used by <span className="font-semibold text-ink">75+ consultants</span> preparing BRSR reports.
+              </p>
+
+              <p className="anim-up-md flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-[12px] text-ink-muted mt-4" style={{ animationDelay: "320ms" }}>
                 <Dot /> Client data never leaves your browser <span className="text-[#9AA3B0]">·</span>
                 <Dot /> Plain-English AI <span className="text-[#9AA3B0]">·</span>
                 <Dot /> Cited to SEBI &amp; ICAI
@@ -422,6 +426,37 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                 <p className="font-mono text-[12px] uppercase tracking-wide text-ink-faint mt-2">{s.l}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── In good company: real people + real proof ──────────────────────── */}
+      <section className="bg-white">
+        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-16 lg:py-20">
+          <div className="grid lg:grid-cols-[0.82fr_1fr] items-stretch rounded-3xl overflow-hidden border border-line shadow-elev-1 bg-gradient-to-br from-brand-50 via-white to-ember-bg/60">
+            <div className="relative min-h-[260px] lg:min-h-[440px] order-1">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/product/consultant.jpg"
+                alt="An independent ESG consultant working through a BRSR readiness report."
+                className="absolute inset-0 w-full h-full object-cover object-top"
+              />
+            </div>
+            <div className="order-2 p-8 sm:p-10 lg:p-12 flex flex-col justify-center">
+              <Eyebrow>In good company</Eyebrow>
+              <h2 className="font-display font-normal text-[2.2rem] sm:text-[2.7rem] leading-[1.06] tracking-[-0.02em] mt-3" style={{ textWrap: "balance" }}>
+                Used by <span className="text-brand-700">75+ consultants</span>, and counting.
+              </h2>
+              <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[480px]`}>
+                Independent ESG consultants across India use Saaksh to turn the first week of a BRSR engagement, the scramble of scattered data, emission maths and frameworks, into a cited plan they can send the same day.
+              </p>
+              <div className="mt-7">
+                <button onClick={onStart} className="inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-5 py-3 rounded-xl hover:bg-forest-light transition-colors pressable shadow-sm">
+                  Start a free report
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M13 6l6 6-6 6" /></svg>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
