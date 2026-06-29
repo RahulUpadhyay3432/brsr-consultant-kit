@@ -11,6 +11,7 @@
   --surface:   #FFFFFF;   /* card surface */
   --line:      #E5E9F0;   /* hairline border */
   --tint:      #EAF4FE;   /* whisper-blue card tint */
+  --band:      #EFF3FA;   /* cool recessed section band (depth/layering) */
   --ink:       #0F172A;   /* heading ink (near-black) */
   --body:      #28303B;   /* body text (near-black, strong contrast) */
   --muted:     #5B6573;   /* secondary text */
@@ -44,6 +45,13 @@ body {
 .bg-grid {
   background-image:
     radial-gradient(ellipse 80% 50% at 50% -10%, rgba(11, 111, 212, 0.06) 0%, transparent 65%);
+}
+
+/* Soft top-light for the dark anchor sections so they read as lit, not flat slabs.
+   The one place a gradient is allowed (atmosphere, not structure). */
+.glow-dark {
+  background-image:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(30, 157, 242, 0.10) 0%, transparent 60%);
 }
 
 /* Hairline accent at the top — 1px, intentional */
