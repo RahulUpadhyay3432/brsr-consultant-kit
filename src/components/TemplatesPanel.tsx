@@ -3,12 +3,15 @@
 // formats and how-to guidance consultants hunt for (materiality, the response
 // workbook, the hard principles, assurance-readiness). Downloads reuse the report's
 // formula-safe CSV export. Nothing leaves the browser. Cited where it states a rule.
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { downloadCsv, exportFilename } from "@/lib/export";
 import { OWNERS, OWNER_ORDER, ownerMapRows, reportingFy } from "@/lib/brsr-owners";
 import { TEAM_EMAILS, buildTeamEmail, type TeamEmail } from "@/lib/request-emails";
+import { computeTimeline, timelineCsvRows, defaultDeadline } from "@/lib/engagement-timeline";
 import { SEBI_BRSR_FORMAT_URL } from "./checklist/constants";
 import brsrData from "@/data/brsr_data_points.json";
+import qualityData from "@/data/brsr_quality_examples.json";
+import explainersData from "@/data/brsr_field_explainers.json";
 
 interface KbIndicator { id: string; label: string; unit: string | null }
 interface KbPrinciple { id: string; name: string; essential_indicators: KbIndicator[]; leadership_indicators: KbIndicator[] }
@@ -18,6 +21,9 @@ const KB = brsrData as unknown as {
   section_b_management_process_disclosures: KbDisclosure[];
   principles: KbPrinciple[];
 };
+
+const QUALITY_EXAMPLES = (qualityData as { examples: Record<string, string> }).examples;
+const FIELD_EXPLAINERS = (explainersData as { explainers: Record<string, string> }).explainers;
 
 // ── Downloadable templates (built on the spot, downloaded on-device) ──────────
 function buildResponseWorkbook(): string[][] {
@@ -74,7 +80,7 @@ const GUIDES: Guide[] = [
           <li>Identify the topics (use the Materiality tab as a starting shortlist).</li>
           <li>Map and engage stakeholders (see the Stakeholder engagement plan template).</li>
           <li>Score each topic on <strong>business impact</strong> and <strong>stakeholder concern</strong> (the grid template).</li>
-          <li>Prioritise, decide what's material, and record the rationale.</li>
+          <li>Prioritise, decide what&apos;s material, and record the rationale.</li>
           <li>Get board / management sign-off and keep the documentation for assurance.</li>
         </ol>
         <p className="mt-2">Document the process, assurers and the board will ask how topics were chosen.</p>
@@ -105,19 +111,49 @@ const GUIDES: Guide[] = [
     title: "Getting ready for BRSR Core assurance",
     body: (
       <>
-        <p>The nine BRSR Core attributes carry <strong>reasonable assurance</strong> on a glide path, top 150 (FY23-24) → 250 → 500 → top 1000 (FY26-27). Assurers increasingly ask not just "is the number right?" but "show the trail behind it":</p>
+        <p>The nine BRSR Core attributes carry <strong>reasonable assurance</strong> on a glide path, top 150 (FY23-24) → 250 → 500 → top 1000 (FY26-27). Assurers increasingly ask not just &quot;is the number right?&quot; but &quot;show the trail behind it&quot;:</p>
         <ul className="list-disc pl-5 space-y-1 mt-2">
           <li><strong>Named data owners</strong>, who is accountable for each KPI.</li>
           <li><strong>Documentation trail</strong>, the bill, register or meter reading behind every figure.</li>
           <li><strong>Cited methodology</strong>, the factor and source behind any computed number.</li>
-          <li><strong>Internal controls</strong>, how the data is reviewed before it's reported.</li>
+          <li><strong>Internal controls</strong>, how the data is reviewed before it&apos;s reported.</li>
         </ul>
-        <p className="mt-2">Saaksh's <strong>Collect</strong> tier captures exactly this, per-figure attribution, attached evidence and the cited calculation basis, as an exportable data-ownership ledger.</p>
+        <p className="mt-2">Saaksh&apos;s <strong>Collect</strong> tier captures exactly this, per-figure attribution, attached evidence and the cited calculation basis, as an exportable data-ownership ledger.</p>
       </>
     ),
     sources: [{ label: "SEBI BRSR Core circular (Jul 2023)", href: "https://www.sebi.gov.in/legal/circulars/jul-2023/brsr-core-framework-for-assurance-and-esg-disclosures-for-value-chain_73854.html" }],
   },
+  {
+    title: "What's new for BRSR in FY 2025-26",
+    body: (
+      <>
+        <p>Four changes that affect most engagements this filing season:</p>
+        <ul className="list-disc pl-5 space-y-2 mt-2">
+          <li>
+            <strong>BRSR Core assurance expansion.</strong> The top 500 listed companies (by market cap) must file BRSR Core with <em>reasonable assurance</em> for FY 2024-25 disclosures. The nine Core attributes cover GHG intensity, energy intensity, water intensity, waste management, and other key KPIs. Top 1000 joins the mandatory assurance glide path from FY 2026-27.
+          </li>
+          <li>
+            <strong>Value-chain disclosures: prepare now, mandatory from FY 2026-27.</strong> Top 1000 companies will be required to collect BRSR data from at least their top 2% of value-chain partners by spend. Begin identifying scope, selecting pilot suppliers, and designing the data-collection process this year. Saaksh&apos;s Collect tier is built for exactly this.
+          </li>
+          <li>
+            <strong>Scope 3 GHG (P6-L2): voluntary but increasingly expected.</strong> Scope 3 remains a Leadership indicator (voluntary) in the BRSR format, but assurers and institutional investors increasingly ask for it as part of BRSR Core engagement reviews. The Saaksh Scope 3 calculator in P6-L2 covers the most common categories (business travel, commuting, freight, waste).
+          </li>
+          <li>
+            <strong>SEBI March 2025 format amendments: already in this tool.</strong> SEBI revised the BRSR format in March 2025 with updated indicator numbering and minor disclosure refinements applicable from FY 2024-25 onward. The Saaksh knowledge base already incorporates these changes; no action needed within the tool.
+          </li>
+        </ul>
+        <p className="mt-2">For the official list of companies in each BRSR Core tier, check the NSE/BSE circulars or the SEBI website directly; the list is updated annually.</p>
+      </>
+    ),
+    sources: [
+      { label: "SEBI BRSR Format", href: SEBI_BRSR_FORMAT_URL },
+      { label: "SEBI BRSR Core circular (Jul 2023)", href: "https://www.sebi.gov.in/legal/circulars/jul-2023/brsr-core-framework-for-assurance-and-esg-disclosures-for-value-chain_73854.html" },
+      { label: "SEBI circulars (for Mar 2025 update)", href: "https://www.sebi.gov.in/legal/circulars/" },
+    ],
+  },
 ];
+
+const PRINCIPLE_IDS = ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9"];
 
 export default function TemplatesPanel({ clientName }: { clientName?: string }) {
   const fy = reportingFy(new Date());
@@ -126,7 +162,7 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
       <div>
         <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">Templates, emails &amp; guides</h1>
         <p className="text-[13px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
-          The formats, the internal data-request emails and the how-to guidance you&apos;d otherwise hunt for, ready
+          The formats, the internal data-request emails, the engagement timeline and the how-to guidance you&apos;d otherwise hunt for, ready
           to use and built from the same cited BRSR knowledge base. Generated in your browser; nothing is uploaded.
         </p>
       </div>
@@ -204,6 +240,9 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
         </button>
       </section>
 
+      {/* Engagement timeline generator */}
+      <TimelineSection clientName={clientName} />
+
       {/* How-to guides */}
       <section className="space-y-3">
         <h2 className="text-[15px] font-semibold text-stone-800">How-to guides</h2>
@@ -211,6 +250,258 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
           {GUIDES.map((g) => <GuideItem key={g.title} g={g} />)}
         </div>
       </section>
+
+      {/* Disclosure quality examples */}
+      <DisclosureExamplesSection />
+    </div>
+  );
+}
+
+// ── Engagement timeline ───────────────────────────────────────────────────────
+function TimelineSection({ clientName }: { clientName?: string }) {
+  const [deadline, setDeadline] = useState(defaultDeadline);
+  const [firstTime, setFirstTime] = useState(true);
+
+  const timeline = useMemo(() => {
+    const d = deadline ? new Date(deadline + "T00:00:00") : new Date();
+    return computeTimeline(d, firstTime);
+  }, [deadline, firstTime]);
+
+  return (
+    <section className="space-y-3">
+      <div>
+        <h2 className="text-[15px] font-semibold text-stone-800">Engagement timeline</h2>
+        <p className="text-[12.5px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
+          A realistic milestone plan from kickoff to filing. Set the deadline and the client&apos;s filing experience, then download or paste into your project tracker.
+        </p>
+      </div>
+
+      {/* Controls */}
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="flex items-center gap-2">
+          <label htmlFor="tl-deadline" className="text-[12.5px] font-medium text-stone-600 whitespace-nowrap">Filing deadline</label>
+          <input
+            id="tl-deadline"
+            type="date"
+            value={deadline}
+            onChange={(e) => setDeadline(e.target.value)}
+            className="text-[12.5px] text-stone-800 bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-400"
+          />
+        </div>
+        <div className="flex items-center gap-1 bg-stone-100 rounded-lg p-0.5">
+          <button
+            type="button"
+            onClick={() => setFirstTime(true)}
+            className={`text-[12px] font-medium px-3 py-1.5 rounded-md transition-colors ${firstTime ? "bg-white text-stone-800 shadow-sm" : "text-stone-500 hover:text-stone-700"}`}
+          >
+            First-time filing
+          </button>
+          <button
+            type="button"
+            onClick={() => setFirstTime(false)}
+            className={`text-[12px] font-medium px-3 py-1.5 rounded-md transition-colors ${!firstTime ? "bg-white text-stone-800 shadow-sm" : "text-stone-500 hover:text-stone-700"}`}
+          >
+            Experienced
+          </button>
+        </div>
+      </div>
+
+      {/* Milestone table */}
+      <div className="bg-white rounded-xl border border-stone-200 shadow-[0_1px_3px_rgba(80,60,30,0.04)] overflow-hidden">
+        <table className="w-full text-[12.5px]">
+          <thead>
+            <tr className="border-b border-stone-100 bg-stone-50">
+              <th className="text-left px-4 py-2.5 font-semibold text-stone-500 text-[11px] uppercase tracking-wide w-[38%]">Milestone</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-stone-500 text-[11px] uppercase tracking-wide w-[18%]">Due by</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-stone-500 text-[11px] uppercase tracking-wide w-[20%]">Lead</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-stone-500 text-[11px] uppercase tracking-wide hidden md:table-cell">Notes</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-stone-100">
+            {timeline.map((m, i) => (
+              <tr key={m.name} className={i === timeline.length - 1 ? "bg-brand-50" : ""}>
+                <td className="px-4 py-2.5 font-medium text-stone-800 leading-snug">{m.name}</td>
+                <td className="px-4 py-2.5 font-mono text-stone-600 whitespace-nowrap">
+                  {m.dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                </td>
+                <td className="px-4 py-2.5 text-stone-500 leading-snug">{m.owner}</td>
+                <td className="px-4 py-2.5 text-stone-400 leading-relaxed hidden md:table-cell">{m.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <button
+          onClick={() => downloadCsv(exportFilename("brsr-engagement-timeline", clientName), timelineCsvRows(timeline))}
+          className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors pressable"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" /></svg>
+          Download CSV
+        </button>
+        <p className="text-[11px] text-stone-400">The "Notes" column in the CSV includes what to prepare for each milestone.</p>
+      </div>
+    </section>
+  );
+}
+
+// ── Disclosure quality examples ───────────────────────────────────────────────
+function DisclosureExamplesSection() {
+  const [selectedPrinciples, setSelectedPrinciples] = useState<Set<string>>(new Set());
+  const [search, setSearch] = useState("");
+  const [openId, setOpenId] = useState<string | null>(null);
+
+  function togglePrinciple(pid: string) {
+    setSelectedPrinciples((prev) => {
+      const next = new Set(prev);
+      if (next.has(pid)) next.delete(pid); else next.add(pid);
+      return next;
+    });
+    setOpenId(null);
+  }
+
+  const allFields = useMemo(() => {
+    const out: Array<{ id: string; principleId: string; principleName: string; label: string; type: "essential" | "leadership" }> = [];
+    for (const p of KB.principles) {
+      for (const ind of p.essential_indicators) out.push({ id: ind.id, principleId: p.id, principleName: p.name, label: ind.label, type: "essential" });
+      for (const ind of p.leadership_indicators) out.push({ id: ind.id, principleId: p.id, principleName: p.name, label: ind.label, type: "leadership" });
+    }
+    return out;
+  }, []);
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return allFields.filter((f) => {
+      if (selectedPrinciples.size > 0 && !selectedPrinciples.has(f.principleId)) return false;
+      if (q && !f.id.toLowerCase().includes(q) && !f.label.toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [allFields, selectedPrinciples, search]);
+
+  return (
+    <section className="space-y-3">
+      <div>
+        <h2 className="text-[15px] font-semibold text-stone-800">What a complete answer looks like</h2>
+        <p className="text-[12.5px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
+          For each Section-C disclosure, the level of detail and the specific data points that assurers and investors typically expect to see.
+        </p>
+      </div>
+
+      {/* Filters */}
+      <div className="space-y-2">
+        <div className="flex flex-wrap gap-1.5">
+          {PRINCIPLE_IDS.map((pid) => (
+            <button
+              key={pid}
+              type="button"
+              onClick={() => togglePrinciple(pid)}
+              className={`font-mono text-[11px] font-medium px-2 py-1 rounded-md border transition-colors pressable ${
+                selectedPrinciples.has(pid)
+                  ? "bg-brand-600 text-white border-brand-600"
+                  : "bg-white text-stone-500 border-stone-200 hover:border-brand-300 hover:text-brand-700"
+              }`}
+            >
+              {pid}
+            </button>
+          ))}
+          {selectedPrinciples.size > 0 && (
+            <button
+              type="button"
+              onClick={() => { setSelectedPrinciples(new Set()); setOpenId(null); }}
+              className="text-[11px] text-stone-400 hover:text-stone-600 px-1.5 py-1 transition-colors"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+        <input
+          type="text"
+          placeholder="Search by field ID or label..."
+          value={search}
+          onChange={(e) => { setSearch(e.target.value); setOpenId(null); }}
+          className="w-full max-w-[380px] text-[12.5px] text-stone-800 bg-white border border-stone-200 rounded-lg px-3 py-2 placeholder:text-stone-400 focus:outline-none focus:ring-1 focus:ring-brand-400"
+        />
+      </div>
+
+      {/* Field list */}
+      <div className="bg-white rounded-xl border border-stone-200 shadow-[0_1px_3px_rgba(80,60,30,0.04)] divide-y divide-stone-100 overflow-hidden">
+        {filtered.length === 0 ? (
+          <p className="px-4 py-6 text-[13px] text-stone-400 text-center">No fields match your filters.</p>
+        ) : (
+          filtered.map((f) => (
+            <ExampleRow
+              key={f.id}
+              field={f}
+              example={QUALITY_EXAMPLES[f.id]}
+              explainer={FIELD_EXPLAINERS[f.id]}
+              open={openId === f.id}
+              onToggle={() => setOpenId(openId === f.id ? null : f.id)}
+            />
+          ))
+        )}
+      </div>
+      <p className="text-[11px] text-stone-400 leading-relaxed">
+        Guidance on completeness only. Your client&apos;s actual figures must come from their own records, not illustrative examples.
+      </p>
+    </section>
+  );
+}
+
+function ExampleRow({
+  field,
+  example,
+  explainer,
+  open,
+  onToggle,
+}: {
+  field: { id: string; principleId: string; principleName: string; label: string; type: "essential" | "leadership" };
+  example?: string;
+  explainer?: string;
+  open: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={open}
+        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-stone-50 transition-colors"
+      >
+        <svg
+          className={`w-3 h-3 text-stone-400 flex-shrink-0 transition-transform duration-150 ${open ? "rotate-90" : ""}`}
+          fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+        <span className="font-mono text-[10.5px] text-stone-400 flex-shrink-0 w-[54px]">{field.id}</span>
+        <span className={`font-mono text-[10px] px-1.5 py-0.5 rounded flex-shrink-0 ${field.type === "essential" ? "text-brand-700 bg-brand-50 border border-brand-100" : "text-amber-700 bg-amber-50 border border-amber-100"}`}>
+          {field.type === "essential" ? "Essential" : "Leadership"}
+        </span>
+        <span className="text-[12.5px] text-stone-700 leading-snug line-clamp-1 flex-1">{field.label}</span>
+      </button>
+      <div
+        className={`grid overflow-hidden transition-[grid-template-rows] duration-200 ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+        style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
+      >
+        <div className="min-h-0">
+          <div className="px-4 pb-4 ml-10 space-y-3">
+            {example && (
+              <div>
+                <p className="text-[10.5px] font-semibold uppercase tracking-wide text-stone-400 mb-1">What a complete answer includes</p>
+                <p className="text-[12.5px] text-stone-700 leading-relaxed">{example}</p>
+              </div>
+            )}
+            {explainer && (
+              <div>
+                <p className="text-[10.5px] font-semibold uppercase tracking-wide text-stone-400 mb-1">In plain English</p>
+                <p className="text-[12.5px] text-stone-500 leading-relaxed">{explainer}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
