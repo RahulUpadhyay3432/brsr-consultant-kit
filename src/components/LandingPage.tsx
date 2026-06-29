@@ -79,13 +79,49 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         </div>
       </section>
 
-      {/* ── Sources bar ────────────────────────────────────────────────────── */}
+      {/* ── Trust strip (sources + clickable proof) ────────────────────────── */}
       <section className="border-y border-line bg-white">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-6 flex flex-wrap items-center justify-center gap-x-7 gap-y-2">
-          <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#8A938D]">Built on primary sources</span>
-          {["SEBI BRSR Format", "ICAI 2024", "CEA factors", "IPCC 2006", "GRI · TCFD · IFRS"].map((s) => (
-            <span key={s} className="font-display text-[16px] text-ink">{s}</span>
-          ))}
+        <div className="max-w-[1180px] mx-auto px-5 sm:px-8">
+          {/* Tier 1, primary sources */}
+          <div className="py-6 flex flex-wrap items-center justify-center gap-x-7 gap-y-2">
+            <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#8A938D]">Built on primary sources</span>
+            {["SEBI BRSR Format", "ICAI 2024", "CEA factors", "IPCC 2006", "GRI · TCFD · IFRS"].map((s) => (
+              <span key={s} className="font-display text-[16px] text-ink">{s}</span>
+            ))}
+          </div>
+          {/* Tier 2, verifiable trust, links to the trust pages */}
+          <div className="border-t border-line py-4 flex flex-wrap items-center justify-center gap-2.5">
+            {[
+              {
+                href: "/privacy",
+                label: "On-device & private",
+                icon: <path d="M5 13l4 4L19 7" />,
+              },
+              {
+                href: "/methodology",
+                label: "Cited, never invented",
+                icon: <><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></>,
+              },
+              {
+                href: "/security",
+                label: "Security & sub-processors",
+                icon: <path d="M12 3l7 3v5c0 4.5-3 7-7 8.5C8 17 5 14.5 5 11V6l7-3z" />,
+              },
+            ].map((c) => (
+              <Link
+                key={c.href}
+                href={c.href}
+                className="group inline-flex items-center gap-1.5 rounded-full border border-line bg-white pl-2.5 pr-2 py-1.5
+                  text-[13px] font-medium text-[#5B6660] hover:text-brand-700 hover:border-brand-200 transition-colors pressable"
+              >
+                <svg className="w-3.5 h-3.5 text-brand-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.9} strokeLinecap="round" strokeLinejoin="round">
+                  {c.icon}
+                </svg>
+                {c.label}
+                <svg className="w-2.5 h-2.5 text-[#A6ADA6] group-hover:text-brand-500 transition-colors flex-shrink-0" fill="none" viewBox="0 0 15 15" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M5.5 3h6.5v6.5M12 3L4 11" /></svg>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
