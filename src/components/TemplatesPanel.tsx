@@ -160,21 +160,21 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">Templates, emails &amp; guides</h1>
-        <p className="text-[13px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
+        <h1 className="font-display text-[26px] font-normal text-stone-900 leading-tight tracking-tight">Templates, emails &amp; guides</h1>
+        <p className="text-[14px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
           The formats, the internal data-request emails, the engagement timeline and the how-to guidance you&apos;d otherwise hunt for, ready
           to use and built from the same cited BRSR knowledge base. Generated in your browser; nothing is uploaded.
         </p>
       </div>
 
-      {/* Downloadable templates */}
+      {/* Downloadable templates — first section, no border-t */}
       <section className="space-y-3">
-        <h2 className="text-[15px] font-semibold text-stone-800">Templates</h2>
+        <h2 className="text-[17px] font-bold text-stone-900">Templates</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {TEMPLATES.map((t) => (
             <div key={t.name} className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)] flex flex-col">
-              <p className="text-[14px] font-semibold text-stone-800 leading-snug">{t.name}</p>
-              <p className="text-[12.5px] text-stone-500 mt-1.5 leading-relaxed flex-1">{t.desc}</p>
+              <p className="text-[15px] font-semibold text-stone-900 leading-snug">{t.name}</p>
+              <p className="text-[13.5px] text-stone-600 mt-1.5 leading-relaxed flex-1">{t.desc}</p>
               <button
                 onClick={() => downloadCsv(exportFilename(t.file), t.build())}
                 className="mt-3 inline-flex items-center gap-1.5 self-start text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors pressable"
@@ -185,32 +185,32 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
             </div>
           ))}
         </div>
-        <p className="text-[11px] text-stone-400 leading-relaxed">Templates are starting formats, not a finished assessment, adapt them to the client and their stakeholder process.</p>
+        <p className="text-[12px] text-stone-500 leading-relaxed">Templates are starting formats, not a finished assessment, adapt them to the client and their stakeholder process.</p>
       </section>
 
       {/* Internal request emails */}
-      <section className="space-y-3">
+      <section className="space-y-3 border-t border-stone-200 pt-5">
         <div>
-          <h2 className="text-[15px] font-semibold text-stone-800">Internal request emails</h2>
-          <p className="text-[12.5px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
+          <h2 className="text-[17px] font-bold text-stone-900">Internal request emails</h2>
+          <p className="text-[13.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
             Ready-to-send drafts to chase BRSR data from the team that holds it, each personalized for
-            {" "}<span className="font-medium text-stone-700">{clientName?.trim() || "your client"}</span>
+            {" "}<span className="font-medium text-stone-800">{clientName?.trim() || "your client"}</span>
             {" "}({fy}). Copy one, paste it into your mail client, adjust and send.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {TEAM_EMAILS.map((t) => <EmailCard key={t.team} t={t} company={clientName} fy={fy} />)}
         </div>
-        <p className="text-[11px] text-stone-400 leading-relaxed">
-          Sending, tracking and automatic reminders are handled for you in <span className="font-medium text-stone-500">Collect</span>, the Pro tier, owners submit through a no-login form with evidence attached.
+        <p className="text-[12px] text-stone-500 leading-relaxed">
+          Sending, tracking and automatic reminders are handled for you in <span className="font-medium text-stone-600">Collect</span>, the Pro tier, owners submit through a no-login form with evidence attached.
         </p>
       </section>
 
       {/* Who owns what */}
-      <section className="space-y-3">
+      <section className="space-y-3 border-t border-stone-200 pt-5">
         <div>
-          <h2 className="text-[15px] font-semibold text-stone-800">Who owns what</h2>
-          <p className="text-[12.5px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
+          <h2 className="text-[17px] font-bold text-stone-900">Who owns what</h2>
+          <p className="text-[13.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
             Which team in the company usually holds each principle&apos;s data, so you know who to ask first.
           </p>
         </div>
@@ -220,12 +220,12 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
             return (
               <div key={id} className="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-4 px-4 py-3">
                 <div className="flex items-center gap-2.5 sm:w-[230px] flex-shrink-0">
-                  <span className="font-mono text-[10.5px] text-stone-400">{id}</span>
+                  <span className="font-mono text-[11.5px] text-stone-500">{id}</span>
                   <span className="text-[13.5px] font-semibold text-stone-800 leading-snug">{o.theme}</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="inline-block font-mono text-[10.5px] text-brand-700 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5">{o.chip}</span>
-                  <p className="text-[12.5px] text-stone-500 mt-1 leading-relaxed">{o.found}</p>
+                  <span className="inline-block font-mono text-[11.5px] text-brand-700 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5">{o.chip}</span>
+                  <p className="text-[13px] text-stone-600 mt-1 leading-relaxed">{o.found}</p>
                 </div>
               </div>
             );
@@ -241,18 +241,22 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
       </section>
 
       {/* Engagement timeline generator */}
-      <TimelineSection clientName={clientName} />
+      <div className="border-t border-stone-200 pt-5">
+        <TimelineSection clientName={clientName} />
+      </div>
 
       {/* How-to guides */}
-      <section className="space-y-3">
-        <h2 className="text-[15px] font-semibold text-stone-800">How-to guides</h2>
+      <section className="space-y-3 border-t border-stone-200 pt-5">
+        <h2 className="text-[17px] font-bold text-stone-900">How-to guides</h2>
         <div className="space-y-2.5">
           {GUIDES.map((g) => <GuideItem key={g.title} g={g} />)}
         </div>
       </section>
 
       {/* Disclosure quality examples */}
-      <DisclosureExamplesSection />
+      <div className="border-t border-stone-200 pt-5">
+        <DisclosureExamplesSection />
+      </div>
     </div>
   );
 }
@@ -270,8 +274,8 @@ function TimelineSection({ clientName }: { clientName?: string }) {
   return (
     <section className="space-y-3">
       <div>
-        <h2 className="text-[15px] font-semibold text-stone-800">Engagement timeline</h2>
-        <p className="text-[12.5px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
+        <h2 className="text-[17px] font-bold text-stone-900">Engagement timeline</h2>
+        <p className="text-[13.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
           A realistic milestone plan from kickoff to filing. Set the deadline and the client&apos;s filing experience, then download or paste into your project tracker.
         </p>
       </div>
@@ -279,27 +283,27 @@ function TimelineSection({ clientName }: { clientName?: string }) {
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
-          <label htmlFor="tl-deadline" className="text-[12.5px] font-medium text-stone-600 whitespace-nowrap">Filing deadline</label>
+          <label htmlFor="tl-deadline" className="text-[13px] font-medium text-stone-700 whitespace-nowrap">Filing deadline</label>
           <input
             id="tl-deadline"
             type="date"
             value={deadline}
             onChange={(e) => setDeadline(e.target.value)}
-            className="text-[12.5px] text-stone-800 bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-400"
+            className="text-[13.5px] text-stone-800 bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-400"
           />
         </div>
         <div className="flex items-center gap-1 bg-stone-100 rounded-lg p-0.5">
           <button
             type="button"
             onClick={() => setFirstTime(true)}
-            className={`text-[12px] font-medium px-3 py-1.5 rounded-md transition-colors ${firstTime ? "bg-white text-stone-800 shadow-sm" : "text-stone-500 hover:text-stone-700"}`}
+            className={`text-[13px] font-medium px-3 py-1.5 rounded-md transition-colors ${firstTime ? "bg-white text-stone-800 shadow-sm" : "text-stone-500 hover:text-stone-700"}`}
           >
             First-time filing
           </button>
           <button
             type="button"
             onClick={() => setFirstTime(false)}
-            className={`text-[12px] font-medium px-3 py-1.5 rounded-md transition-colors ${!firstTime ? "bg-white text-stone-800 shadow-sm" : "text-stone-500 hover:text-stone-700"}`}
+            className={`text-[13px] font-medium px-3 py-1.5 rounded-md transition-colors ${!firstTime ? "bg-white text-stone-800 shadow-sm" : "text-stone-500 hover:text-stone-700"}`}
           >
             Experienced
           </button>
@@ -308,24 +312,24 @@ function TimelineSection({ clientName }: { clientName?: string }) {
 
       {/* Milestone table */}
       <div className="bg-white rounded-xl border border-stone-200 shadow-[0_1px_3px_rgba(80,60,30,0.04)] overflow-hidden">
-        <table className="w-full text-[12.5px]">
+        <table className="w-full">
           <thead>
             <tr className="border-b border-stone-100 bg-stone-50">
-              <th className="text-left px-4 py-2.5 font-semibold text-stone-500 text-[11px] uppercase tracking-wide w-[38%]">Milestone</th>
-              <th className="text-left px-4 py-2.5 font-semibold text-stone-500 text-[11px] uppercase tracking-wide w-[18%]">Due by</th>
-              <th className="text-left px-4 py-2.5 font-semibold text-stone-500 text-[11px] uppercase tracking-wide w-[20%]">Lead</th>
-              <th className="text-left px-4 py-2.5 font-semibold text-stone-500 text-[11px] uppercase tracking-wide hidden md:table-cell">Notes</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-stone-600 text-[12px] uppercase tracking-wide w-[38%]">Milestone</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-stone-600 text-[12px] uppercase tracking-wide w-[18%]">Due by</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-stone-600 text-[12px] uppercase tracking-wide w-[20%]">Lead</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-stone-600 text-[12px] uppercase tracking-wide hidden md:table-cell">Notes</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-stone-100">
             {timeline.map((m, i) => (
               <tr key={m.name} className={i === timeline.length - 1 ? "bg-brand-50" : ""}>
-                <td className="px-4 py-2.5 font-medium text-stone-800 leading-snug">{m.name}</td>
-                <td className="px-4 py-2.5 font-mono text-stone-600 whitespace-nowrap">
+                <td className="px-4 py-3 text-[14px] font-medium text-stone-900 leading-snug">{m.name}</td>
+                <td className="px-4 py-3 text-[13.5px] font-mono text-stone-700 whitespace-nowrap">
                   {m.dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                 </td>
-                <td className="px-4 py-2.5 text-stone-500 leading-snug">{m.owner}</td>
-                <td className="px-4 py-2.5 text-stone-400 leading-relaxed hidden md:table-cell">{m.description}</td>
+                <td className="px-4 py-3 text-[13.5px] text-stone-600 leading-snug">{m.owner}</td>
+                <td className="px-4 py-3 text-[13.5px] text-stone-600 leading-relaxed hidden md:table-cell">{m.description}</td>
               </tr>
             ))}
           </tbody>
@@ -340,7 +344,7 @@ function TimelineSection({ clientName }: { clientName?: string }) {
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" /></svg>
           Download CSV
         </button>
-        <p className="text-[11px] text-stone-400">The "Notes" column in the CSV includes what to prepare for each milestone.</p>
+        <p className="text-[12px] text-stone-500">The &quot;Notes&quot; column in the CSV includes what to prepare for each milestone.</p>
       </div>
     </section>
   );
@@ -382,24 +386,24 @@ function DisclosureExamplesSection() {
   return (
     <section className="space-y-3">
       <div>
-        <h2 className="text-[15px] font-semibold text-stone-800">What a complete answer looks like</h2>
-        <p className="text-[12.5px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
+        <h2 className="text-[17px] font-bold text-stone-900">What a complete answer looks like</h2>
+        <p className="text-[13.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
           For each Section-C disclosure, the level of detail and the specific data points that assurers and investors typically expect to see.
         </p>
       </div>
 
       {/* Filters */}
-      <div className="space-y-2">
+      <div className="space-y-2.5">
         <div className="flex flex-wrap gap-1.5">
           {PRINCIPLE_IDS.map((pid) => (
             <button
               key={pid}
               type="button"
               onClick={() => togglePrinciple(pid)}
-              className={`font-mono text-[11px] font-medium px-2 py-1 rounded-md border transition-colors pressable ${
+              className={`font-mono text-[12px] font-medium px-2.5 py-1 rounded-md border transition-colors pressable ${
                 selectedPrinciples.has(pid)
                   ? "bg-brand-600 text-white border-brand-600"
-                  : "bg-white text-stone-500 border-stone-200 hover:border-brand-300 hover:text-brand-700"
+                  : "bg-white text-stone-600 border-stone-200 hover:border-brand-300 hover:text-brand-700"
               }`}
             >
               {pid}
@@ -409,25 +413,35 @@ function DisclosureExamplesSection() {
             <button
               type="button"
               onClick={() => { setSelectedPrinciples(new Set()); setOpenId(null); }}
-              className="text-[11px] text-stone-400 hover:text-stone-600 px-1.5 py-1 transition-colors"
+              className="text-[12px] text-stone-500 hover:text-stone-700 px-1.5 py-1 transition-colors"
             >
               Clear
             </button>
           )}
         </div>
-        <input
-          type="text"
-          placeholder="Search by field ID or label..."
-          value={search}
-          onChange={(e) => { setSearch(e.target.value); setOpenId(null); }}
-          className="w-full max-w-[380px] text-[12.5px] text-stone-800 bg-white border border-stone-200 rounded-lg px-3 py-2 placeholder:text-stone-400 focus:outline-none focus:ring-1 focus:ring-brand-400"
-        />
+        <div className="relative">
+          <svg
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400 pointer-events-none"
+            fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}
+            strokeLinecap="round" strokeLinejoin="round"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Search by field ID or label — e.g. P6-E1, emissions, wages..."
+            value={search}
+            onChange={(e) => { setSearch(e.target.value); setOpenId(null); }}
+            className="w-full max-w-[520px] pl-10 pr-3 py-2.5 text-[13.5px] text-stone-800 bg-white border border-stone-300 rounded-lg placeholder:text-stone-400 focus:outline-none focus:border-brand-400 focus:ring-1 focus:ring-brand-300 transition-colors"
+          />
+        </div>
       </div>
 
       {/* Field list */}
       <div className="bg-white rounded-xl border border-stone-200 shadow-[0_1px_3px_rgba(80,60,30,0.04)] divide-y divide-stone-100 overflow-hidden">
         {filtered.length === 0 ? (
-          <p className="px-4 py-6 text-[13px] text-stone-400 text-center">No fields match your filters.</p>
+          <p className="px-4 py-6 text-[13px] text-stone-500 text-center">No fields match your filters.</p>
         ) : (
           filtered.map((f) => (
             <ExampleRow
@@ -441,7 +455,7 @@ function DisclosureExamplesSection() {
           ))
         )}
       </div>
-      <p className="text-[11px] text-stone-400 leading-relaxed">
+      <p className="text-[12px] text-stone-500 leading-relaxed">
         Guidance on completeness only. Your client&apos;s actual figures must come from their own records, not illustrative examples.
       </p>
     </section>
@@ -467,19 +481,19 @@ function ExampleRow({
         type="button"
         onClick={onToggle}
         aria-expanded={open}
-        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-stone-50 transition-colors"
+        className="w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-stone-50 transition-colors"
       >
         <svg
-          className={`w-3 h-3 text-stone-400 flex-shrink-0 transition-transform duration-150 ${open ? "rotate-90" : ""}`}
+          className={`w-3 h-3 text-stone-400 flex-shrink-0 transition-transform duration-150 mt-1 ${open ? "rotate-90" : ""}`}
           fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
-        <span className="font-mono text-[10.5px] text-stone-400 flex-shrink-0 w-[54px]">{field.id}</span>
-        <span className={`font-mono text-[10px] px-1.5 py-0.5 rounded flex-shrink-0 ${field.type === "essential" ? "text-brand-700 bg-brand-50 border border-brand-100" : "text-amber-700 bg-amber-50 border border-amber-100"}`}>
+        <span className="font-mono text-[12px] text-stone-500 flex-shrink-0 w-[54px] mt-0.5">{field.id}</span>
+        <span className={`font-mono text-[11px] px-1.5 py-0.5 rounded flex-shrink-0 mt-0.5 ${field.type === "essential" ? "text-brand-700 bg-brand-50 border border-brand-100" : "text-amber-700 bg-amber-50 border border-amber-100"}`}>
           {field.type === "essential" ? "Essential" : "Leadership"}
         </span>
-        <span className="text-[12.5px] text-stone-700 leading-snug line-clamp-1 flex-1">{field.label}</span>
+        <span className="text-[14px] text-stone-800 leading-snug flex-1">{field.label}</span>
       </button>
       <div
         className={`grid overflow-hidden transition-[grid-template-rows] duration-200 ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
@@ -489,14 +503,14 @@ function ExampleRow({
           <div className="px-4 pb-4 ml-10 space-y-3">
             {example && (
               <div>
-                <p className="text-[10.5px] font-semibold uppercase tracking-wide text-stone-400 mb-1">What a complete answer includes</p>
-                <p className="text-[12.5px] text-stone-700 leading-relaxed">{example}</p>
+                <p className="text-[11.5px] font-semibold uppercase tracking-wide text-stone-500 mb-1">What a complete answer includes</p>
+                <p className="text-[13.5px] text-stone-700 leading-relaxed">{example}</p>
               </div>
             )}
             {explainer && (
               <div>
-                <p className="text-[10.5px] font-semibold uppercase tracking-wide text-stone-400 mb-1">In plain English</p>
-                <p className="text-[12.5px] text-stone-500 leading-relaxed">{explainer}</p>
+                <p className="text-[11.5px] font-semibold uppercase tracking-wide text-stone-500 mb-1">In plain English</p>
+                <p className="text-[13.5px] text-stone-600 leading-relaxed">{explainer}</p>
               </div>
             )}
           </div>
@@ -527,19 +541,19 @@ function EmailCard({ t, company, fy }: { t: TeamEmail; company?: string; fy: str
   return (
     <div className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)] flex flex-col">
       <div className="flex items-start justify-between gap-2">
-        <p className="text-[14px] font-semibold text-stone-800 leading-snug">{t.team}</p>
-        <span className="font-mono text-[10px] text-stone-400 flex-shrink-0 mt-0.5">{t.principles.join(" · ")}</span>
+        <p className="text-[15px] font-semibold text-stone-900 leading-snug">{t.team}</p>
+        <span className="font-mono text-[11.5px] text-stone-500 flex-shrink-0 mt-0.5">{t.principles.join(" · ")}</span>
       </div>
-      <p className="text-[12px] text-stone-500 mt-1.5 leading-relaxed">{t.intro}</p>
+      <p className="text-[13px] text-stone-600 mt-1.5 leading-relaxed">{t.intro}</p>
       <ul className="mt-2.5 space-y-1 flex-1">
         {t.asks.slice(0, 4).map((a) => (
-          <li key={a} className="flex gap-2 text-[12px] text-stone-600 leading-snug">
-            <span className="text-stone-300 mt-[1px]">•</span>
+          <li key={a} className="flex gap-2 text-[13px] text-stone-700 leading-snug">
+            <span className="text-stone-400 mt-[1px]">•</span>
             <span className="line-clamp-1">{a}</span>
           </li>
         ))}
         {t.asks.length > 4 && (
-          <li className="text-[11.5px] text-stone-400 pl-4">+ {t.asks.length - 4} more in the email</li>
+          <li className="text-[12.5px] text-stone-500 pl-4">+ {t.asks.length - 4} more in the email</li>
         )}
       </ul>
       <button
@@ -573,7 +587,7 @@ function GuideItem({ g }: { g: Guide }) {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="w-full flex items-center gap-2 text-left text-[14px] font-semibold text-stone-800"
+        className="w-full flex items-center gap-2 text-left text-[15px] font-semibold text-stone-900"
       >
         <svg className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-200 ${open ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
         {g.title}
@@ -583,12 +597,12 @@ function GuideItem({ g }: { g: Guide }) {
         style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
       >
         <div className="min-h-0">
-          <div className="mt-3 pl-6 text-[13px] text-stone-600 leading-relaxed space-y-1">
+          <div className="mt-3 pl-6 text-[14px] text-stone-700 leading-relaxed space-y-1">
             {g.body}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-2 mt-2 border-t border-stone-100">
-              <span className="text-[10.5px] font-semibold uppercase tracking-wide text-stone-400">Sources</span>
+              <span className="text-[11.5px] font-semibold uppercase tracking-wide text-stone-600">Sources</span>
               {g.sources.map((s) => (
-                <a key={s.href} href={s.href} target="_blank" rel="noreferrer" className="text-[11.5px] text-brand-700 hover:text-brand-800 underline decoration-stone-300 hover:decoration-brand-500 transition-colors">{s.label} ↗</a>
+                <a key={s.href} href={s.href} target="_blank" rel="noreferrer" className="text-[12.5px] text-brand-700 hover:text-brand-800 underline decoration-stone-300 hover:decoration-brand-500 transition-colors">{s.label} ↗</a>
               ))}
             </div>
           </div>
