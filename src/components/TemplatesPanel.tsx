@@ -5,6 +5,8 @@
 // formula-safe CSV export. Nothing leaves the browser. Cited where it states a rule.
 import { useState } from "react";
 import { downloadCsv, exportFilename } from "@/lib/export";
+import { OWNERS, OWNER_ORDER, ownerMapRows, reportingFy } from "@/lib/brsr-owners";
+import { TEAM_EMAILS, buildTeamEmail, type TeamEmail } from "@/lib/request-emails";
 import { SEBI_BRSR_FORMAT_URL } from "./checklist/constants";
 import brsrData from "@/data/brsr_data_points.json";
 
@@ -117,14 +119,15 @@ const GUIDES: Guide[] = [
   },
 ];
 
-export default function TemplatesPanel() {
+export default function TemplatesPanel({ clientName }: { clientName?: string }) {
+  const fy = reportingFy(new Date());
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">Templates &amp; guides</h1>
+        <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">Templates, emails &amp; guides</h1>
         <p className="text-[13px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
-          The formats and how-to guidance you&apos;d otherwise hunt for, ready to download and built from the same
-          cited BRSR knowledge base. Generated in your browser; nothing is uploaded.
+          The formats, the internal data-request emails and the how-to guidance you&apos;d otherwise hunt for, ready
+          to use and built from the same cited BRSR knowledge base. Generated in your browser; nothing is uploaded.
         </p>
       </div>
 
@@ -149,6 +152,58 @@ export default function TemplatesPanel() {
         <p className="text-[11px] text-stone-400 leading-relaxed">Templates are starting formats, not a finished assessment, adapt them to the client and their stakeholder process.</p>
       </section>
 
+      {/* Internal request emails */}
+      <section className="space-y-3">
+        <div>
+          <h2 className="text-[15px] font-semibold text-stone-800">Internal request emails</h2>
+          <p className="text-[12.5px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
+            Ready-to-send drafts to chase BRSR data from the team that holds it, each personalized for
+            {" "}<span className="font-medium text-stone-700">{clientName?.trim() || "your client"}</span>
+            {" "}({fy}). Copy one, paste it into your mail client, adjust and send.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {TEAM_EMAILS.map((t) => <EmailCard key={t.team} t={t} company={clientName} fy={fy} />)}
+        </div>
+        <p className="text-[11px] text-stone-400 leading-relaxed">
+          Sending, tracking and automatic reminders are handled for you in <span className="font-medium text-stone-500">Collect</span>, the Pro tier, owners submit through a no-login form with evidence attached.
+        </p>
+      </section>
+
+      {/* Who owns what */}
+      <section className="space-y-3">
+        <div>
+          <h2 className="text-[15px] font-semibold text-stone-800">Who owns what</h2>
+          <p className="text-[12.5px] text-stone-500 mt-1 max-w-[74ch] leading-relaxed">
+            Which team in the company usually holds each principle&apos;s data, so you know who to ask first.
+          </p>
+        </div>
+        <div className="bg-white rounded-xl border border-stone-200 shadow-[0_1px_3px_rgba(80,60,30,0.04)] divide-y divide-stone-100">
+          {OWNER_ORDER.map((id) => {
+            const o = OWNERS[id];
+            return (
+              <div key={id} className="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-4 px-4 py-3">
+                <div className="flex items-center gap-2.5 sm:w-[230px] flex-shrink-0">
+                  <span className="font-mono text-[10.5px] text-stone-400">{id}</span>
+                  <span className="text-[13.5px] font-semibold text-stone-800 leading-snug">{o.theme}</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <span className="inline-block font-mono text-[10.5px] text-brand-700 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5">{o.chip}</span>
+                  <p className="text-[12.5px] text-stone-500 mt-1 leading-relaxed">{o.found}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <button
+          onClick={() => downloadCsv(exportFilename("brsr-data-ownership-map", clientName), ownerMapRows())}
+          className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors pressable"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" /></svg>
+          Download CSV
+        </button>
+      </section>
+
       {/* How-to guides */}
       <section className="space-y-3">
         <h2 className="text-[15px] font-semibold text-stone-800">How-to guides</h2>
@@ -156,6 +211,63 @@ export default function TemplatesPanel() {
           {GUIDES.map((g) => <GuideItem key={g.title} g={g} />)}
         </div>
       </section>
+    </div>
+  );
+}
+
+// An internal request-email card: the team, its asks preview, and a Copy button that
+// puts the full subject + body on the clipboard (paste into Gmail / Outlook).
+function EmailCard({ t, company, fy }: { t: TeamEmail; company?: string; fy: string }) {
+  const [copied, setCopied] = useState(false);
+  const { subject, body } = buildTeamEmail(t, { company, fy });
+
+  async function copy() {
+    const text = `${subject}\n\n${body}`;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      window.prompt("Copy this email", text);
+      return;
+    }
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1800);
+  }
+
+  return (
+    <div className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)] flex flex-col">
+      <div className="flex items-start justify-between gap-2">
+        <p className="text-[14px] font-semibold text-stone-800 leading-snug">{t.team}</p>
+        <span className="font-mono text-[10px] text-stone-400 flex-shrink-0 mt-0.5">{t.principles.join(" · ")}</span>
+      </div>
+      <p className="text-[12px] text-stone-500 mt-1.5 leading-relaxed">{t.intro}</p>
+      <ul className="mt-2.5 space-y-1 flex-1">
+        {t.asks.slice(0, 4).map((a) => (
+          <li key={a} className="flex gap-2 text-[12px] text-stone-600 leading-snug">
+            <span className="text-stone-300 mt-[1px]">•</span>
+            <span className="line-clamp-1">{a}</span>
+          </li>
+        ))}
+        {t.asks.length > 4 && (
+          <li className="text-[11.5px] text-stone-400 pl-4">+ {t.asks.length - 4} more in the email</li>
+        )}
+      </ul>
+      <button
+        type="button"
+        onClick={copy}
+        className="mt-3 inline-flex items-center gap-1.5 self-start text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors pressable"
+      >
+        {copied ? (
+          <>
+            <svg className="w-3.5 h-3.5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+            <span className="text-emerald-700">Copied</span>
+          </>
+        ) : (
+          <>
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15V5a2 2 0 012-2h10" /></svg>
+            Copy email
+          </>
+        )}
+      </button>
     </div>
   );
 }

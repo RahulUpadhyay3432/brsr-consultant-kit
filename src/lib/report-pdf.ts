@@ -11,25 +11,14 @@
 // courier (mono labels). Same hierarchy, zero bundle weight.
 import type { ReportOutput } from "@/lib/types";
 import { FILING_LABELS, type ExistingFiling } from "@/lib/types";
+import { OWNERS, OWNER_ORDER as ORDER, reportingFy } from "@/lib/brsr-owners";
 import plainData from "@/data/brsr_plain_language.json";
 
 const PLAIN = (plainData as { fields: Record<string, string> }).fields;
 
-// Each principle → a plain serif heading, a short mono team chip, and a
-// "usually found in … forward to …" subtitle. Sections with no gaps are skipped,
-// so a real brief shows only the few teams that actually owe data.
-const OWNERS: Record<string, { theme: string; chip: string; found: string }> = {
-  P1: { theme: "Governance & ethics", chip: "Company Secretary / Legal", found: "Usually found in board records and compliance registers. Forward to your Company Secretary or Legal team." },
-  P2: { theme: "Products & supply chain", chip: "Procurement / Product", found: "Usually found in sourcing, product and lifecycle records. Forward to your Procurement or Product team." },
-  P3: { theme: "Workforce & wellbeing", chip: "HR / People team", found: "Usually found in payroll and HR records. Forward this section to your People team." },
-  P4: { theme: "Stakeholder engagement", chip: "Sustainability lead", found: "Usually found in stakeholder-engagement records. Forward to your Sustainability lead." },
-  P5: { theme: "Human rights", chip: "HR / Legal", found: "Usually found in policy, grievance and due-diligence records. Forward to your HR or Legal team." },
-  P6: { theme: "Energy, water & emissions", chip: "Plant / EHS / Energy", found: "Usually found in utility bills, meter readings and fuel logs. Forward to your plant or energy manager." },
-  P7: { theme: "Policy advocacy", chip: "Public affairs", found: "Usually found in trade-association and advocacy records. Forward to your Public affairs or Sustainability team." },
-  P8: { theme: "Community & inclusive growth", chip: "CSR team", found: "Usually found in CSR spend and project records. Forward to your CSR team." },
-  P9: { theme: "Consumer responsibility", chip: "Customer service / Legal", found: "Usually found in complaints and product records. Forward to your Customer service or Legal team." },
-};
-const ORDER = Object.keys(OWNERS);
+// Each principle → a plain serif heading, a short mono team chip, and a "usually found
+// in … forward to …" subtitle (OWNERS, shared with the free Templates tab). Sections
+// with no gaps are skipped, so a real brief shows only the teams that actually owe data.
 
 type RGB = [number, number, number];
 const PAPER: RGB = [248, 250, 249];   // #F8FAF9 near-white
@@ -51,14 +40,6 @@ const NOTEBG: RGB = [247, 245, 239];
 
 const SANS = "helvetica", SERIF = "times", MONO = "courier";
 const ptToMm = (pt: number) => pt * 0.3528;
-
-// Indian financial year that has most recently completed as of `d` (BRSR is filed
-// for the just-closed FY). e.g. any date Apr 2026–Mar 2027 → "FY 2025–26".
-function reportingFy(d: Date): string {
-  const m = d.getMonth(); // 0 = Jan
-  const endYear = m >= 3 ? d.getFullYear() : d.getFullYear() - 1;
-  return `FY ${endYear - 1}–${String(endYear).slice(2)}`;
-}
 
 export async function downloadReportPdf(report: ReportOutput): Promise<void> {
   const { jsPDF } = await import("jspdf");

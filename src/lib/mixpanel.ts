@@ -1,27 +1,48 @@
 // Client-only Mixpanel helper. SSR-safe: all calls are no-ops on the server.
-// Import `track` anywhere in client components to fire an event.
+// initMixpanel() must be called once (MixpanelProvider does this). track() waits
+// for init to complete even if called before the provider mounts.
 
-import type { Dict } from "mixpanel-browser";
+import type { Mixpanel, Dict } from "mixpanel-browser";
 
-// Token is public (goes in the browser bundle) — NEXT_PUBLIC_ prefix is intentional.
 export const MIXPANEL_TOKEN = "7f380e0a4f06fa4020b708b7349e7afa";
 
-let initialized = false;
+let mp: Mixpanel | null = null;
+let initPromise: Promise<void> | null = null;
 
-export async function initMixpanel() {
-  if (typeof window === "undefined" || initialized) return;
-  initialized = true;
-  const mp = (await import("mixpanel-browser")).default;
-  mp.init(MIXPANEL_TOKEN, {
-    autocapture: true,
-    record_sessions_percent: 100,
-    persistence: "localStorage",
+export function initMixpanel(superProps?: Dict): Promise<void> {
+  if (typeof window === "undefined") return Promise.resolve();
+  if (initPromise) {
+    // Already initialised; just update super props if new ones come in.
+    if (superProps && mp) mp.register(superProps);
+    return initPromise;
+  }
+  initPromise = import("mixpanel-browser").then(({ default: mixpanel }) => {
+    mixpanel.init(MIXPANEL_TOKEN, {
+      autocapture: true,
+      record_sessions_percent: 100,
+      persistence: "localStorage",
+    });
+    if (superProps) mixpanel.register(superProps);
+    mp = mixpanel;
+  });
+  return initPromise;
+}
+
+// Call after login to link events to a named profile. For Saaksh Pro (shared
+// passcode, single consultant), a stable string id is enough for now.
+export function identifyUser(id: string, profile?: Dict) {
+  if (typeof window === "undefined") return;
+  (initPromise ?? initMixpanel()).then(() => {
+    try {
+      mp?.identify(id);
+      if (profile) mp?.people.set(profile);
+    } catch { /* best-effort */ }
   });
 }
 
 export function track(event: string, props?: Dict) {
   if (typeof window === "undefined") return;
-  import("mixpanel-browser").then(({ default: mp }) => {
-    try { mp.track(event, props); } catch { /* best-effort */ }
+  (initPromise ?? initMixpanel()).then(() => {
+    try { mp?.track(event, props); } catch { /* best-effort */ }
   });
 }

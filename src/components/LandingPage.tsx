@@ -104,7 +104,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
             { pain: "Chasing data that lives with different people across the business", sol: "Branded requests with auto-reminders and no-login submission, evidence attached" },
             { pain: "Emission factors to get right, and proving the number is defensible", sol: "Calculators cited to CEA & IPCC (version on every line) and an assurance evidence trail" },
             { pain: "One dataset, demanded by GRI, TCFD, IFRS and TNFD", sol: "Cross-framework mapping and one-click export, collect once, report many" },
-            { pain: "Hunting for materiality formats and how-to guidance", sol: "A templates & guides library, built from the same cited knowledge base" },
+            { pain: "Hand-writing emails to chase data, and hunting for materiality formats", sol: "Ready-to-send internal request emails per team, a who-owns-what map, and templates & guides" },
             { pain: "New regulations landing, CBAM for exporters, CCTS carbon credits", sol: "Beyond-BRSR readiness checks: who's in scope, and what to prepare" },
           ].map((r) => (
             <div key={r.pain} className="grid sm:grid-cols-2 gap-x-8 gap-y-2 px-5 sm:px-7 py-5 items-center">
@@ -440,7 +440,7 @@ const COMPARE: { band: string; rows: [string, boolean, boolean | "soon"][] }[] =
       ["GHG, energy, water & Scope 3 calculators, cited", true, true],
       ["Cross-framework mapping & export (GRI, TCFD, IFRS, TNFD, MSCI, DJSI)", true, true],
       ["Beyond-BRSR readiness: CBAM & CCTS in-scope checks", true, true],
-      ["Templates & guides library", true, true],
+      ["Templates, internal request emails & a who-owns-what map", true, true],
       ["Plain-English AI explainer on every field", true, true],
       ["CSV + client-ready PDF export", true, true],
     ],

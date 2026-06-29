@@ -160,7 +160,7 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
               {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} clientName={report.companyName} />}
               {activeTab === "alignment"   && <AlignmentWorkspace mappings={report.frameworkMappings} clientName={report.companyName} />}
               {activeTab === "beyond-brsr" && <RegulatoryReadiness regulatory={report.regulatory} />}
-              {activeTab === "templates"   && <TemplatesPanel />}
+              {activeTab === "templates"   && <TemplatesPanel clientName={report.companyName} />}
               {activeTab === "sources"     && <SourcesPanel />}
             </div>
           </div>
