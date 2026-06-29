@@ -20,6 +20,29 @@ interface LandingPageProps {
 const COMPLIANCE_CHAT = "https://huggingface.co/spaces/sherlockwatson221/climate-compliance";
 const BODY = "text-ink-body";
 
+// The trust trio — a bounded navy / blue / coral colored set (TSC-style colored
+// boxes, in our palette) each with an icon chip.
+const TRUST_CARDS = [
+  {
+    t: "Cited & versioned",
+    b: "Every disclosure and emission factor traces to SEBI, ICAI, CEA or IPCC, so what you put in front of a client is defensible.",
+    card: "bg-forest text-white", chip: "bg-white/10", icon: "text-brand-400", title: "text-white", body: "text-[#BFD3CA]",
+    glyph: (<><path d="M12 3l7 3v5c0 4.5-3 7-7 8.5C8 17 5 14.5 5 11V6l7-3z" /><path d="M9 11.5l2 2 4-4" /></>),
+  },
+  {
+    t: "100% on-device",
+    b: "The free readiness tool runs entirely in your browser. No upload, no account, nothing stored.",
+    card: "bg-brand-50 border border-brand-100", chip: "bg-white border border-brand-100", icon: "text-brand-700", title: "text-ink", body: "text-ink-body",
+    glyph: (<><rect x="3" y="4" width="18" height="13" rx="2" /><path d="M3 8.5h18M8 21h8M12 17v4" /></>),
+  },
+  {
+    t: "Free to start",
+    b: "The readiness tool is free and needs no login. The Pro workspace layers on when you move to collecting and reporting at scale.",
+    card: "bg-ember-bg border border-[#F8CFC5]", chip: "bg-white border border-[#F8CFC5]", icon: "text-[#C2432A]", title: "text-ink", body: "text-ink-body",
+    glyph: (<path d="M13 2L4.5 12.5h6L11 22l8.5-10.5h-6L13 2z" />),
+  },
+];
+
 export default function LandingPage({ onStart, resume }: LandingPageProps) {
   useScrollReveal();
   const scrollTo = (id: string) => () =>
@@ -38,7 +61,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       {/* ── Hero ───────────────────────────────────────────────────────────── */}
       <section className="bg-grid">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-16 lg:pb-24">
-          <div className="grid lg:grid-cols-[1.05fr_1fr] gap-12 lg:gap-12 items-center">
+          <div className="grid lg:grid-cols-[1fr_1.08fr] gap-12 lg:gap-14 items-center">
             <div>
               <div className="anim-up-sm inline-flex items-center gap-2 rounded-full border border-line bg-white/70 pl-2 pr-3.5 py-1">
                 <span className="font-display text-[14px] text-brand-700">साक्ष्य</span>
@@ -72,8 +95,27 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               </p>
             </div>
 
-            <div className="anim-card" style={{ animationDelay: "280ms" }}>
-              <ReadinessPanel />
+            {/* Real product screenshot, framed like a browser window, lifted on a
+                soft blue backdrop for contrast (kept light, not a dark slab). */}
+            <div className="anim-card relative" style={{ animationDelay: "280ms" }}>
+              <div aria-hidden className="absolute inset-0 translate-x-4 translate-y-6 sm:translate-x-5 sm:translate-y-7 rounded-[26px] bg-brand-100/55" />
+              <div aria-hidden className="absolute -right-5 -top-6 w-32 h-32 rounded-full bg-ember/15 blur-2xl" />
+              <div className="relative rounded-xl bg-white border border-line shadow-elev-2 overflow-hidden">
+                <div className="flex items-center gap-1.5 px-3.5 h-9 bg-[#F4F7FC] border-b border-line">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#E5717A]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#E8B84B]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#5FC08A]" />
+                  <span className="ml-3 hidden sm:flex items-center flex-1 max-w-[260px] h-5 rounded-md bg-white border border-line px-2 font-mono text-[10px] text-ink-faint">saaksh.co/report</span>
+                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/product/readiness.png"
+                  alt="The Saaksh BRSR readiness report: a live, gap-analysed view of all 108 fields colour-coded into Ready, Verify and Collect, with emissions and cross-framework mapping."
+                  width={1300}
+                  height={880}
+                  className="block w-full h-auto"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -324,13 +366,13 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
             {[
               { name: "Collect", status: "live" as const, flagship: true, desc: "Chase BRSR data from the client's team with branded emails, auto-reminders, and no-login submission with evidence." },
-              { name: "Compliance importer", status: "live" as const, ai: true, desc: "Drop in last year's BRSR, an annual report, or any client document. AI reads every page and distributes figures across all 108 fields, each with its source line. Nothing applies until you review it." },
+              { name: "Compliance importer", status: "live" as const, ai: true, tint: true, desc: "Drop in last year's BRSR, an annual report, or any client document. AI reads every page and distributes figures across all 108 fields, each with its source line. Nothing applies until you review it." },
               { name: "Cross-framework export", status: "live" as const, desc: "Download the full BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD mapping (plus MSCI & DJSI) as a spreadsheet, collect once, report many. CBAM and CCTS join as they ship." },
               { name: "Proposal & fee builder", status: "live" as const, desc: "Turn a scope into a client-ready proposal and a transparent fee estimate, built from your own rates, so you win and price the work." },
               { name: "Multi-client workspace", status: "live" as const, desc: "Every client's engagement in one place: a cross-client overview plus a full per-client workspace with readiness, data, emissions, assurance and draft tabs." },
               { name: "Consultant network", status: "future" as const, desc: "Get matched with the companies that need a BRSR consultant. Be found, not just searching." },
             ].map((p) => (
-              <ProPillar key={p.name} name={p.name} status={p.status} desc={p.desc} flagship={"flagship" in p ? p.flagship : undefined} ai={"ai" in p ? p.ai : undefined} />
+              <ProPillar key={p.name} name={p.name} status={p.status} desc={p.desc} flagship={"flagship" in p ? p.flagship : undefined} ai={"ai" in p ? p.ai : undefined} tint={"tint" in p ? p.tint : undefined} />
             ))}
           </div>
           <p className="text-[13.5px] text-ink-faint mt-6 max-w-[620px] leading-relaxed">
@@ -349,14 +391,13 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       <section className="bg-band">
         <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { t: "Cited & versioned", b: "Every disclosure and emission factor traces to SEBI, ICAI, CEA or IPCC, so what you put in front of a client is defensible." },
-              { t: "100% on-device", b: "The free readiness tool runs entirely in your browser. No upload, no account, nothing stored." },
-              { t: "Free to start", b: "The readiness tool is free and needs no login. The Pro workspace layers on when you move to collecting and reporting at scale." },
-            ].map((c) => (
-              <div key={c.t} className="rounded-2xl bg-white border border-line p-6 shadow-elev-1">
-                <h3 className="font-display text-[20px] text-ink">{c.t}</h3>
-                <p className={`text-[15px] ${BODY} leading-relaxed mt-2`}>{c.b}</p>
+            {TRUST_CARDS.map((c) => (
+              <div key={c.t} className={`rounded-2xl p-6 shadow-elev-1 ${c.card}`}>
+                <span className={`w-11 h-11 rounded-xl flex items-center justify-center ${c.chip}`}>
+                  <svg className={`w-5 h-5 ${c.icon}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">{c.glyph}</svg>
+                </span>
+                <h3 className={`font-display text-[20px] mt-4 ${c.title}`}>{c.t}</h3>
+                <p className={`text-[15px] leading-relaxed mt-2 ${c.body}`}>{c.b}</p>
               </div>
             ))}
           </div>
@@ -593,15 +634,21 @@ function Check({ className = "text-brand-600" }: { className?: string }) {
 // live cards are light with a green "Available now" tag; roadmap cards carry an
 // honest Coming / Future tag. Only the flagship gets the dark hero treatment, so
 // "three things are live" reads as momentum without three heavy dark blocks.
-function ProPillar({ name, status, desc, flagship, ai }: { name: string; status: "live" | "coming" | "future"; desc: string; flagship?: boolean; ai?: boolean }) {
+function ProPillar({ name, status, desc, flagship, ai, tint }: { name: string; status: "live" | "coming" | "future"; desc: string; flagship?: boolean; ai?: boolean; tint?: boolean }) {
   const filled = !!flagship; // only the flagship gets the forest fill
+  // Surface: navy flagship · blue tint · white — a colored/white mix, not all-white.
+  const surface = filled
+    ? "bg-forest text-white shadow-elev-2"
+    : tint
+      ? "bg-brand-50 border border-brand-100 shadow-elev-1"
+      : "bg-white border border-[#DDE3EC] shadow-elev-1";
   const tag = status === "live" ? "Available now" : status === "coming" ? "Coming" : "Future";
   const tagCls =
     status === "live" ? "text-forest bg-brand-400"
       : status === "coming" ? "text-[#8A6516] bg-[#F6ECD8] border border-[#EAD9B0]"
         : "text-ink-faint bg-white border border-line";
   return (
-    <div className={`rounded-2xl p-6 ${filled ? "bg-forest text-white shadow-elev-2" : "bg-white border border-[#DDE3EC] shadow-elev-1"}`}>
+    <div className={`rounded-2xl p-6 ${surface}`}>
       <div className="flex items-start justify-between gap-2">
         <span className={`font-display text-[19px] leading-tight flex items-center gap-2 ${filled ? "text-white" : "text-ink"}`}>
           {name}
