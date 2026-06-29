@@ -53,3 +53,7 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# competitor design-study screenshots — kept locally for reference, not committed
+# (public repo: avoids 18MB bloat + republishing competitors' page imagery)
+/docs/competitor-design/
