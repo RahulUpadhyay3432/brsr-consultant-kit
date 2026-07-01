@@ -1,6 +1,8 @@
 // "Upload last year's report" card, client-side, privacy-safe. Pure UI; all
-// extraction/detection state lives in useChecklistState.
+// extraction/detection state lives in useChecklistState. The scan is a keyword
+// match run in the browser (not AI), so nothing about the client leaves the device.
 import type { RefObject } from "react";
+import Link from "next/link";
 
 export type UploadStatus = "idle" | "processing" | "done" | "error";
 
@@ -10,6 +12,7 @@ interface UploadCardProps {
   uploadInfo: { fileName: string; pageCount: number } | null;
   uploadError: string;
   detectedInReport: number;
+  remainingToCollect: number;
   showOnlyDetected: boolean;
   onFile: (file: File) => void;
   onToggleShowOnlyDetected: () => void;
@@ -18,7 +21,7 @@ interface UploadCardProps {
 }
 
 export default function UploadCard({
-  fileInputRef, uploadStatus, uploadInfo, uploadError, detectedInReport,
+  fileInputRef, uploadStatus, uploadInfo, uploadError, detectedInReport, remainingToCollect,
   showOnlyDetected, onFile, onToggleShowOnlyDetected, onMarkAllDetected, onClear,
 }: UploadCardProps) {
   return (
@@ -40,16 +43,18 @@ export default function UploadCard({
             </svg>
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="text-[15px] font-semibold text-stone-900">
-              Save time, upload last year's BRSR report
+            <h3 className="text-[15px] font-semibold text-ink">
+              Skip the fields you&apos;ve already filed
             </h3>
-            <p className="text-[13.5px] text-stone-600 mt-1 leading-relaxed">
-              We'll flag what's already documented, so you only chase what's new.
+            <p className="text-[13.5px] text-ink-body mt-1 leading-relaxed">
+              BRSR repeats every year. Drop in last year&apos;s BRSR, an annual report, or your client&apos;s policies,
+              and we run a quick keyword scan on your device to tag every disclosure that&apos;s already documented, so your
+              plan shrinks to just what&apos;s new.
               <span className="inline-flex items-center gap-1 text-emerald-700 font-medium ml-1">
                 <svg className="w-3 h-3" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
                   <path d="M7.5 1.5l5 2v3.5c0 3-2.2 5-5 6.5-2.8-1.5-5-3.5-5-6.5V3.5z" />
                 </svg>
-                Scanned in your browser, the file never leaves your device.
+                Nothing leaves your browser.
               </span>
             </p>
             <div className="mt-2.5 flex items-center gap-2 flex-wrap">
@@ -78,11 +83,16 @@ export default function UploadCard({
                   </>
                 )}
               </button>
-              <span className="text-[12px] text-stone-500">Text-based PDF · processed locally · nothing uploaded</span>
+              <span className="text-[12px] text-ink-muted">Text-based PDF · scanned on your device · nothing uploaded</span>
             </div>
             {uploadStatus === "error" && (
               <p className="mt-2 text-xs text-rose-600 leading-relaxed">{uploadError}</p>
             )}
+            <p className="text-[12px] text-ink-muted mt-2 leading-relaxed">
+              First-time filer? An annual report or a policy pack works too. This is a keyword scan, not AI, want AI to
+              read the whole document and fill the figures?{" "}
+              <Link href="/features/collect" className="font-medium text-brand-700 hover:underline">That&apos;s Collect (Pro) →</Link>
+            </p>
           </div>
         </div>
       ) : (
@@ -93,15 +103,15 @@ export default function UploadCard({
             </svg>
           </div>
           <div className="min-w-0 flex-1">
-            <h3 className="text-[15px] font-semibold text-stone-900">
+            <h3 className="text-[15px] font-semibold text-ink">
               {detectedInReport > 0
-                ? <>Found <span className="text-emerald-700">{detectedInReport}</span> disclosure{detectedInReport === 1 ? "" : "s"} already documented in last year's report</>
+                ? <><span className="text-emerald-700">{detectedInReport}</span> already documented <span className="text-ink-faint font-normal">→</span> <span className="text-brand-700">{remainingToCollect}</span> to collect fresh</>
                 : <>No recurring disclosures detected automatically</>}
             </h3>
-            <p className="text-[13px] text-stone-600 mt-1 leading-relaxed">
-              Scanned <span className="font-medium text-stone-600">{uploadInfo?.fileName}</span> ({uploadInfo?.pageCount} pages) locally.
+            <p className="text-[13px] text-ink-body mt-1 leading-relaxed">
+              Scanned <span className="font-medium">{uploadInfo?.fileName}</span> ({uploadInfo?.pageCount} pages) on your device.
               {detectedInReport > 0
-                ? <> These fields show a <span className="font-medium text-brand-700">Last year</span> tag, expand one to see the matched text, confirm it's still current, then mark it collected.</>
+                ? <> The tagged fields show a <span className="font-medium text-brand-700">Last year</span> tag, expand one to check the matched text, confirm it&apos;s still current, then mark it collected. What&apos;s left is your fresh-collect list.</>
                 : <> The PDF may be image-based, or use different wording. You can still work through the checklist normally.</>}
             </p>
             <div className="mt-2.5 flex items-center gap-2 flex-wrap">
@@ -136,7 +146,7 @@ export default function UploadCard({
                 type="button"
                 onClick={onClear}
                 className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium
-                  text-stone-500 hover:text-stone-700 hover:bg-stone-100 pressable transition-colors"
+                  text-ink-muted hover:text-ink hover:bg-band pressable transition-colors"
               >
                 Clear
               </button>

@@ -9,7 +9,7 @@
 // Newsreader / Hanken / IBM Plex on this machine, so we map the design's type
 // roles onto the built-in PDF fonts: times (serif headings), helvetica (body),
 // courier (mono labels). Same hierarchy, zero bundle weight.
-import type { ReportOutput } from "@/lib/types";
+import type { ReportOutput, MaterialityTopic } from "@/lib/types";
 import { FILING_LABELS, type ExistingFiling } from "@/lib/types";
 import { OWNERS, OWNER_ORDER as ORDER, reportingFy } from "@/lib/brsr-owners";
 import plainData from "@/data/brsr_plain_language.json";
@@ -41,7 +41,11 @@ const NOTEBG: RGB = [247, 245, 239];
 const SANS = "helvetica", SERIF = "times", MONO = "courier";
 const ptToMm = (pt: number) => pt * 0.3528;
 
-export async function downloadReportPdf(report: ReportOutput): Promise<void> {
+export async function downloadReportPdf(
+  report: ReportOutput,
+  opts?: { materialityTopics?: MaterialityTopic[] },
+): Promise<void> {
+  const materialityTopics = opts?.materialityTopics ?? [];
   const { jsPDF } = await import("jspdf");
   const doc = new jsPDF({ unit: "mm", format: "a4" });
 
@@ -318,6 +322,63 @@ export async function downloadReportPdf(report: ReportOutput): Promise<void> {
     let ty = top + 5.6;
     for (const ln of lines) { doc.text(ln, M + 7, ty); ty += ptToMm(9.5) * 1.42; }
     y = top + H + 4;
+  }
+
+  // ── Suggested material topics (opt-in) ──────────────────────────────────────
+  // Only when the consultant ticked "Include material topics". A shortlist to
+  // seed the stakeholder process, honestly framed as not a completed assessment.
+  if (materialityTopics.length > 0) {
+    space(24);
+    y += 4;
+    font(SERIF, "normal", 15, FOREST);
+    doc.text("Suggested material topics", M, y + 4.5);
+    y += 10;
+    font(SANS, "normal", 9, SECOND);
+    {
+      const intro = doc.splitTextToSize(
+        "A shortlist to seed the client's stakeholder-engagement process, not a completed materiality assessment.",
+        cW,
+      );
+      for (const ln of intro) { space(ptToMm(9) * 1.4); doc.text(ln, M, y); y += ptToMm(9) * 1.4; }
+    }
+    y += 3;
+
+    const CAT: Record<string, string> = { environment: "ENVIRONMENT", social: "SOCIAL", governance: "GOVERNANCE" };
+    for (const cat of ["environment", "social", "governance"]) {
+      const items = materialityTopics.filter((t) => t.category === cat);
+      if (!items.length) continue;
+      space(9);
+      font(MONO, "normal", 8, LABELGREEN);
+      doc.text(CAT[cat], M, y + 3);
+      y += 6.5;
+
+      for (const t of items) {
+        const principles = (t.brsr_principles ?? []).join(", ");
+        font(MONO, "normal", 7.5, SECOND);
+        const pw = principles ? doc.getTextWidth(principles) : 0;
+        font(SANS, "bold", 9.5, INK);
+        const topicLines = doc.splitTextToSize(t.topic, cW - (pw ? pw + 6 : 0)) as string[];
+        font(SANS, "normal", 9, BODY);
+        const whyLines = doc.splitTextToSize(t.why_material ?? "", cW) as string[];
+        const lhT = ptToMm(9.5) * 1.3, lhW = ptToMm(9) * 1.36;
+        const rowH = topicLines.length * lhT + whyLines.length * lhW + 3.2;
+        space(rowH);
+        const top = y;
+        // topic (bold) + principles (mono, right-aligned on first line)
+        font(SANS, "bold", 9.5, INK);
+        let ty = top + 3.2;
+        topicLines.forEach((ln) => { doc.text(ln, M, ty); ty += lhT; });
+        if (principles) { font(MONO, "normal", 7.5, SECOND); doc.text(principles, pageW - M, top + 3.2, { align: "right" }); }
+        // why it may be material
+        font(SANS, "normal", 9, BODY);
+        whyLines.forEach((ln) => { doc.text(ln, M, ty); ty += lhW; });
+        // hairline
+        doc.setDrawColor(...DIVIDER); doc.setLineWidth(0.3); doc.line(M, ty - 0.4, pageW - M, ty - 0.4);
+        y = ty + 2.4;
+      }
+      y += 2;
+    }
+    y += 2;
   }
 
   // ── Footer on every page ────────────────────────────────────────────────────

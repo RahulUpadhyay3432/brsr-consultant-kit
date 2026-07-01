@@ -18,6 +18,81 @@ const EXPORT_STATUS_LABEL: Record<ChecklistItem["status"], string> = {
   not_applicable: "Not applicable",
 };
 
+// A persistent, collapsible "how this tab works" panel. Always available (not a
+// one-time dismissible card), default collapsed, so a new consultant can learn the
+// status meanings + actions any time without cluttering the plan.
+function ActionPlanGuide() {
+  const [open, setOpen] = useState(false);
+  const legend: { key: StatusKey; meaning: string }[] = [
+    { key: "already_tracked",   meaning: "the data already exists in a filing you ticked, pull it in." },
+    { key: "partially_tracked", meaning: "partly covered, one piece is missing, verify and top it up." },
+    { key: "new_data_needed",   meaning: "not in any filing, collect it fresh from the client's team." },
+    { key: "not_applicable",    meaning: "a manufacturing-only disclosure, hidden for service clients." },
+  ];
+  const dos = [
+    "Filter by status, principle or indicator type, or search, to focus the list.",
+    "Open a row for the source filing, how to collect it, best practices, the SEBI citation and, for emissions, a built-in calculator.",
+    "Mark items collected as you go; 'Hide collected' leaves only what's left.",
+    "Upload last year's report to auto-tag what's already documented.",
+    "Export CSV for the full working checklist, or Download PDF for a client-ready data-request brief.",
+  ];
+  return (
+    <div className="rounded-xl border border-line bg-white shadow-elev-1 overflow-hidden">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="w-full flex items-center gap-2.5 px-4 py-3 text-left hover:bg-band transition-colors"
+      >
+        <span className="w-7 h-7 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center flex-shrink-0">
+          <svg className="w-4 h-4 text-brand-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 16v-4m0-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </span>
+        <span className="flex-1 min-w-0">
+          <span className="block text-[14px] font-semibold text-ink">How the Action Plan works</span>
+          <span className="block text-[12.5px] text-ink-muted">What the statuses mean, and what you can do here.</span>
+        </span>
+        <svg className={`w-4 h-4 text-ink-muted flex-shrink-0 transition-transform duration-150 ${open ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+      <div
+        className={`grid overflow-hidden transition-[grid-template-rows] duration-200 ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+        style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
+      >
+        <div className="min-h-0">
+          <div className="px-4 pb-4 pt-1 grid md:grid-cols-2 gap-x-8 gap-y-4 border-t border-line-soft mt-1">
+            <div className="pt-3">
+              <p className="text-[11.5px] font-semibold uppercase tracking-wide text-ink-muted mb-2">What the statuses mean</p>
+              <ul className="space-y-2">
+                {legend.map(({ key, meaning }) => (
+                  <li key={key} className="flex items-start gap-2 text-[13px] text-ink-body leading-snug">
+                    <span className={`w-2 h-2 rounded-full mt-1.5 flex-shrink-0 ${STATUS_META[key].dot}`} />
+                    <span><span className="font-semibold text-ink">{STATUS_META[key].label}</span>, {meaning}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="md:pt-3">
+              <p className="text-[11.5px] font-semibold uppercase tracking-wide text-ink-muted mb-2">What you can do</p>
+              <ul className="space-y-2">
+                {dos.map((d, i) => (
+                  <li key={i} className="flex items-start gap-2 text-[13px] text-ink-body leading-snug">
+                    <svg className="w-3.5 h-3.5 text-brand-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.3} strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 13l4 4L19 7" />
+                    </svg>
+                    {d}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Main component ────────────────────────────────────────────────────────────
 export default function DataChecklist({ items, general, seedQuery, clientName }: { items: ChecklistItem[]; general: GeneralDisclosures; seedQuery?: string; clientName?: string }) {
   const c = useChecklistState(items, general, seedQuery);
@@ -89,6 +164,9 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
         </button>
       </div>
 
+      {/* ── Persistent "how it works" for this tab ─────────────────────────── */}
+      <ActionPlanGuide />
+
       {/* ── Sections A & B, entity & governance disclosures ────────────────── */}
       {abVisible && (
         <GeneralDisclosuresCard
@@ -109,6 +187,7 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
         uploadInfo={c.uploadInfo}
         uploadError={c.uploadError}
         detectedInReport={c.detectedInReport}
+        remainingToCollect={items.filter(i => i.status === "new_data_needed" && !c.detectedSet.has(i.id) && !c.collectedIds.has(i.id)).length}
         showOnlyDetected={c.showOnlyDetected}
         onFile={c.handleFile}
         onToggleShowOnlyDetected={() => c.setShowOnlyDetected(v => !v)}

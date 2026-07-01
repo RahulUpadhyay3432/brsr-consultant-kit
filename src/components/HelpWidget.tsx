@@ -5,11 +5,10 @@
 // keyword-matches the curated help KB (src/data/help_topics.json), no AI, fully
 // on-device, so it can only surface vetted answers, never invent one.
 
-import { useState, useMemo, useEffect, useRef, type ReactNode } from "react";
+import { useState, useMemo, useEffect, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { searchHelp, type HelpTopic } from "@/lib/help-search";
 import helpData from "@/data/help_topics.json";
-import { askSaaksh } from "@/lib/datarequest/help-ai";
 import { WALKTHROUGH_STEPS, StepRow } from "./Walkthrough";
 import { FEEDBACK_URL } from "@/lib/links";
 import { track } from "@/lib/mixpanel";
@@ -109,34 +108,18 @@ export default function HelpWidget() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState<string | null>(null);
-  // Submitted question drives the answer view (the AI call, with keyword fallback).
+  // Submitted question drives the answer view. Purely on-device: the curated help
+  // library is keyword-matched here, no AI/network call, so answers are only ever
+  // vetted content, never invented.
   const [asked, setAsked] = useState("");
-  const [thinking, setThinking] = useState(false);
-  const [aiAnswer, setAiAnswer] = useState<string | null>(null);
-  // Monotonic id so a stale in-flight AI response can't overwrite a newer ask.
-  const askSeq = useRef(0);
 
-  // Keyword results for the submitted question, the graceful fallback when the
-  // AI is unavailable, and what we show alongside the AI answer for vetted detail.
   const results = useMemo(() => (asked.trim() ? searchHelp(asked, TOPICS) : []), [asked]);
 
-  async function runAsk(raw: string) {
+  function runAsk(raw: string) {
     const q = raw.trim();
     if (!q) return;
-    const seq = ++askSeq.current;
     setAsked(q);
     setOpenId(null);
-    setAiAnswer(null);
-    setThinking(true);
-    try {
-      const { answer } = await askSaaksh(q);
-      if (seq === askSeq.current) setAiAnswer(answer);
-    } catch {
-      // Server action threw, fall through to keyword results (aiAnswer stays null).
-      if (seq === askSeq.current) setAiAnswer(null);
-    } finally {
-      if (seq === askSeq.current) setThinking(false);
-    }
   }
 
   useEffect(() => {
@@ -176,8 +159,8 @@ export default function HelpWidget() {
                 </svg>
               </span>
               <div className="leading-tight">
-                <p className="text-[15px] font-semibold text-ink">Ask Saaksh AI</p>
-                <p className="text-[12px] text-ink-muted">Grounded assistant · never invents</p>
+                <p className="text-[15px] font-semibold text-ink">Ask Saaksh</p>
+                <p className="text-[12px] text-ink-muted">Answers from the Saaksh help library</p>
               </div>
             </div>
             <button
@@ -214,61 +197,38 @@ export default function HelpWidget() {
           <div className="flex-1 overflow-y-auto px-4 pb-4">
             {asked.trim() ? (
               <div className="mt-2 space-y-3">
-                {/* AI answer surface, neutral white card with a thin blue accent; grounded. */}
-                {thinking ? (
-                  <div className="rounded-lg border border-line bg-white border-l-2 border-l-brand-500 px-3.5 py-3">
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse" />
-                      <span className="text-[13px] font-medium text-brand-700">Saaksh AI is thinking…</span>
-                    </div>
-                  </div>
-                ) : aiAnswer ? (
-                  <div className="rounded-lg border border-line bg-white border-l-2 border-l-brand-500 px-3.5 py-3.5">
-                    <div className="flex items-center gap-1.5 mb-2">
-                      <span className="text-[10.5px] font-bold uppercase tracking-[0.1em] text-brand-700 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5">Saaksh AI</span>
-                      <span className="text-[11.5px] text-ink-muted">grounded, never invents</span>
-                    </div>
-                    {renderMarkdown(aiAnswer)}
-                  </div>
-                ) : null}
-
-                {/* Keyword results, the safe fallback (also shown beside an AI answer for vetted detail). */}
+                {/* Curated matches from the on-device help library. */}
                 {results.length ? (
-                  <div>
-                    {aiAnswer && (
-                      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-ink-muted mb-2">From the help library</p>
-                    )}
-                    <ul className="space-y-2">
-                      {results.map((t) => {
-                        const isOpen = openId === t.id;
-                        return (
-                          <li key={t.id} className="rounded-lg border border-line overflow-hidden">
-                            <button
-                              onClick={() => setOpenId(isOpen ? null : t.id)}
-                              aria-expanded={isOpen}
-                              className="w-full text-left px-3 py-2.5 flex items-center justify-between gap-2 hover:bg-brand-50/60 transition-colors"
-                            >
-                              <span className="text-[14px] font-medium text-ink">{t.title}</span>
-                              <svg className={`w-3.5 h-3.5 text-ink-muted flex-shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
-                              </svg>
-                            </button>
-                            {isOpen && (
-                              <div className="px-3 pb-3">{renderMarkdown(t.answer)}</div>
-                            )}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                ) : !thinking && !aiAnswer ? (
+                  <ul className="space-y-2">
+                    {results.map((t) => {
+                      const isOpen = openId === t.id;
+                      return (
+                        <li key={t.id} className="rounded-lg border border-line overflow-hidden">
+                          <button
+                            onClick={() => setOpenId(isOpen ? null : t.id)}
+                            aria-expanded={isOpen}
+                            className="w-full text-left px-3 py-2.5 flex items-center justify-between gap-2 hover:bg-brand-50/60 transition-colors"
+                          >
+                            <span className="text-[14px] font-medium text-ink">{t.title}</span>
+                            <svg className={`w-3.5 h-3.5 text-ink-muted flex-shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
+                            </svg>
+                          </button>
+                          {isOpen && (
+                            <div className="px-3 pb-3">{renderMarkdown(t.answer)}</div>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : (
                   <div className="text-[13.5px] text-ink-body leading-relaxed">
-                    <p>No exact match. Here&apos;s the quick sequence below.</p>
+                    <p>No exact match, try rephrasing, or here&apos;s the quick sequence.</p>
                     <div className="mt-4 space-y-4">
                       {WALKTHROUGH_STEPS.map((s) => <StepRow key={s.n} step={s} />)}
                     </div>
                   </div>
-                ) : null}
+                )}
               </div>
             ) : (
               <>
@@ -326,7 +286,7 @@ export default function HelpWidget() {
             <svg className="w-4 h-4 text-white/90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 3l1.6 4.3L18 9l-4.4 1.7L12 15l-1.6-4.3L6 9l4.4-1.7L12 3zM18 15l.7 1.9L20.5 18l-1.8.6L18 21l-.7-1.9L15.5 18l1.8-.6L18 15z" />
             </svg>
-            Ask Saaksh AI
+            Ask Saaksh
           </>
         )}
       </button>

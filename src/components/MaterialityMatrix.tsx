@@ -67,6 +67,8 @@ export default function MaterialityMatrix({ topics, clientName }: MaterialityMat
       shortlistedIds: Array.from(shortlisted),
       showShortlistedOnly,
     } satisfies MaterialityPersist);
+    // Let the report's Download-PDF opt-in refresh its shortlist count live.
+    if (typeof window !== "undefined") window.dispatchEvent(new Event("saaksh:materiality-changed"));
   }, [hydrated, shortlisted, showShortlistedOnly]);
 
   function toggleShortlist(id: string) {

@@ -134,6 +134,22 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
   const industryLabel = INDUSTRY_LABELS[report.industry as IndustryType] || report.industry;
   const fieldCount = report.checklist.length;
 
+  // Materiality → PDF opt-in. Read the shortlist the Materiality tab persists so
+  // the consultant can choose to append it to the downloadable brief. Refreshed
+  // on tab change + on a live event the Materiality tab fires when it changes.
+  const [shortlistedTopics, setShortlistedTopics] = useState<typeof report.materialityTopics>([]);
+  const [includeMateriality, setIncludeMateriality] = useState(false);
+  useEffect(() => {
+    const read = () => {
+      const saved = loadJSON<{ shortlistedIds?: string[] } | null>(STORAGE_KEYS.materiality, null);
+      const ids = new Set(saved?.shortlistedIds ?? []);
+      setShortlistedTopics(report.materialityTopics.filter((t) => ids.has(t.id)));
+    };
+    read();
+    window.addEventListener("saaksh:materiality-changed", read);
+    return () => window.removeEventListener("saaksh:materiality-changed", read);
+  }, [activeTab, report.materialityTopics]);
+
   const goToPlanWithQuery = useCallback((q: string) => {
     setSeedQuery(q);
     setActiveTab("checklist");
@@ -165,19 +181,46 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
               <p className="text-[13.5px] text-ink-body font-medium tracking-tight">
                 BRSR Readiness · FY 2025–26
               </p>
-              <button
-                onClick={() => { track("pdf_downloaded"); downloadReportPdf(report).catch((e) => console.error("PDF export failed", e)); }}
-                title="Download a clean BRSR data-request brief to share with the client"
-                className="no-print inline-flex items-center gap-1.5 text-[13.5px] font-medium
-                  text-stone-600 bg-white border border-stone-200 hover:border-stone-300 hover:bg-stone-50
-                  px-3 py-1.5 rounded-lg pressable transition-colors shadow-sm"
-              >
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
-                  <path strokeLinecap="round" strokeLinejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" aria-hidden="true" />
-                </svg>
-                Download PDF
-              </button>
+              <div className="flex items-center gap-3">
+              {shortlistedTopics.length > 0 && (
+                <label className="no-print inline-flex items-center gap-1.5 text-[12.5px] text-ink-body cursor-pointer select-none" title="Append your shortlisted material topics to the PDF">
+                  <input
+                    type="checkbox"
+                    checked={includeMateriality}
+                    onChange={(e) => setIncludeMateriality(e.target.checked)}
+                    className="accent-brand-600 w-3.5 h-3.5"
+                  />
+                  Include material topics ({shortlistedTopics.length})
+                </label>
+              )}
+              <div className="no-print relative group">
+                <button
+                  onClick={() => { track("pdf_downloaded", { materiality: includeMateriality }); downloadReportPdf(report, includeMateriality ? { materialityTopics: shortlistedTopics } : undefined).catch((e) => console.error("PDF export failed", e)); }}
+                  aria-describedby="pdf-tip"
+                  className="inline-flex items-center gap-1.5 text-[13.5px] font-medium
+                    text-ink-body bg-white border border-line hover:border-brand-300 hover:bg-band
+                    px-3 py-1.5 rounded-lg pressable transition-colors shadow-sm"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
+                    <path strokeLinecap="round" strokeLinejoin="round"
+                      d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" aria-hidden="true" />
+                  </svg>
+                  Download PDF
+                </button>
+                {/* Hover tooltip explaining what the PDF is */}
+                <div
+                  id="pdf-tip"
+                  role="tooltip"
+                  className="pointer-events-none absolute right-0 top-full mt-2 z-30 w-[290px] rounded-xl bg-[#0F1E33] px-3.5 py-3 shadow-elev-2
+                    opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-150"
+                >
+                  <p className="text-[12.5px] font-semibold text-white mb-1">A client-ready data-request brief</p>
+                  <p className="text-[12.5px] leading-relaxed text-white/80">
+                    Every gap grouped by the team that owns it (HR, EHS, energy manager, company secretary), in plain English, plus what&apos;s already covered. Built on your device. The full 108-field detail is the CSV export.
+                  </p>
+                </div>
+              </div>
+              </div>
             </div>
 
             <div key={activeTab} role="tabpanel" id={`${activeTab}-panel`} className="tab-fade">

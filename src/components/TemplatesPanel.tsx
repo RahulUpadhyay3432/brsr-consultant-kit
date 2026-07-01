@@ -161,7 +161,7 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
     <div className="space-y-5">
       <div>
         <h1 className="font-display text-[26px] font-normal text-stone-900 leading-tight tracking-tight">Templates, emails &amp; guides</h1>
-        <p className="text-[14.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
+        <p className="text-[14.5px] text-ink-body mt-1 max-w-[74ch] leading-relaxed">
           The formats, the internal data-request emails, the engagement timeline and the how-to guidance you&apos;d otherwise hunt for, ready
           to use and built from the same cited BRSR knowledge base. Generated in your browser; nothing is uploaded.
         </p>
@@ -174,7 +174,7 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
           {TEMPLATES.map((t) => (
             <div key={t.name} className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)] flex flex-col">
               <p className="text-[16px] font-semibold text-stone-900 leading-snug">{t.name}</p>
-              <p className="text-[14.5px] text-stone-600 mt-1.5 leading-relaxed flex-1">{t.desc}</p>
+              <p className="text-[14.5px] text-ink-body mt-1.5 leading-relaxed flex-1">{t.desc}</p>
               <button
                 onClick={() => downloadCsv(exportFilename(t.file), t.build())}
                 className="mt-3 inline-flex items-center gap-1.5 self-start text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors pressable"
@@ -185,24 +185,24 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
             </div>
           ))}
         </div>
-        <p className="text-[12px] text-stone-500 leading-relaxed">Templates are starting formats, not a finished assessment, adapt them to the client and their stakeholder process.</p>
+        <p className="text-[13px] text-ink-muted leading-relaxed">Templates are starting formats, not a finished assessment, adapt them to the client and their stakeholder process.</p>
       </section>
 
       {/* Internal request emails */}
       <section className="space-y-3 border-t border-stone-200 pt-5">
         <div>
           <h2 className="text-[18.5px] font-bold text-stone-900">Internal request emails</h2>
-          <p className="text-[14.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
+          <p className="text-[14.5px] text-ink-body mt-1 max-w-[74ch] leading-relaxed">
             Ready-to-send drafts to chase BRSR data from the team that holds it, each personalized for
-            {" "}<span className="font-medium text-stone-800">{clientName?.trim() || "your client"}</span>
+            {" "}<span className="font-medium text-ink">{clientName?.trim() || "your client"}</span>
             {" "}({fy}). Copy one, paste it into your mail client, adjust and send.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {TEAM_EMAILS.map((t) => <EmailCard key={t.team} t={t} company={clientName} fy={fy} />)}
         </div>
-        <p className="text-[12px] text-stone-500 leading-relaxed">
-          Sending, tracking and automatic reminders are handled for you in <span className="font-medium text-stone-600">Collect</span>, the Pro tier, owners submit through a no-login form with evidence attached.
+        <p className="text-[13px] text-ink-muted leading-relaxed">
+          Sending, tracking and automatic reminders are handled for you in <span className="font-medium text-ink-body">Collect</span>, the Pro tier, owners submit through a no-login form with evidence attached.
         </p>
       </section>
 
@@ -210,7 +210,7 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
       <section className="space-y-3 border-t border-stone-200 pt-5">
         <div>
           <h2 className="text-[18.5px] font-bold text-stone-900">Who owns what</h2>
-          <p className="text-[14.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
+          <p className="text-[14.5px] text-ink-body mt-1 max-w-[74ch] leading-relaxed">
             Which team in the company usually holds each principle&apos;s data, so you know who to ask first.
           </p>
         </div>
@@ -220,12 +220,12 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
             return (
               <div key={id} className="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-4 px-4 py-3">
                 <div className="flex items-center gap-2.5 sm:w-[230px] flex-shrink-0">
-                  <span className="font-mono text-[11.5px] text-stone-500">{id}</span>
-                  <span className="text-[13.5px] font-semibold text-stone-800 leading-snug">{o.theme}</span>
+                  <span className="font-mono text-[11.5px] text-ink-muted">{id}</span>
+                  <span className="text-[13.5px] font-semibold text-ink leading-snug">{o.theme}</span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <span className="inline-block font-mono text-[11.5px] text-brand-700 bg-brand-50 border border-brand-100 rounded px-1.5 py-0.5">{o.chip}</span>
-                  <p className="text-[13px] text-stone-600 mt-1 leading-relaxed">{o.found}</p>
+                  <p className="text-[13px] text-ink-body mt-1 leading-relaxed">{o.found}</p>
                 </div>
               </div>
             );
@@ -275,7 +275,7 @@ function TimelineSection({ clientName }: { clientName?: string }) {
     <section className="space-y-3">
       <div>
         <h2 className="text-[18.5px] font-bold text-stone-900">Engagement timeline</h2>
-        <p className="text-[14.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
+        <p className="text-[14.5px] text-ink-body mt-1 max-w-[74ch] leading-relaxed">
           A realistic milestone plan from kickoff to filing. Set the deadline and the client&apos;s filing experience, then download or paste into your project tracker.
         </p>
       </div>
@@ -283,27 +283,27 @@ function TimelineSection({ clientName }: { clientName?: string }) {
       {/* Controls */}
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
-          <label htmlFor="tl-deadline" className="text-[13px] font-medium text-stone-700 whitespace-nowrap">Filing deadline</label>
+          <label htmlFor="tl-deadline" className="text-[13px] font-medium text-ink-body whitespace-nowrap">Filing deadline</label>
           <input
             id="tl-deadline"
             type="date"
             value={deadline}
             onChange={(e) => setDeadline(e.target.value)}
-            className="text-[13.5px] text-stone-800 bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-400"
+            className="text-[13.5px] text-ink bg-white border border-stone-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-400"
           />
         </div>
         <div className="flex items-center gap-1 bg-stone-100 rounded-lg p-0.5">
           <button
             type="button"
             onClick={() => setFirstTime(true)}
-            className={`text-[13px] font-medium px-3 py-1.5 rounded-md transition-colors ${firstTime ? "bg-white text-stone-800 shadow-sm" : "text-stone-500 hover:text-stone-700"}`}
+            className={`text-[13px] font-medium px-3 py-1.5 rounded-md transition-colors ${firstTime ? "bg-white text-ink shadow-sm" : "text-ink-muted hover:text-ink"}`}
           >
             First-time filing
           </button>
           <button
             type="button"
             onClick={() => setFirstTime(false)}
-            className={`text-[13px] font-medium px-3 py-1.5 rounded-md transition-colors ${!firstTime ? "bg-white text-stone-800 shadow-sm" : "text-stone-500 hover:text-stone-700"}`}
+            className={`text-[13px] font-medium px-3 py-1.5 rounded-md transition-colors ${!firstTime ? "bg-white text-ink shadow-sm" : "text-ink-muted hover:text-ink"}`}
           >
             Experienced
           </button>
@@ -315,21 +315,21 @@ function TimelineSection({ clientName }: { clientName?: string }) {
         <table className="w-full">
           <thead>
             <tr className="border-b border-stone-100 bg-stone-50">
-              <th className="text-left px-4 py-2.5 font-semibold text-stone-600 text-[12px] uppercase tracking-wide w-[38%]">Milestone</th>
-              <th className="text-left px-4 py-2.5 font-semibold text-stone-600 text-[12px] uppercase tracking-wide w-[18%]">Due by</th>
-              <th className="text-left px-4 py-2.5 font-semibold text-stone-600 text-[12px] uppercase tracking-wide w-[20%]">Lead</th>
-              <th className="text-left px-4 py-2.5 font-semibold text-stone-600 text-[12px] uppercase tracking-wide hidden md:table-cell">Notes</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-ink-muted text-[12px] uppercase tracking-wide w-[38%]">Milestone</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-ink-muted text-[12px] uppercase tracking-wide w-[18%]">Due by</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-ink-muted text-[12px] uppercase tracking-wide w-[20%]">Lead</th>
+              <th className="text-left px-4 py-2.5 font-semibold text-ink-muted text-[12px] uppercase tracking-wide hidden md:table-cell">Notes</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-stone-100">
             {timeline.map((m, i) => (
               <tr key={m.name} className={i === timeline.length - 1 ? "bg-brand-50" : ""}>
                 <td className="px-4 py-3 text-[15px] font-medium text-stone-900 leading-snug">{m.name}</td>
-                <td className="px-4 py-3 text-[14.5px] font-mono text-stone-700 whitespace-nowrap">
+                <td className="px-4 py-3 text-[14.5px] font-mono text-ink-body whitespace-nowrap">
                   {m.dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                 </td>
-                <td className="px-4 py-3 text-[13.5px] text-stone-600 leading-snug">{m.owner}</td>
-                <td className="px-4 py-3 text-[13.5px] text-stone-600 leading-relaxed hidden md:table-cell">{m.description}</td>
+                <td className="px-4 py-3 text-[13.5px] text-ink-body leading-snug">{m.owner}</td>
+                <td className="px-4 py-3 text-[13.5px] text-ink-body leading-relaxed hidden md:table-cell">{m.description}</td>
               </tr>
             ))}
           </tbody>
@@ -344,7 +344,7 @@ function TimelineSection({ clientName }: { clientName?: string }) {
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" /></svg>
           Download CSV
         </button>
-        <p className="text-[12px] text-stone-500">The &quot;Notes&quot; column in the CSV includes what to prepare for each milestone.</p>
+        <p className="text-[13px] text-ink-muted">The &quot;Notes&quot; column in the CSV includes what to prepare for each milestone.</p>
       </div>
     </section>
   );
@@ -387,7 +387,7 @@ function DisclosureExamplesSection() {
     <section className="space-y-3">
       <div>
         <h2 className="text-[18.5px] font-bold text-stone-900">What a complete answer looks like</h2>
-        <p className="text-[14.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
+        <p className="text-[14.5px] text-ink-body mt-1 max-w-[74ch] leading-relaxed">
           For each Section-C disclosure, the level of detail and the specific data points that assurers and investors typically expect to see.
         </p>
       </div>
@@ -403,7 +403,7 @@ function DisclosureExamplesSection() {
               className={`font-mono text-[12px] font-medium px-2.5 py-1 rounded-md border transition-colors pressable ${
                 selectedPrinciples.has(pid)
                   ? "bg-brand-600 text-white border-brand-600"
-                  : "bg-white text-stone-600 border-stone-200 hover:border-brand-300 hover:text-brand-700"
+                  : "bg-white text-ink-body border-stone-200 hover:border-brand-300 hover:text-brand-700"
               }`}
             >
               {pid}
@@ -413,7 +413,7 @@ function DisclosureExamplesSection() {
             <button
               type="button"
               onClick={() => { setSelectedPrinciples(new Set()); setOpenId(null); }}
-              className="text-[12px] text-stone-500 hover:text-stone-700 px-1.5 py-1 transition-colors"
+              className="text-[12px] text-ink-muted hover:text-ink px-1.5 py-1 transition-colors"
             >
               Clear
             </button>
@@ -433,7 +433,7 @@ function DisclosureExamplesSection() {
             placeholder="Search by field ID or label, e.g. P6-E1, emissions, wages..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setOpenId(null); }}
-            className="w-full max-w-[520px] pl-10 pr-3 py-2.5 text-[13.5px] text-stone-800 bg-white border border-stone-300 rounded-lg placeholder:text-stone-400 focus:outline-none focus:border-brand-400 focus:ring-1 focus:ring-brand-300 transition-colors"
+            className="w-full max-w-[520px] pl-10 pr-3 py-2.5 text-[13.5px] text-ink bg-white border border-stone-300 rounded-lg placeholder:text-stone-400 focus:outline-none focus:border-brand-400 focus:ring-1 focus:ring-brand-300 transition-colors"
           />
         </div>
       </div>
@@ -441,7 +441,7 @@ function DisclosureExamplesSection() {
       {/* Field list */}
       <div className="bg-white rounded-xl border border-stone-200 shadow-[0_1px_3px_rgba(80,60,30,0.04)] divide-y divide-stone-100 overflow-hidden">
         {filtered.length === 0 ? (
-          <p className="px-4 py-6 text-[13px] text-stone-500 text-center">No fields match your filters.</p>
+          <p className="px-4 py-6 text-[13px] text-ink-muted text-center">No fields match your filters.</p>
         ) : (
           filtered.map((f) => (
             <ExampleRow
@@ -455,7 +455,7 @@ function DisclosureExamplesSection() {
           ))
         )}
       </div>
-      <p className="text-[12px] text-stone-500 leading-relaxed">
+      <p className="text-[13px] text-ink-muted leading-relaxed">
         Guidance on completeness only. Your client&apos;s actual figures must come from their own records, not illustrative examples.
       </p>
     </section>
@@ -489,11 +489,11 @@ function ExampleRow({
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
-        <span className="font-mono text-[11.5px] font-medium text-stone-600 bg-stone-100 border border-stone-200 rounded px-1.5 py-0.5 flex-shrink-0 mt-0.5">{field.id}</span>
+        <span className="font-mono text-[11.5px] font-medium text-ink-muted bg-band border border-line rounded px-1.5 py-0.5 flex-shrink-0 mt-0.5">{field.id}</span>
         <span className={`text-[11px] font-semibold px-2 py-0.5 rounded flex-shrink-0 mt-0.5 ${field.type === "essential" ? "text-brand-700 bg-brand-50 border border-brand-100" : "text-amber-700 bg-amber-50 border border-amber-100"}`}>
           {field.type === "essential" ? "Essential" : "Leadership"}
         </span>
-        <span className="text-[15px] text-stone-800 leading-snug flex-1">{field.label}</span>
+        <span className="text-[15px] text-ink leading-snug flex-1">{field.label}</span>
       </button>
       <div
         className={`grid overflow-hidden transition-[grid-template-rows] duration-200 ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
@@ -503,14 +503,14 @@ function ExampleRow({
           <div className="px-4 pb-4 ml-10 space-y-3">
             {example && (
               <div>
-                <p className="text-[12px] font-semibold uppercase tracking-wide text-stone-500 mb-1">What a complete answer includes</p>
-                <p className="text-[14.5px] text-stone-700 leading-relaxed">{example}</p>
+                <p className="text-[11.5px] font-semibold uppercase tracking-wide text-ink-muted mb-1">What a complete answer includes</p>
+                <p className="text-[14px] text-ink-body leading-relaxed">{example}</p>
               </div>
             )}
             {explainer && (
               <div>
-                <p className="text-[12px] font-semibold uppercase tracking-wide text-stone-500 mb-1">AI field guidance</p>
-                <p className="text-[14.5px] text-stone-600 leading-relaxed">{explainer}</p>
+                <p className="text-[11.5px] font-semibold uppercase tracking-wide text-ink-muted mb-1">AI field guidance</p>
+                <p className="text-[14px] text-ink-body leading-relaxed">{explainer}</p>
               </div>
             )}
           </div>
@@ -542,18 +542,18 @@ function EmailCard({ t, company, fy }: { t: TeamEmail; company?: string; fy: str
     <div className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)] flex flex-col">
       <div className="flex items-start justify-between gap-2">
         <p className="text-[16px] font-semibold text-stone-900 leading-snug">{t.team}</p>
-        <span className="font-mono text-[11.5px] text-stone-500 flex-shrink-0 mt-0.5">{t.principles.join(" · ")}</span>
+        <span className="font-mono text-[11.5px] text-ink-muted flex-shrink-0 mt-0.5">{t.principles.join(" · ")}</span>
       </div>
-      <p className="text-[13px] text-stone-600 mt-1.5 leading-relaxed">{t.intro}</p>
+      <p className="text-[13px] text-ink-body mt-1.5 leading-relaxed">{t.intro}</p>
       <ul className="mt-2.5 space-y-1 flex-1">
         {t.asks.slice(0, 4).map((a) => (
-          <li key={a} className="flex gap-2 text-[13px] text-stone-700 leading-snug">
+          <li key={a} className="flex gap-2 text-[13px] text-ink-body leading-snug">
             <span className="text-stone-400 mt-[1px]">•</span>
             <span className="line-clamp-1">{a}</span>
           </li>
         ))}
         {t.asks.length > 4 && (
-          <li className="text-[12.5px] text-stone-500 pl-4">+ {t.asks.length - 4} more in the email</li>
+          <li className="text-[13px] text-ink-muted pl-4">+ {t.asks.length - 4} more in the email</li>
         )}
       </ul>
       <button
@@ -597,10 +597,10 @@ function GuideItem({ g }: { g: Guide }) {
         style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
       >
         <div className="min-h-0">
-          <div className="mt-3 pl-6 text-[15px] text-stone-700 leading-relaxed space-y-1">
+          <div className="mt-3 pl-6 text-[15px] text-ink-body leading-relaxed space-y-1">
             {g.body}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-2 mt-2 border-t border-stone-100">
-              <span className="text-[11.5px] font-semibold uppercase tracking-wide text-stone-600">Sources</span>
+              <span className="text-[11.5px] font-semibold uppercase tracking-wide text-ink-muted">Sources</span>
               {g.sources.map((s) => (
                 <a key={s.href} href={s.href} target="_blank" rel="noreferrer" className="text-[12.5px] text-brand-700 hover:text-brand-800 underline decoration-stone-300 hover:decoration-brand-500 transition-colors">{s.label} ↗</a>
               ))}
