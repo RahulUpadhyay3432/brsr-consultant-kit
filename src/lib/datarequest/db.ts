@@ -315,6 +315,37 @@ export async function deleteCompanyContact(id: string): Promise<void> {
   await rest(`brsr_company_contacts?id=eq.${encodeURIComponent(id)}`, { method: "DELETE" });
 }
 
+// ─── Marketing capture: newsletter subscribers + Pro-access requests ─────────
+// Both tables are created by the user's SQL migration; every caller wraps these
+// best-effort so the public forms keep working (and fall back to an email) before
+// the migration is run. RLS-locked; only the server's service_role writes.
+
+// Adds a newsletter subscriber. Idempotent: a re-subscribe of the same email is
+// ignored (the email column is UNIQUE) rather than erroring.
+export async function addSubscriber(email: string, source: string): Promise<void> {
+  await rest("brsr_subscribers?on_conflict=email", {
+    method: "POST",
+    prefer: "resolution=ignore-duplicates",
+    body: JSON.stringify({ email: email.toLowerCase(), source: source || null }),
+  });
+}
+
+// Records a "Request Pro access" lead from the on-site form.
+export async function addAccessRequest(req: {
+  name: string; organisation: string; email: string; clients: string; message: string;
+}): Promise<void> {
+  await rest("brsr_access_requests", {
+    method: "POST",
+    body: JSON.stringify({
+      name: req.name || null,
+      organisation: req.organisation || null,
+      email: req.email.toLowerCase(),
+      clients: req.clients || null,
+      message: req.message || null,
+    }),
+  });
+}
+
 // ─── Delete an entire campaign + all its children ───────────────────────────
 // Done in FK-safe order with explicit DELETEs (so it works whether or not the
 // child FKs are ON DELETE CASCADE, no migration required): the items under the

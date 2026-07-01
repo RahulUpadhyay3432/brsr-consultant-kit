@@ -60,6 +60,7 @@ export function ShareLinkButton({ className }: { className?: string }) {
   const [state, setState] = useState<"idle" | "copied" | "error">("idle");
 
   const onClick = async () => {
+    if (typeof window === "undefined") return;
     const form = loadSavedForm();
     if (!form) return;
     const param = encodeReportParam(form);

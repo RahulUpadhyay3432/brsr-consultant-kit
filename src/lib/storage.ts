@@ -140,13 +140,17 @@ export function encodeReportParam(form: IntakeFormData): string {
 }
 
 // Decode a shared ?v= param back into an intake form. Null unless it parses into
-// an object carrying the required form fields (so a garbage param is a safe no-op).
+// an object carrying every required form field with the right shape (so a garbage,
+// truncated, or old-format param is a safe no-op rather than a crash downstream).
 export function decodeReportParam(param: string): IntakeFormData | null {
   try {
-    const parsed = JSON.parse(fromBase64Url(param)) as Partial<IntakeFormData>;
-    if (!parsed || typeof parsed !== "object") return null;
-    if (typeof parsed.industry !== "string" || typeof parsed.companySize !== "string") return null;
-    return parsed as IntakeFormData;
+    const p = JSON.parse(fromBase64Url(param)) as Partial<IntakeFormData>;
+    if (!p || typeof p !== "object") return null;
+    if (typeof p.companyName !== "string") return null;
+    if (typeof p.industry !== "string" || typeof p.sector !== "string") return null;
+    if (typeof p.companySize !== "string" || typeof p.reportingMaturity !== "string") return null;
+    if (!Array.isArray(p.exportMarkets) || !Array.isArray(p.existingFilings)) return null;
+    return p as IntakeFormData;
   } catch {
     return null;
   }

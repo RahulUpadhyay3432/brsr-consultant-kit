@@ -134,6 +134,39 @@ export async function sendRequestEmail(req: EmailReq, link: string): Promise<voi
   await sendEmail(req.contactEmail, subject, html, req.token);
 }
 
+// Generic founder notification, a simple branded label/value table sent to
+// CONSULTANT_NOTIFY_EMAIL. Reused by the public marketing forms (Pro-access
+// requests, newsletter-signup fallback). Best-effort + no-op if the env is unset.
+export async function notifyFounder(subject: string, rows: [string, string][]): Promise<void> {
+  const to = process.env.CONSULTANT_NOTIFY_EMAIL;
+  if (!to) return;
+
+  const body = rows
+    .map(
+      ([k, v]) =>
+        `<tr>
+           <td style="padding:8px 12px 8px 0;border-bottom:1px solid #eee;color:#8a857c;font-size:13px;white-space:nowrap;vertical-align:top;">${esc(k)}</td>
+           <td style="padding:8px 0;border-bottom:1px solid #eee;color:#1a1916;font-size:14px;">${esc(v)}</td>
+         </tr>`
+    )
+    .join("");
+
+  const html = `<!doctype html><html><body style="margin:0;background:#F8FAF9;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+  <div style="max-width:520px;margin:0 auto;background:#fff;border:1px solid #e7e5e0;border-radius:14px;overflow:hidden;">
+    <div style="padding:18px 24px;border-bottom:1px solid #f0eee9;">
+      ${MARK_HTML}
+      <span style="font-weight:600;color:#1a1916;font-size:14px;vertical-align:middle;margin-left:8px;">Saaksh</span>
+    </div>
+    <div style="padding:24px;">
+      <p style="font-size:15px;color:#1a1916;margin:0 0 16px;font-weight:600;">${esc(subject)}</p>
+      <table style="width:100%;border-collapse:collapse;">${body}</table>
+    </div>
+  </div>
+  </body></html>`;
+
+  await sendEmail(to, subject, html, `notify-${Date.now()}`);
+}
+
 // Notifies the consultant when an owner submits data (Priya's "alert on who
 // gave the data"). Sends to CONSULTANT_NOTIFY_EMAIL; no-op if it isn't set.
 export async function sendSubmissionAlert(args: {

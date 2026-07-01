@@ -5,6 +5,7 @@ import Link from "next/link";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 import { ToolHero } from "@/components/tools/ToolHero";
 import { LATEST, LATEST_TAGS, type LatestItem } from "@/lib/latest";
+import { SubscribeForm } from "@/components/SubscribeForm";
 import { track } from "@/lib/mixpanel";
 
 function ArrowUpRight() {
@@ -93,6 +94,11 @@ export default function LatestPage() {
             {items.map((item) => (
               <ItemCard key={item.id} item={item} />
             ))}
+          </div>
+
+          {/* Newsletter capture */}
+          <div className="mt-8">
+            <SubscribeForm variant="strip" source="latest" />
           </div>
 
           <p className="text-[13px] text-ink-muted leading-relaxed mt-8">

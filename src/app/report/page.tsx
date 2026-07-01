@@ -19,14 +19,23 @@ export default function ReportPage() {
   const [report, setReport] = useState<ReportOutput | null>(null);
 
   useEffect(() => {
-    // A shared ?v=<form> link wins over local state: decode it, adopt it as the
-    // active session (clearing a prior client's checklist), then strip the query
-    // so a refresh regenerates from localStorage instead of re-adopting.
+    // A shared ?v=<form> link: decode it and adopt it as the active session. But
+    // don't silently wipe a returning user's in-progress work, if a *different*
+    // form is already saved, confirm first; if they decline, keep their own work.
+    // Either way strip the query so a refresh regenerates from localStorage.
     const v = new URLSearchParams(window.location.search).get("v");
     if (v) {
       const shared = decodeReportParam(v);
       if (shared) {
-        adoptSharedForm(shared);
+        const existing = loadSavedForm();
+        const same = existing && JSON.stringify(existing) === JSON.stringify(shared);
+        if (
+          !existing ||
+          same ||
+          window.confirm("Open this shared report? It will replace the report you currently have open on this device.")
+        ) {
+          adoptSharedForm(shared);
+        }
         window.history.replaceState({}, "", "/report");
       }
     }

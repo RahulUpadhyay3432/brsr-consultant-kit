@@ -6,6 +6,8 @@ import CookieSettingsLink from "@/components/CookieSettingsLink";
 import { SaakshMark } from "@/components/SaakshMark";
 import { REQUEST_ACCESS_URL } from "@/lib/links";
 import { TierCards } from "@/components/PricingTable";
+import { SubscribeForm } from "@/components/SubscribeForm";
+import { MobileNav } from "@/components/MobileNav";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 import { computeTimeline, defaultDeadline, timelineCsvRows } from "@/lib/engagement-timeline";
 import { downloadCsv } from "@/lib/export";
@@ -603,6 +605,8 @@ function Header({
             </div>
           </div>
 
+          <Link href="/pricing" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Pricing</Link>
+
           <Link href="/latest" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Latest</Link>
 
           <button onClick={scrollTo("how")} className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">How it works</button>
@@ -612,6 +616,7 @@ function Header({
 
         {/* Right side */}
         <div className="flex items-center gap-2 ml-auto">
+          <MobileNav />
           {resume && (
             <button
               onClick={resume.onResume}
@@ -1293,6 +1298,18 @@ function PainTable() {
 function Footer({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: string) => () => void }) {
   return (
     <footer className="bg-[#0A1422] text-white">
+      {/* Newsletter capture band */}
+      <div className="border-b border-white/10">
+        <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-9 flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
+          <div className="flex-1">
+            <p className="font-display font-bold text-[1.5rem] text-white tracking-[-0.015em] leading-tight">Stay ahead of the regulation</p>
+            <p className="text-[14px] text-[#9FB6AC] leading-relaxed mt-2 max-w-[520px]">SEBI, BRSR, CBAM and CCTS moves that matter, plus the newest guides, in your inbox. No spam.</p>
+          </div>
+          <div className="md:w-[380px] shrink-0">
+            <SubscribeForm variant="inline" tone="dark" source="homepage-footer" />
+          </div>
+        </div>
+      </div>
       <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="lg:col-span-1">
           <div className="flex items-center gap-2.5">
@@ -1313,10 +1330,10 @@ function Footer({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: str
           <ul className="mt-2.5 space-y-1.5">
             {[
               ["/blog", "Blog"],
+              ["/pricing", "Pricing"],
               ["/features/gap-analysis", "Gap analysis guide"],
               ["/features/ghg-calculator", "GHG calculator guide"],
               ["/features/templates", "Templates & workbooks"],
-              ["/features/collect", "Collect (Pro)"],
               ["/features/cbam-ccts", "CBAM & CCTS guide"],
             ].map(([href, label]) => (
               <li key={href}>
@@ -1335,6 +1352,7 @@ function Footer({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: str
       <div className="border-t border-white/10">
         <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-5 flex flex-wrap items-center gap-x-5 gap-y-2">
           {[
+            ["/about", "About"],
             ["/privacy", "Privacy"],
             ["/terms", "Terms"],
             ["/dpa", "Data processing"],

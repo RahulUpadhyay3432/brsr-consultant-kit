@@ -6,6 +6,7 @@ import { BlogCoverArt } from "@/components/blog/BlogCoverArt";
 import { BlogToc } from "@/components/blog/BlogToc";
 import { BlogHeader } from "@/components/blog/BlogHeader";
 import { BlogFooter } from "@/components/blog/BlogFooter";
+import { SubscribeForm } from "@/components/SubscribeForm";
 
 const SERIF: React.CSSProperties = { fontFamily: "var(--font-newsreader), Georgia, serif" };
 
@@ -197,6 +198,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                     <path d="M5 12h14M12 5l7 7-7 7" />
                   </svg>
                 </Link>
+              </div>
+
+              {/* Newsletter capture */}
+              <div className="mt-8">
+                <SubscribeForm variant="card" source="blog" />
               </div>
             </article>
           </div>

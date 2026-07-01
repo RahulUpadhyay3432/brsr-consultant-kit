@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import Link from "next/link";
 import { SaakshMark } from "@/components/SaakshMark";
+import { MobileNav } from "@/components/MobileNav";
 import { REQUEST_ACCESS_URL } from "@/lib/links";
 import { FREE_NAV_ITEMS, PRO_NAV_ITEMS, FILING_AUDIT_ITEMS } from "@/lib/nav-items";
 
@@ -22,9 +23,13 @@ function IcoArrow() {
   );
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function SiteHeader({ active: _active }: { active?: string } = {}) {
+export function SiteHeader({ active }: { active?: string } = {}) {
   const [openMenu, setOpenMenu] = useState<"filing" | "free" | "pro" | null>(null);
+  // A text nav link's classes, tinted when it's the current page.
+  const linkCls = (key: string) =>
+    `text-[15px] font-medium px-3 py-2 rounded-lg transition-colors ${
+      active === key ? "text-ink bg-band" : "text-ink-muted hover:text-ink hover:bg-band"
+    }`;
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const openDropdown = (menu: "filing" | "free" | "pro") => {
@@ -66,7 +71,7 @@ export function SiteHeader({ active: _active }: { active?: string } = {}) {
 
           {/* Tools dropdown */}
           <div className="relative" onMouseEnter={() => openDropdown("free")} onMouseLeave={closeDropdown}>
-            <button className={`flex items-center gap-1 text-[15px] font-medium px-3 py-2 rounded-lg transition-colors ${openMenu === "free" ? "text-ink bg-band" : "text-ink-muted hover:text-ink hover:bg-band"}`}>
+            <button className={`flex items-center gap-1 text-[15px] font-medium px-3 py-2 rounded-lg transition-colors ${openMenu === "free" || active === "tools" ? "text-ink bg-band" : "text-ink-muted hover:text-ink hover:bg-band"}`}>
               Tools <IcoChevronDown />
             </button>
             <div className={`absolute top-full left-0 mt-1 w-[600px] bg-white border border-line rounded-2xl shadow-elev-2 p-2 grid grid-cols-2 gap-0.5 transition-all duration-150 origin-top-left ${openMenu === "free" ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}>
@@ -89,7 +94,7 @@ export function SiteHeader({ active: _active }: { active?: string } = {}) {
 
           {/* Pro dropdown */}
           <div className="relative" onMouseEnter={() => openDropdown("pro")} onMouseLeave={closeDropdown}>
-            <button className={`flex items-center gap-1 text-[15px] font-medium px-3 py-2 rounded-lg transition-colors ${openMenu === "pro" ? "text-ink bg-band" : "text-ink-muted hover:text-ink hover:bg-band"}`}>
+            <button className={`flex items-center gap-1 text-[15px] font-medium px-3 py-2 rounded-lg transition-colors ${openMenu === "pro" || active === "pro" ? "text-ink bg-band" : "text-ink-muted hover:text-ink hover:bg-band"}`}>
               Pro <IcoChevronDown />
             </button>
             <div className={`absolute top-full left-0 mt-1 w-[280px] bg-white border border-line rounded-2xl shadow-elev-2 p-1.5 transition-all duration-150 origin-top-left ${openMenu === "pro" ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}>
@@ -111,19 +116,22 @@ export function SiteHeader({ active: _active }: { active?: string } = {}) {
             </div>
           </div>
 
-          <Link href="/pricing" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Pricing</Link>
-          <Link href="/latest" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Latest</Link>
-          <Link href="/#how" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">How it works</Link>
-          <Link href="/blog" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Blog</Link>
+          <Link href="/pricing" className={linkCls("pricing")}>Pricing</Link>
+          <Link href="/latest" className={linkCls("latest")}>Latest</Link>
+          <Link href="/#how" className={linkCls("how")}>How it works</Link>
+          <Link href="/blog" className={linkCls("blog")}>Blog</Link>
         </nav>
 
-        {/* CTA */}
-        <Link href="/start" className="ml-auto inline-flex items-center gap-2 bg-forest text-white text-[13.5px] font-semibold px-4 py-2.5 rounded-xl hover:bg-forest-light transition-colors pressable">
-          Start free
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </Link>
+        {/* CTA + mobile menu */}
+        <div className="ml-auto flex items-center gap-2">
+          <MobileNav />
+          <Link href="/start" className="inline-flex items-center gap-2 bg-forest text-white text-[13.5px] font-semibold px-4 py-2.5 rounded-xl hover:bg-forest-light transition-colors pressable">
+            Start free
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
       </div>
     </header>
   );
