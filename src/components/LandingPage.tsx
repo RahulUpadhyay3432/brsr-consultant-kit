@@ -690,6 +690,16 @@ function Header({
 
         {/* Right side */}
         <div className="flex items-center gap-2 ml-auto">
+          {resume && (
+            <button
+              onClick={resume.onResume}
+              className="hidden sm:inline-flex items-center gap-2 bg-brand-50 border border-brand-200 text-brand-700 text-[13px] font-semibold px-3.5 py-2 rounded-lg hover:bg-brand-100 transition-colors pressable"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0" />
+              Continue from where you left off
+              {resume.companyName && <span className="text-brand-400 font-normal">· {resume.companyName}</span>}
+            </button>
+          )}
           <button
             onClick={onStart}
             className="inline-flex items-center gap-1.5 bg-forest text-white text-[13.5px] font-semibold px-4 py-2 rounded-lg hover:bg-forest-light transition-colors pressable"
