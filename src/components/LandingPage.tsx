@@ -696,7 +696,7 @@ function Header({
               className="hidden sm:flex items-center gap-2 text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-200 px-3 py-1.5 rounded-lg hover:bg-brand-100 transition-colors pressable"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0" />
-              {resume.companyName ? `Continue: ${resume.companyName}` : "Continue report"} →
+              {resume.companyName ? `Open ${resume.companyName} report` : "Open saved report"} →
             </button>
           )}
           <button
