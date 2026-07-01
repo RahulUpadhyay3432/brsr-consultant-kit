@@ -20,14 +20,25 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const post = getPost(params.slug);
   if (!post) return { title: "Post not found | Saaksh Blog" };
+  const ogImage = post.coverImage
+    ? { url: post.coverImage, width: 1200, height: 630, alt: post.title }
+    : { url: "/opengraph-image", width: 1200, height: 630, alt: post.title };
   return {
-    title: `${post.title} | Saaksh`,
+    title: post.title,
     description: post.excerpt,
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: "article",
       publishedTime: post.date,
+      authors: [post.author.name],
+      images: [ogImage],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [ogImage.url],
     },
   };
 }
@@ -94,8 +105,21 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     ...BLOG_POSTS.filter((p) => p.slug !== post.slug && p.category !== post.category),
   ].slice(0, 3);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    author: { "@type": "Person", name: post.author.name },
+    publisher: { "@type": "Organization", name: "Saaksh", url: "https://saaksh.co" },
+    url: `https://saaksh.co/blog/${post.slug}`,
+    ...(post.coverImage && { image: `https://saaksh.co${post.coverImage}` }),
+  };
+
   return (
     <div className="min-h-screen bg-[#FBFCFE] flex flex-col">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <BlogHeader />
 
       <main className="flex-1">

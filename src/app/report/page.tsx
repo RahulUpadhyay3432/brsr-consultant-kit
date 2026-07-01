@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { ReportOutput } from "@/lib/types";
 import { generateReport } from "@/lib/report-generator";
-import { loadSavedForm, clearReportSession } from "@/lib/storage";
+import { loadSavedForm, clearReportSession, decodeReportParam, adoptSharedForm } from "@/lib/storage";
 import { track } from "@/lib/mixpanel";
 import ReportView from "@/components/ReportView";
 import Skeleton from "@/components/Skeleton";
@@ -19,6 +19,18 @@ export default function ReportPage() {
   const [report, setReport] = useState<ReportOutput | null>(null);
 
   useEffect(() => {
+    // A shared ?v=<form> link wins over local state: decode it, adopt it as the
+    // active session (clearing a prior client's checklist), then strip the query
+    // so a refresh regenerates from localStorage instead of re-adopting.
+    const v = new URLSearchParams(window.location.search).get("v");
+    if (v) {
+      const shared = decodeReportParam(v);
+      if (shared) {
+        adoptSharedForm(shared);
+        window.history.replaceState({}, "", "/report");
+      }
+    }
+
     const saved = loadSavedForm();
     if (!saved) {
       router.replace("/");

@@ -107,6 +107,60 @@ export function buildSessionBackup(): SessionBackup | null {
   };
 }
 
+// ── Shareable report links ───────────────────────────────────────────────────
+// A report lives only in localStorage, so a consultant can't send it to a
+// colleague. We URL-encode just the intake form (tiny, no client documents) as
+// url-safe base64 in /report?v=<param>; the recipient's browser regenerates the
+// same report on-device. Nothing is uploaded, no link is stored on any server.
+
+function toBase64Url(str: string): string {
+  if (!isBrowser()) return "";
+  // UTF-8 safe: encode to bytes, then base64, then make it url-safe.
+  const bytes = new TextEncoder().encode(str);
+  let bin = "";
+  bytes.forEach((b) => (bin += String.fromCharCode(b)));
+  return window.btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+
+function fromBase64Url(b64url: string): string {
+  if (!isBrowser()) return "";
+  const b64 = b64url.replace(/-/g, "+").replace(/_/g, "/");
+  const bin = window.atob(b64);
+  const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
+}
+
+// Encode an intake form to a url-safe base64 string for /report?v=… Empty on failure.
+export function encodeReportParam(form: IntakeFormData): string {
+  try {
+    return toBase64Url(JSON.stringify(form));
+  } catch {
+    return "";
+  }
+}
+
+// Decode a shared ?v= param back into an intake form. Null unless it parses into
+// an object carrying the required form fields (so a garbage param is a safe no-op).
+export function decodeReportParam(param: string): IntakeFormData | null {
+  try {
+    const parsed = JSON.parse(fromBase64Url(param)) as Partial<IntakeFormData>;
+    if (!parsed || typeof parsed !== "object") return null;
+    if (typeof parsed.industry !== "string" || typeof parsed.companySize !== "string") return null;
+    return parsed as IntakeFormData;
+  } catch {
+    return null;
+  }
+}
+
+// Adopt a shared form as the active on-device session. The prior report's
+// checklist/materiality belonged to a different client, so they're cleared, the
+// recipient starts from the shared form with a clean slate.
+export function adoptSharedForm(form: IntakeFormData): void {
+  saveForm(form);
+  removeKey(STORAGE_KEYS.checklist);
+  removeKey(STORAGE_KEYS.materiality);
+}
+
 // Validate a parsed backup and write it back into localStorage. Returns false for
 // anything that isn't a Saaksh backup with a usable form (so a wrong file is a
 // no-op, not a corrupted session).

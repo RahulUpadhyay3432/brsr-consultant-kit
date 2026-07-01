@@ -6,7 +6,7 @@ import type { ReportOutput, FrameworkMapping } from "@/lib/types";
 import { INDUSTRY_LABELS, FILING_LABELS, type IndustryType, type ExistingFiling } from "@/lib/types";
 import CompanyAvatar from "./CompanyAvatar";
 import { SaakshMark } from "./SaakshMark";
-import { BackupWorkButton } from "./SessionBackup";
+import { BackupWorkButton, ShareLinkButton } from "./SessionBackup";
 import DataChecklist from "./DataChecklist";
 import MaterialityMatrix from "./MaterialityMatrix";
 import FrameworkMapper from "./FrameworkMapper";
@@ -323,6 +323,7 @@ function Sidebar({
           </svg>
           New report
         </button>
+        <ShareLinkButton />
         <BackupWorkButton />
 
         {/* Persistent on-device notice, work is saved in this browser only. */}

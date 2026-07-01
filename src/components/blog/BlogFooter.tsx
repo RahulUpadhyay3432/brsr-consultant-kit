@@ -19,14 +19,14 @@ export function BlogFooter() {
       links: [
         ["/latest", "Latest updates"],
         ["/blog", "Blog"],
-        ["/features/gap-analysis", "Gap analysis guide"],
+        ["/pricing", "Pricing"],
         ["/methodology", "Methodology"],
       ],
     },
     {
       title: "Company",
       links: [
-        ["/", "Home"],
+        ["/about", "About"],
         ["/privacy", "Privacy"],
         ["/terms", "Terms"],
         ["/security", "Security"],

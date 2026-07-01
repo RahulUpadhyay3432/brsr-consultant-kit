@@ -38,10 +38,26 @@ const plexMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Saaksh: Free BRSR Readiness Report Generator",
+  metadataBase: new URL("https://saaksh.co"),
+  title: {
+    default: "Saaksh: Free BRSR Readiness Tool for Indian ESG Consultants",
+    template: "%s | Saaksh",
+  },
   description:
-    "Generate client-specific BRSR data collection checklists, materiality assessments, and cross-framework mappings. Free tool for ESG consultants in India.",
-  keywords: "BRSR, ESG, SEBI, sustainability reporting, India, consultant tool, materiality assessment, GRI, TCFD, IFRS",
+    "Generate a BRSR gap-analysis report for your client in seconds. Free tool for Indian ESG consultants, cited to SEBI & ICAI, everything runs on your device.",
+  keywords: "BRSR, ESG, SEBI, sustainability reporting, India, consultant tool, materiality assessment, GRI, TCFD, IFRS, BRSR gap analysis, BRSR checklist",
+  // og:image comes from the file-convention route (src/app/opengraph-image.tsx),
+  // which auto-injects it here and for every child route that doesn't override
+  // it. og:title / og:description fall back to each page's own title/description,
+  // so we deliberately don't pin them here (that would freeze every page's card
+  // to the homepage copy). twitter:image falls back to og:image when unset.
+  openGraph: {
+    type: "website",
+    siteName: "Saaksh",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({
@@ -54,6 +70,35 @@ export default function RootLayout({
       <body
         className={`${newsreader.variable} ${hanken.variable} ${plexMono.variable} text-stone-900`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "@id": "https://saaksh.co/#org",
+                  name: "Saaksh",
+                  url: "https://saaksh.co",
+                  logo: { "@type": "ImageObject", url: "https://saaksh.co/icon.svg" },
+                  contactPoint: { "@type": "ContactPoint", email: "rahulu626@gmail.com", contactType: "customer support" },
+                },
+                {
+                  "@type": "SoftwareApplication",
+                  "@id": "https://saaksh.co/#app",
+                  name: "Saaksh",
+                  url: "https://saaksh.co",
+                  applicationCategory: "BusinessApplication",
+                  operatingSystem: "Web",
+                  offers: { "@type": "Offer", price: "0", priceCurrency: "INR", description: "Free BRSR readiness tool. Pro Collect tier available on request." },
+                  description: "Free BRSR gap-analysis tool for Indian ESG consultants. Cited to SEBI & ICAI, everything runs on your device.",
+                  publisher: { "@id": "https://saaksh.co/#org" },
+                },
+              ],
+            }),
+          }}
+        />
         {children}
         <HelpWidget />
         <ConsentBanner />

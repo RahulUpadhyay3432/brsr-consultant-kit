@@ -5,7 +5,8 @@
 // any account or server, the file stays with them.
 
 import { useRef, useState } from "react";
-import { buildSessionBackup, restoreSessionBackup } from "@/lib/storage";
+import { buildSessionBackup, restoreSessionBackup, loadSavedForm, encodeReportParam } from "@/lib/storage";
+import { track } from "@/lib/mixpanel";
 
 function slugify(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
@@ -48,6 +49,47 @@ export function BackupWorkButton({ className }: { className?: string }) {
         </svg>
       )}
       {done ? "Backed up" : "Back up work"}
+    </button>
+  );
+}
+
+// Copies a shareable /report?v=… link (the intake form encoded in the URL) to the
+// clipboard so a consultant can send the report to a colleague. On-device only:
+// the colleague's browser regenerates the report, nothing is uploaded.
+export function ShareLinkButton({ className }: { className?: string }) {
+  const [state, setState] = useState<"idle" | "copied" | "error">("idle");
+
+  const onClick = async () => {
+    const form = loadSavedForm();
+    if (!form) return;
+    const param = encodeReportParam(form);
+    if (!param) { setState("error"); setTimeout(() => setState("idle"), 2500); return; }
+    const url = `${window.location.origin}/report?v=${param}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      track("report_link_copied", { hasCompanyName: !!form.companyName });
+      setState("copied");
+    } catch {
+      // Clipboard blocked (permissions/insecure context): fall back to a prompt
+      // so the consultant can still copy the link by hand.
+      window.prompt("Copy this shareable report link:", url);
+      setState("copied");
+    }
+    setTimeout(() => setState("idle"), 2500);
+  };
+
+  return (
+    <button onClick={onClick} className={className ?? FOOTER_BTN} title="Copy a shareable link to this report">
+      {state === "copied" ? (
+        <svg className="w-4 h-4 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      ) : (
+        <svg className="w-4 h-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+        </svg>
+      )}
+      {state === "copied" ? "Link copied" : state === "error" ? "Couldn't copy" : "Share link"}
     </button>
   );
 }

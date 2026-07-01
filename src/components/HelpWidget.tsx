@@ -15,7 +15,6 @@ import { FEEDBACK_URL } from "@/lib/links";
 import { track } from "@/lib/mixpanel";
 
 const TOPICS = (helpData as { topics: HelpTopic[] }).topics;
-const COMPLIANCE_CHAT = "https://huggingface.co/spaces/sherlockwatson221/climate-compliance";
 
 // ── Tiny dependency-free markdown renderer ──────────────────────────────────
 // Renders the curated/AI answers (which are written as: a summary line, then
