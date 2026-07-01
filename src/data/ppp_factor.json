@@ -1,0 +1,13 @@
+{
+  "_meta": {
+    "description": "World Bank Purchasing-Power-Parity conversion factor for India, used to report a PPP-adjusted BRSR intensity (emissions or energy per unit of PPP-adjusted turnover). Editable in the UI; the consultant should confirm the latest vintage before filing.",
+    "indicator": "PA.NUS.PPP — PPP conversion factor, GDP (LCU per international $)",
+    "source": "World Bank, World Development Indicators (International Comparison Program), PPP conversion factor, GDP, India, 2024",
+    "source_short": "World Bank WDI, PA.NUS.PPP, India, 2024",
+    "source_url": "https://data.worldbank.org/indicator/PA.NUS.PPP?locations=IN",
+    "vintage_note": "Value shown is the 2024 series point (2023 was 20.46). The World Bank revises the series each ICP cycle. Re-verify the current-year figure at the World Bank portal before using it in a filing; the field is editable so you can override it."
+  },
+  "value": 20.45,
+  "year": 2024,
+  "unit": "INR per international $ (PPP)"
+}

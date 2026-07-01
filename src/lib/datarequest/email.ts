@@ -29,6 +29,16 @@ function esc(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
+// The Saaksh "Ledger" mark for email headers: a forest tile (table cell, for
+// Outlook-reliable sizing) with three descending white bars + a blue pin. Built
+// from table/div primitives because email clients don't render inline SVG.
+const MARK_HTML =
+  `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="display:inline-block;vertical-align:middle;background:#0F1E33;border-radius:7px;"><tr><td style="padding:7px 6px;line-height:0;font-size:0;">` +
+  `<div style="width:14px;height:2px;background:#FBFCFE;border-radius:2px;margin:0 0 3px 0;"></div>` +
+  `<div style="width:11px;height:2px;background:#FBFCFE;border-radius:2px;margin:0 0 3px 3px;"></div>` +
+  `<div style="line-height:0;font-size:0;"><span style="display:inline-block;width:11px;height:2px;background:#FBFCFE;border-radius:2px;vertical-align:middle;"></span><span style="display:inline-block;width:2px;height:2px;background:#1E9DF2;border-radius:2px;margin-left:2px;vertical-align:middle;"></span></div>` +
+  `</td></tr></table>`;
+
 export function buildRequestEmail(req: EmailReq, link: string): { subject: string; html: string } {
   const deadline = req.deadline
     ? new Date(req.deadline).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })
@@ -61,7 +71,7 @@ export function buildRequestEmail(req: EmailReq, link: string): { subject: strin
   const html = `<!doctype html><html><body style="margin:0;background:#F8FAF9;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
   <div style="max-width:560px;margin:0 auto;background:#fff;border:1px solid #e7e5e0;border-radius:14px;overflow:hidden;">
     <div style="padding:18px 24px;border-bottom:1px solid #f0eee9;">
-      <span style="display:inline-block;width:26px;height:26px;border-radius:7px;background:#0B6FD4;color:#fff;font-weight:700;font-size:13px;text-align:center;line-height:26px;vertical-align:middle;">S</span>
+      ${MARK_HTML}
       <span style="font-weight:600;color:#1a1916;font-size:14px;vertical-align:middle;margin-left:8px;">Saaksh</span>
     </div>
     <div style="padding:24px;">
@@ -136,7 +146,7 @@ export async function sendSubmissionAlert(args: {
   const html = `<!doctype html><html><body style="margin:0;background:#F8FAF9;padding:24px;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
   <div style="max-width:520px;margin:0 auto;background:#fff;border:1px solid #e7e5e0;border-radius:14px;overflow:hidden;">
     <div style="padding:18px 24px;border-bottom:1px solid #f0eee9;">
-      <span style="display:inline-block;width:26px;height:26px;border-radius:7px;background:#0B6FD4;color:#fff;font-weight:700;font-size:13px;text-align:center;line-height:26px;vertical-align:middle;">S</span>
+      ${MARK_HTML}
       <span style="font-weight:600;color:#1a1916;font-size:14px;vertical-align:middle;margin-left:8px;">Saaksh</span>
     </div>
     <div style="padding:24px;">

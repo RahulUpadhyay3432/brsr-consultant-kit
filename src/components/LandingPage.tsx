@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import CookieSettingsLink from "@/components/CookieSettingsLink";
+import { SaakshMark } from "@/components/SaakshMark";
 import { REQUEST_ACCESS_URL } from "@/lib/links";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 import { computeTimeline, defaultDeadline, timelineCsvRows } from "@/lib/engagement-timeline";
@@ -13,7 +14,6 @@ interface LandingPageProps {
   resume?: { companyName: string; onResume: () => void } | null;
 }
 
-const COMPLIANCE_CHAT = "https://huggingface.co/spaces/sherlockwatson221/climate-compliance";
 const BODY = "text-ink-body";
 
 /* ── Icons (Phosphor-style: stroke, 1.75px, rounded) ──────────────────────── */
@@ -157,88 +157,81 @@ const TRUST_CARDS = [
   },
 ];
 
-/* ── Free vs Pro comparison ────────────────────────────────────────────────── */
-const COMPARE: { band: string; rows: [string, boolean, boolean | "soon"][] }[] = [
-  {
-    band: "Prepare the report",
-    rows: [
-      ["Gap-analysed action plan, all 108 fields", true, true],
-      ["GHG, energy, water & Scope 3 calculators, cited", true, true],
-      ["Cross-framework mapping & export (GRI, TCFD, IFRS, TNFD, MSCI, DJSI)", true, true],
-      ["Beyond-BRSR readiness: CBAM & CCTS in-scope checks", true, true],
-      ["Templates, internal request emails & a who-owns-what map", true, true],
-      ["Engagement timeline generator (12 or 20-week plan)", true, true],
-      ["Plain-English AI explainer on every field", true, true],
-      ["CSV + client-ready PDF export", true, true],
-    ],
-  },
-  {
-    band: "Collect & prove it",
-    rows: [
-      ["Chase data from the team that holds each number", false, true],
-      ["Branded request emails + automatic reminders", false, true],
-      ["No-login submission with evidence attached", false, true],
-      ["Emissions auto-computed & attributed to source", false, true],
-      ["Assurance-readiness pack, a data-ownership ledger", false, true],
-    ],
-  },
-  {
-    band: "AI that does the work",
-    rows: [
-      ["Compliance importer, reads entire documents (80+ pages) across all 108 fields", false, true],
-      ["Grounded AI narrative draft, review-ready", false, true],
-    ],
-  },
-  {
-    band: "Win & scale",
-    rows: [
-      ["Proposal & fee builder, scope and price an engagement", false, true],
-      ["Multi-client workspace with per-client readiness, data & draft tabs", false, true],
-    ],
-  },
-];
+/* ── Tier cards (Free vs Pro) ──────────────────────────────────────────────── */
+function TierCards({ onStart }: { onStart: () => void }) {
+  const FREE_FEATURES = [
+    "Gap-analysed action plan across all 108 BRSR fields",
+    "GHG, energy, water & Scope 3 calculators, cited to CEA, IPCC & DEFRA",
+    "GRI, TCFD, IFRS S1/S2, TNFD, MSCI & DJSI mapping, exportable as CSV",
+    "CBAM & CCTS in-scope readiness check",
+    "Templates, internal request emails & a who-owns-what map",
+    "Engagement timeline generator (12 or 20-week plan)",
+    "AI field guidance on every disclosure",
+    "CSV export + client-ready PDF brief",
+  ];
+  const PRO_FEATURES = [
+    "Chase data from every team with branded emails and auto-reminders",
+    "No-login owner submission with evidence attached per field",
+    "AI document auto-fill: reads your client’s reports across all 108 fields",
+    "Emissions auto-computed and attributed to the person who submitted",
+    "Assurance-readiness ledger: a data-ownership trail for BRSR Core",
+    "Grounded AI narrative draft, ready to review and edit",
+    "Proposal & fee builder: scope, price, and send",
+    "Multi-client workspace with readiness, data, draft and assurance tabs",
+  ];
 
-function Mark({ v }: { v: boolean | "soon" }) {
-  if (v === "soon") return <span className="font-mono text-[9px] uppercase tracking-wide text-[#8A6516] bg-[#F6ECD8] rounded-full px-1.5 py-0.5">soon</span>;
-  return v
-    ? <svg className="w-4 h-4 text-brand-600 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.6}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-    : <span className="text-[#9AA3B0] text-[15px]">,</span>;
-}
-
-const CMP_COLS = "grid grid-cols-[1fr_52px_60px] sm:grid-cols-[1fr_120px_140px]";
-
-function CompareTable() {
   return (
-    <div className="mt-10 rounded-2xl border border-line overflow-hidden bg-white shadow-elev-1">
-      <div className={`${CMP_COLS} items-stretch border-b border-line bg-band`}>
-        <div className="px-4 sm:px-6 py-3.5 flex items-end">
-          <span className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-faint">What you get</span>
+    <div className="mt-10 grid md:grid-cols-2 gap-5">
+      {/* Free card */}
+      <div className="rounded-2xl border border-line bg-white p-7 sm:p-8 flex flex-col shadow-elev-1">
+        <div className="flex items-start justify-between gap-3 mb-1">
+          <span className="font-display font-bold text-[28px] text-ink tracking-tight">Free</span>
+          <span className="font-mono text-[11px] font-semibold tracking-wide text-[#10A572] bg-[#E3F7F0] border border-[#BFE6D8] px-2.5 py-1 rounded-full shrink-0">₹0 forever</span>
         </div>
-        <div className="py-3.5 text-center border-l border-line-soft">
-          <p className="font-display text-[15px] text-ink leading-none">Free</p>
-          <p className="font-mono text-[8.5px] uppercase tracking-wide text-[#10A572] mt-1">No login</p>
-        </div>
-        <div className="py-3.5 text-center bg-forest">
-          <p className="font-display text-[15px] text-white leading-none">Pro</p>
-          <p className="font-mono text-[8.5px] uppercase tracking-wide text-brand-400 mt-1">Paid</p>
-        </div>
-      </div>
-      {COMPARE.map((g) => (
-        <div key={g.band}>
-          <div className={`${CMP_COLS} bg-band border-b border-line-soft`}>
-            <p className="px-4 sm:px-6 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-ink-muted">{g.band}</p>
-            <div className="border-l border-line-soft" />
-            <div className="bg-brand-50/60" />
-          </div>
-          {g.rows.map(([label, free, pro], i) => (
-            <div key={label} className={`${CMP_COLS} items-center ${i < g.rows.length - 1 ? "border-b border-line-soft" : ""}`}>
-              <p className="px-4 sm:px-6 py-3 text-[13.5px] sm:text-[14px] text-ink leading-snug">{label}</p>
-              <div className="py-3 flex justify-center border-l border-line-soft"><Mark v={free} /></div>
-              <div className="py-3 flex justify-center bg-brand-50/60"><Mark v={pro} /></div>
-            </div>
+        <p className="text-[14.5px] text-ink-body leading-snug">Prepare &amp; understand, entirely on your device.</p>
+        <p className="text-[12px] font-mono text-ink-faint mt-1 mb-6">No login required &middot; Nothing stored</p>
+        <ul className="space-y-3 flex-1">
+          {FREE_FEATURES.map((f) => (
+            <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-ink-body leading-snug">
+              <svg className="w-4 h-4 text-brand-500 shrink-0 mt-[2px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.3} strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+              {f}
+            </li>
           ))}
+        </ul>
+        <button
+          onClick={onStart}
+          className="pressable mt-7 w-full flex items-center justify-center gap-2 rounded-xl border-2 border-ink bg-white text-ink text-[15px] font-semibold py-3.5 hover:bg-ink hover:text-white transition-colors"
+        >
+          Start free <IcoArrow />
+        </button>
+      </div>
+
+      {/* Pro card */}
+      <div className="rounded-2xl bg-forest text-white p-7 sm:p-8 flex flex-col shadow-elev-2 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 40% at 50% 0%, rgba(30,157,242,0.13) 0%, transparent 60%)" }} />
+        <div className="relative flex items-start justify-between gap-3 mb-1">
+          <span className="font-display font-bold text-[28px] text-white tracking-tight">Pro</span>
+          <span className="font-mono text-[11px] font-semibold tracking-wide text-forest bg-brand-400 px-2.5 py-1 rounded-full shrink-0">Paid</span>
         </div>
-      ))}
+        <p className="relative text-[14.5px] text-[#93B5CC] leading-snug">Collect, compute &amp; close the engagement.</p>
+        <p className="relative text-[12px] font-mono text-[#5D7F99] mt-1 mb-5">Manual onboarding &middot; Priced per engagement</p>
+        <p className="relative text-[11.5px] font-mono text-[#5D7F99] uppercase tracking-wide mb-3">Everything in Free, plus:</p>
+        <ul className="relative space-y-3 flex-1">
+          {PRO_FEATURES.map((f) => (
+            <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-white/85 leading-snug">
+              <svg className="w-4 h-4 text-brand-400 shrink-0 mt-[2px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.3} strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+              {f}
+            </li>
+          ))}
+        </ul>
+        <a
+          href={REQUEST_ACCESS_URL}
+          className="pressable relative mt-7 w-full flex items-center justify-center gap-2 rounded-xl bg-brand-500 text-white text-[15px] font-semibold py-3.5 hover:bg-brand-400 transition-colors"
+        >
+          Request access <IcoArrow />
+        </a>
+        <p className="relative text-[12px] text-[#5D7F99] mt-3 text-center">Early access, manually onboarded. Talk to us first.</p>
+      </div>
     </div>
   );
 }
@@ -262,9 +255,9 @@ function ProPillar({ name, status, desc, flagship, ai, tint }: { name: string; s
       <div className="flex items-start justify-between gap-2">
         <span className={`font-display text-[19px] leading-tight flex items-center gap-2 ${filled ? "text-white" : "text-ink"}`}>
           {name}
-          {ai && <span className={`font-mono text-[8.5px] uppercase tracking-wide rounded-full px-1.5 py-0.5 ${filled ? "bg-brand-400 text-forest" : "bg-forest text-white"}`}>AI</span>}
+          {ai && <span className={`font-mono text-[10px] font-semibold uppercase tracking-wide rounded-full px-1.5 py-0.5 ${filled ? "bg-brand-400 text-forest" : "bg-forest text-white"}`}>AI</span>}
         </span>
-        <span className={`font-mono text-[9px] uppercase tracking-wide rounded-full px-2 py-1 whitespace-nowrap ${tagCls}`}>{tag}</span>
+        <span className={`font-mono text-[10.5px] font-semibold uppercase tracking-wide rounded-full px-2 py-0.5 whitespace-nowrap ${tagCls}`}>{tag}</span>
       </div>
       <p className={`text-[13.5px] leading-relaxed mt-3.5 ${filled ? "text-[#BFD3CA]" : "text-ink-muted"}`}>{desc}</p>
     </div>
@@ -275,9 +268,9 @@ function ProPillar({ name, status, desc, flagship, ai, tint }: { name: string; s
 function FeatureRow({ id, eyebrow, title, panel, children, band }: { id?: string; eyebrow?: string; title: string; panel: React.ReactNode; children: React.ReactNode; band?: boolean }) {
   return (
     <section id={id} className={band ? "bg-band" : ""}>
-      <div data-reveal className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div data-reveal className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <div>
-          {eyebrow && <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-brand-700 mb-3">{eyebrow}</p>}
+          {eyebrow && <p className="font-mono text-[11.5px] font-medium uppercase tracking-[0.12em] text-brand-700 mb-3">{eyebrow}</p>}
           <h2 className="font-display font-bold text-[2.4rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>{title}</h2>
           <div className="mt-5">{children}</div>
         </div>
@@ -317,7 +310,7 @@ function ActionPlanPanel() {
           <StatusPill s="Collect" />
         </div>
         <div className="mx-3 mb-3 rounded-lg bg-[#EAF4FE] border border-[#CDE2F6] p-3">
-          <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-[#10A572]"><Spark />In plain English</p>
+          <p className="flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-wide text-[#10A572]"><Spark />AI field guidance</p>
           <p className="text-[13px] text-[#3F4A44] leading-relaxed mt-1.5">Direct greenhouse gases from sources the company owns or controls: fuel burned in boilers, furnaces and company vehicles. Report the total in tonnes of CO₂-equivalent, using CEA and IPCC factors.</p>
           <p className="font-mono text-[10px] text-ink-faint mt-2">Source · SEBI BRSR Format, P6 Q7</p>
         </div>
@@ -545,15 +538,27 @@ function Header({
   scrollTo: (id: string) => () => void;
   resume?: { companyName: string; onResume: () => void } | null;
 }) {
-  const [openMenu, setOpenMenu] = useState<"free" | "pro" | null>(null);
+  const [openMenu, setOpenMenu] = useState<"filing" | "free" | "pro" | null>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openDropdown = (menu: "filing" | "free" | "pro") => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setOpenMenu(menu);
+  };
+  const closeDropdown = () => {
+    closeTimer.current = setTimeout(() => setOpenMenu(null), 150);
+  };
 
-  const FREE_ITEMS = [
+  const FREE_ITEMS: { label: string; sub: string; href?: string; action?: () => void; badge?: string }[] = [
     { label: "BRSR gap analysis", sub: "108-field instant readiness report", action: onStart, badge: "Start free" },
-    { label: "GHG & emissions calculators", sub: "Scope 1, 2 and 3 screening, CEA & IPCC cited", action: scrollTo("calculators") },
-    { label: "Cross-framework mapping", sub: "BRSR to GRI, TCFD, IFRS S1/S2 and TNFD", action: scrollTo("how") },
-    { label: "Templates & workbooks", sub: "BRSR workbook, materiality grid, stakeholder plan", action: scrollTo("tools") },
-    { label: "Engagement timeline", sub: "12 or 20-week plan, download as CSV", action: scrollTo("tools") },
-    { label: "CBAM & CCTS checker", sub: "Are you in scope for new regulations?", action: scrollTo("beyond") },
+    { label: "BRSR applicability checker", sub: "Must your client file, and by when?", href: "/tools/brsr-applicability" },
+    { label: "GHG & emissions calculator", sub: "Scope 1 & 2, energy, water, CEA & IPCC cited", href: "/tools/ghg-calculator" },
+    { label: "Scope 3 screening", sub: "Activity-based Cat 4–9, GHG Protocol + DEFRA", href: "/tools/scope3-calculator" },
+    { label: "Materiality matrix builder", sub: "Impact × stakeholder grid, CSV export", href: "/tools/materiality" },
+    { label: "Templates & workbooks", sub: "BRSR workbook, materiality grid, stakeholder plan", href: "/features/templates" },
+    { label: "Cross-framework mapping", sub: "BRSR ↔ GRI, TCFD, IFRS, TNFD, MSCI/DJSI", href: "/features/alignment" },
+    { label: "CBAM & CCTS checker", sub: "Are you in scope for new regulations?", href: "/features/cbam-ccts" },
+    { label: "Materiality topics", sub: "Suggested material topics by industry", href: "/features/materiality" },
+    { label: "Methodology & sources", sub: "How we calculate, every figure cited", href: "/methodology" },
   ];
 
   const PRO_ITEMS = [
@@ -563,59 +568,90 @@ function Header({
     { label: "Multi-client workspace", sub: "Every client's engagement in one dashboard", href: "/requests" },
   ];
 
+  const FILING_ITEMS: { label: string; sub: string; href: string }[] = [
+    { label: "XBRL pre-flight check", sub: "Rupee-scale converter + why filings get rejected", href: "/tools/xbrl-preflight" },
+    { label: "Audit-readiness checklist", sub: "Evidence a BRSR Core assurer asks for, per KPI", href: "/tools/audit-readiness" },
+    { label: "PPP-adjusted intensity", sub: "Intensity comparable with global peers, WB PPP cited", href: "/tools/ppp-intensity" },
+    { label: "Well-being expense schedule", sub: "P3 welfare heads mapped to P&L lines, CSV", href: "/tools/wellbeing-schedule" },
+  ];
+
   return (
     <header className="sticky top-0 z-50 bg-page/90 backdrop-blur-md border-b border-line">
-      <div className="max-w-[1180px] mx-auto px-5 sm:px-8 h-16 flex items-center gap-2">
-        {/* Logo */}
-        <div className="flex items-center gap-2.5 flex-shrink-0 mr-3">
-          <div className="w-[28px] h-[28px] rounded-lg bg-forest flex items-center justify-center">
-            <span className="font-display text-[14px] text-white leading-none">S</span>
-          </div>
+      <div className="max-w-[1280px] mx-auto px-5 sm:px-8 h-[70px] flex items-center gap-2">
+        {/* Logo → home */}
+        <Link href="/" aria-label="Saaksh home" className="flex items-center gap-2.5 flex-shrink-0 mr-3 rounded-lg hover:opacity-90 transition-opacity">
+          <SaakshMark size={32} />
           <span className="font-display font-bold text-[19px] text-ink">Saaksh</span>
-        </div>
+        </Link>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-0.5 flex-1">
-          {/* Free tools dropdown */}
+          {/* Filing & audit tools dropdown (leading, consultant-facing) */}
           <div
             className="relative"
-            onMouseEnter={() => setOpenMenu("free")}
-            onMouseLeave={() => setOpenMenu(null)}
+            onMouseEnter={() => openDropdown("filing")}
+            onMouseLeave={closeDropdown}
           >
-            <button className={`flex items-center gap-1 text-[14px] font-medium px-3 py-2 rounded-lg transition-colors ${openMenu === "free" ? "text-ink bg-band" : "text-ink-muted hover:text-ink hover:bg-band"}`}>
-              Free tools <IcoChevronDown />
+            <button className={`flex items-center gap-1 text-[15px] font-medium px-3 py-2 rounded-lg transition-colors ${openMenu === "filing" ? "text-ink bg-band" : "text-ink-muted hover:text-ink hover:bg-band"}`}>
+              Filing &amp; audit tools <IcoChevronDown />
             </button>
             <div
-              className={`absolute top-full left-0 mt-1 w-[300px] bg-white border border-line rounded-2xl shadow-elev-2 p-1.5 transition-all duration-150 origin-top-left ${openMenu === "free" ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}
+              className={`absolute top-full left-0 mt-1 w-[560px] bg-white border border-line rounded-2xl shadow-elev-2 p-2 grid grid-cols-2 gap-0.5 transition-all duration-150 origin-top-left ${openMenu === "filing" ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}
             >
-              {FREE_ITEMS.map((item) => (
-                <button
-                  key={item.label}
-                  onClick={item.action}
-                  className="w-full text-left flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-band transition-colors group"
-                >
+              {FILING_ITEMS.map((item) => (
+                <Link key={item.label} href={item.href} className="w-full text-left flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-band transition-colors group">
                   <div className="flex-1 min-w-0">
-                    <p className="text-[13px] font-semibold text-ink flex items-center gap-2">
-                      {item.label}
-                      {item.badge && (
-                        <span className="font-mono text-[9px] uppercase tracking-wide bg-brand-500 text-white rounded-full px-1.5 py-0.5">{item.badge}</span>
-                      )}
-                    </p>
+                    <p className="text-[13px] font-semibold text-ink">{item.label}</p>
                     <p className="text-[12px] text-ink-muted mt-0.5 leading-snug">{item.sub}</p>
                   </div>
                   <IcoArrow />
-                </button>
+                </Link>
               ))}
+            </div>
+          </div>
+
+          {/* Tools dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={() => openDropdown("free")}
+            onMouseLeave={closeDropdown}
+          >
+            <button className={`flex items-center gap-1 text-[15px] font-medium px-3 py-2 rounded-lg transition-colors ${openMenu === "free" ? "text-ink bg-band" : "text-ink-muted hover:text-ink hover:bg-band"}`}>
+              Tools <IcoChevronDown />
+            </button>
+            <div
+              className={`absolute top-full left-0 mt-1 w-[600px] bg-white border border-line rounded-2xl shadow-elev-2 p-2 grid grid-cols-2 gap-0.5 transition-all duration-150 origin-top-left ${openMenu === "free" ? "opacity-100 scale-100 pointer-events-auto" : "opacity-0 scale-95 pointer-events-none"}`}
+            >
+              {FREE_ITEMS.map((item) => {
+                const inner = (
+                  <>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[13px] font-semibold text-ink flex items-center gap-2">
+                        {item.label}
+                        {item.badge && (
+                          <span className="font-mono text-[9px] uppercase tracking-wide bg-brand-500 text-white rounded-full px-1.5 py-0.5">{item.badge}</span>
+                        )}
+                      </p>
+                      <p className="text-[12px] text-ink-muted mt-0.5 leading-snug">{item.sub}</p>
+                    </div>
+                    <IcoArrow />
+                  </>
+                );
+                const cls = "w-full text-left flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-band transition-colors group";
+                return item.href
+                  ? <Link key={item.label} href={item.href} className={cls}>{inner}</Link>
+                  : <button key={item.label} onClick={item.action} className={cls}>{inner}</button>;
+              })}
             </div>
           </div>
 
           {/* Pro dropdown */}
           <div
             className="relative"
-            onMouseEnter={() => setOpenMenu("pro")}
-            onMouseLeave={() => setOpenMenu(null)}
+            onMouseEnter={() => openDropdown("pro")}
+            onMouseLeave={closeDropdown}
           >
-            <button className={`flex items-center gap-1 text-[14px] font-medium px-3 py-2 rounded-lg transition-colors ${openMenu === "pro" ? "text-ink bg-band" : "text-ink-muted hover:text-ink hover:bg-band"}`}>
+            <button className={`flex items-center gap-1 text-[15px] font-medium px-3 py-2 rounded-lg transition-colors ${openMenu === "pro" ? "text-ink bg-band" : "text-ink-muted hover:text-ink hover:bg-band"}`}>
               Pro <IcoChevronDown />
             </button>
             <div
@@ -643,11 +679,9 @@ function Header({
             </div>
           </div>
 
-          <button onClick={scrollTo("how")} className="text-[14px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">How it works</button>
+          <button onClick={scrollTo("how")} className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">How it works</button>
 
-          <a href={COMPLIANCE_CHAT} target="_blank" rel="noopener noreferrer" className="hidden lg:flex items-center gap-1.5 text-[14px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">
-            <span className="w-1.5 h-1.5 rounded-full bg-brand-500" />Compliance Chat
-          </a>
+          <Link href="/blog" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Blog</Link>
         </nav>
 
         {/* Right side */}
@@ -673,52 +707,311 @@ function Header({
   );
 }
 
-/* ── Social proof section ──────────────────────────────────────────────────── */
-function SocialProofSection() {
-  const avatars = [
-    { i: "PK", c: "#0B6FD4" },
-    { i: "RS", c: "#0F1E33" },
-    { i: "AN", c: "#059669" },
-    { i: "KM", c: "#7C3AED" },
-    { i: "RV", c: "#D97706" },
-    { i: "SJ", c: "#DC2626" },
+/* ── Product preview section ───────────────────────────────────────────────── */
+/* Shared status badge styles used by both the hero panel and the product preview */
+const BADGE_CLS = {
+  tracked: "bg-[#E3F7F0] text-[#0E7A56] border border-[#BFE6D8]",
+  partial: "bg-[#F6ECD8] text-[#8A6516] border border-[#EAD8B0]",
+  new: "bg-[#FFF1ED] text-[#C24428] border border-[#F8C9BD]",
+};
+
+const STATUS_DOT = {
+  tracked: "#22C55E",
+  partial: "#F59E0B",
+  new: "#F2674A",
+};
+
+/* Hero readiness panel — replaces the shrunk full-app screenshot */
+function HeroReadinessPanel() {
+  const rows = [
+    { id: "P6-E1", label: "Scope 1 & 2 GHG emissions (absolute, tCO₂e)", status: "tracked" as const, badge: "Ready to pull", source: "PAT Scheme + CEA v21.0" },
+    { id: "P3-E1", label: "Total workforce: employees and contractors",   status: "partial" as const, badge: "Needs verification", source: "Factory Act (partial)" },
+    { id: "P1-E2", label: "Code of conduct and anti-corruption policy",   status: "tracked" as const, badge: "Ready to pull",      source: "Annual report" },
   ];
+
+  const READY = 23, VERIFY = 41, COLLECT = 44, TOTAL = 108;
+  const sourced = READY + VERIFY;
+  const r = 36, cx = 44, cy = 44, circ = 2 * Math.PI * r;
+  const dash = (circ * sourced) / TOTAL;
+
   return (
-    <section className="bg-white border-b border-line py-14">
-      <div className="max-w-[1180px] mx-auto px-5 sm:px-8 flex flex-col items-center gap-6 text-center">
-        {/* Overlapping avatars */}
-        <div className="flex -space-x-3">
-          {avatars.map((a) => (
-            <div
-              key={a.i}
-              className="w-11 h-11 rounded-full border-2 border-white flex items-center justify-center font-semibold text-[12px] text-white flex-shrink-0 shadow-sm"
-              style={{ backgroundColor: a.c }}
-            >
-              {a.i}
-            </div>
-          ))}
-          <div className="w-11 h-11 rounded-full border-2 border-white bg-band flex items-center justify-center font-mono text-[10px] font-bold text-ink-body flex-shrink-0 shadow-sm">
-            75+
+    <>
+      {/* Report header */}
+      <div className="bg-white border-b border-line px-5 py-3 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-md bg-[#0F1E33] flex items-center justify-center text-white text-[10px] font-bold shrink-0">S</div>
+          <span className="font-semibold text-ink text-[13.5px]">Tata Steel Ltd</span>
+          <span className="text-[11px] font-mono text-ink-muted bg-band px-1.5 py-0.5 rounded hidden sm:inline">BRSR FY 2025-26</span>
+        </div>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <span className={`text-[10.5px] font-medium px-2 py-0.5 rounded-full ${BADGE_CLS.tracked}`}>{READY} ready</span>
+          <span className={`text-[10.5px] font-medium px-2 py-0.5 rounded-full ${BADGE_CLS.partial}`}>{VERIFY} verify</span>
+          <span className={`text-[10.5px] font-medium px-2 py-0.5 rounded-full ${BADGE_CLS.new}`}>{COLLECT} collect</span>
+        </div>
+      </div>
+
+      {/* Readiness moment */}
+      <div className="bg-[#F8FBFE] border-b border-line px-5 py-5 flex items-center gap-5">
+        {/* Donut */}
+        <div className="shrink-0 relative" style={{ width: 88, height: 88 }}>
+          <svg width="88" height="88" viewBox="0 0 88 88" fill="none" style={{ transform: "rotate(-90deg)" }}>
+            <circle cx={cx} cy={cy} r={r} stroke="#E5E9F0" strokeWidth="8" />
+            <circle
+              cx={cx} cy={cy} r={r}
+              stroke="#1E9DF2"
+              strokeWidth="8"
+              strokeLinecap="round"
+              strokeDasharray={`${dash} ${circ - dash}`}
+            />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center leading-none">
+            <span className="text-[22px] font-bold text-ink tabular-nums">{sourced}</span>
+            <span className="text-[9px] font-medium text-ink-muted uppercase tracking-[0.08em] mt-0.5">of {TOTAL}</span>
           </div>
         </div>
 
-        <div className="max-w-[560px]">
-          <p className="text-[18px] text-ink leading-[1.5]">
-            Independent ESG consultants across India use Saaksh to turn the first week of a BRSR engagement into a cited, client-ready plan in minutes.
+        {/* Legend */}
+        <div className="flex-1 min-w-0 space-y-2">
+          <p className="text-[11.5px] text-ink-muted leading-snug mb-2.5">{sourced} of {TOTAL} fields have an existing source</p>
+          {/* Segmented bar */}
+          <div className="flex rounded-full overflow-hidden h-2" style={{ gap: 2 }}>
+            <div className="rounded-full" style={{ width: `${(READY / TOTAL) * 100}%`, background: "#22C55E" }} />
+            <div className="rounded-full" style={{ width: `${(VERIFY / TOTAL) * 100}%`, background: "#F59E0B" }} />
+            <div className="rounded-full flex-1"                                          style={{ background: "#F2674A" }} />
+          </div>
+          {/* Counts */}
+          <div className="flex items-center gap-4 pt-0.5">
+            {([["tracked", `${READY} Ready`], ["partial", `${VERIFY} Verify`], ["new", `${COLLECT} Collect`]] as const).map(([k, label]) => (
+              <span key={k} className="flex items-center gap-1.5 text-[12px] text-ink-muted">
+                <span className="w-2 h-2 rounded-full shrink-0" style={{ background: STATUS_DOT[k] }} />
+                {label}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Disclosure rows */}
+      <div className="divide-y divide-[#EEF1F6] bg-white">
+        {rows.map((row, i) => (
+          <div
+            key={row.id}
+            className="px-5 py-3 flex items-center justify-between gap-4"
+            style={{ animationDelay: `${320 + i * 60}ms` }}
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <span className="font-mono text-[10.5px] text-ink-faint shrink-0 w-[48px]">{row.id}</span>
+              <span className="text-[13px] text-ink truncate">{row.label}</span>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="text-[11px] text-ink-muted hidden lg:block">{row.source}</span>
+              <span className={`text-[10.5px] font-medium px-2 py-0.5 rounded-full whitespace-nowrap ${BADGE_CLS[row.status]}`}>
+                {row.badge}
+              </span>
+            </div>
+          </div>
+        ))}
+        <div className="px-5 py-2.5 bg-band flex items-center gap-2 text-[11.5px] text-ink-faint">
+          <span className="font-mono tracking-wider">· · ·</span>
+          <span>105 more disclosures across all 9 BRSR principles</span>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function FilingAuditBand() {
+  const secondary = [
+    { label: "Audit-readiness checklist", sub: "The evidence a BRSR Core assurer asks for, per KPI, ready to download as a CSV.", href: "/tools/audit-readiness" },
+    { label: "PPP-adjusted intensity", sub: "Restate intensity against PPP-adjusted turnover so an Indian figure stands next to global peers.", href: "/tools/ppp-intensity" },
+    { label: "Well-being expense schedule", sub: "Map P3 welfare heads to the P&L lines they come from, then export the schedule.", href: "/tools/wellbeing-schedule" },
+  ];
+  return (
+    <section data-reveal className="bg-band border-b border-line">
+      <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-16 sm:py-20">
+        <div className="max-w-[640px] mb-9">
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-700 mb-3">
+            Built for ESG consultants
           </p>
-          <p className="text-[13.5px] text-ink-muted mt-2 font-medium">
-            75+ consultants and counting.
+          <h2 className="font-display font-bold text-[2rem] sm:text-[2.6rem] leading-[1.08] tracking-[-0.02em] text-ink" style={{ textWrap: "balance" }}>
+            The last mile: get it filed, get it assured.
+          </h2>
+          <p className="text-[15px] sm:text-[16px] text-ink-muted leading-relaxed mt-3">
+            Filing &amp; audit tools cover the parts of a BRSR engagement that trip consultants up after the numbers are in: a clean XBRL upload, an assurer&rsquo;s evidence list, PPP-comparable intensity, and the P3 well-being schedule. Free, cited, and on-device.
           </p>
         </div>
 
-        {/* City bar */}
-        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 font-mono text-[12px] text-ink-faint">
-          {["Mumbai", "Delhi", "Bengaluru", "Chennai", "Hyderabad", "Pune", "Ahmedabad", "Kolkata"].map((city, i, arr) => (
-            <span key={city} className="flex items-center gap-4">
-              {city}
-              {i < arr.length - 1 && <span className="text-line-soft hidden sm:inline">·</span>}
-            </span>
-          ))}
+        <div className="grid lg:grid-cols-[1.08fr_1fr] gap-5">
+          {/* Primary: interactive XBRL card */}
+          <Link href="/tools/xbrl-preflight"
+            className="group relative flex flex-col justify-between rounded-2xl border border-[#CDE2F6] bg-[#EAF4FE] p-7 sm:p-8 overflow-hidden hover:border-brand-300 transition-colors pressable">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.1em] text-brand-700 bg-white border border-[#CDE2F6] rounded-full px-2.5 py-1">
+                  Free tool · on-device
+                </span>
+              </div>
+              <h3 className="font-display font-bold text-[1.55rem] sm:text-[1.85rem] leading-[1.1] tracking-[-0.02em] text-ink">
+                XBRL pre-flight check
+              </h3>
+              <p className="text-[14.5px] text-ink-muted leading-relaxed mt-2.5 max-w-[440px]">
+                A rupee-scale converter plus the recurring mistakes that get a BRSR XBRL bounced by the exchange utility. Fix them before you upload.
+              </p>
+            </div>
+            <div className="flex items-center gap-3 mt-7">
+              <span className="inline-flex items-center gap-2 text-[14px] font-semibold text-brand-700 group-hover:gap-2.5 transition-all">
+                Open the converter <IcoArrow />
+              </span>
+            </div>
+            <div className="pointer-events-none absolute -right-8 -bottom-10 w-44 h-44 rounded-full bg-brand-500/10" />
+          </Link>
+
+          {/* Secondary: three compact rows in one card */}
+          <div className="rounded-2xl border border-line bg-white divide-y divide-line overflow-hidden">
+            {secondary.map((s) => (
+              <Link key={s.href} href={s.href}
+                className="group flex items-start gap-4 px-6 py-5 hover:bg-band transition-colors">
+                <div className="flex-1 min-w-0">
+                  <p className="text-[15px] font-semibold text-ink leading-snug">{s.label}</p>
+                  <p className="text-[13px] text-ink-muted leading-relaxed mt-1">{s.sub}</p>
+                </div>
+                <span className="mt-1 flex-shrink-0"><IcoArrow /></span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProductPreviewSection({ onStart }: { onStart: () => void }) {
+  const rows = [
+    {
+      id: "P6-E1",
+      label: "Scope 1 & 2 GHG emissions (absolute, tCO₂e)",
+      status: "tracked" as const,
+      badge: "Ready to pull",
+      source: "PAT Scheme + CEA v21.0",
+    },
+    {
+      id: "P3-E1",
+      label: "Total workforce: employees and contractors",
+      status: "partial" as const,
+      badge: "Needs verification",
+      source: "Factory Act (partial)",
+    },
+    {
+      id: "P1-E2",
+      label: "Code of conduct and anti-corruption policy",
+      status: "tracked" as const,
+      badge: "Ready to pull",
+      source: "Annual report",
+    },
+    {
+      id: "P6-L3",
+      label: "Water discharge by quality and destination",
+      status: "new" as const,
+      badge: "Collect fresh",
+      source: "ZLD filing (not available)",
+    },
+  ];
+
+  return (
+    <section className="py-16 sm:py-20 bg-band border-b border-line">
+      <div className="max-w-[1000px] mx-auto px-5 sm:px-8">
+        {/* Heading */}
+        <div className="mb-10">
+          <h2 className="font-display font-bold text-[1.75rem] sm:text-[2.1rem] text-ink leading-tight tracking-[-0.025em] mb-2" style={{ textWrap: "balance" }}>
+            Here&apos;s what comes out the other side.
+          </h2>
+          <p className="text-[15px] text-ink-muted max-w-[520px] leading-relaxed">
+            A structured, colour-coded action plan across all 108 BRSR disclosures. Every field matched against your client&apos;s existing filings, every source named.
+          </p>
+        </div>
+
+        {/* Browser mockup */}
+        <div className="rounded-xl border border-line shadow-elev-2 overflow-hidden">
+          {/* Chrome bar */}
+          <div className="bg-[#0F1E33] px-4 py-2.5 flex items-center gap-3">
+            <div className="flex gap-1.5 shrink-0">
+              <span className="w-[11px] h-[11px] rounded-full bg-[#FF5F57]" />
+              <span className="w-[11px] h-[11px] rounded-full bg-[#FEBC2E]" />
+              <span className="w-[11px] h-[11px] rounded-full bg-[#28C840]" />
+            </div>
+            <div className="flex-1 bg-[#1A2B45] rounded px-3 py-[5px] text-[11.5px] font-mono text-[#7BB3D8] tracking-tight">
+              saaksh.co/report
+            </div>
+          </div>
+
+          {/* Report header */}
+          <div className="bg-white border-b border-line px-5 py-3.5 flex items-start sm:items-center justify-between flex-wrap gap-3">
+            <div>
+              <div className="flex items-center gap-2 mb-0.5">
+                <div className="w-6 h-6 rounded-md bg-[#0F1E33] flex items-center justify-center text-white text-[10px] font-bold shrink-0">S</div>
+                <span className="font-semibold text-ink text-[13.5px]">Tata Steel Ltd</span>
+                <span className="text-[11px] font-mono text-ink-muted bg-band px-1.5 py-0.5 rounded">BRSR FY 2025-26</span>
+              </div>
+              <p className="text-[11.5px] text-ink-muted pl-8">Steel &amp; Metals · Listed top 1000 · PAT + PCB + ZLD filings detected</p>
+            </div>
+            <div className="flex items-center gap-2 pl-8 sm:pl-0">
+              <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[#E3F7F0] text-[#0E7A56] border border-[#BFE6D8]">23 ready</span>
+              <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[#F6ECD8] text-[#8A6516] border border-[#EAD8B0]">41 verify</span>
+              <span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-[#FFF1ED] text-[#C24428] border border-[#F8C9BD]">44 collect</span>
+            </div>
+          </div>
+
+          {/* Disclosure rows */}
+          <div className="divide-y divide-[#EEF1F6] bg-white">
+            {rows.map((row) => (
+              <div
+                key={row.id}
+                className="px-5 py-3 flex items-center justify-between gap-4 hover:bg-brand-50/20 transition-colors"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="font-mono text-[10.5px] text-ink-faint shrink-0 w-[54px]">{row.id}</span>
+                  <span className="text-[13px] text-ink truncate">{row.label}</span>
+                </div>
+                <div className="flex items-center gap-2.5 shrink-0">
+                  <span className="text-[11px] text-ink-muted hidden md:block">{row.source}</span>
+                  <span className={`text-[10.5px] font-medium px-2 py-0.5 rounded-full whitespace-nowrap ${BADGE_CLS[row.status]}`}>
+                    {row.badge}
+                  </span>
+                </div>
+              </div>
+            ))}
+            {/* Fade-out row */}
+            <div className="px-5 py-2.5 bg-band flex items-center gap-2 text-[11.5px] text-ink-faint">
+              <span className="font-mono tracking-wider">· · ·</span>
+              <span>104 more disclosures across all 9 BRSR principles</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Stat strip + CTA */}
+        <div className="mt-7 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            {[
+              "108 BRSR fields",
+              "GHG + energy + water calcs",
+              "GRI · TCFD · IFRS mapping",
+              "100% on-device",
+            ].map((s) => (
+              <span key={s} className="text-[13px] text-ink-muted flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5 text-brand-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
+                {s}
+              </span>
+            ))}
+          </div>
+          <button
+            onClick={onStart}
+            className="pressable inline-flex items-center gap-2 rounded-lg bg-brand-600 text-white text-[13.5px] font-semibold px-4 py-2.5 hover:bg-brand-700 transition-colors"
+          >
+            Generate your report
+            <IcoArrow />
+          </button>
         </div>
       </div>
     </section>
@@ -780,7 +1073,7 @@ function FeaturesGrid({ onStart, scrollTo }: { onStart: () => void; scrollTo: (i
 
   return (
     <section className="bg-band border-b border-line">
-      <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
+      <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
           <div>
             <h2 className="font-display font-bold text-[2.3rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
@@ -844,7 +1137,7 @@ function MiniToolsSection({ onStart }: { onStart: () => void }) {
 
   return (
     <section id="tools" className="bg-white border-y border-line">
-      <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
+      <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
         <h2 className="font-display font-bold text-[2.3rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
           Use the tools directly, no report needed.
         </h2>
@@ -988,7 +1281,7 @@ function PainTable() {
   ];
   return (
     <section id="beyond" className="bg-band">
-      <div data-reveal className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
+      <div data-reveal className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
         <h2 className="font-display font-bold text-[2.3rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em] max-w-[620px]" style={{ textWrap: "balance" }}>
           Every part of the work that eats weeks, handled.
         </h2>
@@ -1022,12 +1315,10 @@ function PainTable() {
 function Footer({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: string) => () => void }) {
   return (
     <footer className="bg-[#0A1422] text-white">
-      <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
         <div className="lg:col-span-1">
           <div className="flex items-center gap-2.5">
-            <div className="w-[26px] h-[26px] rounded-lg bg-brand-500 flex items-center justify-center">
-              <span className="font-display font-bold text-[13px] text-forest leading-none">S</span>
-            </div>
+            <SaakshMark size={26} variant="subtle" />
             <span className="font-display font-bold text-[19px] text-white">Saaksh</span>
           </div>
           <p className="text-[13.5px] text-[#9FB6AC] leading-relaxed mt-3 max-w-[240px]">Evidence-first compliance for Indian businesses. Starting with BRSR.</p>
@@ -1039,7 +1330,23 @@ function Footer({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: str
           ["GHG calculators", scrollTo("calculators")],
           ["CBAM & CCTS checker", scrollTo("beyond")],
         ]} />
-        <FootCol title="Sources" links={[["SEBI BRSR Format", null], ["ICAI Background Material 2024", null], ["CEA emission factors", null], ["IPCC 2006", null]]} />
+        <div>
+          <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-muted">Resources</p>
+          <ul className="mt-2.5 space-y-1.5">
+            {[
+              ["/blog", "Blog"],
+              ["/features/gap-analysis", "Gap analysis guide"],
+              ["/features/ghg-calculator", "GHG calculator guide"],
+              ["/features/templates", "Templates & workbooks"],
+              ["/features/collect", "Collect (Pro)"],
+              ["/features/cbam-ccts", "CBAM & CCTS guide"],
+            ].map(([href, label]) => (
+              <li key={href}>
+                <Link href={href} className="text-[14px] text-[#BFD3CA] hover:text-white transition-colors">{label}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
         <div>
           <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-ink-muted">Built by</p>
           <a href="https://www.linkedin.com/in/rahul-upadhyay-a7aa12207/" target="_blank" rel="noopener noreferrer" className="block text-[14px] text-[#BFD3CA] hover:text-white mt-2.5 transition-colors">Rahul Upadhyay</a>
@@ -1048,7 +1355,7 @@ function Footer({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: str
         </div>
       </div>
       <div className="border-t border-white/10">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-5 flex flex-wrap items-center gap-x-5 gap-y-2">
+        <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-5 flex flex-wrap items-center gap-x-5 gap-y-2">
           {[
             ["/privacy", "Privacy"],
             ["/terms", "Terms"],
@@ -1082,7 +1389,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="bg-grid">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-16 lg:pb-24">
+        <div className="max-w-[1280px] mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-16 lg:pb-24">
           <div className="grid lg:grid-cols-[1fr_1.08fr] gap-12 lg:gap-14 items-center">
             <div>
               <div className="anim-up-sm inline-flex items-center gap-2 rounded-full border border-line bg-white/70 pl-2 pr-3.5 py-1">
@@ -1124,11 +1431,11 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               </p>
 
               <p
-                className="anim-up-md flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-[12px] text-ink-muted mt-4"
+                className="anim-up-md flex flex-wrap items-center gap-x-2.5 gap-y-1 font-mono text-[12.5px] font-medium text-[#48505C] mt-4"
                 style={{ animationDelay: "320ms" }}
               >
                 <Dot /> Client data never leaves your browser <span className="text-[#9AA3B0]">·</span>
-                <Dot /> Plain-English AI <span className="text-[#9AA3B0]">·</span>
+                <Dot /> AI field guidance <span className="text-[#9AA3B0]">·</span>
                 <Dot /> Cited to SEBI &amp; ICAI
               </p>
             </div>
@@ -1144,14 +1451,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                   <span className="w-2.5 h-2.5 rounded-full bg-[#5FC08A]" />
                   <span className="ml-3 hidden sm:flex items-center flex-1 max-w-[260px] h-5 rounded-md bg-white border border-line px-2 font-mono text-[10px] text-ink-faint">saaksh.co/report</span>
                 </div>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="/product/readiness.png"
-                  alt="The Saaksh BRSR readiness report: a live, gap-analysed view of all 108 fields colour-coded into Ready, Verify and Collect, with emissions and cross-framework mapping."
-                  width={1300}
-                  height={880}
-                  className="block w-full h-auto"
-                />
+                <HeroReadinessPanel />
               </div>
             </div>
           </div>
@@ -1160,14 +1460,34 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 
       {/* ── Trust strip ──────────────────────────────────────────────────── */}
       <section className="border-y border-line bg-white">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8">
-          <div className="py-6 flex flex-wrap items-center justify-center gap-x-7 gap-y-2">
-            <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-ink-faint">Built on primary sources</span>
-            {["SEBI BRSR Format", "ICAI 2024", "CEA factors", "IPCC 2006", "GRI · TCFD · IFRS"].map((s) => (
-              <span key={s} className="font-display font-bold text-[16px] text-ink">{s}</span>
-            ))}
+        <div className="mx-auto">
+          {/* Scrolling sources ticker */}
+          <div className="flex items-center border-b border-line">
+            {/* Static label — fixed left */}
+            <div className="flex-shrink-0 px-5 sm:px-8 py-4 border-r border-line">
+              <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted whitespace-nowrap">Built on primary sources</span>
+            </div>
+            {/* Scrolling area */}
+            <div className="flex-1 overflow-hidden py-4">
+              <div className="animate-marquee flex items-center gap-8 w-max">
+                {[
+                  "SEBI BRSR Format", "ICAI 2024", "CEA factors", "IPCC 2006",
+                  "GRI", "TCFD", "IFRS S1/S2", "TNFD", "DEFRA", "MSCI", "DJSI",
+                  "SEBI BRSR Format", "ICAI 2024", "CEA factors", "IPCC 2006",
+                  "GRI", "TCFD", "IFRS S1/S2", "TNFD", "DEFRA", "MSCI", "DJSI",
+                ].map((s, i) => (
+                  <span key={i} className="inline-flex items-center gap-2 whitespace-nowrap">
+                    <svg className="w-3.5 h-3.5 text-[#E07B39] flex-shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="8" cy="8" r="6.5" />
+                      <path d="M5.5 8l2 2 3-3" />
+                    </svg>
+                    <span className="text-[14px] font-medium text-ink-muted">{s}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
-          <div className="border-t border-line py-4 flex flex-wrap items-center justify-center gap-2.5">
+          <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-4 flex flex-wrap items-center justify-center gap-2.5">
             {[
               { href: "/privacy", label: "On-device & private", icon: <path d="M5 13l4 4L19 7" /> },
               { href: "/methodology", label: "Cited, never invented", icon: <><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></> },
@@ -1187,14 +1507,17 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         </div>
       </section>
 
-      {/* ── Social proof ─────────────────────────────────────────────────── */}
-      <SocialProofSection />
+      {/* ── Built for ESG consultants ────────────────────────────────────── */}
+      <FilingAuditBand />
+
+      {/* ── Product preview ──────────────────────────────────────────────── */}
+      <ProductPreviewSection onStart={onStart} />
 
       {/* ── Free features grid ───────────────────────────────────────────── */}
       <FeaturesGrid onStart={onStart} scrollTo={scrollTo} />
 
       {/* ── How it works ─────────────────────────────────────────────────── */}
-      <section id="how" data-reveal className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
+      <section id="how" data-reveal className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
         <h2 className="font-display font-bold text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
           Three steps from intake to a defensible plan.
         </h2>
@@ -1224,19 +1547,19 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           Every disclosure is matched against last year&apos;s filing and sorted: what&apos;s{" "}
           <span className="text-brand-700 font-medium">Ready</span>, what to{" "}
           <span className="text-[#8A6516] font-medium">Verify</span>, and what still needs to be{" "}
-          <span className="text-[#C2432A] font-medium">Collected</span>. Open any field for a plain-English explanation from the public SEBI definition.
+          <span className="text-[#C2432A] font-medium">Collected</span>. Open any field for a cited explanation from the public SEBI definition.
         </p>
         <div className="mt-5 flex items-start gap-2.5 rounded-lg border border-line bg-band px-3.5 py-3 max-w-[460px]">
           <Spark />
           <p className="text-[13.5px] text-ink-muted leading-relaxed">
-            <span className="font-semibold text-ink">In plain English</span> is AI-written, once, from public definitions. No client data is involved, and the text ships static.
+            <span className="font-semibold text-ink">Field guidance</span> is AI-written once from public SEBI definitions. No client data is involved, and the text ships as static data.
           </p>
         </div>
       </FeatureRow>
 
       {/* ── Materiality + Alignment ──────────────────────────────────────── */}
       <section className="bg-white border-y border-line">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-12 lg:gap-16">
+        <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-12 lg:gap-16">
           <div>
             <h2 className="font-display font-bold text-[2.2rem] sm:text-[2.6rem] leading-[1.08] tracking-[-0.025em]">Where to focus, by sector.</h2>
             <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[460px]`}>A starting materiality view drawn from the company&apos;s sector, so the conversation begins with the topics that matter most.</p>
@@ -1264,41 +1587,55 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       {/* ── Mini tools (interactive, no report needed) ───────────────────── */}
       <MiniToolsSection onStart={onStart} />
 
-      {/* ── AI section (dark) ────────────────────────────────────────────── */}
-      <section className="bg-forest text-white glow-dark">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-          <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-brand-400">On AI</p>
-            <h2 className="font-display font-bold text-[2.4rem] sm:text-[3rem] leading-[1.05] tracking-[-0.025em] mt-3" style={{ textWrap: "balance" }}>
-              AI where it helps, never where it can mislead.
-            </h2>
-            <p className="text-[16.5px] text-[#BFD3CA] leading-relaxed mt-5 max-w-[460px]">
-              What goes into a filed report has to be defensible. So AI does the explaining, the reading and the drafting, never the deciding, and never the inventing. Three places it helps:
-            </p>
+      {/* ── AI section ───────────────────────────────────────────────────── */}
+      <section className="bg-band border-t border-line" data-reveal>
+        <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
+          {/* Section label */}
+          <div className="flex items-center gap-3 mb-6">
+            <span className="block w-7 border-t border-ink-muted" />
+            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-muted">On AI</p>
           </div>
-          <div className="space-y-6">
+          {/* Heading */}
+          <h2 className="font-display font-bold text-[2.4rem] sm:text-[3rem] leading-[1.05] tracking-[-0.025em] max-w-[760px]" style={{ textWrap: "balance" }}>
+            AI where it helps, <em>never where it can mislead.</em>
+          </h2>
+          <p className={`text-[16.5px] ${BODY} leading-relaxed mt-5 max-w-[560px]`}>
+            What goes into a filed report has to be defensible. So AI does the explaining, the reading and the drafting, never the deciding, and never the inventing. Three places it helps:
+          </p>
+          {/* Three cards */}
+          <div className="grid md:grid-cols-3 gap-5 mt-10">
             {[
-              { t: "Plain-English explainers", tag: "Free", b: "Every field explained from the public SEBI definition. Written once, shipped as static text, nothing about the client is ever sent anywhere." },
-              { t: "Compliance importer", tag: "Pro", b: "Reads the client's entire document, whether 10 pages or 80, and pre-fills figures across all 108 BRSR fields. Every value shows the exact sentence it came from. It never invents a number." },
+              { t: "AI field guidance",       tag: "Free", b: "Every field explained from the public SEBI definition. Written once, shipped as static text, nothing about the client is ever sent anywhere." },
+              { t: "Compliance importer",     tag: "Pro",  b: "Reads the client's entire document, whether 10 pages or 80, and pre-fills figures across all 108 BRSR fields. Every value shows the exact sentence it came from. It never invents a number." },
               { t: "Grounded narrative draft", tag: "Pro", b: "Turns the numbers you collected into review-ready prose. Every figure traces back to its source; gaps are flagged, not guessed." },
-            ].map((p, i) => (
-              <div key={p.t} className={i > 0 ? "border-t border-white/10 pt-6" : ""}>
-                <p className="flex items-center gap-2 text-[16px] font-semibold text-white">
-                  <span className="w-1.5 h-1.5 rounded-full bg-brand-400" />{p.t}
-                  <span className="font-mono text-[9.5px] uppercase tracking-wide rounded-full px-1.5 py-0.5 text-forest bg-brand-400">{p.tag}</span>
-                </p>
-                <p className="text-[14.5px] text-[#9FB6AC] leading-relaxed mt-1.5 pl-3.5">{p.b}</p>
+            ].map((p) => (
+              <div key={p.t} className="bg-white rounded-2xl border border-line p-6 flex flex-col">
+                <div className="flex items-start justify-between mb-5">
+                  <div className="w-9 h-9 bg-stone-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-ink-muted" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                      <path d="M8 1.5l1.39 2.82 3.11.45-2.25 2.19.53 3.09L8 8.5l-2.78 1.55.53-3.09L3.5 4.77l3.11-.45z" />
+                    </svg>
+                  </div>
+                  <span className={`text-[12px] font-semibold px-3 py-1 rounded-full flex-shrink-0 ${
+                    p.tag === "Free"
+                      ? "bg-[#C8E64A] text-forest"
+                      : "bg-forest text-white"
+                  }`}>{p.tag}</span>
+                </div>
+                <h3 className="text-[17px] font-bold text-ink">{p.t}</h3>
+                <p className={`text-[14.5px] leading-relaxed mt-2 flex-1 ${p.tag === "Free" ? BODY : "text-[#2A5C40]"}`}>{p.b}</p>
               </div>
             ))}
-            <p className="text-[13px] text-[#9FB6AC] leading-relaxed pl-3.5 border-t border-white/10 pt-5">
-              Everything stays cited, each disclosure links to SEBI, ICAI, CEA or IPCC with the version noted. You can defend every line.
-            </p>
           </div>
+          {/* Closing cite line */}
+          <p className={`text-[13.5px] ${BODY} leading-relaxed mt-8 max-w-[620px] border-t border-line pt-6`}>
+            Everything stays cited, each disclosure links to SEBI, ICAI, CEA or IPCC with the version noted. You can defend every line.
+          </p>
         </div>
       </section>
 
       {/* ── Collect (paid tier) ──────────────────────────────────────────── */}
-      <section id="collect" className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-center">
+      <section id="collect" className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-center">
         <div>
           <span className="inline-flex items-center font-mono text-[11px] uppercase tracking-[0.12em] text-[#C2432A] bg-[#FDEBE7] border border-[#F8CFC5] rounded px-2 py-1">Collect · paid tier</span>
           <h2 className="font-display font-bold text-[2.4rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em] mt-4">Chase the data without chasing people.</h2>
@@ -1328,27 +1665,21 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       </section>
 
       {/* ── Free vs Pro ──────────────────────────────────────────────────── */}
-      <section className="bg-band">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
+      <section id="pricing" className="bg-band border-t border-line">
+        <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
           <h2 className="font-display font-bold text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
             Free prepares the report. Pro runs the whole job.
           </h2>
-          <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[620px]`}>
-            The whole readiness tool is genuinely free, on your device. Pro is the workspace that does the work: collecting the data, the AI that reads and drafts, the assurance trail, and the tools to win and price the engagement.
+          <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[600px]`}>
+            The readiness tool is genuinely free, on your device. Pro is the workspace that does the work: collecting the data, the AI that reads and drafts, the assurance trail, and the tools to win and price the engagement.
           </p>
-          <CompareTable />
-          <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3">
-            <a href={REQUEST_ACCESS_URL} className="inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-5 py-3 rounded-xl hover:bg-forest-light transition-colors pressable">
-              Request Pro access <IcoArrow />
-            </a>
-            <p className="text-[13px] text-ink-faint">Early access, priced per engagement, pay only when you have a client. The free tool always stays free.</p>
-          </div>
+          <TierCards onStart={onStart} />
         </div>
       </section>
 
       {/* ── Saaksh Pro grid ──────────────────────────────────────────────── */}
       <section id="pro" className="bg-white border-t border-line">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
+        <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-brand-700">Saaksh Pro</p>
           <h2 className="font-display font-bold text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.025em] mt-3" style={{ textWrap: "balance" }}>
             The workspace for the whole engagement.
@@ -1380,7 +1711,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 
       {/* ── Trust cards ──────────────────────────────────────────────────── */}
       <section className="bg-white border-t border-line">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20">
+        <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
           <div className="grid md:grid-cols-3 gap-6">
             {TRUST_CARDS.map((c) => (
               <div key={c.t} className={`rounded-2xl p-6 shadow-elev-1 ${c.card}`}>
@@ -1397,7 +1728,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 
       {/* ── Stats band ───────────────────────────────────────────────────── */}
       <section className="bg-band border-y border-line">
-        <div data-reveal className="max-w-[1180px] mx-auto px-5 sm:px-8 py-16">
+        <div data-reveal className="max-w-[1280px] mx-auto px-5 sm:px-8 py-16">
           <p className="font-display font-bold text-center text-[1.9rem] sm:text-[2.4rem] leading-[1.18] tracking-[-0.025em] text-ink max-w-[660px] mx-auto" style={{ textWrap: "balance" }}>
             The first week of BRSR work, done in minutes. Gap-analysed, cited, and ready to send.
           </p>
@@ -1419,7 +1750,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 
       {/* ── In good company ──────────────────────────────────────────────── */}
       <section className="bg-white">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-16 lg:py-20">
+        <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-16 lg:py-20">
           <div className="grid lg:grid-cols-[0.82fr_1fr] items-stretch rounded-3xl overflow-hidden border border-line shadow-elev-1 bg-gradient-to-br from-brand-50 via-white to-ember-bg/60">
             <div className="relative min-h-[260px] lg:min-h-[440px] order-1">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1448,7 +1779,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 
       {/* ── Final CTA ────────────────────────────────────────────────────── */}
       <section className="bg-forest text-white glow-dark">
-        <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-20 text-center">
+        <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20 text-center">
           <h2 className="font-display font-bold text-[2.6rem] sm:text-[3.4rem] leading-[1.05] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
             Take the work out of your next BRSR report.
           </h2>

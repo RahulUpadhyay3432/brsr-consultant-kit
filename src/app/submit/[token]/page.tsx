@@ -1,6 +1,7 @@
 import { getContactByToken } from "@/lib/datarequest/db";
 import { submitDataAction } from "@/lib/datarequest/actions";
 import SubmitItemRow from "@/components/datarequest/SubmitItemRow";
+import { SaakshMark } from "@/components/SaakshMark";
 
 export const dynamic = "force-dynamic";
 
@@ -100,9 +101,7 @@ function Shell({ children, wide }: { children: React.ReactNode; wide?: boolean }
     <main className="min-h-screen bg-page">
       <div className={`mx-auto px-5 sm:px-8 py-12 ${wide ? "max-w-[640px]" : "max-w-[480px]"}`}>
         <div className="flex items-center gap-2.5 mb-6">
-          <span className="w-[26px] h-[26px] rounded-md bg-forest flex items-center justify-center">
-            <span className="text-[11px] font-bold text-white leading-none">S</span>
-          </span>
+          <SaakshMark size={26} />
           <span className="text-[13px] font-semibold text-ink">Saaksh</span>
         </div>
         <div className={wide ? "" : "bg-white border border-line rounded-2xl p-7 shadow-[0_1px_2px_rgba(16,33,26,0.05)] flex flex-col items-start"}>

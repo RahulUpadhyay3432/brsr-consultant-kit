@@ -1,0 +1,96 @@
+{
+  "_meta": {
+    "description": "The source documents a BRSR Core reasonable-assurance engagement typically requests, per KPI, grouped by BRSR principle. Illustrative and representative, not exhaustive: the assurer's own evidence request list governs the engagement.",
+    "core_note": "Rows flagged 'BRSR Core' correspond to the nine attributes SEBI designated for reasonable assurance in its 12 Jul 2023 circular. Confirm the exact Core attribute list against that circular's annexure for the client's assurance year.",
+    "sources": [
+      { "label": "SEBI BRSR Core (circular 12 Jul 2023)", "href": "https://www.sebi.gov.in/legal/circulars/jul-2023/brsr-core-framework-for-assurance-and-esg-disclosures-for-value-chain_73854.html" },
+      { "label": "ICAI Standards on Assurance Engagements (SSAE 3000, SAE 3410)", "href": "https://www.icai.org/" },
+      { "label": "SEBI BRSR Format (Annexure II, Jul 2023)", "href": "https://www.sebi.gov.in/sebi_data/commondocs/jul-2023/Annexure_II-Updated-BRSR_p.PDF" }
+    ]
+  },
+  "groups": [
+    {
+      "principle": "P1",
+      "name": "Ethics, transparency & accountability",
+      "rows": [
+        { "kpi": "Board-approved policies & code of conduct", "core": false, "evidence": "Signed policy documents, board/committee minutes approving them, website URLs", "location": "Company Secretary / board records" },
+        { "kpi": "Anti-bribery / anti-corruption cases & disciplinary action", "core": false, "evidence": "Anti-bribery register, whistle-blower log, disciplinary-action records", "location": "Legal / Compliance" },
+        { "kpi": "Fines, penalties & settlements (monetary & non-monetary)", "core": false, "evidence": "Regulator orders, penalty challans, settlement agreements, fines ledger", "location": "Legal / Finance" },
+        { "kpi": "Share of related-party transactions in purchases, sales & loans (openness of business)", "core": true, "evidence": "RPT register, audited financial statements (RPT note), audit-committee approvals", "location": "Finance / audited accounts" }
+      ]
+    },
+    {
+      "principle": "P2",
+      "name": "Sustainable & safe goods and services",
+      "rows": [
+        { "kpi": "R&D and capex on environment- & social-improving products", "core": false, "evidence": "Capex/R&D ledger with project tagging, board notes", "location": "Finance / R&D" },
+        { "kpi": "Sustainable sourcing % of inputs", "core": false, "evidence": "Procurement policy, supplier sustainability certificates, purchase data", "location": "Procurement" },
+        { "kpi": "Life-cycle / product-stewardship & reclaim of products/packaging", "core": false, "evidence": "LCA studies, EPR registration & returns, take-back / recycler records", "location": "EHS / Product / Procurement" }
+      ]
+    },
+    {
+      "principle": "P3",
+      "name": "Employee well-being & safety",
+      "rows": [
+        { "kpi": "Spending on employee well-being as % of revenue", "core": true, "evidence": "Group-mediclaim policy schedule & premium invoices, staff-welfare ledger, payroll/HRMS well-being extract", "location": "HR / Finance payroll" },
+        { "kpi": "Safety incident rate (LTIFR) & fatalities", "core": true, "evidence": "Safety incident register, LTIFR working, Form 21 (Factories Act) accident reports, man-hours worked", "location": "EHS / plant safety" },
+        { "kpi": "Health & accident insurance coverage (employees & workers)", "core": false, "evidence": "Insurance roster, policy schedules, coverage %, premium invoices", "location": "HR / Admin" },
+        { "kpi": "Statutory benefits (PF, ESI, gratuity, maternity/paternity)", "core": false, "evidence": "PF & ESIC challans, gratuity actuarial valuation, maternity/paternity registers", "location": "HR / Finance" },
+        { "kpi": "Return-to-work & retention after parental leave", "core": false, "evidence": "Parental-leave register, return-to-work tracking", "location": "HR" }
+      ]
+    },
+    {
+      "principle": "P4",
+      "name": "Stakeholder engagement",
+      "rows": [
+        { "kpi": "Identified stakeholder groups & mode of engagement", "core": false, "evidence": "Stakeholder-engagement plan, consultation minutes, grievance logs", "location": "Sustainability / CSR" },
+        { "kpi": "Vulnerable & marginalised groups engaged", "core": false, "evidence": "Engagement records, needs-assessment reports", "location": "Sustainability / CSR" }
+      ]
+    },
+    {
+      "principle": "P5",
+      "name": "Human rights",
+      "rows": [
+        { "kpi": "Wages: minimum-wage & equal-remuneration compliance; % of wages paid to women (gender diversity)", "core": true, "evidence": "Payroll registers, minimum-wage registers, gender-wise wage split, equal-remuneration working", "location": "HR / Finance payroll" },
+        { "kpi": "POSH: sexual-harassment complaints filed, disposed & pending", "core": false, "evidence": "POSH annual return, IC minutes, complaint register", "location": "HR / IC secretary" },
+        { "kpi": "Human-rights grievances & remediation", "core": false, "evidence": "Grievance-redressal log, remediation records", "location": "HR / Compliance" }
+      ]
+    },
+    {
+      "principle": "P6",
+      "name": "Environment",
+      "rows": [
+        { "kpi": "GHG emissions Scope 1 & 2 and intensity (GHG footprint)", "core": true, "evidence": "Fuel/diesel invoices, DG-set run logs, DISCOM electricity bills, PPA / I-REC certificates, emission-factor working", "location": "EHS / Energy / Finance" },
+        { "kpi": "Energy consumption & % from renewable sources (energy footprint)", "core": true, "evidence": "Energy meter logs, PAT / BEE Form-A, renewable PPAs, solar generation reports", "location": "Energy manager / EHS" },
+        { "kpi": "Water withdrawal, consumption & discharge intensity (water footprint)", "core": true, "evidence": "Water meter logs, SPCB consent-to-operate, discharge/effluent monitoring logs, ZLD records", "location": "EHS / plant" },
+        { "kpi": "Waste generated, recycled & disposed (circularity)", "core": true, "evidence": "Hazardous-waste manifests (Form 3 / Form 10), recycler receipts, waste-stream registers", "location": "EHS" },
+        { "kpi": "Air emissions (NOx, SOx, PM) & consents", "core": false, "evidence": "Stack-monitoring reports, SPCB consent, ambient-air records", "location": "EHS" }
+      ]
+    },
+    {
+      "principle": "P7",
+      "name": "Policy advocacy",
+      "rows": [
+        { "kpi": "Trade & industry associations; positions taken on public policy", "core": false, "evidence": "List of associations, membership records, advocacy submissions", "location": "Corporate affairs / Company Secretary" }
+      ]
+    },
+    {
+      "principle": "P8",
+      "name": "Inclusive growth & equitable development",
+      "rows": [
+        { "kpi": "Input material sourced from MSMEs / small producers & job creation in smaller towns (inclusive development)", "core": true, "evidence": "Vendor master with MSME classification (Udyam), purchase-value split, location-wise hiring data", "location": "Procurement / HR" },
+        { "kpi": "CSR projects & spend", "core": false, "evidence": "CSR ledger, Form CSR-2, project reports & impact assessments, board CSR-committee minutes", "location": "CSR / Finance" },
+        { "kpi": "Social-impact assessments (SIA) of projects", "core": false, "evidence": "SIA reports, R&R records where applicable", "location": "Sustainability / CSR" }
+      ]
+    },
+    {
+      "principle": "P9",
+      "name": "Consumer responsibility",
+      "rows": [
+        { "kpi": "Concentration of sales with dealers/trading houses & open consumer complaints (fairness in engaging with customers)", "core": true, "evidence": "Sales-concentration working, consumer-complaint register (received / pending), product-recall records", "location": "Sales / Quality / Customer care" },
+        { "kpi": "Data privacy & cyber-security incidents", "core": false, "evidence": "Data-breach register, DPDP-compliance records, incident logs", "location": "IT / Legal" },
+        { "kpi": "Product labelling & information disclosures", "core": false, "evidence": "Label artwork approvals, regulatory-labelling records", "location": "Quality / Regulatory" }
+      ]
+    }
+  ]
+}

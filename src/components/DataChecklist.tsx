@@ -120,7 +120,7 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
       <div className="flex flex-col lg:flex-row lg:items-center gap-3 lg:justify-between">
 
         {/* Segmented status tabs */}
-        <div className="inline-flex items-center gap-0.5 p-0.5 bg-stone-100/80 rounded-lg border border-stone-200/60 self-start overflow-x-auto max-w-full">
+        <div className="inline-flex items-center gap-0.5 p-0.5 bg-stone-100 rounded-lg border border-stone-300 self-start overflow-x-auto max-w-full">
           {statusTabs.map(t => {
             const active = c.statusFilter === t.key;
             const dimmed = t.key !== "all" && t.count === 0;
@@ -157,7 +157,7 @@ export default function DataChecklist({ items, general, seedQuery, clientName }:
               placeholder="Search fields…"
               value={c.search}
               onChange={e => c.setSearch(e.target.value)}
-              className="w-full h-9 pl-8 pr-7 text-[13px] border border-stone-200 rounded-lg bg-white shadow-sm
+              className="w-full h-9 pl-8 pr-7 text-[13px] border border-stone-300 rounded-lg bg-white shadow-sm
                 focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100
                 transition-colors placeholder:text-stone-400"
             />
@@ -437,7 +437,7 @@ function ABRow({
   return (
     <div className={`flex items-start gap-3 px-4 py-2.5 border-b border-stone-100 last:border-b-0
       ${isCollected ? "bg-stone-100/50" : isOdd ? "bg-stone-50/40" : ""}`}>
-      <span className="text-[11px] font-bold font-mono text-stone-500 flex-shrink-0 w-[82px] pt-1">{d.id}</span>
+      <span className="text-[10.5px] text-brand-700 font-mono font-semibold bg-[#EAF4FE] border border-[#CDE2F6] rounded-full px-2 py-0.5 leading-none flex-shrink-0 self-start mt-0.5">{d.id}</span>
 
       <div className="flex-1 min-w-0">
         <span className={`text-[13px] leading-relaxed ${isCollected ? "line-through text-stone-400" : "text-stone-700"}`}>
@@ -512,7 +512,7 @@ function SelectFilter({
         value={value}
         onChange={e => onChange(e.target.value)}
         className="appearance-none h-9 pl-3 pr-8 text-[13px] font-medium text-stone-700 bg-white
-          border border-stone-200 rounded-lg shadow-sm cursor-pointer
+          border border-stone-300 rounded-lg shadow-sm cursor-pointer
           focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-colors"
       >
         {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}

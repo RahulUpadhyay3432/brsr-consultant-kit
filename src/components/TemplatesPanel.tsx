@@ -161,7 +161,7 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
     <div className="space-y-5">
       <div>
         <h1 className="font-display text-[26px] font-normal text-stone-900 leading-tight tracking-tight">Templates, emails &amp; guides</h1>
-        <p className="text-[14px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
+        <p className="text-[14.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
           The formats, the internal data-request emails, the engagement timeline and the how-to guidance you&apos;d otherwise hunt for, ready
           to use and built from the same cited BRSR knowledge base. Generated in your browser; nothing is uploaded.
         </p>
@@ -169,12 +169,12 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
 
       {/* Downloadable templates — first section, no border-t */}
       <section className="space-y-3">
-        <h2 className="text-[17px] font-bold text-stone-900">Templates</h2>
+        <h2 className="text-[18.5px] font-bold text-stone-900">Templates</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {TEMPLATES.map((t) => (
             <div key={t.name} className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)] flex flex-col">
-              <p className="text-[15px] font-semibold text-stone-900 leading-snug">{t.name}</p>
-              <p className="text-[13.5px] text-stone-600 mt-1.5 leading-relaxed flex-1">{t.desc}</p>
+              <p className="text-[16px] font-semibold text-stone-900 leading-snug">{t.name}</p>
+              <p className="text-[14.5px] text-stone-600 mt-1.5 leading-relaxed flex-1">{t.desc}</p>
               <button
                 onClick={() => downloadCsv(exportFilename(t.file), t.build())}
                 className="mt-3 inline-flex items-center gap-1.5 self-start text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors pressable"
@@ -191,8 +191,8 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
       {/* Internal request emails */}
       <section className="space-y-3 border-t border-stone-200 pt-5">
         <div>
-          <h2 className="text-[17px] font-bold text-stone-900">Internal request emails</h2>
-          <p className="text-[13.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
+          <h2 className="text-[18.5px] font-bold text-stone-900">Internal request emails</h2>
+          <p className="text-[14.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
             Ready-to-send drafts to chase BRSR data from the team that holds it, each personalized for
             {" "}<span className="font-medium text-stone-800">{clientName?.trim() || "your client"}</span>
             {" "}({fy}). Copy one, paste it into your mail client, adjust and send.
@@ -209,8 +209,8 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
       {/* Who owns what */}
       <section className="space-y-3 border-t border-stone-200 pt-5">
         <div>
-          <h2 className="text-[17px] font-bold text-stone-900">Who owns what</h2>
-          <p className="text-[13.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
+          <h2 className="text-[18.5px] font-bold text-stone-900">Who owns what</h2>
+          <p className="text-[14.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
             Which team in the company usually holds each principle&apos;s data, so you know who to ask first.
           </p>
         </div>
@@ -247,7 +247,7 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
 
       {/* How-to guides */}
       <section className="space-y-3 border-t border-stone-200 pt-5">
-        <h2 className="text-[17px] font-bold text-stone-900">How-to guides</h2>
+        <h2 className="text-[18.5px] font-bold text-stone-900">How-to guides</h2>
         <div className="space-y-2.5">
           {GUIDES.map((g) => <GuideItem key={g.title} g={g} />)}
         </div>
@@ -274,8 +274,8 @@ function TimelineSection({ clientName }: { clientName?: string }) {
   return (
     <section className="space-y-3">
       <div>
-        <h2 className="text-[17px] font-bold text-stone-900">Engagement timeline</h2>
-        <p className="text-[13.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
+        <h2 className="text-[18.5px] font-bold text-stone-900">Engagement timeline</h2>
+        <p className="text-[14.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
           A realistic milestone plan from kickoff to filing. Set the deadline and the client&apos;s filing experience, then download or paste into your project tracker.
         </p>
       </div>
@@ -324,8 +324,8 @@ function TimelineSection({ clientName }: { clientName?: string }) {
           <tbody className="divide-y divide-stone-100">
             {timeline.map((m, i) => (
               <tr key={m.name} className={i === timeline.length - 1 ? "bg-brand-50" : ""}>
-                <td className="px-4 py-3 text-[14px] font-medium text-stone-900 leading-snug">{m.name}</td>
-                <td className="px-4 py-3 text-[13.5px] font-mono text-stone-700 whitespace-nowrap">
+                <td className="px-4 py-3 text-[15px] font-medium text-stone-900 leading-snug">{m.name}</td>
+                <td className="px-4 py-3 text-[14.5px] font-mono text-stone-700 whitespace-nowrap">
                   {m.dueDate.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
                 </td>
                 <td className="px-4 py-3 text-[13.5px] text-stone-600 leading-snug">{m.owner}</td>
@@ -386,8 +386,8 @@ function DisclosureExamplesSection() {
   return (
     <section className="space-y-3">
       <div>
-        <h2 className="text-[17px] font-bold text-stone-900">What a complete answer looks like</h2>
-        <p className="text-[13.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
+        <h2 className="text-[18.5px] font-bold text-stone-900">What a complete answer looks like</h2>
+        <p className="text-[14.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
           For each Section-C disclosure, the level of detail and the specific data points that assurers and investors typically expect to see.
         </p>
       </div>
@@ -489,11 +489,11 @@ function ExampleRow({
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
-        <span className="font-mono text-[12px] text-stone-500 flex-shrink-0 w-[54px] mt-0.5">{field.id}</span>
-        <span className={`font-mono text-[11px] px-1.5 py-0.5 rounded flex-shrink-0 mt-0.5 ${field.type === "essential" ? "text-brand-700 bg-brand-50 border border-brand-100" : "text-amber-700 bg-amber-50 border border-amber-100"}`}>
+        <span className="font-mono text-[11.5px] font-medium text-stone-600 bg-stone-100 border border-stone-200 rounded px-1.5 py-0.5 flex-shrink-0 mt-0.5">{field.id}</span>
+        <span className={`text-[11px] font-semibold px-2 py-0.5 rounded flex-shrink-0 mt-0.5 ${field.type === "essential" ? "text-brand-700 bg-brand-50 border border-brand-100" : "text-amber-700 bg-amber-50 border border-amber-100"}`}>
           {field.type === "essential" ? "Essential" : "Leadership"}
         </span>
-        <span className="text-[14px] text-stone-800 leading-snug flex-1">{field.label}</span>
+        <span className="text-[15px] text-stone-800 leading-snug flex-1">{field.label}</span>
       </button>
       <div
         className={`grid overflow-hidden transition-[grid-template-rows] duration-200 ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
@@ -503,14 +503,14 @@ function ExampleRow({
           <div className="px-4 pb-4 ml-10 space-y-3">
             {example && (
               <div>
-                <p className="text-[11.5px] font-semibold uppercase tracking-wide text-stone-500 mb-1">What a complete answer includes</p>
-                <p className="text-[13.5px] text-stone-700 leading-relaxed">{example}</p>
+                <p className="text-[12px] font-semibold uppercase tracking-wide text-stone-500 mb-1">What a complete answer includes</p>
+                <p className="text-[14.5px] text-stone-700 leading-relaxed">{example}</p>
               </div>
             )}
             {explainer && (
               <div>
-                <p className="text-[11.5px] font-semibold uppercase tracking-wide text-stone-500 mb-1">In plain English</p>
-                <p className="text-[13.5px] text-stone-600 leading-relaxed">{explainer}</p>
+                <p className="text-[12px] font-semibold uppercase tracking-wide text-stone-500 mb-1">AI field guidance</p>
+                <p className="text-[14.5px] text-stone-600 leading-relaxed">{explainer}</p>
               </div>
             )}
           </div>
@@ -541,7 +541,7 @@ function EmailCard({ t, company, fy }: { t: TeamEmail; company?: string; fy: str
   return (
     <div className="bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)] flex flex-col">
       <div className="flex items-start justify-between gap-2">
-        <p className="text-[15px] font-semibold text-stone-900 leading-snug">{t.team}</p>
+        <p className="text-[16px] font-semibold text-stone-900 leading-snug">{t.team}</p>
         <span className="font-mono text-[11.5px] text-stone-500 flex-shrink-0 mt-0.5">{t.principles.join(" · ")}</span>
       </div>
       <p className="text-[13px] text-stone-600 mt-1.5 leading-relaxed">{t.intro}</p>
@@ -587,7 +587,7 @@ function GuideItem({ g }: { g: Guide }) {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="w-full flex items-center gap-2 text-left text-[15px] font-semibold text-stone-900"
+        className="w-full flex items-center gap-2 text-left text-[16px] font-semibold text-stone-900"
       >
         <svg className={`w-3.5 h-3.5 text-stone-400 transition-transform duration-200 ${open ? "rotate-90" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
         {g.title}
@@ -597,7 +597,7 @@ function GuideItem({ g }: { g: Guide }) {
         style={{ transitionTimingFunction: "cubic-bezier(0.23, 1, 0.32, 1)" }}
       >
         <div className="min-h-0">
-          <div className="mt-3 pl-6 text-[14px] text-stone-700 leading-relaxed space-y-1">
+          <div className="mt-3 pl-6 text-[15px] text-stone-700 leading-relaxed space-y-1">
             {g.body}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-2 mt-2 border-t border-stone-100">
               <span className="text-[11.5px] font-semibold uppercase tracking-wide text-stone-600">Sources</span>

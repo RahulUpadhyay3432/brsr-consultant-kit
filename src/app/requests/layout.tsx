@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CollectNav from "@/components/datarequest/CollectNav";
+import { SaakshMark } from "@/components/SaakshMark";
 import { logoutAction } from "@/lib/datarequest/auth";
 import { listCampaigns } from "@/lib/datarequest/db";
 import type { Campaign } from "@/lib/datarequest/types";
@@ -25,9 +26,7 @@ export default async function RequestsLayout({ children }: { children: React.Rea
         {/* Brand → back to the readiness tool */}
         <Link href="/" className="h-14 flex items-center gap-2.5 px-4 border-b border-white/10
           hover:bg-white/[0.06] transition-colors">
-          <div className="w-[26px] h-[26px] rounded-md bg-white/15 flex items-center justify-center flex-shrink-0">
-            <span className="text-[11px] font-bold text-white leading-none tracking-tight">S</span>
-          </div>
+          <SaakshMark size={26} variant="subtle" className="flex-shrink-0" />
           <div className="leading-tight flex-1 min-w-0">
             <div className="flex items-center gap-1.5">
               <p className="text-[13px] font-semibold text-white tracking-[-0.01em]">Saaksh</p>
@@ -63,9 +62,7 @@ export default async function RequestsLayout({ children }: { children: React.Rea
           bg-page/85 backdrop-blur-md border-b border-black/[0.06]">
           {/* Mobile brand (sidebar is hidden < lg) */}
           <Link href="/" className="lg:hidden flex items-center">
-            <span className="w-[24px] h-[24px] rounded-md bg-forest flex items-center justify-center">
-              <span className="text-[10px] font-bold text-white leading-none">S</span>
-            </span>
+            <SaakshMark size={24} />
           </Link>
           <span className="text-[13px] font-semibold text-stone-700">Data collection</span>
           <div className="flex-1" />

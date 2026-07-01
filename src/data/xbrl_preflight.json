@@ -1,0 +1,69 @@
+{
+  "_meta": {
+    "description": "Common human-error reasons a BRSR filing is rejected by the SEBI/exchange XBRL utility, with the fix for each. This is a pre-flight checklist, not a taxonomy validator: it catches the recurring data-entry mistakes, not every schema rule.",
+    "note": "XBRL utility validations change with each taxonomy release. Confirm against the current BSE/NSE BRSR XBRL manual and the utility's own validation messages before filing.",
+    "sources": [
+      { "label": "SEBI BRSR Format (Annexure II, Jul 2023)", "href": "https://www.sebi.gov.in/sebi_data/commondocs/jul-2023/Annexure_II-Updated-BRSR_p.PDF" },
+      { "label": "BSE BRSR XBRL filing FAQ (13 May 2024)", "href": "https://www.bseindia.com/" },
+      { "label": "NSE circular NSE/CML/2024/11 (10 May 2024)", "href": "https://www.nseindia.com/regulations/exchange-communication-circulars" }
+    ]
+  },
+  "checks": [
+    {
+      "id": "prior-year-blank",
+      "title": "Blank prior-year comparatives",
+      "why": "Most quantitative BRSR fields ask for the current and previous financial year. The XBRL utility rejects or flags a numeric context that is left empty when a prior-year value exists in last year's filing.",
+      "fix": "Enter the previous-year figure for every quantitative row. If the company genuinely did not report the metric last year, use the utility's designated not-reported handling rather than leaving the numeric cell blank.",
+      "source": "SEBI BRSR Format, Section C quantitative tables (current FY / previous FY columns)",
+      "source_short": "SEBI BRSR Format, Section C"
+    },
+    {
+      "id": "text-in-numeric",
+      "title": "\"N/A\", \"NIL\" or text typed into a numeric cell",
+      "why": "A numeric XBRL element only accepts a number. Typing N/A, NA, Not Applicable, dash, or NIL into a numeric field is the single most common cause of a validation error.",
+      "fix": "Enter 0 where the true value is zero. Where a metric does not apply, use the boolean/flag or the narrative field the taxonomy provides for it, never free text in a numeric element.",
+      "source": "SEBI/exchange BRSR XBRL taxonomy, numeric element data types",
+      "source_short": "BRSR XBRL taxonomy"
+    },
+    {
+      "id": "digit-scaling",
+      "title": "Digit-scaling / wrong unit (Lakhs or Crores instead of absolute rupees)",
+      "why": "The taxonomy expects monetary values in absolute rupees. Entering a figure in Lakhs or Crores under-states the number by a factor of 100,000 or 10,000,000 and either fails a range check or files a wrong number.",
+      "fix": "Convert every monetary figure to absolute INR before entry (use the converter above). A turnover of 500 Crore is 5,00,00,00,000, not 500.",
+      "source": "SEBI/exchange BRSR XBRL taxonomy, monetary unit and scale",
+      "source_short": "BRSR XBRL taxonomy, monetary scale"
+    },
+    {
+      "id": "mandatory-empty",
+      "title": "Mandatory fields left empty",
+      "why": "Section A identity/registration fields, and several Section C essential indicators, are mandatory. The utility will not generate a valid instance while any mandatory element is missing.",
+      "fix": "Run the utility's own completeness/validation pass and clear every mandatory-field error before generating the instance document. CIN, registered address, financials, and the essential P-indicators are the usual gaps.",
+      "source": "SEBI BRSR Format, Section A (mandatory disclosures) + Section C essential indicators",
+      "source_short": "SEBI BRSR Format, mandatory fields"
+    },
+    {
+      "id": "assurance-details",
+      "title": "Assurance-provider details missing when assurance = Yes",
+      "why": "If the company marks a KPI or the BRSR Core as reasonably assured, the taxonomy expects the assurance provider's name and the type/scope of assurance. Marking assured without the provider block fails validation.",
+      "fix": "For every assured item, fill the assurance-provider name and assurance type. Keep it consistent with the assurance statement your ICAI-registered assurer issued.",
+      "source": "SEBI BRSR Core (circular 12 Jul 2023), reasonable-assurance disclosure fields",
+      "source_short": "SEBI BRSR Core, 12 Jul 2023"
+    },
+    {
+      "id": "unit-of-measure",
+      "title": "Unit of measurement not declared as the taxonomy expects",
+      "why": "Energy, water and emissions elements each carry a fixed unit (for example energy in joules/GJ, not kWh; emissions in metric tonnes CO2e). A value entered against the wrong unit reference is rejected or silently mis-scaled.",
+      "fix": "Match each quantitative value to the unit the taxonomy declares for that element. Convert kWh to GJ for energy fields, and report GHG in tCO2e, before entry.",
+      "source": "SEBI BRSR Format, Principle 6 quantitative disclosures (energy, water, emissions units)",
+      "source_short": "SEBI BRSR Format, Principle 6"
+    },
+    {
+      "id": "subtotal-reconcile",
+      "title": "Sub-totals that do not reconcile to the total",
+      "why": "Where the format breaks a total into components (energy by source, water by source, waste by stream, employees by category and gender), the utility and the assurer both check that the parts sum to the stated total.",
+      "fix": "Reconcile every breakdown before filing: source components must add up to the total, and the male/female/other split must equal the headcount total. Fix the underlying number, not the total.",
+      "source": "SEBI BRSR Format, Section C component-vs-total tables (P3, P6)",
+      "source_short": "SEBI BRSR Format, component totals"
+    }
+  ]
+}

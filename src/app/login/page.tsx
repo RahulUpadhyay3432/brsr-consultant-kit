@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { SaakshMark } from "@/components/SaakshMark";
 import { loginAction } from "@/lib/datarequest/auth";
 import { REQUEST_ACCESS_URL } from "@/lib/links";
 
@@ -5,12 +7,10 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
   return (
     <main className="min-h-screen bg-page flex items-center justify-center px-5">
       <div className="w-full max-w-[380px]">
-        <div className="flex items-center gap-2.5 mb-6 justify-center">
-          <span className="w-[28px] h-[28px] rounded-md bg-forest flex items-center justify-center">
-            <span className="text-[12px] font-bold text-white leading-none">S</span>
-          </span>
+        <Link href="/" aria-label="Saaksh home" className="flex items-center gap-2.5 mb-6 justify-center hover:opacity-90 transition-opacity">
+          <SaakshMark size={28} />
           <span className="text-[14px] font-semibold text-ink">Saaksh</span>
-        </div>
+        </Link>
 
         <div className={`bg-white border border-line rounded-2xl p-7 shadow-[0_1px_2px_rgba(16,33,26,0.05)] ${searchParams.error ? "shake" : ""}`}>
           <h1 className="font-display text-[22px] font-bold text-ink tracking-tight">Consultant sign-in</h1>

@@ -385,6 +385,16 @@ function generateMaterialityTopics(formData: IntakeFormData): MaterialityTopic[]
   return topics;
 }
 
+// Standalone materiality tool: suggested topics for an industry, without a full
+// intake form. Neutral scoring (no export/listing bumps).
+export function materialityTopicsForIndustry(industry: string): MaterialityTopic[] {
+  return generateMaterialityTopics({
+    industry,
+    exportMarkets: [],
+    companySize: "unlisted_value_chain",
+  } as unknown as IntakeFormData);
+}
+
 function getGenericMaterialityTopics(): MaterialityTopic[] {
   return [
     { id: "MT-1", topic: "GHG Emissions (Scope 1 & 2)", category: "environment", brsr_principles: ["P6"], why_material: "Universal reporting requirement under BRSR Core", stakeholder_importance: 4.5, business_impact: 4 },

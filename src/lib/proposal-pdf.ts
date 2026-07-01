@@ -8,7 +8,8 @@ const INK: RGB = [20, 32, 27];
 const BODY: RGB = [63, 74, 68];
 const SECOND: RGB = [91, 102, 96];
 const MONOGREY: RGB = [138, 147, 141];
-const FOREST: RGB = [14, 74, 54];
+const FOREST: RGB = [15, 30, 51];     // #0F1E33 navy
+const MINT: RGB = [30, 157, 242];     // #1E9DF2 blue accent (pin)
 const HAIR: RGB = [230, 227, 219];
 const CHIPBG: RGB = [227, 247, 240];
 const LABELGREEN: RGB = [11, 107, 79];
@@ -49,9 +50,19 @@ export async function downloadProposalPdf(
   }
 
   // ── Header ──────────────────────────────────────────────────────────────
-  fill(FOREST); doc.roundedRect(M, y, 8, 8, 1.5, 1.5, "F");
-  doc.setFont(SERIF, "bold"); doc.setFontSize(13); setColor([255, 255, 255]);
-  doc.text("S", M + 4, y + 5.7, { align: "center" });
+  // Saaksh "Ledger" mark: forest tile + three descending bars + a blue pin.
+  fill(FOREST); doc.roundedRect(M, y, 8, 8, 1.8, 1.8, "F");
+  {
+    const g = (8 / 64) * 0.7, ox = M + 8 * 0.15, oy = y + 8 * 0.15;
+    const bar = (bx: number, by: number, bw: number, bh: number, c: RGB) => {
+      fill(c); const h = bh * g;
+      doc.roundedRect(ox + bx * g, oy + by * g, bw * g, h, h / 2, h / 2, "F");
+    };
+    bar(14, 11, 36, 7, [255, 255, 255]);
+    bar(20, 28.5, 30, 7, [255, 255, 255]);
+    bar(14, 46, 30, 7, [255, 255, 255]);
+    bar(47, 46, 7, 7, MINT);
+  }
   doc.setFont(SERIF, "normal"); doc.setFontSize(17); setColor(INK);
   doc.text("Saaksh", M + 11, y + 6);
   doc.setFont(MONO, "normal"); doc.setFontSize(8); setColor(MONOGREY);

@@ -1,0 +1,70 @@
+# Saaksh — BRSR Compliance Platform for Indian ESG Consultants
+
+> Saaksh (Sanskrit: sākṣya — evidence, witness) is a compliance platform for independent ESG consultants in India who prepare BRSR (Business Responsibility and Sustainability Reporting) filings for listed companies.
+
+## What Saaksh does
+
+- **Free BRSR gap analysis**: 108-field instant readiness report for any Indian company. Cross-references existing compliance filings (PCB, ZLD, EPR, PAT, Factory Act) against BRSR Section C indicators. Color-coded: Ready / Verify / Collect. 100% on-device, no login, no data stored.
+- **GHG & energy calculators**: Scope 1 and 2 GHG (IPCC 2006 factors, CEA v21.0 grid factor 0.710 kg CO2e/kWh), energy intensity, water intensity — all cited by source and version, running in the browser.
+- **Cross-framework mapping**: BRSR ↔ GRI ↔ TCFD ↔ IFRS S1/S2 ↔ TNFD crosswalk (77 mappings). Downloadable CSV.
+- **Materiality shortlist**: Industry-specific suggested material ESG topics.
+- **Templates**: BRSR response workbook (108 fields), materiality grid, stakeholder engagement plan, engagement timeline (12 or 20-week plan).
+- **CBAM & CCTS readiness**: Scope check for EU Carbon Border Adjustment Mechanism and India's Carbon Credit Trading Scheme.
+- **Collect (Pro)**: Data collection system — create a campaign per client, assign data owners (HR/EHS/CS/Procurement/CSR), send branded request emails, auto-reminders, no-login owner submission with evidence attachments, emissions auto-calc, assurance-readiness CSV.
+
+## Key facts about BRSR
+
+- BRSR = Business Responsibility and Sustainability Reporting. Mandated by SEBI for the top 1000 listed companies (by market cap) since FY 2022-23.
+- 9 Principles (P1-P9): Ethics · Products & Services · Environment (producers) · Stakeholders · Human Rights · Environment (all) · Policy advocacy · Employees · Communities.
+- 108 Section C indicators: 68 Essential + 40 Leadership across P1-P9.
+- BRSR Core: 42 KPIs subset requiring independent assurance. Mandatory for top 500 from FY 2025-26; top 1000 from FY 2026-27.
+- GHG: Scope 1 (fuel combustion) + Scope 2 (grid electricity) are required under P6-E1. Scope 3 is voluntary. CEA grid factor: 0.710 kg CO2e/kWh (Version 21.0, 2024).
+- CBAM: EU Carbon Border Adjustment Mechanism — definitive phase from Jan 2026. Covers steel, cement, aluminium, fertilizers, hydrogen, electricity. Indian exporters must provide embedded-emissions data.
+- CCTS: India Carbon Credit Trading Scheme — 9 GEI-obligated sectors: aluminium, cement, chlor-alkali, fertilizer, iron & steel, paper & pulp, petrochemicals, petroleum refinery, textile.
+
+## Blog
+
+Saaksh publishes practical BRSR guidance, regulatory updates, and calculation guides for Indian ESG consultants.
+
+- /blog — Blog index
+- /blog/brsr-applicability-guide — BRSR applicability: which companies must file and when (top 1000, top 500, BRSR Core phasing, value chain, leadership indicators)
+- /blog/brsr-core-assurance-fy2526 — BRSR Core assurance in FY 2025-26: guide for top-500 companies (42 KPIs, ISAE 3000, ISF standards, data trail)
+- /blog/brsr-data-collection-guide — BRSR data collection: getting numbers from your client's team (who owns what, HR/EHS/CS/Procurement, request emails, Saaksh Collect)
+- /blog/brsr-fy2526-changes — What's new in BRSR for FY 2025-26 (BRSR Core assurance mandate, value-chain disclosures, SEBI March 2025 amendments)
+- /blog/brsr-assurance-vs-assessment — BRSR assurance vs assessment: SEBI March 2025 introduced "assessment" as a lighter alternative to ISAE 3000 reasonable assurance
+- /blog/scope-1-2-ghg-brsr-guide — How to calculate Scope 1 & 2 GHG emissions for BRSR (CEA factor, IPCC factors, intensity ratios, common mistakes)
+- /blog/brsr-core-vs-essential — BRSR Core vs BRSR Essential: a clear breakdown (108 indicators vs 42 KPIs, assurance requirements)
+- /blog/brsr-for-it-services — BRSR for IT services companies: what "not applicable" really means (11 manufacturing-only fields, Scope 2 still applies, P3/P5 fully applicable)
+- /blog/brsr-for-textile-companies — BRSR for textile companies FY 2025-26: double compliance burden (BRSR Core assurance + CCTS GHG reporting due Jul 31 2026)
+- /blog/5-brsr-fields-manufacturers-struggle — 5 BRSR disclosures that trip up every manufacturer (GHG scope, contractor headcount, EPR, energy intensity, gender wage ratio)
+- /blog/brsr-value-chain-disclosure — BRSR value chain: voluntary FY 2025-26, mandatory FY 2026-27 (scope = 2%+ partners, 75% aggregate cap)
+- /blog/cbam-2026-indian-exporters — CBAM in 2026: what Indian exporters need to know (steel, cement, aluminium, January 2026 definitive phase)
+- /blog/brsr-water-disclosure-calculation — BRSR water disclosure: calculating water withdrawal intensity (manufacturing vs service denominators, worked example)
+- /blog/ccts-india-2025-26 — CCTS India 2025-26: 490 companies, 7 sectors, BEE reports due July 31 2026, CCTS-BRSR data overlap
+- /blog/brsr-materiality-assessment-guide — BRSR materiality assessment step-by-step: stakeholder mapping, double materiality, scoring, BRSR disclosure requirements
+
+## Feature guides
+
+- /features/gap-analysis — How the BRSR gap analysis works
+- /features/ghg-calculator — The GHG & energy calculator
+- /features/templates — BRSR templates & guides
+- /features/collect — Collect: the Pro data collection system
+- /features/cbam-ccts — CBAM & CCTS readiness checker
+
+## Data sources & citations
+
+All calculations, factor values, and regulatory content in Saaksh are cited to:
+- SEBI BRSR Format (as amended March 2025)
+- ICAI Background Material on BRSR (Revised Edition 2024)
+- IPCC 2006 Guidelines for National Greenhouse Gas Inventories, Volume 2, Table 2.2
+- CEA CO2 Baseline Database Version 21.0 (2024) — grid factor 0.710 kg CO2e/kWh
+- GHG Protocol Corporate Value Chain (Scope 3) Standard
+- DEFRA/DESNZ 2024 GHG Conversion Factors v1.1
+- EU CBAM Regulation 2023/956 and implementing acts
+- MoEFCC CCTS Notification 2023, BEE GEI Target Order 2023
+- UN Guiding Principles on Business and Human Rights (UNGPs)
+- AA1000 Accountability Principles (2018)
+
+## Contact
+
+Built by Rahul Upadhyay. Email: rahul2401997@gmail.com · LinkedIn: https://www.linkedin.com/in/rahul-upadhyay-a7aa12207/

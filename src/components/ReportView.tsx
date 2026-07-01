@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, type CSSProperties } from "react";
 import Link from "next/link";
 import type { ReportOutput, FrameworkMapping } from "@/lib/types";
 import { INDUSTRY_LABELS, FILING_LABELS, type IndustryType, type ExistingFiling } from "@/lib/types";
 import CompanyAvatar from "./CompanyAvatar";
+import { SaakshMark } from "./SaakshMark";
 import { BackupWorkButton } from "./SessionBackup";
 import DataChecklist from "./DataChecklist";
 import MaterialityMatrix from "./MaterialityMatrix";
@@ -42,60 +43,86 @@ const TABS = [
 // "sources" + "templates" are reference panels, not workspace steps, so they live outside TABS.
 type TabId = (typeof TABS)[number]["id"] | "sources" | "templates";
 
-// SVG nav icons, consistent stroke weight, no emoji.
-function TabIcon({ id, className }: { id: string; className?: string }) {
+// Per-tab accent colour — gives the sidebar a calm spread of brand-adjacent hues
+// instead of a flat monochrome stack.
+const ICON_COLOR: Record<string, string> = {
+  overview:     "#0B6FD4", // brand blue
+  checklist:    "#0B5FB0", // deep blue
+  materiality:  "#7B6FE0", // violet
+  framework:    "#0E7A56", // teal-green
+  alignment:    "#0E7A56",
+  "beyond-brsr":"#F2674A", // coral / ember
+  templates:    "#C2871B", // amber
+  sources:      "#5B6573", // slate
+  collect:      "#F2674A", // coral
+};
+
+// Colourful duotone nav icons: a soft accent-tinted fill behind a crisp accent glyph.
+// Colour comes from each tab's accent (above); active/idle is carried by opacity.
+function TabIcon({ id, className, active = true }: { id: string; className?: string; active?: boolean }) {
+  const color = ICON_COLOR[id] ?? "#5B6573";
+  const p = {
+    className,
+    width: 16, height: 16, viewBox: "0 0 16 16",
+    style: { color, opacity: active ? 1 : 0.78 } as CSSProperties,
+  };
+  const fg = { stroke: "currentColor", strokeWidth: 1.45, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, fill: "none" };
+
   if (id === "overview") return (
-    <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="2" width="4.5" height="4.5" rx="1" />
-      <rect x="8.5" y="2" width="4.5" height="4.5" rx="1" />
-      <rect x="2" y="8.5" width="4.5" height="4.5" rx="1" />
-      <rect x="8.5" y="8.5" width="4.5" height="4.5" rx="1" />
+    <svg {...p}>
+      <rect x="2" y="2" width="5" height="5" rx="1.4" fill="currentColor" fillOpacity="0.95" />
+      <rect x="9" y="2" width="5" height="5" rx="1.4" fill="currentColor" fillOpacity="0.28" />
+      <rect x="2" y="9" width="5" height="5" rx="1.4" fill="currentColor" fillOpacity="0.28" />
+      <rect x="9" y="9" width="5" height="5" rx="1.4" fill="currentColor" fillOpacity="0.95" />
     </svg>
   );
   if (id === "checklist") return (
-    <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="1.5" width="11" height="12" rx="1.5" />
-      <path d="M5 5.5h5M5 8h5M5 10.5h3" />
+    <svg {...p}>
+      <rect x="2.5" y="2" width="11" height="12" rx="2" fill="currentColor" fillOpacity="0.16" />
+      <path d="M5.2 6.2h5.6M5.2 8.6h5.6M5.2 11h3.4" {...fg} />
     </svg>
   );
   if (id === "materiality") return (
-    <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="currentColor">
-      <circle cx="4" cy="10" r="1.5" />
-      <circle cx="7.5" cy="6" r="1.5" />
-      <circle cx="11" cy="3.5" r="1.5" />
-      <circle cx="6" cy="12" r="1" />
-      <circle cx="11.5" cy="8.5" r="1" />
+    <svg {...p}>
+      <rect x="2" y="2" width="12" height="12" rx="2.4" fill="currentColor" fillOpacity="0.14" />
+      <circle cx="5" cy="10.8" r="1.35" fill="currentColor" />
+      <circle cx="8.2" cy="7.2" r="1.35" fill="currentColor" />
+      <circle cx="11.2" cy="4.4" r="1.35" fill="currentColor" />
     </svg>
   );
   if (id === "framework" || id === "alignment") return (
-    <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
-      <circle cx="2.5" cy="7.5" r="1.5" />
-      <circle cx="12.5" cy="3" r="1.5" />
-      <circle cx="12.5" cy="12" r="1.5" />
-      <path d="M4 7.5l7-4M4 7.5l7 4" />
+    <svg {...p}>
+      <path d="M4.4 8l6 -3.6M4.4 8l6 3.6" {...fg} />
+      <circle cx="3.6" cy="8" r="1.9" fill="currentColor" fillOpacity="0.95" />
+      <circle cx="12" cy="4" r="1.9" fill="currentColor" fillOpacity="0.4" />
+      <circle cx="12" cy="12" r="1.9" fill="currentColor" fillOpacity="0.4" />
     </svg>
   );
-  if (id === "deliver") return (
-    <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M7.5 1.5v8M4.5 6.5l3 3 3-3" />
-      <path d="M2 11.5v1a1 1 0 001 1h9a1 1 0 001-1v-1" />
-    </svg>
-  );
-  if (id === "sources") return (
-    <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2.5 2.5h4a1.5 1.5 0 011.5 1.5v8a1.5 1.5 0 00-1.5-1.5h-4z" />
-      <path d="M12.5 2.5h-4A1.5 1.5 0 007 4v8a1.5 1.5 0 011.5-1.5h4z" />
+  if (id === "beyond-brsr") return (
+    <svg {...p}>
+      <circle cx="8" cy="8" r="6" fill="currentColor" fillOpacity="0.15" />
+      <circle cx="8" cy="8" r="6" {...fg} />
+      <path d="M2.2 8h11.6M8 2.2c1.7 1.6 1.7 10 0 11.6M8 2.2c-1.7 1.6-1.7 10 0 11.6" stroke="currentColor" strokeWidth="1.1" fill="none" />
     </svg>
   );
   if (id === "templates") return (
-    <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2.5" y="2" width="10" height="11" rx="1.2" />
-      <path d="M5 5.5h5M5 7.5h5M5 9.5h3" />
+    <svg {...p}>
+      <path d="M4 2.5h4.6l3.4 3.4V13a1 1 0 01-1 1H4a1 1 0 01-1-1V3.5a1 1 0 011-1z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth={1.45} strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8.4 2.6v3.4h3.4" {...fg} />
+      <path d="M5.6 9.2h4.8M5.6 11.2h3" {...fg} />
+    </svg>
+  );
+  if (id === "sources") return (
+    <svg {...p}>
+      <path d="M2.6 3.2A1.4 1.4 0 014 2h3.4v11H4a1.4 1.4 0 00-1.4 1.4z" fill="currentColor" fillOpacity="0.2" />
+      <path d="M13.4 3.2A1.4 1.4 0 0012 2H8.6v11H12a1.4 1.4 0 011.4 1.4z" fill="currentColor" fillOpacity="0.1" />
+      <path d="M2.6 3.2A1.4 1.4 0 014 2h3.4v11H4a1.4 1.4 0 00-1.4 1.4zM13.4 3.2A1.4 1.4 0 0012 2H8.6v11H12a1.4 1.4 0 011.4 1.4z" {...fg} />
     </svg>
   );
   if (id === "collect") return (
-    <svg className={className} width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M13.5 1.5L6.5 8.5M13.5 1.5l-4.5 12-2.5-5.5L1 5.5z" />
+    <svg {...p}>
+      <path d="M14 2.2L9 14l-2.4-5.2L1.5 6.4 14 2.2z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth={1.45} strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 2.2L6.6 8.8" {...fg} />
     </svg>
   );
   return null;
@@ -198,7 +225,7 @@ function Sidebar({
           ${active ? "bg-brand-50 text-brand-800" : "text-stone-600 hover:bg-stone-100/70"}`}
       >
         {active && <span className="absolute left-0 top-1/2 -translate-y-1/2 h-4 w-[3px] rounded-full bg-brand-600" />}
-        <TabIcon id={tab.id} className={`flex-shrink-0 ${active ? "text-brand-700" : "text-stone-400 group-hover:text-stone-500"}`} />
+        <TabIcon id={tab.id} active={active} className="flex-shrink-0" />
         <span className="flex-1 text-left">{tab.label}</span>
         {badge}
       </button>
@@ -216,9 +243,7 @@ function Sidebar({
         className="group h-14 flex items-center gap-2.5 px-4 border-b border-black/[0.05] w-full text-left
           hover:bg-stone-100/50 transition-colors pressable"
       >
-        <div className="w-[26px] h-[26px] rounded-md bg-forest flex items-center justify-center flex-shrink-0">
-          <span className="text-[11px] font-bold text-white leading-none tracking-tight">S</span>
-        </div>
+        <SaakshMark size={26} className="flex-shrink-0" />
         <div className="leading-tight">
           <p className="text-[14px] font-semibold text-stone-900 tracking-[-0.01em]">Saaksh</p>
           <p className="text-[12px] text-stone-500">Readiness workspace</p>
@@ -306,7 +331,7 @@ function Sidebar({
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
             Saved on this device
           </p>
-          <p className="text-[12px] text-stone-500 leading-relaxed mt-1">
+          <p className="text-[12px] text-stone-600 leading-relaxed mt-1">
             Your work stays in this browser, so a refresh or restart is safe. Clearing your browser data or switching browsers starts fresh, so back it up (or export the PDF/CSV) to keep a copy.
           </p>
         </div>

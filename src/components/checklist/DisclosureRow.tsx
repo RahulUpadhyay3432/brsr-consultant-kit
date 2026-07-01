@@ -68,7 +68,7 @@ export default function DisclosureRow({
         <div className="flex items-start gap-2 flex-1 min-w-0">
           <span className={`mt-1.5 w-2 h-2 rounded-full flex-shrink-0 ${isCollected ? "bg-emerald-400" : s.dot}`} />
           <div className="min-w-0">
-            <p className={`text-sm leading-snug line-clamp-2 group-hover:text-stone-900
+            <p className={`text-[15px] leading-snug line-clamp-2 group-hover:text-stone-900
               ${isCollected
                 ? "line-through text-stone-400"
                 : isNA
@@ -77,14 +77,8 @@ export default function DisclosureRow({
               }`}>
               {plain(item.label)}
             </p>
-            {/* Inline gap hint, only for partially tracked, not collected */}
-            {item.status === "partially_tracked" && item.gap_note && !isCollected && (
-              <p className="text-[11px] text-amber-600 mt-0.5 line-clamp-2 leading-snug">
-                Missing: {item.gap_note}
-              </p>
-            )}
             <div className="flex items-center gap-1.5 mt-0.5">
-              <p className="text-[11px] text-stone-500 font-mono">{item.id}</p>
+              <p className="text-[10.5px] text-brand-700 font-mono font-semibold bg-[#EAF4FE] border border-[#CDE2F6] rounded-full px-2 py-0.5 leading-none">{item.id}</p>
               {isDetected && !isCollected && (
                 <span className="inline-flex items-center gap-1 text-[9px] font-semibold text-brand-700
                   bg-brand-50 border border-brand-100 px-1.5 py-0.5 rounded-full leading-none">
@@ -96,12 +90,18 @@ export default function DisclosureRow({
                 </span>
               )}
             </div>
+            {/* Gap callout — below the code pill so label and pill stay coupled */}
+            {item.status === "partially_tracked" && item.gap_note && !isCollected && (
+              <p className="text-[11px] text-amber-700 bg-amber-50 border border-amber-200/70 rounded-md px-2 py-1 mt-1.5 line-clamp-2 leading-snug">
+                <span className="font-semibold">Missing:</span> {item.gap_note}
+              </p>
+            )}
           </div>
         </div>
 
         {/* Indicator type, desktop only */}
         <div className="hidden md:flex items-start pt-0.5 w-[90px] flex-shrink-0">
-          <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded
+          <span className={`text-[10.5px] font-semibold px-2 py-0.5 rounded
             ${isCollected
               ? "text-stone-400 bg-stone-100 border border-stone-200"
               : item.indicator_type === "essential"
@@ -152,10 +152,10 @@ export default function DisclosureRow({
             {/* What it's asking, precomputed plain-language explainer, on-device (no live call) */}
             {explainer && (
               <div className="bg-white border border-stone-200 rounded-lg px-3.5 py-3">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
+                <p className="text-[11.5px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
                   What it&apos;s asking
                 </p>
-                <p className="text-sm text-stone-600 leading-relaxed">{explainer}</p>
+                <p className="text-[15px] text-stone-600 leading-relaxed">{explainer}</p>
                 <p className="text-[11.5px] text-stone-500 mt-1.5 leading-relaxed">
                   General explanation to aid understanding, not legal advice. Written from the public SEBI/ICAI definition; nothing about your client is used.
                 </p>
@@ -168,7 +168,7 @@ export default function DisclosureRow({
                 <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-600 mb-1.5">
                   Why not applicable?
                 </p>
-                <p className="text-sm text-slate-600 leading-relaxed">
+                <p className="text-[15px] text-slate-600 leading-relaxed">
                   This is a manufacturing/product-specific disclosure (e.g. stack air emissions,
                   industrial effluent, product end-of-life reclaim, or project EIAs). Pure
                   service-sector entities normally report it as <span className="font-medium">"Not applicable"</span> in their BRSR.
@@ -187,14 +187,14 @@ export default function DisclosureRow({
                   </svg>
                   Found in last year's report
                 </p>
-                <p className="text-sm text-stone-600 leading-relaxed">
+                <p className="text-[15px] text-stone-600 leading-relaxed">
                   Matched: {detectedMatch.keywords.map((k, i) => (
                     <span key={i} className="inline-block font-medium text-[13px] text-brand-700 bg-white border border-brand-100 px-1.5 py-0.5 rounded mr-1 mb-1">
                       {k}
                     </span>
                   ))}
                 </p>
-                <p className="text-[13px] text-stone-500 italic leading-relaxed mt-1.5 border-l-2 border-brand-200 pl-2.5">
+                <p className="text-[13.5px] text-stone-500 italic leading-relaxed mt-1.5 border-l-2 border-brand-200 pl-2.5">
                   {detectedMatch.snippet}
                 </p>
                 <p className="text-[12px] text-stone-500 mt-2 leading-relaxed">
@@ -210,7 +210,7 @@ export default function DisclosureRow({
             {/* Source filing, shown when data comes from an existing compliance report */}
             {item.source_filing && (
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
+                <p className="text-[11.5px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
                   Pull from
                 </p>
                 <span className="inline-flex items-center text-[13px] font-medium text-stone-700
@@ -223,20 +223,20 @@ export default function DisclosureRow({
             {/* Gap note */}
             {item.gap_note && (
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
+                <p className="text-[11.5px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
                   Gap, what's missing
                 </p>
-                <p className="text-sm text-stone-600 leading-relaxed">{item.gap_note}</p>
+                <p className="text-[15px] text-stone-600 leading-relaxed">{item.gap_note}</p>
               </div>
             )}
 
             {/* Measurement guidance */}
             {item.measurement_guidance && (
               <div className={item.gap_note ? "border-t border-stone-200 pt-3.5" : ""}>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
+                <p className="text-[11.5px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
                   How to collect?
                 </p>
-                <p className="text-sm text-stone-600 leading-relaxed">{item.measurement_guidance}</p>
+                <p className="text-[15px] text-stone-600 leading-relaxed">{item.measurement_guidance}</p>
               </div>
             )}
 
@@ -282,7 +282,7 @@ export default function DisclosureRow({
                 {/* Best practices, principle-level, India + International. Hidden for N/A. */}
                 {hasBP && (
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-2.5">
+                    <p className="text-[11.5px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-2.5">
                       Best practices
                       <span className="font-normal text-stone-500 normal-case tracking-normal">
                         {" "}, how leaders address {item.principle} ({BEST_PRACTICES[item.principle].name})
@@ -296,7 +296,7 @@ export default function DisclosureRow({
                           </span>
                           <ul className="space-y-2">
                             {BEST_PRACTICES[item.principle].india.map((bp, i) => (
-                              <li key={`in-${i}`} className="flex gap-2 text-sm text-stone-600 leading-relaxed">
+                              <li key={`in-${i}`} className="flex gap-2 text-[15px] text-stone-600 leading-relaxed">
                                 <span className="mt-2 w-1 h-1 rounded-full bg-emerald-400 flex-shrink-0" />
                                 <span>{bp}</span>
                               </li>
@@ -311,7 +311,7 @@ export default function DisclosureRow({
                           </span>
                           <ul className="space-y-2">
                             {BEST_PRACTICES[item.principle].international.map((bp, i) => (
-                              <li key={`int-${i}`} className="flex gap-2 text-sm text-stone-600 leading-relaxed">
+                              <li key={`int-${i}`} className="flex gap-2 text-[15px] text-stone-600 leading-relaxed">
                                 <span className="mt-2 w-1 h-1 rounded-full bg-blue-400 flex-shrink-0" />
                                 <span>{bp}</span>
                               </li>
@@ -325,15 +325,15 @@ export default function DisclosureRow({
 
                 {/* SEBI verbatim */}
                 <div className={hasBP ? "border-t border-stone-200 pt-4" : ""}>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
+                  <p className="text-[11.5px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
                     SEBI language
                   </p>
-                  <p className="text-sm text-stone-500 leading-relaxed italic">{item.label}</p>
+                  <p className="text-[15px] text-stone-500 leading-relaxed italic">{item.label}</p>
                 </div>
 
                 {/* SEBI source, link to the official BRSR Format + page citation */}
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
+                  <p className="text-[11.5px] font-semibold uppercase tracking-[0.08em] text-stone-700 mb-1.5">
                     SEBI source
                   </p>
                   <a

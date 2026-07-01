@@ -41,7 +41,7 @@
       "title": "What is the Download PDF / data-request brief?",
       "category": "howto",
       "keywords": ["pdf", "download pdf", "brief", "data request", "client", "send", "share", "report pdf"],
-      "answer": "'Download PDF' makes a clean, plain-English brief you can send straight to the client's team.\n- **Client-ready** — a 'BRSR data request' brief, no Chrome print header or extension overlays.\n- **Grouped by owner** — gaps sorted by the team that usually owns each item (HR, EHS, energy manager, company secretary).\n- **On-device** — generated in your browser."
+      "answer": "'Download PDF' makes a clean, structured brief you can send straight to the client's team.\n- **Client-ready** — a 'BRSR data request' brief, no Chrome print header or extension overlays.\n- **Grouped by owner** — gaps sorted by the team that usually owns each item (HR, EHS, energy manager, company secretary).\n- **On-device** — generated in your browser."
     },
     {
       "id": "upload-last-year",
@@ -209,7 +209,7 @@
       "title": "What does Pro give me over the free tool?",
       "category": "howto",
       "keywords": ["pro", "free vs pro", "paid", "upgrade", "what is pro", "difference free pro", "pro features", "why pro", "premium"],
-      "answer": "The line is simple: Free is to understand and prepare; Pro is the workspace that does the work.\n- **Free (on your device)** — the gap analysis, built-in GHG/energy/water calculators, suggested materiality, cross-framework mapping, plain-English AI on every field, and CSV plus PDF exports.\n- **Pro** — Collect (chase data from the client's team), the document auto-fill importer, auto-computed emissions, the assurance ledger, AI narrative draft, and the proposal and fee builder."
+      "answer": "The line is simple: Free is to understand and prepare; Pro is the workspace that does the work.\n- **Free (on your device)** — the gap analysis, built-in GHG/energy/water calculators, suggested materiality, cross-framework mapping, AI field guidance on every disclosure, and CSV plus PDF exports.\n- **Pro** — Collect (chase data from the client's team), the document auto-fill importer, auto-computed emissions, the assurance ledger, AI narrative draft, and the proposal and fee builder."
     },
     {
       "id": "auto-fill-documents",

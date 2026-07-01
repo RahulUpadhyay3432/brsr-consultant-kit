@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CookieSettingsLink from "./CookieSettingsLink";
+import { SaakshMark } from "./SaakshMark";
 
 const NAV: { href: string; label: string }[] = [
   { href: "/privacy", label: "Privacy" },
@@ -29,9 +30,7 @@ export default function LegalPage({
       <header className="border-b border-stone-200 bg-white/80 backdrop-blur">
         <div className="max-w-[820px] mx-auto px-5 sm:px-8 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-[26px] h-[26px] rounded-lg bg-forest flex items-center justify-center">
-              <span className="font-display text-[13px] text-white leading-none">S</span>
-            </div>
+            <SaakshMark size={26} />
             <span className="font-display text-[18px] text-stone-900">Saaksh</span>
           </Link>
           <Link href="/" className="text-[13px] font-medium text-stone-600 hover:text-stone-900 transition-colors">

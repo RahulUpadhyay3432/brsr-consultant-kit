@@ -9,6 +9,7 @@ import type { IntakeFormData } from "@/lib/types";
 import { generateReport } from "@/lib/report-generator";
 import { loadSavedForm, saveForm } from "@/lib/storage";
 import IntakeForm from "@/components/IntakeForm";
+import { SaakshMark } from "@/components/SaakshMark";
 import { RestoreWorkButton } from "@/components/SessionBackup";
 
 export default function StartPage() {
@@ -47,9 +48,7 @@ export default function StartPage() {
             className="flex items-center gap-2.5 py-3.5 pressable"
             aria-label="Go to home"
           >
-            <div className="w-[26px] h-[26px] rounded-md bg-forest flex items-center justify-center flex-shrink-0">
-              <span className="text-[11px] font-bold text-white leading-none tracking-tight">S</span>
-            </div>
+            <SaakshMark size={26} className="flex-shrink-0" />
             <span className="text-[13.5px] font-semibold text-ink tracking-[-0.01em]">
               Saaksh
             </span>

@@ -33,7 +33,7 @@ export const WALKTHROUGH_STEPS: WalkStep[] = [
     n: 4,
     title: "Export and share",
     body:
-      "Export CSV for the full working checklist, or Download PDF for a clean, plain-English data-request brief you can send straight to the client's team.",
+      "Export CSV for the full working checklist, or Download PDF for a structured data-request brief you can send straight to the client's team.",
   },
 ];
 

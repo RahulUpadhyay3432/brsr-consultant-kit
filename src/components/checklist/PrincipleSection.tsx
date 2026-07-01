@@ -47,7 +47,7 @@ export default function PrincipleSection({
           ${info?.bg ?? "bg-stone-200"} ${info?.color ?? "text-stone-700"} border ${info?.border ?? "border-stone-300"}`}>
           {principle}
         </span>
-        <span className="text-[15px] font-semibold text-stone-800 group-hover:text-stone-900">
+        <span className="text-[15.5px] font-semibold text-stone-800 group-hover:text-stone-900">
           {info?.name ?? principle}
         </span>
         <div className="ml-auto flex items-center gap-2.5">

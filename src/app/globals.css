@@ -246,6 +246,20 @@ body::before {
   transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
 }
 
+/* Marquee — seamless right-to-left ticker. Duplicate items in markup for loop. */
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee-left 32s linear infinite;
+  will-change: transform;
+}
+.animate-marquee:hover { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee { animation: none; }
+}
+
 /* Scrollbar — minimal */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }

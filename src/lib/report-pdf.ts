@@ -76,7 +76,7 @@ export async function downloadReportPdf(report: ReportOutput): Promise<void> {
     doc.text("Saaksh", M + 9.5, 15.4);
     const sx = M + 9.5 + doc.getTextWidth("Saaksh") + 3;
     doc.setDrawColor(...HAIR); doc.setLineWidth(0.3); doc.line(sx, 11.5, sx, 16.5);
-    font(MONO, "normal", 7.5, MONOGREY);
+    font(MONO, "normal", 8, SECOND);
     doc.text("BRSR DATA REQUEST · CONTINUED", sx + 3, 15.2);
     font(SANS, "normal", 9, SECOND);
     doc.text(`${client} · ${fy}`, pageW - M, 15.2, { align: "right" });
@@ -91,12 +91,21 @@ export async function downloadReportPdf(report: ReportOutput): Promise<void> {
   function space(h: number) {
     if (y + h > pageH - BOTTOM) newPage();
   }
-  // Forest rounded-square logo with a white serif "S".
+  // Saaksh "Ledger" mark: forest tile + three descending bars + a blue pin.
   function logo(x: number, yTop: number, size: number) {
     doc.setFillColor(...FOREST);
-    doc.roundedRect(x, yTop, size, size, 1.6, 1.6, "F");
-    font(SERIF, "bold", size * 0.62, WHITE);
-    doc.text("S", x + size / 2, yTop + size * 0.68, { align: "center" });
+    doc.roundedRect(x, yTop, size, size, size * 0.22, size * 0.22, "F");
+    const g = (size / 64) * 0.7;            // 64-unit glyph space → mm, inset to 70%
+    const ox = x + size * 0.15, oy = yTop + size * 0.15;
+    const bar = (bx: number, by: number, bw: number, bh: number, color: RGB) => {
+      doc.setFillColor(color[0], color[1], color[2]);
+      const w = bw * g, h = bh * g;
+      doc.roundedRect(ox + bx * g, oy + by * g, w, h, h / 2, h / 2, "F");
+    };
+    bar(14, 11, 36, 7, WHITE);
+    bar(20, 28.5, 30, 7, WHITE);
+    bar(14, 46, 30, 7, WHITE);
+    bar(47, 46, 7, 7, MINT);
   }
   // Right-aligned mono pill (team chip) ending at xRight, top at yTop.
   function chip(label: string, xRight: number, yTop: number) {
@@ -145,7 +154,7 @@ export async function downloadReportPdf(report: ReportOutput): Promise<void> {
     doc.setDrawColor(...HAIR); doc.setLineWidth(0.3);
     doc.roundedRect(M, top, cW, H, 2.2, 2.2, "FD");
     const midBase = top + H / 2 + 1.2;
-    font(MONO, "normal", 8, MONOGREY);
+    font(MONO, "normal", 8, SECOND);
     doc.text("WHERE THINGS STAND", M + 7, midBase);
 
     // a count: dot + bold number + label; returns end x
@@ -162,7 +171,7 @@ export async function downloadReportPdf(report: ReportOutput): Promise<void> {
     font(SANS, "normal", 9.5, MONOGREY); doc.text("·", e + 3, r1);
     count(e + 6, r1, GOLD, s.partiallyTracked, "to confirm");
     count(cx0, r2, EMBER, s.newDataNeeded, "to provide");
-    font(MONO, "normal", 8.5, MONOGREY);
+    font(MONO, "normal", 8.5, SECOND);
     doc.text(`of ${total} disclosures`, pageW - M - 7, midBase, { align: "right" });
     y = top + H + 6;
   }
@@ -184,7 +193,7 @@ export async function downloadReportPdf(report: ReportOutput): Promise<void> {
   // ── A single tick-box row ────────────────────────────────────────────────────
   function checkItem(label: string, unit: string | null) {
     const unitStr = unit ? unit : "";
-    font(MONO, "normal", 8.5, MONOGREY);
+    font(MONO, "normal", 8.5, SECOND);
     const unitW = unitStr ? doc.getTextWidth(unitStr) : 0;
     font(SANS, "normal", 10, INK);
     const labelMaxW = cW - 7 - (unitW ? unitW + 6 : 0);
@@ -201,7 +210,7 @@ export async function downloadReportPdf(report: ReportOutput): Promise<void> {
     let ty = top + 3.4;
     for (const ln of lines) { doc.text(ln, M + 7, ty); ty += lh; }
     // unit (first line, right)
-    if (unitStr) { font(MONO, "normal", 8.5, MONOGREY); doc.text(unitStr, pageW - M, top + 3.4, { align: "right" }); }
+    if (unitStr) { font(MONO, "normal", 8.5, SECOND); doc.text(unitStr, pageW - M, top + 3.4, { align: "right" }); }
     // bottom hairline
     const bottom = top + rowH - 1.6;
     doc.setDrawColor(...DIVIDER); doc.setLineWidth(0.3); doc.line(M, bottom, pageW - M, bottom);
