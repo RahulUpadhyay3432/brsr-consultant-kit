@@ -264,11 +264,7 @@ export default function HelpWidget() {
                   </div>
                 ) : !thinking && !aiAnswer ? (
                   <div className="text-[13.5px] text-ink-body leading-relaxed">
-                    <p>
-                      No exact match. Here&apos;s the quick sequence below, or for deep regulatory
-                      questions open{" "}
-                      <a href={COMPLIANCE_CHAT} target="_blank" rel="noopener noreferrer" className="text-brand-700 underline underline-offset-2">Compliance Chat</a>.
-                    </p>
+                    <p>No exact match. Here&apos;s the quick sequence below.</p>
                     <div className="mt-4 space-y-4">
                       {WALKTHROUGH_STEPS.map((s) => <StepRow key={s.n} step={s} />)}
                     </div>
@@ -298,20 +294,6 @@ export default function HelpWidget() {
 
           {/* Footer */}
           <div className="border-t border-line divide-y divide-line-soft">
-            <div className="px-4 py-2.5 flex items-center justify-between">
-              <span className="text-[12.5px] text-ink-muted">Stuck on a regulation?</span>
-              <a
-                href={COMPLIANCE_CHAT}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[12.5px] font-semibold text-brand-700 hover:text-brand-800 inline-flex items-center gap-1"
-              >
-                Compliance Chat
-                <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            </div>
             <div className="px-4 py-2.5 flex items-center justify-between">
               <span className="text-[12.5px] text-ink-muted">Something we could do better?</span>
               <a
