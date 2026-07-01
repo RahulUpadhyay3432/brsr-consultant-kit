@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SaakshMark } from "@/components/SaakshMark";
+import { FEEDBACK_URL } from "@/lib/links";
 
 /* Slim brand footer for the blog surface — no personal byline, no newsletter. */
 export function BlogFooter() {
@@ -16,9 +17,9 @@ export function BlogFooter() {
     {
       title: "Resources",
       links: [
+        ["/latest", "Latest updates"],
         ["/blog", "Blog"],
         ["/features/gap-analysis", "Gap analysis guide"],
-        ["/features/collect", "Collect (Pro)"],
         ["/methodology", "Methodology"],
       ],
     },
@@ -64,8 +65,11 @@ export function BlogFooter() {
 
       <div className="border-t border-white/10">
         <div className="max-w-[1200px] mx-auto px-5 sm:px-8 py-5 flex flex-wrap items-center gap-x-5 gap-y-2">
-          <span className="text-[12.5px] text-[#6B7585]">© {new Date().getFullYear()} Saaksh</span>
-          <span className="text-[12px] text-[#6B7585] sm:ml-auto">
+          <span className="text-[12.5px] text-[#8496A8]">© {new Date().getFullYear()} Saaksh</span>
+          <a href={FEEDBACK_URL} className="text-[12.5px] text-[#BFD0DE] hover:text-white transition-colors font-medium">
+            Share feedback
+          </a>
+          <span className="text-[12px] text-[#8496A8] sm:ml-auto">
             Client data never leaves your browser · Cited to SEBI &amp; ICAI
           </span>
         </div>

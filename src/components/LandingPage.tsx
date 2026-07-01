@@ -8,6 +8,8 @@ import { REQUEST_ACCESS_URL } from "@/lib/links";
 import { useScrollReveal } from "@/lib/useScrollReveal";
 import { computeTimeline, defaultDeadline, timelineCsvRows } from "@/lib/engagement-timeline";
 import { downloadCsv } from "@/lib/export";
+import { topLatest } from "@/lib/latest";
+import { track } from "@/lib/mixpanel";
 
 interface LandingPageProps {
   onStart: () => void;
@@ -679,6 +681,8 @@ function Header({
             </div>
           </div>
 
+          <Link href="/latest" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Latest</Link>
+
           <button onClick={scrollTo("how")} className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">How it works</button>
 
           <Link href="/blog" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Blog</Link>
@@ -817,6 +821,57 @@ function HeroReadinessPanel() {
         </div>
       </div>
     </>
+  );
+}
+
+function LatestStrip() {
+  const items = topLatest(3);
+  return (
+    <section data-reveal className="border-b border-line">
+      <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-14 sm:py-16">
+        <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
+          <div className="max-w-[600px]">
+            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-700 mb-2.5">Latest</p>
+            <h2 className="font-display font-bold text-[1.7rem] sm:text-[2.1rem] leading-[1.1] tracking-[-0.02em] text-ink" style={{ textWrap: "balance" }}>
+              Stay ahead of the regulation
+            </h2>
+            <p className="text-[14.5px] text-ink-muted leading-relaxed mt-2.5">
+              The BRSR, CBAM and CCTS moves worth briefing a client on, cited to the source. Updated as things change.
+            </p>
+          </div>
+          <Link href="/latest" className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-brand-700 hover:gap-2 transition-all">
+            See all updates <IcoArrow />
+          </Link>
+        </div>
+        <div className="grid sm:grid-cols-3 gap-4">
+          {items.map((it) => {
+            const isReg = it.kind === "regulation";
+            const inner = (
+              <>
+                <div className="flex items-center gap-2.5 mb-3">
+                  <span className={`font-mono text-[10px] font-semibold uppercase tracking-[0.05em] rounded px-1.5 py-0.5 ${isReg ? "text-[#C24428] bg-[#FFF1ED] border border-[#F8C9BD]" : "text-brand-700 bg-brand-50 border border-[#CDE2F6]"}`}>
+                    {it.tag}
+                  </span>
+                  <span className="text-[12px] font-medium text-ink-muted">{it.displayDate}</span>
+                </div>
+                <h3 className="text-[15.5px] font-semibold text-ink leading-snug tracking-[-0.01em] group-hover:text-brand-700 transition-colors">{it.title}</h3>
+                <p className="text-[13px] text-ink-body leading-relaxed mt-2 line-clamp-3 flex-1">{it.summary}</p>
+                <span className="inline-flex items-center gap-1.5 mt-4 text-[12.5px] font-semibold text-brand-700 group-hover:gap-2 transition-all">
+                  {isReg ? "Read the source" : "Read the guide"} <IcoArrow />
+                </span>
+              </>
+            );
+            const cls = "group flex flex-col rounded-2xl border border-line bg-white p-5 shadow-elev-1 hover:shadow-elev-2 hover:-translate-y-0.5 transition-all";
+            const onClick = () => track("latest_item_clicked", { tag: it.tag, kind: it.kind, from: "home" });
+            return it.external ? (
+              <a key={it.id} href={it.href} target="_blank" rel="noreferrer" onClick={onClick} className={cls}>{inner}</a>
+            ) : (
+              <Link key={it.id} href={it.href} onClick={onClick} className={cls}>{inner}</Link>
+            );
+          })}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -1509,6 +1564,9 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 
       {/* ── Built for ESG consultants ────────────────────────────────────── */}
       <FilingAuditBand />
+
+      {/* ── Latest (regulation + guidance) ───────────────────────────────── */}
+      <LatestStrip />
 
       {/* ── Product preview ──────────────────────────────────────────────── */}
       <ProductPreviewSection onStart={onStart} />

@@ -15,6 +15,8 @@
   --ink:       #0F172A;   /* heading ink (near-black) */
   --body:      #28303B;   /* body text (near-black, strong contrast) */
   --muted:     #5B6573;   /* secondary text */
+  --ink-faint: #616A78;   /* smallest labels only (<=11px uppercase mono) */
+  --ink-on-navy: #C4D0E0; /* readable subtext on the navy hero (#0F1E33) */
 
   /* Custom easing */
   --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);

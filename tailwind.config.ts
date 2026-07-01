@@ -42,7 +42,9 @@ const config: Config = {
         // and a softer hairline for inside-card dividers (card edge stays the strongest line).
         band:      "#EFF3FA",
         "line-soft": "#EEF1F6",
-        ink:     { DEFAULT: "#0F172A", body: "#28303B", muted: "#5B6573", faint: "#6B7585" },
+        // faint darkened from #6B7585 so small labels stay legible; reserved for
+        // <=11px uppercase mono labels. Content/secondary copy uses muted or darker.
+        ink:     { DEFAULT: "#0F172A", body: "#28303B", muted: "#5B6573", faint: "#616A78" },
       },
       // One navy-tinted elevation scale (never pure black) so cards lift off the page.
       boxShadow: {
