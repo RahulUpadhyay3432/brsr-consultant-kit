@@ -1,31 +1,31 @@
 {
   "_meta": {
     "description": "Scope 3 screening emission factors for the BRSR P6 Leadership indicator (Scope 3 GHG). Activity/distance-based factors per the GHG Protocol Corporate Value Chain (Scope 3) Standard.",
-    "methodology": "GHG Protocol Corporate Value Chain (Scope 3) Accounting and Reporting Standard + Scope 3 Technical Guidance — distance/activity-based methods.",
+    "methodology": "GHG Protocol Corporate Value Chain (Scope 3) Accounting and Reporting Standard + Scope 3 Technical Guidance, distance/activity-based methods.",
     "factor_source": "UK Government (DEFRA/DESNZ) Greenhouse Gas Reporting: Conversion Factors 2024, condensed set v1.1 (30 Oct 2024).",
     "factor_source_url": "https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2024",
     "radiative_forcing": "Air-travel and air-freight factors include radiative forcing (RF), i.e. the full climate impact of emissions at altitude, per DEFRA's default.",
     "freight_basis": "Freight factors are 'combined' = direct (tank-to-wheel) + well-to-tank (WTT), the full value-chain emissions of the transport.",
-    "scope_note": "Covers the operational Scope 3 categories that are computable from physical activity data: Cat 4/9 transport & distribution, Cat 5 waste, Cat 6 business travel, Cat 7 employee commuting. Category 1 (purchased goods & services) is NOT included — it needs supplier-specific or spend-based (EEIO) data, and no authoritative India spend-factor set exists; add it from supplier data for a complete inventory.",
-    "status_note": "BRSR Scope 3 is a Principle 6 Leadership indicator — voluntary and not under reasonable assurance in 2026 (Scope 1 & 2 are the mandatory/assured ones). Treat this as a screening estimate; a certified GHG auditor should sign off on final disclosures.",
+    "scope_note": "Covers the operational Scope 3 categories that are computable from physical activity data: Cat 4/9 transport & distribution, Cat 5 waste, Cat 6 business travel, Cat 7 employee commuting. Category 1 (purchased goods & services) is NOT included, it needs supplier-specific or spend-based (EEIO) data, and no authoritative India spend-factor set exists; add it from supplier data for a complete inventory.",
+    "status_note": "BRSR Scope 3 is a Principle 6 Leadership indicator, voluntary and not under reasonable assurance in 2026 (Scope 1 & 2 are the mandatory/assured ones). Treat this as a screening estimate; a certified GHG auditor should sign off on final disclosures.",
     "vintage_note": "DEFRA 2024 v1.1 is the cited set. Refresh against the latest DEFRA/DESNZ conversion factors each filing year."
   },
   "business_travel": {
-    "category": "Cat 6 — Business travel",
+    "category": "Cat 6, Business travel",
     "unit": "kgCO₂e per passenger-km (car/taxi/motorbike: per km)",
     "factors": [
-      { "id": "air_domestic",        "label": "Air — domestic",                 "co2e": 0.27257, "unit": "passenger-km", "display": "0.27257 kgCO₂e/pkm (with RF)", "source": "DEFRA 2024 v1.1, Business travel — air, Domestic, average passenger, with RF" },
-      { "id": "air_shorthaul",       "label": "Air — short-haul (international)", "co2e": 0.18592, "unit": "passenger-km", "display": "0.18592 kgCO₂e/pkm (with RF)", "source": "DEFRA 2024 v1.1, Business travel — air, Short-haul international, average passenger, with RF" },
-      { "id": "air_longhaul",        "label": "Air — long-haul",                 "co2e": 0.26128, "unit": "passenger-km", "display": "0.26128 kgCO₂e/pkm (with RF)", "source": "DEFRA 2024 v1.1, Business travel — air, Long-haul international, average passenger, with RF" },
-      { "id": "air_longhaul_business","label": "Air — long-haul, business class", "co2e": 0.58028, "unit": "passenger-km", "display": "0.58028 kgCO₂e/pkm (with RF)", "source": "DEFRA 2024 v1.1, Business travel — air, Long-haul international, business class, with RF" },
-      { "id": "rail_national",       "label": "Rail (national)",                 "co2e": 0.03546, "unit": "passenger-km", "display": "0.03546 kgCO₂e/pkm", "source": "DEFRA 2024 v1.1, Business travel — land, National rail" },
-      { "id": "car",                 "label": "Car (average, unknown fuel)",     "co2e": 0.16691, "unit": "km",           "display": "0.16691 kgCO₂e/km", "source": "DEFRA 2024 v1.1, Passenger vehicles — Cars (average), unknown fuel, per vehicle-km" },
-      { "id": "taxi",                "label": "Taxi (regular)",                  "co2e": 0.14861, "unit": "passenger-km", "display": "0.14861 kgCO₂e/pkm", "source": "DEFRA 2024 v1.1, Business travel — land, Taxis (regular), per passenger-km" },
-      { "id": "bus_local",           "label": "Bus (local)",                     "co2e": 0.10846, "unit": "passenger-km", "display": "0.10846 kgCO₂e/pkm", "source": "DEFRA 2024 v1.1, Business travel — land, Local bus, per passenger-km" }
+      { "id": "air_domestic",        "label": "Air, domestic",                 "co2e": 0.27257, "unit": "passenger-km", "display": "0.27257 kgCO₂e/pkm (with RF)", "source": "DEFRA 2024 v1.1, Business travel, air, Domestic, average passenger, with RF" },
+      { "id": "air_shorthaul",       "label": "Air, short-haul (international)", "co2e": 0.18592, "unit": "passenger-km", "display": "0.18592 kgCO₂e/pkm (with RF)", "source": "DEFRA 2024 v1.1, Business travel, air, Short-haul international, average passenger, with RF" },
+      { "id": "air_longhaul",        "label": "Air, long-haul",                 "co2e": 0.26128, "unit": "passenger-km", "display": "0.26128 kgCO₂e/pkm (with RF)", "source": "DEFRA 2024 v1.1, Business travel, air, Long-haul international, average passenger, with RF" },
+      { "id": "air_longhaul_business","label": "Air, long-haul, business class", "co2e": 0.58028, "unit": "passenger-km", "display": "0.58028 kgCO₂e/pkm (with RF)", "source": "DEFRA 2024 v1.1, Business travel, air, Long-haul international, business class, with RF" },
+      { "id": "rail_national",       "label": "Rail (national)",                 "co2e": 0.03546, "unit": "passenger-km", "display": "0.03546 kgCO₂e/pkm", "source": "DEFRA 2024 v1.1, Business travel, land, National rail" },
+      { "id": "car",                 "label": "Car (average, unknown fuel)",     "co2e": 0.16691, "unit": "km",           "display": "0.16691 kgCO₂e/km", "source": "DEFRA 2024 v1.1, Passenger vehicles, Cars (average), unknown fuel, per vehicle-km" },
+      { "id": "taxi",                "label": "Taxi (regular)",                  "co2e": 0.14861, "unit": "passenger-km", "display": "0.14861 kgCO₂e/pkm", "source": "DEFRA 2024 v1.1, Business travel, land, Taxis (regular), per passenger-km" },
+      { "id": "bus_local",           "label": "Bus (local)",                     "co2e": 0.10846, "unit": "passenger-km", "display": "0.10846 kgCO₂e/pkm", "source": "DEFRA 2024 v1.1, Business travel, land, Local bus, per passenger-km" }
     ]
   },
   "commuting": {
-    "category": "Cat 7 — Employee commuting",
+    "category": "Cat 7, Employee commuting",
     "unit": "kgCO₂e per passenger-km (car/two-wheeler: per km)",
     "note": "DEFRA publishes no separate commuting table; standard practice reuses the land-travel factors below.",
     "factors": [
@@ -36,26 +36,26 @@
     ]
   },
   "freight": {
-    "category": "Cat 4 / 9 — Upstream & downstream transportation",
+    "category": "Cat 4 / 9, Upstream & downstream transportation",
     "unit": "kgCO₂e per tonne-km (direct + well-to-tank)",
     "factors": [
-      { "id": "freight_road_hgv",       "label": "Road — HGV (average)",     "co2e": 0.12111, "unit": "tonne-km", "display": "0.12111 kgCO₂e/t·km", "source": "DEFRA 2024 v1.1, Freighting goods — HGV (all, average) + WTT" },
-      { "id": "freight_van",            "label": "Road — van / LGV (≤3.5t)", "co2e": 0.76738, "unit": "tonne-km", "display": "0.76738 kgCO₂e/t·km", "source": "DEFRA 2024 v1.1, Freighting goods — Vans (average, up to 3.5t) + WTT" },
-      { "id": "freight_rail",           "label": "Rail freight",             "co2e": 0.03470, "unit": "tonne-km", "display": "0.03470 kgCO₂e/t·km", "source": "DEFRA 2024 v1.1, Freighting goods — Rail + WTT" },
-      { "id": "freight_sea_container",  "label": "Sea — container ship",     "co2e": 0.01977, "unit": "tonne-km", "display": "0.01977 kgCO₂e/t·km", "source": "DEFRA 2024 v1.1, Freighting goods — Cargo ship, container + WTT" },
-      { "id": "freight_air_shorthaul",  "label": "Air freight — short-haul", "co2e": 1.87331, "unit": "tonne-km", "display": "1.87331 kgCO₂e/t·km (with RF)", "source": "DEFRA 2024 v1.1, Freighting goods — Air, short-haul, with RF + WTT" },
-      { "id": "freight_air_longhaul",   "label": "Air freight — long-haul",  "co2e": 1.23420, "unit": "tonne-km", "display": "1.23420 kgCO₂e/t·km (with RF)", "source": "DEFRA 2024 v1.1, Freighting goods — Air, long-haul, with RF + WTT" }
+      { "id": "freight_road_hgv",       "label": "Road, HGV (average)",     "co2e": 0.12111, "unit": "tonne-km", "display": "0.12111 kgCO₂e/t·km", "source": "DEFRA 2024 v1.1, Freighting goods, HGV (all, average) + WTT" },
+      { "id": "freight_van",            "label": "Road, van / LGV (≤3.5t)", "co2e": 0.76738, "unit": "tonne-km", "display": "0.76738 kgCO₂e/t·km", "source": "DEFRA 2024 v1.1, Freighting goods, Vans (average, up to 3.5t) + WTT" },
+      { "id": "freight_rail",           "label": "Rail freight",             "co2e": 0.03470, "unit": "tonne-km", "display": "0.03470 kgCO₂e/t·km", "source": "DEFRA 2024 v1.1, Freighting goods, Rail + WTT" },
+      { "id": "freight_sea_container",  "label": "Sea, container ship",     "co2e": 0.01977, "unit": "tonne-km", "display": "0.01977 kgCO₂e/t·km", "source": "DEFRA 2024 v1.1, Freighting goods, Cargo ship, container + WTT" },
+      { "id": "freight_air_shorthaul",  "label": "Air freight, short-haul", "co2e": 1.87331, "unit": "tonne-km", "display": "1.87331 kgCO₂e/t·km (with RF)", "source": "DEFRA 2024 v1.1, Freighting goods, Air, short-haul, with RF + WTT" },
+      { "id": "freight_air_longhaul",   "label": "Air freight, long-haul",  "co2e": 1.23420, "unit": "tonne-km", "display": "1.23420 kgCO₂e/t·km (with RF)", "source": "DEFRA 2024 v1.1, Freighting goods, Air, long-haul, with RF + WTT" }
     ]
   },
   "waste": {
-    "category": "Cat 5 — Waste generated in operations",
+    "category": "Cat 5, Waste generated in operations",
     "unit": "kgCO₂e per tonne",
     "note": "Landfill = full gate-to-grave; recycling/combustion/composting = transport-to-facility (the standard's recurring constants). Only 'mixed' landfill is offered here so every figure stays an exact published value; per-material landfill (paper, wood, food) can be added later.",
     "factors": [
-      { "id": "waste_landfill_mixed", "label": "To landfill (mixed C&I)", "co2e": 520.33420, "unit": "tonne", "display": "520.334 kgCO₂e/t", "source": "DEFRA 2024 v1.1, Waste disposal — Commercial & industrial waste, Landfill" },
-      { "id": "waste_recycling",      "label": "To recycling",            "co2e": 6.41061,   "unit": "tonne", "display": "6.411 kgCO₂e/t",   "source": "DEFRA 2024 v1.1, Waste disposal — Recycling (closed-loop, transport to facility)" },
-      { "id": "waste_combustion",     "label": "To combustion / EfW",     "co2e": 6.41061,   "unit": "tonne", "display": "6.411 kgCO₂e/t",   "source": "DEFRA 2024 v1.1, Waste disposal — Combustion (transport to facility)" },
-      { "id": "waste_composting",     "label": "To composting / AD",      "co2e": 8.88386,   "unit": "tonne", "display": "8.884 kgCO₂e/t",   "source": "DEFRA 2024 v1.1, Waste disposal — Composting / anaerobic digestion (transport to facility)" }
+      { "id": "waste_landfill_mixed", "label": "To landfill (mixed C&I)", "co2e": 520.33420, "unit": "tonne", "display": "520.334 kgCO₂e/t", "source": "DEFRA 2024 v1.1, Waste disposal, Commercial & industrial waste, Landfill" },
+      { "id": "waste_recycling",      "label": "To recycling",            "co2e": 6.41061,   "unit": "tonne", "display": "6.411 kgCO₂e/t",   "source": "DEFRA 2024 v1.1, Waste disposal, Recycling (closed-loop, transport to facility)" },
+      { "id": "waste_combustion",     "label": "To combustion / EfW",     "co2e": 6.41061,   "unit": "tonne", "display": "6.411 kgCO₂e/t",   "source": "DEFRA 2024 v1.1, Waste disposal, Combustion (transport to facility)" },
+      { "id": "waste_composting",     "label": "To composting / AD",      "co2e": 8.88386,   "unit": "tonne", "display": "8.884 kgCO₂e/t",   "source": "DEFRA 2024 v1.1, Waste disposal, Composting / anaerobic digestion (transport to facility)" }
     ]
   }
 }

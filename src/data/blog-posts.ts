@@ -21,7 +21,7 @@ export interface BlogPost {
 const AUTHOR = { name: "Rahul Upadhyay", role: "Founder, Saaksh" };
 
 export const BLOG_POSTS: BlogPost[] = [
-  /* ── Tier 1 — Original 5 posts ─────────────────────────────────────────── */
+  /* ── Tier 1, Original 5 posts ─────────────────────────────────────────── */
   {
     slug: "brsr-fy2526-changes",
     title: "What's new in BRSR for FY 2025-26",
@@ -78,7 +78,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "cbam-2026-indian-exporters",
     title: "CBAM in 2026: what Indian exporters need to know",
     excerpt:
-      "The EU's Carbon Border Adjustment Mechanism entered its definitive period in January 2026. Indian steel, cement and aluminium exporters now have real reporting obligations — here's what to do.",
+      "The EU's Carbon Border Adjustment Mechanism entered its definitive period in January 2026. Indian steel, cement and aluminium exporters now have real reporting obligations, here's what to do.",
     date: "2026-05-28",
     category: "Regulation",
     readTime: "8 min read",
@@ -93,7 +93,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "brsr-applicability-guide",
     title: "BRSR applicability: which companies must file and when",
     excerpt:
-      "Top 1000, top 500, BRSR Core, value chain — the rules layered over three years and the deadlines are now live. Here's a single, clear guide to who must file what for FY 2025-26.",
+      "Top 1000, top 500, BRSR Core, value chain, the rules layered over three years and the deadlines are now live. Here's a single, clear guide to who must file what for FY 2025-26.",
     date: "2026-06-25",
     category: "BRSR",
     readTime: "6 min read",
@@ -132,7 +132,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "brsr-assurance-vs-assessment",
     title: "BRSR assurance vs assessment: what SEBI's March 2025 circular changed",
     excerpt:
-      "SEBI's March 2025 circular introduced 'assessment' as a lighter alternative to reasonable assurance under ISAE 3000. Most consultants don't yet know the difference — or which clients can choose which path.",
+      "SEBI's March 2025 circular introduced 'assessment' as a lighter alternative to reasonable assurance under ISAE 3000. Most consultants don't yet know the difference, or which clients can choose which path.",
     date: "2026-06-12",
     category: "Regulation",
     readTime: "5 min read",
@@ -145,7 +145,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "brsr-for-it-services",
     title: "BRSR for IT services companies: what 'not applicable' really means",
     excerpt:
-      "IT companies can mark certain manufacturing-related disclosures as 'not applicable' — but only the right ones, and only with a clear justification. Here's the field-by-field guide.",
+      "IT companies can mark certain manufacturing-related disclosures as 'not applicable', but only the right ones, and only with a clear justification. Here's the field-by-field guide.",
     date: "2026-06-08",
     category: "Case Studies",
     readTime: "5 min read",
@@ -184,7 +184,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "brsr-water-disclosure-calculation",
     title: "BRSR water disclosure: how to calculate water withdrawal intensity",
     excerpt:
-      "P6-E3 requires water withdrawal intensity — but SEBI specifies different denominators for manufacturers (production units) vs service companies (revenue or FTE). Here's the calculation methodology, cited.",
+      "P6-E3 requires water withdrawal intensity, but SEBI specifies different denominators for manufacturers (production units) vs service companies (revenue or FTE). Here's the calculation methodology, cited.",
     date: "2026-05-20",
     category: "GHG & Emissions",
     readTime: "6 min read",
@@ -210,7 +210,7 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "brsr-materiality-assessment-guide",
     title: "BRSR materiality assessment: a step-by-step guide for consultants",
     excerpt:
-      "Only 34% of BSE 100 companies publicly disclose their materiality methodology. This guide walks through a defensible materiality process — stakeholder mapping, impact scoring, and how to document it for BRSR.",
+      "Only 34% of BSE 100 companies publicly disclose their materiality methodology. This guide walks through a defensible materiality process, stakeholder mapping, impact scoring, and how to document it for BRSR.",
     date: "2026-05-10",
     category: "How-to",
     readTime: "8 min read",

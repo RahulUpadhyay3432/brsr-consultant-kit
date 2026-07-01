@@ -9,7 +9,7 @@
     "factor_kg_co2_per_kwh": 0.710,
     "factor_display": "0.710 kgCO₂/kWh",
     "fy": "2024-25",
-    "source": "Central Electricity Authority, CO2 Baseline Database for the Indian Power Sector, Version 21.0 (November 2025), FY 2024-25 — National Grid weighted-average emission factor (incl. renewables, adjusted for cross-border transfers). This is the grid-average factor CEA itself applies for electricity-consumption footprinting (User Guide §6.2); it is the correct basis for corporate Scope 2, not the CDM combined margin.",
+    "source": "Central Electricity Authority, CO2 Baseline Database for the Indian Power Sector, Version 21.0 (November 2025), FY 2024-25, National Grid weighted-average emission factor (incl. renewables, adjusted for cross-border transfers). This is the grid-average factor CEA itself applies for electricity-consumption footprinting (User Guide §6.2); it is the correct basis for corporate Scope 2, not the CDM combined margin.",
     "source_short": "CEA Version 21.0, FY 2024-25"
   },
   "scope1_fuels": [
@@ -21,7 +21,7 @@
       "co2e_display": "2.68 kgCO₂e/litre",
       "ncv_gj_per_unit": 0.03577,
       "ncv_display": "35.77 MJ/litre",
-      "source": "IPCC 2006 Vol.2 Table 1.4 — CO₂: 74.1 tCO₂/TJ; NCV Table 1.2 — 43.0 MJ/kg × 0.832 kg/L. GHG Protocol Corporate Standard."
+      "source": "IPCC 2006 Vol.2 Table 1.4, CO₂: 74.1 tCO₂/TJ; NCV Table 1.2, 43.0 MJ/kg × 0.832 kg/L. GHG Protocol Corporate Standard."
     },
     {
       "id": "petrol",
@@ -31,7 +31,7 @@
       "co2e_display": "2.31 kgCO₂e/litre",
       "ncv_gj_per_unit": 0.03330,
       "ncv_display": "33.3 MJ/litre",
-      "source": "IPCC 2006 Vol.2 Table 1.4 — CO₂: 69.3 tCO₂/TJ; NCV Table 1.2 — 44.3 MJ/kg × 0.752 kg/L. GHG Protocol."
+      "source": "IPCC 2006 Vol.2 Table 1.4, CO₂: 69.3 tCO₂/TJ; NCV Table 1.2, 44.3 MJ/kg × 0.752 kg/L. GHG Protocol."
     },
     {
       "id": "cng",
@@ -41,7 +41,7 @@
       "co2e_display": "1.96 kgCO₂e/m³",
       "ncv_gj_per_unit": 0.03430,
       "ncv_display": "34.3 MJ/m³",
-      "source": "IPCC 2006 Vol.2 Table 1.4 — CO₂: 56.1 tCO₂/TJ; NCV Table 1.2 — 34.3 MJ/m³ (standard conditions). GHG Protocol."
+      "source": "IPCC 2006 Vol.2 Table 1.4, CO₂: 56.1 tCO₂/TJ; NCV Table 1.2, 34.3 MJ/m³ (standard conditions). GHG Protocol."
     },
     {
       "id": "lpg",
@@ -51,7 +51,7 @@
       "co2e_display": "3.02 kgCO₂e/kg",
       "ncv_gj_per_unit": 0.04730,
       "ncv_display": "47.3 MJ/kg",
-      "source": "IPCC 2006 Vol.2 Table 1.4 — CO₂: 63.1 tCO₂/TJ; NCV Table 1.2 — 47.3 MJ/kg."
+      "source": "IPCC 2006 Vol.2 Table 1.4, CO₂: 63.1 tCO₂/TJ; NCV Table 1.2, 47.3 MJ/kg."
     },
     {
       "id": "coal",
@@ -61,7 +61,7 @@
       "co2e_display": "2.42 kgCO₂e/kg",
       "ncv_gj_per_unit": 0.02620,
       "ncv_display": "26.2 MJ/kg",
-      "source": "IPCC 2006 Vol.2 Table 1.4 — CO₂: 94.6 tCO₂/TJ; NCV: CEA/BEE India-average bituminous coal (26.2 MJ/kg)."
+      "source": "IPCC 2006 Vol.2 Table 1.4, CO₂: 94.6 tCO₂/TJ; NCV: CEA/BEE India-average bituminous coal (26.2 MJ/kg)."
     },
     {
       "id": "furnace_oil",
@@ -71,7 +71,7 @@
       "co2e_display": "2.97 kgCO₂e/litre",
       "ncv_gj_per_unit": 0.03818,
       "ncv_display": "38.18 MJ/litre",
-      "source": "IPCC 2006 Vol.2 Table 1.4 — CO₂: 77.4 tCO₂/TJ; NCV Table 1.2 — 40.19 MJ/kg × 0.950 kg/L."
+      "source": "IPCC 2006 Vol.2 Table 1.4, CO₂: 77.4 tCO₂/TJ; NCV Table 1.2, 40.19 MJ/kg × 0.950 kg/L."
     }
   ]
 }

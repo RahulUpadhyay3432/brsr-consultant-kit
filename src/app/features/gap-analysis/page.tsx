@@ -3,9 +3,9 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
-  title: "BRSR Gap Analysis — Saaksh",
+  title: "BRSR Gap Analysis, Saaksh",
   description:
-    "See exactly which of your client's 108 BRSR disclosures are covered, partially covered, or need fresh data — in under 60 seconds.",
+    "See exactly which of your client's 108 BRSR disclosures are covered, partially covered, or need fresh data, in under 60 seconds.",
 };
 
 export default function GapAnalysisPage() {
@@ -27,7 +27,7 @@ export default function GapAnalysisPage() {
           </h1>
           <p className="text-lg text-white/70 max-w-[620px] leading-relaxed">
             See exactly which of your client&apos;s 108 BRSR disclosures are covered, partially covered,
-            or need fresh data — in under 60 seconds.
+            or need fresh data, in under 60 seconds.
           </p>
         </div>
       </section>
@@ -47,7 +47,7 @@ export default function GapAnalysisPage() {
               {
                 step: "02",
                 title: "Cross-reference with your filings",
-                body: "Saaksh maps your client's existing compliance filings against all 108 BRSR Section C disclosures — automatically.",
+                body: "Saaksh maps your client's existing compliance filings against all 108 BRSR Section C disclosures, automatically.",
               },
               {
                 step: "03",
@@ -131,7 +131,7 @@ export default function GapAnalysisPage() {
           <h2 className="font-display text-2xl text-ink mb-3">What we check against</h2>
           <p className="text-ink-muted text-sm mb-8 max-w-[560px]">
             Saaksh knows which BRSR fields each compliance regime already captures. You tell us what your
-            client has filed — we do the mapping.
+            client has filed, we do the mapping.
           </p>
           <div className="bg-tint border border-line rounded-2xl p-8">
             <ul className="grid md:grid-cols-2 gap-x-12 gap-y-3">
@@ -139,7 +139,7 @@ export default function GapAnalysisPage() {
                 "PCB / CTE / CTO filings",
                 "Zero Liquid Discharge (ZLD) certification",
                 "Hazardous Waste authorizations (Schedule I–III)",
-                "EPR registration — e-waste & plastic",
+                "EPR registration, e-waste & plastic",
                 "Factory Act registers (workers, wages, hours)",
                 "PAT scheme data (specific energy consumption)",
                 "TNFD nature indicators (water, biodiversity, land)",
@@ -186,8 +186,8 @@ export default function GapAnalysisPage() {
               <div>
                 <p className="text-sm font-semibold text-ink mb-1">Honest framing</p>
                 <p className="text-sm text-ink-muted leading-relaxed">
-                  The gap analysis is a starting point. It predicts which data you likely have — based on your
-                  client&apos;s industry and existing filings — not a replacement for reviewing the actual
+                  The gap analysis is a starting point. It predicts which data you likely have, based on your
+                  client&apos;s industry and existing filings, not a replacement for reviewing the actual
                   documents. Every recommendation is cited to SEBI&apos;s official BRSR Format and the ICAI
                   Background Material (2024).
                 </p>

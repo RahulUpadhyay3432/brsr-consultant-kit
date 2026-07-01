@@ -2,9 +2,9 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata = {
-  title: "CBAM & CCTS Readiness — Saaksh",
+  title: "CBAM & CCTS Readiness, Saaksh",
   description:
-    "Know if your client is in scope for the EU Carbon Border Adjustment Mechanism or India's Carbon Credit Trading Scheme — and what to prepare, cited to official sources.",
+    "Know if your client is in scope for the EU Carbon Border Adjustment Mechanism or India's Carbon Credit Trading Scheme, and what to prepare, cited to official sources.",
 };
 
 const cardStyle: React.CSSProperties = {
@@ -40,7 +40,7 @@ const CBAM_CHECKLIST = [
   "Confirm CN codes for exported products against CBAM Regulation Annex I",
   "Calculate embedded emissions per tonne of covered product (Scope 1 + Scope 2, allocated to the product)",
   "Prepare a data package: fuel consumption, electricity, emission factors with version citations, allocation methodology",
-  "Coordinate with EU importers — they must declare your embedded emissions to customs",
+  "Coordinate with EU importers, they must declare your embedded emissions to customs",
 ];
 
 const CCTS_CHECKLIST = [
@@ -84,7 +84,7 @@ export default function CbamCctsPage() {
               marginBottom: "20px",
             }}
           >
-            Free — in the Beyond BRSR tab
+            Free, in the Beyond BRSR tab
           </span>
           <h1
             style={{
@@ -108,7 +108,7 @@ export default function CbamCctsPage() {
             }}
           >
             Know if your client is in scope for the EU Carbon Border Adjustment
-            Mechanism or India's Carbon Credit Trading Scheme — and what to
+            Mechanism or India's Carbon Credit Trading Scheme, and what to
             prepare, cited to official sources.
           </p>
         </div>
@@ -475,7 +475,7 @@ export default function CbamCctsPage() {
               liability calculation. We flag scope and tell you what to prepare.
               The actual embedded-emissions calculation (for CBAM) or credit
               position (for CCTS) requires site-level data per process step and
-              typically a specialist. We tell you if you need to worry — and
+              typically a specialist. We tell you if you need to worry, and
               what to do first.
             </p>
           </div>

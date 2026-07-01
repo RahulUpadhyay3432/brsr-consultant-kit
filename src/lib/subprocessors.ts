@@ -1,5 +1,5 @@
 // The third-party services Saaksh relies on. Surfaced publicly on /privacy and
-// /security — a published sub-processor list is a table-stakes B2B trust signal.
+// /security, a published sub-processor list is a table-stakes B2B trust signal.
 // Keep this current whenever a service is added or removed.
 
 export interface SubProcessor {
@@ -42,13 +42,13 @@ export const SUBPROCESSORS: SubProcessor[] = [
   },
   {
     name: "Mixpanel",
-    purpose: "Product analytics — only with your consent",
+    purpose: "Product analytics, only with your consent",
     data: "Anonymous usage events (industry, sector, counts); no client values",
     region: "USA",
   },
   {
     name: "Google Analytics",
-    purpose: "Web analytics — only with your consent",
+    purpose: "Web analytics, only with your consent",
     data: "Anonymous page-level usage",
     region: "USA",
   },

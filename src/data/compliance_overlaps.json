@@ -17,7 +17,7 @@
       "reported_by": "Producer",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E12",
-      "maps_to_brsr_label": "EPR applicability — whether entity has EPR plan, and quantity of EEE sold forming basis of liability",
+      "maps_to_brsr_label": "EPR applicability, whether entity has EPR plan, and quantity of EEE sold forming basis of liability",
       "coverage": "full",
       "gap": "Directly usable as BRSR EPR denominator. No gap for this specific field."
     },
@@ -27,7 +27,7 @@
       "reported_by": "Producer",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E12",
-      "maps_to_brsr_label": "EPR applicability — target quantity for the year",
+      "maps_to_brsr_label": "EPR applicability, target quantity for the year",
       "coverage": "full",
       "gap": "Target is auto-calculated on CPCB portal. BRSR needs both target and actual; this is the target half."
     },
@@ -37,7 +37,7 @@
       "reported_by": "Producer",
       "frequency": "Quarterly",
       "maps_to_brsr_id": "P6-E9a",
-      "maps_to_brsr_label": "Waste recovered through recycling — E-waste category (MT)",
+      "maps_to_brsr_label": "Waste recovered through recycling, E-waste category (MT)",
       "coverage": "full",
       "gap": "Proves actual quantity recycled via formal channel. BRSR needs this alongside other waste categories (plastic, bio-medical, etc.)."
     },
@@ -47,9 +47,9 @@
       "reported_by": "Producer",
       "frequency": "Quarterly",
       "maps_to_brsr_id": "P2-E4",
-      "maps_to_brsr_label": "Products reclaimed at end of life — reused / refurbished (MT and % of total products sold)",
+      "maps_to_brsr_label": "Products reclaimed at end of life, reused / refurbished (MT and % of total products sold)",
       "coverage": "partial",
-      "gap": "Quantity is directly available. BRSR also needs this as a percentage of total products sold — denominator must be derived from sales data."
+      "gap": "Quantity is directly available. BRSR also needs this as a percentage of total products sold, denominator must be derived from sales data."
     },
     {
       "metric": "Deferred EPR liability from refurbishing (75% carry-forward quantity, MT, target year)",
@@ -57,7 +57,7 @@
       "reported_by": "Producer",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E12",
-      "maps_to_brsr_label": "EPR applicability — deferred obligations and future-year liabilities",
+      "maps_to_brsr_label": "EPR applicability, deferred obligations and future-year liabilities",
       "coverage": "partial",
       "gap": "BRSR does not explicitly ask for deferred EPR; useful as a note in the EPR narrative section."
     },
@@ -67,7 +67,7 @@
       "reported_by": "Producer",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E10",
-      "maps_to_brsr_label": "Show cause / compounding / penalty — details of non-compliance with environmental laws",
+      "maps_to_brsr_label": "Show cause / compounding / penalty, details of non-compliance with environmental laws",
       "coverage": "full",
       "gap": "Shortfall is a compliance gap. BRSR asks for all environmental non-compliance; this covers e-waste EPR specifically."
     },
@@ -87,7 +87,7 @@
       "reported_by": "Manufacturer",
       "frequency": "Quarterly / Annual",
       "maps_to_brsr_id": "P6-E9a",
-      "maps_to_brsr_label": "Total waste generated — E-waste category (MT)",
+      "maps_to_brsr_label": "Total waste generated, E-waste category (MT)",
       "coverage": "full",
       "gap": "Directly usable as BRSR e-waste generation from own manufacturing operations."
     },
@@ -97,7 +97,7 @@
       "reported_by": "Recycler",
       "frequency": "Quarterly / Annual",
       "maps_to_brsr_id": "P6-E9a",
-      "maps_to_brsr_label": "Total waste generated — E-waste category (MT)",
+      "maps_to_brsr_label": "Total waste generated, E-waste category (MT)",
       "coverage": "partial",
       "gap": "Relevant for entities that are themselves recyclers filing BRSR. For producers, this is third-party data supporting EPR certificate validity."
     },
@@ -112,7 +112,7 @@
       "gap": "Dismantling is an intermediate processing step. BRSR needs end-state classification: recycled vs. disposed. Must be aggregated with final recycling output."
     },
     {
-      "metric": "Quantity of e-waste recycled and materials recovered — precious metals, rare earth elements (MT)",
+      "metric": "Quantity of e-waste recycled and materials recovered, precious metals, rare earth elements (MT)",
       "source_rule": "Rule 9(5), Rule 3(u)",
       "reported_by": "Recycler",
       "frequency": "Quarterly / Annual",
@@ -137,7 +137,7 @@
       "reported_by": "Recycler",
       "frequency": "Quarterly / Annual",
       "maps_to_brsr_id": "P6-E9b",
-      "maps_to_brsr_label": "Waste disposed — landfill / incineration / other disposal (MT)",
+      "maps_to_brsr_label": "Waste disposed, landfill / incineration / other disposal (MT)",
       "coverage": "partial",
       "gap": "Quantity is directly available. BRSR wants split by disposal method (incineration vs. secured landfill); e-waste filing may not break this down."
     },
@@ -167,7 +167,7 @@
       "reported_by": "Manufacturer / Producer / Refurbisher / Recycler",
       "frequency": "Ongoing record",
       "maps_to_brsr_id": "P6-E9a",
-      "maps_to_brsr_label": "Total waste generated — E-waste category (MT)",
+      "maps_to_brsr_label": "Total waste generated, E-waste category (MT)",
       "coverage": "partial",
       "gap": "Transaction-level data supports audit trail. BRSR needs annual aggregated totals which must be computed from these records."
     },
@@ -177,17 +177,17 @@
       "reported_by": "Bulk consumer (≥1000 units EEE)",
       "frequency": "Ongoing",
       "maps_to_brsr_id": "P6-E9a",
-      "maps_to_brsr_label": "Total waste generated — E-waste category (MT)",
+      "maps_to_brsr_label": "Total waste generated, E-waste category (MT)",
       "coverage": "full",
       "gap": "Bulk consumers filing BRSR can directly use this. Must also disclose recipient (recycler / refurbisher)."
     },
     {
-      "metric": "Hazardous substance concentration in products — Pb, Hg, Cd, Cr6+, PBB, PBDE (% by weight in homogenous materials)",
-      "source_rule": "Rule 16(1) — limits: 0.1% (Pb, Hg, Cr6+, PBB, PBDE), 0.01% (Cd)",
+      "metric": "Hazardous substance concentration in products, Pb, Hg, Cd, Cr6+, PBB, PBDE (% by weight in homogenous materials)",
+      "source_rule": "Rule 16(1), limits: 0.1% (Pb, Hg, Cr6+, PBB, PBDE), 0.01% (Cd)",
       "reported_by": "Producer",
       "frequency": "Per product / self-declaration",
       "maps_to_brsr_id": "P2-E1",
-      "maps_to_brsr_label": "Sustainable sourcing — R&D and capex towards environmentally safer products / processes",
+      "maps_to_brsr_label": "Sustainable sourcing, R&D and capex towards environmentally safer products / processes",
       "coverage": "partial",
       "gap": "RoHS data covers restricted substance elimination. BRSR Principle 2 asks broader questions on sustainable sourcing and design; this is one input."
     },
@@ -197,7 +197,7 @@
       "reported_by": "Producer",
       "frequency": "Per product placed in market",
       "maps_to_brsr_id": "P6-E10",
-      "maps_to_brsr_label": "Compliance with applicable environmental law / regulation — status",
+      "maps_to_brsr_label": "Compliance with applicable environmental law / regulation, status",
       "coverage": "full",
       "gap": "Proves compliance with one environmental regulation. BRSR needs all applicable regulations listed."
     },
@@ -217,17 +217,17 @@
       "reported_by": "CPCB (entity bears cost)",
       "frequency": "As conducted by CPCB",
       "maps_to_brsr_id": "P6-E10",
-      "maps_to_brsr_label": "Compliance with applicable environmental law — third-party verification",
+      "maps_to_brsr_label": "Compliance with applicable environmental law, third-party verification",
       "coverage": "partial",
       "gap": "Not a regular filing by the entity. Available only when CPCB initiates sampling. Can be cited as evidence of compliance if results are favorable."
     },
     {
-      "metric": "Solar PV waste inventory — quantity stored, by type (MT)",
+      "metric": "Solar PV waste inventory, quantity stored, by type (MT)",
       "source_rule": "Rule 12(2)(ii), Rule 12(2)(v)",
       "reported_by": "Producer / Manufacturer of solar PV",
       "frequency": "Annual (until 2034-35)",
       "maps_to_brsr_id": "P6-E9a",
-      "maps_to_brsr_label": "Total waste generated — E-waste category (MT)",
+      "maps_to_brsr_label": "Total waste generated, E-waste category (MT)",
       "coverage": "partial",
       "gap": "Solar PV waste has no recycling target until post-2034-35. BRSR still requires disclosure of waste generated. Only storage data available; no recycling data to report."
     },
@@ -237,7 +237,7 @@
       "reported_by": "Producer / Refurbisher / Transporter / Dismantler / Recycler",
       "frequency": "Event-driven (immediate)",
       "maps_to_brsr_id": "P3-E11",
-      "maps_to_brsr_label": "Details of safety-related incidents — number of safety incidents, lost days, fatalities",
+      "maps_to_brsr_label": "Details of safety-related incidents, number of safety incidents, lost days, fatalities",
       "coverage": "partial",
       "gap": "BRSR Principle 3 asks for all workplace safety incidents across all operations. E-waste accident data covers only e-waste handling incidents."
     },
@@ -257,7 +257,7 @@
       "reported_by": "Manufacturer / Producer / Refurbisher / Recycler",
       "frequency": "One-time + annual maintenance",
       "maps_to_brsr_id": "P6-E10",
-      "maps_to_brsr_label": "Compliance with applicable environmental law — whether all required registrations are active",
+      "maps_to_brsr_label": "Compliance with applicable environmental law, whether all required registrations are active",
       "coverage": "partial",
       "gap": "Registration is a prerequisite, not an outcome metric. BRSR needs confirmation of active compliance across all regulations."
     },
@@ -277,7 +277,7 @@
       "reported_by": "Producer / Recycler",
       "frequency": "Quarterly",
       "maps_to_brsr_id": "P6-E12",
-      "maps_to_brsr_label": "EPR applicability — details of EPR plan, fulfilment status",
+      "maps_to_brsr_label": "EPR applicability, details of EPR plan, fulfilment status",
       "coverage": "full",
       "gap": "Complete audit trail for EPR compliance. Directly feeds BRSR EPR disclosure."
     },
@@ -287,12 +287,12 @@
       "reported_by": "CPCB",
       "frequency": "Event-driven",
       "maps_to_brsr_id": "P6-E10",
-      "maps_to_brsr_label": "Show cause notices / compounding / penalties — details",
+      "maps_to_brsr_label": "Show cause notices / compounding / penalties, details",
       "coverage": "full",
       "gap": "Directly maps to BRSR environmental non-compliance disclosure. Must include in BRSR if entity was subject to revocation."
     },
     {
-      "metric": "Workers involved in e-waste dismantling and recycling — registration and skill development (headcount)",
+      "metric": "Workers involved in e-waste dismantling and recycling, registration and skill development (headcount)",
       "source_rule": "Rule 10(2)(a)–(d)",
       "reported_by": "State Dept of Labour (not entity directly)",
       "frequency": "Annual",
@@ -307,7 +307,7 @@
       "reported_by": "Producer / Recycler / Transporter",
       "frequency": "Per shipment",
       "maps_to_brsr_id": "P6-E9b",
-      "maps_to_brsr_label": "Waste disposed — transportation and disposal records",
+      "maps_to_brsr_label": "Waste disposed, transportation and disposal records",
       "coverage": "partial",
       "gap": "Transport manifests support traceability. BRSR does not ask for transport-level detail but the aggregated disposal quantities these manifests prove."
     }
@@ -315,80 +315,80 @@
 }},
     "plastic_waste_epr_2022": {
   "filing_id": "plastic_waste_epr_2022",
-  "filing_name": "Plastic Waste Management (Amendment) Rules, 2022 — EPR Guidelines",
+  "filing_name": "Plastic Waste Management (Amendment) Rules, 2022, EPR Guidelines",
   "authority": "CPCB / SPCB / PCC",
   "who_must_file": "Producers (P), Importers (I), Brand Owners (BO) of plastic packaging; Plastic Waste Processors (PWPs) except cement kilns & road construction",
   "reporting_frequency": "Annual (by 30 June of next FY)",
   "data_already_tracked": [
     {
-      "metric": "Average weight of plastic packaging material sold — last 2 FYs (MT)",
+      "metric": "Average weight of plastic packaging material sold, last 2 FYs (MT)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-EI-7",
-      "maps_to_brsr_label": "EPR applicability — plastic packaging waste collected, recycled, reused",
+      "maps_to_brsr_label": "EPR applicability, plastic packaging waste collected, recycled, reused",
       "coverage": "partial",
       "gap": "BRSR P6-EI-7 asks for total EPR waste collected & recycled across all applicable waste streams; PWM filing only covers plastic packaging"
     },
     {
-      "metric": "Average quantity of pre-consumer plastic packaging waste generated — last 2 FYs (MT)",
+      "metric": "Average quantity of pre-consumer plastic packaging waste generated, last 2 FYs (MT)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-EI-5a",
-      "maps_to_brsr_label": "Total waste generated by type (MT) — plastic waste",
+      "maps_to_brsr_label": "Total waste generated by type (MT), plastic waste",
       "coverage": "partial",
       "gap": "BRSR requires total plastic waste generated across operations; PWM tracks only pre-consumer packaging waste within EPR scope"
     },
     {
-      "metric": "Quantity of plastic packaging sold to Brand Owners — last FY (MT)",
+      "metric": "Quantity of plastic packaging sold to Brand Owners, last FY (MT)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-EI-7",
-      "maps_to_brsr_label": "EPR applicability — plastic packaging waste collected, recycled, reused",
+      "maps_to_brsr_label": "EPR applicability, plastic packaging waste collected, recycled, reused",
       "coverage": "partial",
       "gap": "Used to calculate net Producer/Importer obligation via deduction; BRSR asks for aggregate EPR outcome, not inter-entity allocation"
     },
     {
-      "metric": "Average weight of plastic packaging waste purchased/introduced — last 2 FYs (MT) [Brand Owners]",
+      "metric": "Average weight of plastic packaging waste purchased/introduced, last 2 FYs (MT) [Brand Owners]",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-EI-7",
-      "maps_to_brsr_label": "EPR applicability — plastic packaging waste collected, recycled, reused",
+      "maps_to_brsr_label": "EPR applicability, plastic packaging waste collected, recycled, reused",
       "coverage": "partial",
       "gap": "Drives Brand Owner EPR liability (Q = D + B); BRSR asks for waste collected & recycled as outcome, not the input obligation quantity"
     },
     {
-      "metric": "EPR Eligible Quantity — Q (MT), category-wise (Cat I–IV)",
+      "metric": "EPR Eligible Quantity, Q (MT), category-wise (Cat I–IV)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-EI-7",
-      "maps_to_brsr_label": "EPR applicability — plastic packaging waste collected, recycled, reused",
+      "maps_to_brsr_label": "EPR applicability, plastic packaging waste collected, recycled, reused",
       "coverage": "direct",
       "gap": "BRSR requires stating whether EPR applies and providing collection/recycling data; the calculated Q directly feeds this disclosure"
     },
     {
-      "metric": "Category-wise plastic packaging breakdown — Cat I (Rigid), Cat II (Flexible/MLP-plastic-only), Cat III (Multi-material MLP), Cat IV (Compostable)",
+      "metric": "Category-wise plastic packaging breakdown, Cat I (Rigid), Cat II (Flexible/MLP-plastic-only), Cat III (Multi-material MLP), Cat IV (Compostable)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-EI-5a",
-      "maps_to_brsr_label": "Total waste generated by type (MT) — plastic waste",
+      "maps_to_brsr_label": "Total waste generated by type (MT), plastic waste",
       "coverage": "partial",
       "gap": "BRSR asks for a single plastic-waste-generated figure; PWM tracks four packaging sub-categories but excludes non-packaging plastic waste"
     },
     {
-      "metric": "Plastic packaging waste collected (MT) — annual return",
+      "metric": "Plastic packaging waste collected (MT), annual return",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-EI-5b",
-      "maps_to_brsr_label": "Waste recovered — recycling, reusing, other recovery (MT)",
+      "maps_to_brsr_label": "Waste recovered, recycling, reusing, other recovery (MT)",
       "coverage": "partial",
       "gap": "Collection is an upstream step; BRSR asks for waste actually recovered/recycled, not just collected"
     },
     {
-      "metric": "Plastic packaging waste recycled (MT) — annual return",
+      "metric": "Plastic packaging waste recycled (MT), annual return",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-EI-5b",
-      "maps_to_brsr_label": "Waste recovered — recycling, reusing, other recovery (MT)",
+      "maps_to_brsr_label": "Waste recovered, recycling, reusing, other recovery (MT)",
       "coverage": "direct",
       "gap": "Directly maps to BRSR's recycled-plastic-waste row; BRSR additionally requires other waste streams (e-waste, bio-medical, hazardous, etc.)"
     },
     {
-      "metric": "Plastic packaging waste reused (MT) — Brand Owners only",
+      "metric": "Plastic packaging waste reused (MT), Brand Owners only",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-EI-5b",
-      "maps_to_brsr_label": "Waste recovered — reusing (MT)",
+      "maps_to_brsr_label": "Waste recovered, reusing (MT)",
       "coverage": "direct",
       "gap": "Maps directly to reuse row under BRSR waste recovery; only tracked for Brand Owners, not Producers/Importers"
     },
@@ -396,15 +396,15 @@
       "metric": "Recycled plastic content used in packaging (%/MT)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-LI-3",
-      "maps_to_brsr_label": "Reclaimed products and packaging materials — % of recycled input used",
+      "maps_to_brsr_label": "Reclaimed products and packaging materials, % of recycled input used",
       "coverage": "direct",
-      "gap": "Closely aligned; BRSR Leadership Indicator asks for recycled input as % of total material — PWM obligation tracks the same for plastic packaging only"
+      "gap": "Closely aligned; BRSR Leadership Indicator asks for recycled input as % of total material, PWM obligation tracks the same for plastic packaging only"
     },
     {
-      "metric": "End-of-life disposal quantity (MT) — co-processing, WtE, cement kiln, road construction, pyrolysis, gasification",
+      "metric": "End-of-life disposal quantity (MT), co-processing, WtE, cement kiln, road construction, pyrolysis, gasification",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-EI-5c",
-      "maps_to_brsr_label": "Waste disposed — incineration, landfilling, other disposal (MT)",
+      "maps_to_brsr_label": "Waste disposed, incineration, landfilling, other disposal (MT)",
       "coverage": "partial",
       "gap": "PWM tracks disposal by method (co-processing, WtE, etc.); BRSR uses broader categories (incineration, landfill, other) and covers all waste types"
     },
@@ -412,23 +412,23 @@
       "metric": "Registration certificate number on CPCB centralized portal",
       "frequency": "One-time / renewal",
       "maps_to_brsr_id": "P6-EI-6",
-      "maps_to_brsr_label": "Compliance with environmental laws — show-cause / penalty / fine details",
+      "maps_to_brsr_label": "Compliance with environmental laws, show-cause / penalty / fine details",
       "coverage": "indirect",
-      "gap": "Registration status proves compliance; BRSR asks for non-compliance incidents, penalties, and corrective actions — not registration itself"
+      "gap": "Registration status proves compliance; BRSR asks for non-compliance incidents, penalties, and corrective actions, not registration itself"
     },
     {
-      "metric": "Action Plan with EPR targets — category-wise (Cat I–IV)",
+      "metric": "Action Plan with EPR targets, category-wise (Cat I–IV)",
       "frequency": "Annual (submitted with registration/renewal)",
       "maps_to_brsr_id": "P6-EI-7",
-      "maps_to_brsr_label": "EPR applicability — plastic packaging waste collected, recycled, reused",
+      "maps_to_brsr_label": "EPR applicability, plastic packaging waste collected, recycled, reused",
       "coverage": "direct",
-      "gap": "Target-setting is the planning input; BRSR needs actuals vs. targets — combining both gives the full EPR disclosure"
+      "gap": "Target-setting is the planning input; BRSR needs actuals vs. targets, combining both gives the full EPR disclosure"
     },
     {
-      "metric": "Details of plastic packaging purchased from Producers/Importers — by Brand Owner",
+      "metric": "Details of plastic packaging purchased from Producers/Importers, by Brand Owner",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-EI-7",
-      "maps_to_brsr_label": "EPR applicability — plastic packaging waste collected, recycled, reused",
+      "maps_to_brsr_label": "EPR applicability, plastic packaging waste collected, recycled, reused",
       "coverage": "partial",
       "gap": "Tracks supply-chain attribution for EPR deduction; BRSR doesn't require supplier-level breakdown but the aggregate volume is reusable"
     },
@@ -436,23 +436,23 @@
       "metric": "Carry bag thickness compliance (75µ pre-Dec 2022; 120µ post-Dec 2022)",
       "frequency": "Continuous / audit-based",
       "maps_to_brsr_id": "P6-EI-6",
-      "maps_to_brsr_label": "Compliance with environmental laws — show-cause / penalty / fine details",
+      "maps_to_brsr_label": "Compliance with environmental laws, show-cause / penalty / fine details",
       "coverage": "indirect",
       "gap": "Thickness is a product-spec compliance check; BRSR captures whether any violation occurred, not the spec itself"
     },
     {
-      "metric": "Collection & segregation infrastructure established — MRFs, collection points",
+      "metric": "Collection & segregation infrastructure established, MRFs, collection points",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-EI-7",
-      "maps_to_brsr_label": "EPR applicability — plastic packaging waste collected, recycled, reused",
+      "maps_to_brsr_label": "EPR applicability, plastic packaging waste collected, recycled, reused",
       "coverage": "indirect",
       "gap": "Infrastructure details support the EPR narrative; BRSR primarily asks for tonnage outcomes, not infrastructure inventory"
     },
     {
-      "metric": "Single-use plastic (SUP) items phased out — compliance status",
+      "metric": "Single-use plastic (SUP) items phased out, compliance status",
       "frequency": "Continuous (ban effective 1 Jul 2022)",
       "maps_to_brsr_id": "P6-EI-6",
-      "maps_to_brsr_label": "Compliance with environmental laws — show-cause / penalty / fine details",
+      "maps_to_brsr_label": "Compliance with environmental laws, show-cause / penalty / fine details",
       "coverage": "indirect",
       "gap": "SUP ban compliance is binary (yes/no); BRSR captures it only if a violation leads to a penalty or show-cause notice"
     }
@@ -479,7 +479,7 @@
       "source_form": "Form 4 Part A, Item 2(i)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E8b",
-      "maps_to_brsr_label": "Waste directed to disposal — landfilling, incineration, other (MT)",
+      "maps_to_brsr_label": "Waste directed to disposal, landfilling, incineration, other (MT)",
       "coverage": "partial",
       "gap": "BRSR requires split by disposal method (incineration, landfilling, other disposal); HWM Form 4A reports aggregate dispatch to disposal facility without method breakup at generator level"
     },
@@ -488,7 +488,7 @@
       "source_form": "Form 4 Part A, Item 2(ii)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E8a",
-      "maps_to_brsr_label": "Waste diverted from disposal — recycling, reuse, recovery, co-processing (MT)",
+      "maps_to_brsr_label": "Waste diverted from disposal, recycling, reuse, recovery, co-processing (MT)",
       "coverage": "partial",
       "gap": "BRSR requires split by diversion method (recycling, reuse, other recovery operations); HWM Form 4A aggregates all non-disposal dispatch into one line"
     },
@@ -497,7 +497,7 @@
       "source_form": "Form 4 Part A, Item 2(iii)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E8a",
-      "maps_to_brsr_label": "Waste diverted from disposal — other operations (MT)",
+      "maps_to_brsr_label": "Waste diverted from disposal, other operations (MT)",
       "coverage": "partial",
       "gap": "Catch-all category with no method classification; BRSR needs explicit method tagging for each diversion route"
     },
@@ -506,7 +506,7 @@
       "source_form": "Form 4 Part A, Item 3",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E8a",
-      "maps_to_brsr_label": "Waste diverted from disposal — reuse/recovery (MT)",
+      "maps_to_brsr_label": "Waste diverted from disposal, reuse/recovery (MT)",
       "coverage": "partial",
       "gap": "BRSR needs classification as reuse vs recycling vs other recovery; HWM reports aggregate in-house utilisation without method split"
     },
@@ -515,7 +515,7 @@
       "source_form": "Form 4 Part A, Item 4",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E7a",
-      "maps_to_brsr_label": "Total waste generated by type (MT) — reconciliation",
+      "maps_to_brsr_label": "Total waste generated by type (MT), reconciliation",
       "coverage": "supplementary",
       "gap": "BRSR does not separately track closing storage inventory; needed to reconcile waste generated vs waste managed in the year"
     },
@@ -533,7 +533,7 @@
       "source_form": "Form 4 Part B, Item 2",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E7a",
-      "maps_to_brsr_label": "Total waste generated by type (MT) — reconciliation",
+      "maps_to_brsr_label": "Total waste generated by type (MT), reconciliation",
       "coverage": "supplementary",
       "gap": "Useful for year-over-year waste flow reconciliation; BRSR does not require opening stock disclosure"
     },
@@ -542,16 +542,16 @@
       "source_form": "Form 4 Part B, Item 3",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E8b",
-      "maps_to_brsr_label": "Waste directed to disposal — other disposal operations (MT)",
+      "maps_to_brsr_label": "Waste directed to disposal, other disposal operations (MT)",
       "coverage": "partial",
       "gap": "BRSR requires treatment method classification; HWM reports aggregate treatment quantity without method detail"
     },
     {
-      "metric": "Quantity disposed in secured landfills — as-is and after treatment (MT)",
+      "metric": "Quantity disposed in secured landfills, as-is and after treatment (MT)",
       "source_form": "Form 4 Part B, Item 4",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E8b",
-      "maps_to_brsr_label": "Waste directed to disposal — landfilling (MT)",
+      "maps_to_brsr_label": "Waste directed to disposal, landfilling (MT)",
       "coverage": "full",
       "gap": "Direct match for hazardous waste landfilling quantity; BRSR also needs non-hazardous waste landfilling data from other sources"
     },
@@ -560,7 +560,7 @@
       "source_form": "Form 4 Part B, Item 5",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E8b",
-      "maps_to_brsr_label": "Waste directed to disposal — incineration (MT)",
+      "maps_to_brsr_label": "Waste directed to disposal, incineration (MT)",
       "coverage": "full",
       "gap": "Direct match for hazardous waste incineration; BRSR also needs non-hazardous incineration data from other sources"
     },
@@ -569,7 +569,7 @@
       "source_form": "Form 4 Part B, Item 6",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E8b",
-      "maps_to_brsr_label": "Waste directed to disposal — other disposal operations (MT)",
+      "maps_to_brsr_label": "Waste directed to disposal, other disposal operations (MT)",
       "coverage": "partial",
       "gap": "Catch-all processing category; BRSR needs specific method classification for each disposal operation"
     },
@@ -578,7 +578,7 @@
       "source_form": "Form 4 Part B, Item 7",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E7a",
-      "maps_to_brsr_label": "Total waste generated by type (MT) — reconciliation",
+      "maps_to_brsr_label": "Total waste generated by type (MT), reconciliation",
       "coverage": "supplementary",
       "gap": "Useful for waste flow reconciliation; no direct BRSR field for closing inventory"
     },
@@ -605,7 +605,7 @@
       "source_form": "Form 4 Part C, Item 3",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E8a",
-      "maps_to_brsr_label": "Waste diverted from disposal — recycling, co-processing (MT)",
+      "maps_to_brsr_label": "Waste diverted from disposal, recycling, co-processing (MT)",
       "coverage": "partial",
       "gap": "BRSR requires split by diversion method (recycling vs reuse vs other recovery); HWM aggregates all into one line"
     },
@@ -614,7 +614,7 @@
       "source_form": "Form 4 Part C, Item 4",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-L3",
-      "maps_to_brsr_label": "Waste management from lifecycle perspective — reclaimed products",
+      "maps_to_brsr_label": "Waste management from lifecycle perspective, reclaimed products",
       "coverage": "partial",
       "gap": "BRSR Leadership Indicator asks about reclaimed products and packaging with lifecycle context; HWM tracks output products but not in lifecycle framing"
     },
@@ -641,7 +641,7 @@
       "source_form": "Form 4 Part C, Item 7",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E8a",
-      "maps_to_brsr_label": "Waste diverted from disposal — other recovery operations (MT)",
+      "maps_to_brsr_label": "Waste diverted from disposal, other recovery operations (MT)",
       "coverage": "supplementary",
       "gap": "BRSR has no explicit re-export field; could be classified under other recovery/diversion depending on end use"
     },
@@ -650,7 +650,7 @@
       "source_form": "Form 4 Part C, Item 8",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E7a",
-      "maps_to_brsr_label": "Total waste generated by type (MT) — reconciliation",
+      "maps_to_brsr_label": "Total waste generated by type (MT), reconciliation",
       "coverage": "supplementary",
       "gap": "Useful for waste flow reconciliation; no direct BRSR field"
     },
@@ -661,10 +661,10 @@
       "maps_to_brsr_id": "P6-E7a",
       "maps_to_brsr_label": "Total waste generated by type (MT)",
       "coverage": "partial",
-      "gap": "HWM categorises by Schedule I (38 process-based) and Schedule II (constituent-based); BRSR uses 8 standardised waste categories — a mapping table between the two taxonomies is required"
+      "gap": "HWM categorises by Schedule I (38 process-based) and Schedule II (constituent-based); BRSR uses 8 standardised waste categories, a mapping table between the two taxonomies is required"
     },
     {
-      "metric": "Total quantity of each waste type handled — generated or received (MT)",
+      "metric": "Total quantity of each waste type handled, generated or received (MT)",
       "source_form": "Form 3",
       "frequency": "Ongoing",
       "maps_to_brsr_id": "P6-E7a",
@@ -682,11 +682,11 @@
       "gap": "HWM records are structured and tabular; BRSR requires a narrative description of management practices"
     },
     {
-      "metric": "Destination of waste dispatched — name/address of actual user or TSDF",
+      "metric": "Destination of waste dispatched, name/address of actual user or TSDF",
       "source_form": "Form 3",
       "frequency": "Ongoing",
       "maps_to_brsr_id": "P6-E8a",
-      "maps_to_brsr_label": "Waste management — disposal/recovery details (MT)",
+      "maps_to_brsr_label": "Waste management, disposal/recovery details (MT)",
       "coverage": "partial",
       "gap": "HWM tracks destination entity; BRSR needs method-based classification (recycling/reuse/recovery/incineration/landfilling) not entity names"
     },
@@ -695,7 +695,7 @@
       "source_form": "Form 3, Item 5",
       "frequency": "As per authorisation schedule",
       "maps_to_brsr_id": "P6-E5",
-      "maps_to_brsr_label": "Air emissions — NOx, SOx, PM, POP, VOC, HAP and other significant emissions",
+      "maps_to_brsr_label": "Air emissions, NOx, SOx, PM, POP, VOC, HAP and other significant emissions",
       "coverage": "partial",
       "gap": "HWM monitoring covers waste-facility specific emissions and effluents; BRSR requires comprehensive facility-wide air emission data across all sources"
     },
@@ -718,7 +718,7 @@
       "gap": "Needs aggregation across all manifests for annual total; unit conversion (m³ to MT) may be required"
     },
     {
-      "metric": "Physical form of waste — solid/semi-solid/sludge/oily/tarry/slurry/liquid",
+      "metric": "Physical form of waste, solid/semi-solid/sludge/oily/tarry/slurry/liquid",
       "source_form": "Form 10 (Manifest), Item 12",
       "frequency": "Per consignment",
       "maps_to_brsr_id": "P6-E7a",
@@ -740,7 +740,7 @@
       "source_form": "Form 11, Item 3",
       "frequency": "Per incident",
       "maps_to_brsr_id": "P6-E6",
-      "maps_to_brsr_label": "Details of significant spills — quantity and waste type",
+      "maps_to_brsr_label": "Details of significant spills, quantity and waste type",
       "coverage": "partial",
       "gap": "HWM captures waste type involved; BRSR needs explicit recovered vs unrecovered quantity split"
     },
@@ -749,21 +749,21 @@
       "source_form": "Form 11, Items 5–7",
       "frequency": "Per incident",
       "maps_to_brsr_id": "P6-E6",
-      "maps_to_brsr_label": "Details of significant spills — corrective action taken",
+      "maps_to_brsr_label": "Details of significant spills, corrective action taken",
       "coverage": "full",
       "gap": "Direct match; HWM accident report covers both corrective and preventive actions"
     },
     {
-      "metric": "Products and by-products manufactured — names and quantity per annum",
+      "metric": "Products and by-products manufactured, names and quantity per annum",
       "source_form": "Form 1 Part B, Item 1(a)",
       "frequency": "At authorisation / renewal (every 5 years)",
       "maps_to_brsr_id": "SectionA-IV-17",
-      "maps_to_brsr_label": "Products/services sold — top 5 products by turnover",
+      "maps_to_brsr_label": "Products/services sold, top 5 products by turnover",
       "coverage": "supplementary",
       "gap": "HWM captures production data for waste-generation context; BRSR requires revenue-linked product details with turnover contribution"
     },
     {
-      "metric": "Process description with inputs and outputs — raw materials, chemicals, products, by-products, wastes, emissions, wastewater",
+      "metric": "Process description with inputs and outputs, raw materials, chemicals, products, by-products, wastes, emissions, wastewater",
       "source_form": "Form 1 Part B, Item 1(b)",
       "frequency": "At authorisation / renewal",
       "maps_to_brsr_id": "P6-E7b",
@@ -772,11 +772,11 @@
       "gap": "HWM process flowsheet is input-output technical; BRSR wants a narrative on waste management practices and policies"
     },
     {
-      "metric": "Characteristics of each waste type generated — physical, chemical, biological properties",
+      "metric": "Characteristics of each waste type generated, physical, chemical, biological properties",
       "source_form": "Form 1 Part B, Item 1(c)",
       "frequency": "At authorisation / renewal",
       "maps_to_brsr_id": "P6-E7a",
-      "maps_to_brsr_label": "Total waste generated by type — hazardous waste classification basis",
+      "maps_to_brsr_label": "Total waste generated by type, hazardous waste classification basis",
       "coverage": "supplementary",
       "gap": "Detailed characterisation enables correct classification; BRSR requires only aggregated quantity per category, not constituent-level data"
     },
@@ -794,7 +794,7 @@
       "source_form": "Form 1 Part B, Item 1(d)(ii)",
       "frequency": "At authorisation / renewal",
       "maps_to_brsr_id": "P6-E8a",
-      "maps_to_brsr_label": "Waste diverted from disposal — reuse/recovery (MT)",
+      "maps_to_brsr_label": "Waste diverted from disposal, reuse/recovery (MT)",
       "coverage": "partial",
       "gap": "Describes utilisation method at authorisation time; BRSR needs annual quantitative data per method"
     },
@@ -817,7 +817,7 @@
       "gap": "Infrastructure-focused description; BRSR requires outcome and policy-focused narrative"
     },
     {
-      "metric": "Emergency Response Plan — spill, leak, fire procedures, off-site mitigation, staff training",
+      "metric": "Emergency Response Plan, spill, leak, fire procedures, off-site mitigation, staff training",
       "source_form": "Form 1, Item 4",
       "frequency": "At authorisation / renewal",
       "maps_to_brsr_id": "P3-E11",
@@ -826,7 +826,7 @@
       "gap": "HWM ERP covers hazardous-waste-specific emergencies only; BRSR requires broader OHS management system details (IS 45001 or equivalent)"
     },
     {
-      "metric": "TSDF facility details — layout, storage capacity, treatment processes and capacities, landfill, incineration, leachate system, fire-fighting, environmental management plan",
+      "metric": "TSDF facility details, layout, storage capacity, treatment processes and capacities, landfill, incineration, leachate system, fire-fighting, environmental management plan",
       "source_form": "Form 1 Part C",
       "frequency": "At authorisation / renewal",
       "maps_to_brsr_id": "P6-E7b",
@@ -839,16 +839,16 @@
       "source_form": "Form 1 Part D, Item 2",
       "frequency": "At authorisation / renewal",
       "maps_to_brsr_id": "P6-E8a",
-      "maps_to_brsr_label": "Waste diverted from disposal — recycling capacity (MT)",
+      "maps_to_brsr_label": "Waste diverted from disposal, recycling capacity (MT)",
       "coverage": "supplementary",
       "gap": "Capacity data, not actual throughput; BRSR needs actual quantities recycled/reused/recovered per year"
     },
     {
-      "metric": "Pollution control systems — ETP, scrubbers, mode of disposal of residual waste",
+      "metric": "Pollution control systems, ETP, scrubbers, mode of disposal of residual waste",
       "source_form": "Form 1 Part D, Item 6",
       "frequency": "At authorisation / renewal",
       "maps_to_brsr_id": "P6-E5",
-      "maps_to_brsr_label": "Air emissions — details of pollution control equipment",
+      "maps_to_brsr_label": "Air emissions, details of pollution control equipment",
       "coverage": "partial",
       "gap": "HWM covers waste-facility pollution controls; BRSR requires entity-wide emission data and pollution control details"
     },
@@ -862,7 +862,7 @@
       "gap": "HWM covers OHS for waste handling specifically; BRSR requires entity-wide OHS system, training hours, and incident rates"
     },
     {
-      "metric": "Waste management hierarchy compliance — prevention, minimisation, reuse, recycling, recovery, disposal steps followed",
+      "metric": "Waste management hierarchy compliance, prevention, minimisation, reuse, recycling, recovery, disposal steps followed",
       "source_form": "Rule 4(1)",
       "frequency": "Ongoing (policy-level)",
       "maps_to_brsr_id": "P6-E7b",
@@ -884,7 +884,7 @@
       "source_form": "Rule 5(2)(a)",
       "frequency": "Ongoing",
       "maps_to_brsr_id": "P3-E1",
-      "maps_to_brsr_label": "Employee/worker details — permanent, contract, casual workers",
+      "maps_to_brsr_label": "Employee/worker details, permanent, contract, casual workers",
       "coverage": "partial",
       "gap": "HWM tracks worker registration for hazardous waste activities; BRSR requires comprehensive entity-wide employee and worker details by category"
     },
@@ -893,7 +893,7 @@
       "source_form": "Rule 5(2)(c)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P3-E8",
-      "maps_to_brsr_label": "Details of safety-related training — topic, hours, coverage",
+      "maps_to_brsr_label": "Details of safety-related training, topic, hours, coverage",
       "coverage": "partial",
       "gap": "HWM covers waste-specific skill development; BRSR requires all safety and skill training details with hours and topic breakdown"
     },
@@ -902,12 +902,12 @@
       "source_form": "Rule 5(2)(d)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P3-E11",
-      "maps_to_brsr_label": "Safety-related incidents — fatalities, injuries, LTIFR, measures taken",
+      "maps_to_brsr_label": "Safety-related incidents, fatalities, injuries, LTIFR, measures taken",
       "coverage": "partial",
       "gap": "HWM mandates annual health monitoring for waste workers; BRSR needs LTIFR, fatality count, and incident rates across all workers entity-wide"
     },
     {
-      "metric": "Storage duration compliance — max 90 days, extendable to 180 days per Rule 8 conditions",
+      "metric": "Storage duration compliance, max 90 days, extendable to 180 days per Rule 8 conditions",
       "source_form": "Rule 8",
       "frequency": "Ongoing",
       "maps_to_brsr_id": "P6-E7b",
@@ -920,66 +920,66 @@
       "source_form": "Rule 8(1)",
       "frequency": "Ongoing",
       "maps_to_brsr_id": "P6-E8a",
-      "maps_to_brsr_label": "Waste diverted from disposal — recycling, reuse, recovery (MT)",
+      "maps_to_brsr_label": "Waste diverted from disposal, recycling, reuse, recovery (MT)",
       "coverage": "partial",
       "gap": "Transaction-level records available; need aggregation and method classification for BRSR"
     },
     {
-      "metric": "TCLP concentration values for 61 Class A constituents — metals, organics, pesticides (mg/l)",
+      "metric": "TCLP concentration values for 61 Class A constituents, metals, organics, pesticides (mg/l)",
       "source_form": "Schedule II, Class A (A1–A61)",
       "frequency": "Per waste characterisation test",
       "maps_to_brsr_id": "P6-E7a",
-      "maps_to_brsr_label": "Total waste generated by type — hazardous waste classification basis",
+      "maps_to_brsr_label": "Total waste generated by type, hazardous waste classification basis",
       "coverage": "supplementary",
       "gap": "Analytical data used to classify waste as hazardous; BRSR requires aggregated MT by category, not constituent concentrations"
     },
     {
-      "metric": "STLC concentration values for 18 Class A constituents — metals, PCBs, dioxins (mg/l)",
+      "metric": "STLC concentration values for 18 Class A constituents, metals, PCBs, dioxins (mg/l)",
       "source_form": "Schedule II, Class A (A62–A79)",
       "frequency": "Per waste characterisation test",
       "maps_to_brsr_id": "P6-E7a",
-      "maps_to_brsr_label": "Total waste generated by type — hazardous waste classification basis",
+      "maps_to_brsr_label": "Total waste generated by type, hazardous waste classification basis",
       "coverage": "supplementary",
       "gap": "Used for hazardous determination via WET procedure; BRSR does not require constituent-level analytical data"
     },
     {
-      "metric": "TTLC concentration values — asbestos (mg/kg) and Total Petroleum Hydrocarbons (mg/kg)",
+      "metric": "TTLC concentration values, asbestos (mg/kg) and Total Petroleum Hydrocarbons (mg/kg)",
       "source_form": "Schedule II, Class B (B1–B2)",
       "frequency": "Per waste characterisation test",
       "maps_to_brsr_id": "P6-E7a",
-      "maps_to_brsr_label": "Total waste generated by type — hazardous waste classification basis",
+      "maps_to_brsr_label": "Total waste generated by type, hazardous waste classification basis",
       "coverage": "supplementary",
       "gap": "Used for hazardous/non-hazardous determination; BRSR needs quantity, not concentration limits"
     },
     {
-      "metric": "Hazardous characteristics assessment — flammability (C1), corrosivity (C2), reactivity (C3), toxicity (C4), eco-toxicity (C12) and 9 other characteristics",
+      "metric": "Hazardous characteristics assessment, flammability (C1), corrosivity (C2), reactivity (C3), toxicity (C4), eco-toxicity (C12) and 9 other characteristics",
       "source_form": "Schedule II, Class C (C1–C13)",
       "frequency": "Per waste characterisation",
       "maps_to_brsr_id": "P6-E7a",
-      "maps_to_brsr_label": "Total waste generated by type — hazardous waste classification basis",
+      "maps_to_brsr_label": "Total waste generated by type, hazardous waste classification basis",
       "coverage": "supplementary",
       "gap": "Classification tool only; BRSR needs categorised quantities, not characteristic test results"
     },
     {
-      "metric": "Used oil quality parameters — PCB (<2ppm), lead (100ppm), arsenic (5ppm), Cd+Cr+Ni (500ppm), PAH (6%)",
+      "metric": "Used oil quality parameters, PCB (<2ppm), lead (100ppm), arsenic (5ppm), Cd+Cr+Ni (500ppm), PAH (6%)",
       "source_form": "Schedule V Part A",
       "frequency": "Per batch tested",
       "maps_to_brsr_id": "P6-E7a",
-      "maps_to_brsr_label": "Total waste generated — other hazardous waste (MT)",
+      "maps_to_brsr_label": "Total waste generated, other hazardous waste (MT)",
       "coverage": "supplementary",
       "gap": "Quality specs determine if oil qualifies for recycling vs disposal; BRSR only needs aggregate used oil quantity under hazardous waste"
     },
     {
-      "metric": "Waste oil fuel specification — sediment, lead, arsenic, halogens, sulphur, water content, PAH",
+      "metric": "Waste oil fuel specification, sediment, lead, arsenic, halogens, sulphur, water content, PAH",
       "source_form": "Schedule V Part B",
       "frequency": "Per batch tested",
       "maps_to_brsr_id": "P6-E8a",
-      "maps_to_brsr_label": "Waste diverted from disposal — co-processing/energy recovery (MT)",
+      "maps_to_brsr_label": "Waste diverted from disposal, co-processing/energy recovery (MT)",
       "coverage": "supplementary",
       "gap": "Specs determine eligibility for energy recovery; BRSR needs quantity of waste used for energy recovery, not specs"
     },
     {
-      "metric": "Labelling details per container — waste category, Schedule II/III characteristics, incompatible substances, quantity, date, sender/receiver identity",
+      "metric": "Labelling details per container, waste category, Schedule II/III characteristics, incompatible substances, quantity, date, sender/receiver identity",
       "source_form": "Form 8",
       "frequency": "Per container",
       "maps_to_brsr_id": "P6-E7b",
@@ -988,7 +988,7 @@
       "gap": "Confirms safe handling compliance; BRSR captures handling practices at narrative level"
     },
     {
-      "metric": "Transport Emergency Card — waste type, physical/chemical properties, exposure hazards, first aid requirements, spill/fire procedures",
+      "metric": "Transport Emergency Card, waste type, physical/chemical properties, exposure hazards, first aid requirements, spill/fire procedures",
       "source_form": "Form 9 (TREM Card)",
       "frequency": "Per waste type transported",
       "maps_to_brsr_id": "P3-E11",
@@ -1001,7 +1001,7 @@
       "source_form": "Rule 23(2)",
       "frequency": "Per violation",
       "maps_to_brsr_id": "P6-E10",
-      "maps_to_brsr_label": "Environmental compliance — fines, penalties, action taken by regulatory authorities",
+      "maps_to_brsr_label": "Environmental compliance, fines, penalties, action taken by regulatory authorities",
       "coverage": "full",
       "gap": "Direct match; BRSR asks for all environmental non-compliance fines/penalties including amounts and corrective action"
     },
@@ -1010,30 +1010,30 @@
       "source_form": "Rule 23(1)",
       "frequency": "Per incident",
       "maps_to_brsr_id": "P6-E10",
-      "maps_to_brsr_label": "Environmental compliance — show cause notices, litigation, monetary penalties",
+      "maps_to_brsr_label": "Environmental compliance, show cause notices, litigation, monetary penalties",
       "coverage": "partial",
       "gap": "HWM establishes liability; BRSR requires details of all environmental litigation, show cause notices, and monetary penalties across all regulations"
     },
     {
       "metric": "Self-certified compliance report for effluent/emission standards and authorisation conditions",
-      "source_form": "Rule 6(1)(c) — at renewal",
+      "source_form": "Rule 6(1)(c), at renewal",
       "frequency": "At renewal (every 5 years)",
       "maps_to_brsr_id": "P6-E10",
-      "maps_to_brsr_label": "Environmental compliance — status across all environmental regulations",
+      "maps_to_brsr_label": "Environmental compliance, status across all environmental regulations",
       "coverage": "partial",
       "gap": "HWM compliance is hazardous-waste-specific; BRSR requires compliance status across all applicable environmental laws"
     },
     {
-      "metric": "Authorisation status — valid/suspended/cancelled, conditions, validity period",
+      "metric": "Authorisation status, valid/suspended/cancelled, conditions, validity period",
       "source_form": "Form 2 / Rule 7",
       "frequency": "Valid for 5 years",
       "maps_to_brsr_id": "P6-E10",
-      "maps_to_brsr_label": "Environmental compliance — regulatory approvals status",
+      "maps_to_brsr_label": "Environmental compliance, regulatory approvals status",
       "coverage": "partial",
       "gap": "Covers HWM authorisation only; BRSR needs status of all environmental clearances and consents"
     },
     {
-      "metric": "Quantity of hazardous waste imported — Basel number, chemical composition, source country, port of entry",
+      "metric": "Quantity of hazardous waste imported, Basel number, chemical composition, source country, port of entry",
       "source_form": "Form 5 / Form 6",
       "frequency": "Per import consignment",
       "maps_to_brsr_id": "P6-E7a",
@@ -1042,11 +1042,11 @@
       "gap": "Import quantities contribute to waste handled; BRSR does not separately track imported waste streams"
     },
     {
-      "metric": "Quantity of hazardous waste exported — Basel number, destination country, prior informed consent status",
+      "metric": "Quantity of hazardous waste exported, Basel number, destination country, prior informed consent status",
       "source_form": "Form 5 / Form 6",
       "frequency": "Per export consignment",
       "maps_to_brsr_id": "P6-E8a",
-      "maps_to_brsr_label": "Waste diverted from disposal — other recovery operations (MT)",
+      "maps_to_brsr_label": "Waste diverted from disposal, other recovery operations (MT)",
       "coverage": "supplementary",
       "gap": "BRSR has no explicit export category; exported waste for recycling could be counted as diverted from disposal"
     },
@@ -1064,7 +1064,7 @@
       "source_form": "Rule 6(7)–(8)",
       "frequency": "Per transaction",
       "maps_to_brsr_id": "P6-E8a",
-      "maps_to_brsr_label": "Waste diverted from disposal — recycling, reuse, recovery (MT)",
+      "maps_to_brsr_label": "Waste diverted from disposal, recycling, reuse, recovery (MT)",
       "coverage": "supplementary",
       "gap": "Transaction-level purchase record; needs aggregation for BRSR annual disclosure"
     },
@@ -1073,7 +1073,7 @@
       "source_form": "Rule 18(3)",
       "frequency": "Per inter-state transfer",
       "maps_to_brsr_id": "P6-E10",
-      "maps_to_brsr_label": "Environmental compliance — regulatory approvals status",
+      "maps_to_brsr_label": "Environmental compliance, regulatory approvals status",
       "coverage": "supplementary",
       "gap": "Operational compliance record; BRSR does not require transport-specific approval details"
     },
@@ -1082,7 +1082,7 @@
       "source_form": "Rule 18(4)–(5)",
       "frequency": "Per inter-state transfer",
       "maps_to_brsr_id": "P6-E10",
-      "maps_to_brsr_label": "Environmental compliance — status of compliance",
+      "maps_to_brsr_label": "Environmental compliance, status of compliance",
       "coverage": "supplementary",
       "gap": "Operational compliance; BRSR captures this at aggregate compliance level only"
     }
@@ -1096,7 +1096,7 @@
   "reporting_frequency": "Annual (per compliance year = financial year)",
   "data_already_tracked": [
     {
-      "metric": "Total GHG emissions — Scope 1 + Scope 2 combined (tCO2e)",
+      "metric": "Total GHG emissions, Scope 1 + Scope 2 combined (tCO2e)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E3",
       "maps_to_brsr_label": "Scope 1 and Scope 2 GHG emissions (tCO2e)",
@@ -1104,7 +1104,7 @@
       "gap": "BRSR requires Scope 1 and Scope 2 reported as separate line items. This filing tracks only the combined total used to compute intensity."
     },
     {
-      "metric": "GHG emission intensity — achieved (tCO2e per tonne of equivalent product)",
+      "metric": "GHG emission intensity, achieved (tCO2e per tonne of equivalent product)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E3",
       "maps_to_brsr_label": "GHG emission intensity (per rupee of turnover; optional: per physical output)",
@@ -1112,7 +1112,7 @@
       "gap": "BRSR mandates intensity denominated in rupees of turnover. Physical-output intensity is only an optional additional disclosure. This filing provides physical-output intensity only."
     },
     {
-      "metric": "GHG emission intensity — baseline (tCO2e/t, FY 2023-24)",
+      "metric": "GHG emission intensity, baseline (tCO2e/t, FY 2023-24)",
       "frequency": "One-time (baseline year)",
       "maps_to_brsr_id": "P6-E3",
       "maps_to_brsr_label": "Scope 1 + Scope 2 GHG emissions and intensity",
@@ -1120,7 +1120,7 @@
       "gap": "BRSR asks for current FY and previous FY values. Baseline intensity from 2023-24 is useful for YoY comparison but BRSR does not require a fixed regulatory baseline figure."
     },
     {
-      "metric": "GHG emission intensity — government-assigned target (tCO2e/t for FY 2025-26 and FY 2026-27)",
+      "metric": "GHG emission intensity, government-assigned target (tCO2e/t for FY 2025-26 and FY 2026-27)",
       "frequency": "Annual (set per trajectory period)",
       "maps_to_brsr_id": "P6-E4",
       "maps_to_brsr_label": "Does the entity have any project related to reducing GHG emissions? If yes, details of target and progress.",
@@ -1128,7 +1128,7 @@
       "gap": "BRSR asks whether the entity has set emission reduction targets and qualitative details of mechanisms. This filing supplies the mandatory quantitative target but not the entity's own strategy, initiatives, or capex deployed toward reduction."
     },
     {
-      "metric": "Total equivalent product output — compliance year (tonnes)",
+      "metric": "Total equivalent product output, compliance year (tonnes)",
       "frequency": "Annual",
       "maps_to_brsr_id": "P6-E1",
       "maps_to_brsr_label": "Energy intensity per rupee of turnover / optional per physical output",
@@ -1136,10 +1136,10 @@
       "gap": "BRSR uses physical output as optional denominator for energy intensity. This filing provides production volume for GHG intensity but does not track energy consumption (fuel, electricity, other sources) required by BRSR E1."
     },
     {
-      "metric": "Total equivalent product output — baseline (tonnes, FY 2023-24)",
+      "metric": "Total equivalent product output, baseline (tonnes, FY 2023-24)",
       "frequency": "One-time (baseline year)",
       "maps_to_brsr_id": "Section-A-III-Q17",
-      "maps_to_brsr_label": "Details of business activities — turnover and production volumes by segment",
+      "maps_to_brsr_label": "Details of business activities, turnover and production volumes by segment",
       "coverage": "partial",
       "gap": "BRSR asks for turnover contribution by product/service. Baseline tonnage gives historical production volume but not revenue-denominated data."
     },
@@ -1181,18 +1181,18 @@
       "maps_to_brsr_id": "P6-E4",
       "maps_to_brsr_label": "Details of GHG emission reduction target and progress",
       "coverage": "partial",
-      "gap": "BRSR asks qualitatively about progress toward targets. The quantified shortfall is a stronger datapoint but has no dedicated BRSR field — must be narrated in the qualitative response."
+      "gap": "BRSR asks qualitatively about progress toward targets. The quantified shortfall is a stronger datapoint but has no dedicated BRSR field, must be narrated in the qualitative response."
     },
     {
       "metric": "Environmental compensation imposed for non-compliance (INR, = 2× average traded price of carbon credits × shortfall)",
       "frequency": "As applicable (within 90 days of CPCB order)",
       "maps_to_brsr_id": "P6-E11",
-      "maps_to_brsr_label": "Details of environmental non-compliances — show-cause notices, fines, penalties from CPCB/SPCB",
+      "maps_to_brsr_label": "Details of environmental non-compliances, show-cause notices, fines, penalties from CPCB/SPCB",
       "coverage": "full",
       "gap": "Directly maps. BRSR E11 requires disclosure of all environmental penalties including amount, corrective action, and authority. Environmental compensation under these rules is one such penalty."
     },
     {
-      "metric": "Registration on Indian Carbon Market (ICM) portal — registration number and entity details",
+      "metric": "Registration on Indian Carbon Market (ICM) portal, registration number and entity details",
       "frequency": "One-time",
       "maps_to_brsr_id": "Section-A-IV-Q22",
       "maps_to_brsr_label": "Details of registration/membership with trade bodies, industry associations, regulatory frameworks",
@@ -1203,7 +1203,7 @@
       "metric": "Sector and sub-sector classification under Indian Carbon Market (e.g., Aluminium–Smelter, Cement–PPC, Chlor-Alkali, Pulp & Paper–Integrated)",
       "frequency": "One-time",
       "maps_to_brsr_id": "Section-A-III-Q14",
-      "maps_to_brsr_label": "Details of business activities — products/services, NIC codes",
+      "maps_to_brsr_label": "Details of business activities, products/services, NIC codes",
       "coverage": "partial",
       "gap": "BRSR uses NIC codes for activity classification. ICM sector labels are scheme-specific and do not map 1:1 to NIC codes, but confirm the entity's industrial profile."
     },

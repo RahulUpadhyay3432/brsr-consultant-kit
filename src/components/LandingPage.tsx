@@ -725,7 +725,7 @@ const STATUS_DOT = {
   new: "#F2674A",
 };
 
-/* Hero readiness panel — replaces the shrunk full-app screenshot */
+/* Hero readiness panel, replaces the shrunk full-app screenshot */
 function HeroReadinessPanel() {
   const rows = [
     { id: "P6-E1", label: "Scope 1 & 2 GHG emissions (absolute, tCO₂e)", status: "tracked" as const, badge: "Ready to pull", source: "PAT Scheme + CEA v21.0" },
@@ -1518,7 +1518,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         <div className="mx-auto">
           {/* Scrolling sources ticker */}
           <div className="flex items-center border-b border-line">
-            {/* Static label — fixed left */}
+            {/* Static label, fixed left */}
             <div className="flex-shrink-0 px-5 sm:px-8 py-4 border-r border-line">
               <span className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-muted whitespace-nowrap">Built on primary sources</span>
             </div>
@@ -1764,7 +1764,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         </div>
       </section>
 
-      {/* ── Pain/solution table (after Pro — for those who want the full picture) */}
+      {/* ── Pain/solution table (after Pro, for those who want the full picture) */}
       <PainTable />
 
       {/* ── Trust cards ──────────────────────────────────────────────────── */}

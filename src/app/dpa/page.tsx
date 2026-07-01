@@ -3,7 +3,7 @@ import LegalPage, { Section, DraftNotice } from "@/components/LegalPage";
 import { SUBPROCESSORS } from "@/lib/subprocessors";
 
 export const metadata: Metadata = {
-  title: "Data Processing — Saaksh",
+  title: "Data Processing, Saaksh",
   description: "How Saaksh processes data on behalf of consultants using the Collect tier.",
 };
 

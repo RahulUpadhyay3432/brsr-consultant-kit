@@ -35,7 +35,7 @@ export function buildAuditReadinessRows(): string[][] {
   for (const g of AUDIT_GROUPS) {
     for (const r of g.rows) {
       rows.push([
-        `${g.principle} — ${g.name}`,
+        `${g.principle}, ${g.name}`,
         r.kpi,
         r.core ? "Yes" : "No",
         r.evidence,

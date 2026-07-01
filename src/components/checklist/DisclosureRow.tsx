@@ -90,7 +90,7 @@ export default function DisclosureRow({
                 </span>
               )}
             </div>
-            {/* Gap callout — below the code pill so label and pill stay coupled */}
+            {/* Gap callout, below the code pill so label and pill stay coupled */}
             {item.status === "partially_tracked" && item.gap_note && !isCollected && (
               <p className="text-[11px] text-amber-700 bg-amber-50 border border-amber-200/70 rounded-md px-2 py-1 mt-1.5 line-clamp-2 leading-snug">
                 <span className="font-semibold">Missing:</span> {item.gap_note}

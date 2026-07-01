@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalPage, { Section, DraftNotice } from "@/components/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — Saaksh",
+  title: "Terms of Service, Saaksh",
   description: "The terms governing your use of Saaksh.",
 };
 

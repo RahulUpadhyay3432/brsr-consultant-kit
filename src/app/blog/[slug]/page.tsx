@@ -112,7 +112,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             Blog
           </Link>
 
-          {/* Cover — full width */}
+          {/* Cover, full width */}
           <BlogCoverArt post={post} className="w-full aspect-[16/9] rounded-2xl mb-10" />
 
           {/* Two-column: TOC left + Article right */}

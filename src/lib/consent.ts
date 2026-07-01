@@ -4,7 +4,7 @@
 // no-ops on the server and returns null until the client has read localStorage.
 //
 // DPDP Act 2023 requires free, specific, informed, unbundled, opt-IN consent before
-// processing — so the default is OFF and we never assume consent.
+// processing, so the default is OFF and we never assume consent.
 
 export interface Consent {
   analytics: boolean;

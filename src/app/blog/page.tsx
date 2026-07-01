@@ -22,7 +22,7 @@ function CategoryChip({ category }: { category: BlogCategory }) {
   );
 }
 
-/* Neutral byline — brand, not a person. */
+/* Neutral byline, brand, not a person. */
 function Byline({ date, className = "" }: { date: string; className?: string }) {
   return (
     <span className={`text-[11.5px] text-[#5B6573] ${className}`}>
@@ -31,7 +31,7 @@ function Byline({ date, className = "" }: { date: string; className?: string }) 
   );
 }
 
-/* ── Editor's Pick — large featured card ──────────────────────────────────── */
+/* ── Editor's Pick, large featured card ──────────────────────────────────── */
 function FeaturedCard({ post }: { post: BlogPost }) {
   return (
     <Link

@@ -114,8 +114,8 @@ export default function AuditReadinessPage() {
                                 </span>
                               )}
                             </p>
-                            <p className="text-[13px] text-ink-muted mt-1.5 leading-relaxed">
-                              <span className="text-ink-faint">Usually lives with</span> {r.location}
+                            <p className="text-[13px] text-ink-body mt-1.5 leading-relaxed">
+                              <span className="text-ink-muted">Usually lives with</span> {r.location}
                             </p>
                           </div>
                           <p className="text-[13.5px] text-ink-body leading-relaxed">{r.evidence}</p>

@@ -13,7 +13,7 @@ let initPromise: Promise<void> | null = null;
 // Privacy-by-design (DPDP + the free tool's "client data never leaves your browser"
 // promise): session replay and autocapture are OFF. We send only the handful of
 // explicit track() events below, each carrying non-PII aggregate props (industry,
-// sector, counts) — never client values. Replay/autocapture can be selectively
+// sector, counts), never client values. Replay/autocapture can be selectively
 // re-enabled on authenticated Pro surfaces later if ever needed.
 export function initMixpanel(superProps?: Dict): Promise<void> {
   if (typeof window === "undefined") return Promise.resolve();

@@ -52,7 +52,7 @@ export default function Scope3CalculatorPage() {
 
           <Scope3Calculator inputs={inputs} turnoverCrore={turnover} onChange={onChange} />
 
-          <p className="text-[12.5px] text-ink-faint leading-relaxed mt-6">
+          <p className="text-[13px] text-ink-body leading-relaxed mt-6">
             A screening estimate. Scope 3 is a voluntary BRSR Leadership indicator, not assurance-grade. For Scope 1 & 2, see the{" "}
             <Link href="/tools/ghg-calculator" className="text-brand-700 font-medium underline decoration-line hover:decoration-brand-500">GHG calculator</Link>, or run the full{" "}
             <Link href="/start" className="text-brand-700 font-medium underline decoration-line hover:decoration-brand-500">readiness report</Link>.

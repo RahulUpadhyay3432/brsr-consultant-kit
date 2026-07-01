@@ -3,9 +3,9 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
-  title: "GHG & Energy Calculator — Saaksh",
+  title: "GHG & Energy Calculator, Saaksh",
   description:
-    "Calculate Scope 1 & 2 GHG emissions, energy intensity, and water intensity for BRSR P6 — cited to IPCC 2006 and the latest CEA grid factor, entirely in your browser.",
+    "Calculate Scope 1 & 2 GHG emissions, energy intensity, and water intensity for BRSR P6, cited to IPCC 2006 and the latest CEA grid factor, entirely in your browser.",
 };
 
 export default function GhgCalculatorPage() {
@@ -35,20 +35,20 @@ export default function GhgCalculatorPage() {
           </h1>
           <p className="text-lg max-w-[640px] leading-relaxed" style={{ color: "rgba(255,255,255,0.70)" }}>
             Calculate Scope 1 and 2 GHG emissions, energy intensity, and water intensity for BRSR P6
-            disclosures — cited to IPCC 2006 and CEA v21.0, running entirely in your browser.
+            disclosures, cited to IPCC 2006 and CEA v21.0, running entirely in your browser.
           </p>
         </div>
       </section>
 
       <div className="max-w-[1100px] mx-auto px-6 py-14 space-y-16">
 
-        {/* Section 1 — What it calculates */}
+        {/* Section 1, What it calculates */}
         <section>
           <h2 className="font-display text-2xl mb-3" style={{ color: "#0F172A" }}>
             What it calculates
           </h2>
           <p className="text-sm mb-8 max-w-[560px]" style={{ color: "#5B6573" }}>
-            Four calculators inside the BRSR action plan — each one opens inline when you reach the
+            Four calculators inside the BRSR action plan, each one opens inline when you reach the
             relevant P6 disclosure row.
           </p>
           <div className="grid md:grid-cols-2 gap-6">
@@ -66,7 +66,7 @@ export default function GhgCalculatorPage() {
                 label: "P6-E1",
                 title: "Scope 2 Emissions",
                 body: "Grid electricity consumption converted to CO₂e. Factor: 0.710 kg CO₂e/kWh (CEA Version 21.0, 2024). Result in tCO₂e.",
-                cite: "CEA v21.0 — 0.710 kg CO₂e / kWh",
+                cite: "CEA v21.0, 0.710 kg CO₂e / kWh",
                 accent: "#EAF4FE",
                 accentBorder: "#AFD2FB",
                 accentText: "#0B5FB0",
@@ -124,7 +124,7 @@ export default function GhgCalculatorPage() {
           </div>
         </section>
 
-        {/* Section 2 — Citation standard */}
+        {/* Section 2, Citation standard */}
         <section>
           <h2 className="font-display text-2xl mb-3" style={{ color: "#0F172A" }}>
             Citation standard
@@ -141,7 +141,7 @@ export default function GhgCalculatorPage() {
               className="text-xs font-mono uppercase tracking-widest mb-5"
               style={{ color: "rgba(255,255,255,0.40)" }}
             >
-              Example — Scope 1 &amp; 2 factor citations
+              Example, Scope 1 &amp; 2 factor citations
             </p>
             <div className="space-y-3 font-mono text-sm">
               {[
@@ -167,7 +167,7 @@ export default function GhgCalculatorPage() {
           </div>
         </section>
 
-        {/* Section 3 — 100% on-device */}
+        {/* Section 3, 100% on-device */}
         <section>
           <div
             className="rounded-xl p-8 border"
@@ -209,7 +209,7 @@ export default function GhgCalculatorPage() {
           </div>
         </section>
 
-        {/* Section 4 — Intensity ratios */}
+        {/* Section 4, Intensity ratios */}
         <section>
           <h2 className="font-display text-2xl mb-4" style={{ color: "#0F172A" }}>
             Intensity ratios

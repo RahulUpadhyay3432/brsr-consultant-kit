@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SaakshMark } from "@/components/SaakshMark";
 
-/* Slim sticky header for the blog surface. Server-safe — links only, no client state. */
+/* Slim sticky header for the blog surface. Server-safe, links only, no client state. */
 export function BlogHeader() {
   return (
     <header className="sticky top-0 z-50 bg-[#FBFCFE]/90 backdrop-blur-md border-b border-[#E5E9F0]">

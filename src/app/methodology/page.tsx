@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalPage, { Section } from "@/components/LegalPage";
 
 export const metadata: Metadata = {
-  title: "How we calculate & cite — Saaksh",
+  title: "How we calculate & cite, Saaksh",
   description: "Saaksh's methodology: every factor and disclosure is cited to a primary source, and we never fabricate figures.",
 };
 

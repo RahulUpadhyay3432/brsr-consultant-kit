@@ -43,7 +43,7 @@
       "gri_standard": "GRI 2-27",
       "gri_label": "Compliance with laws and regulations",
       "tcfd_pillar": "Risk Management",
-      "tcfd_detail": "Processes for identifying and assessing climate-related risks (RM-a) — regulatory risk subcategory",
+      "tcfd_detail": "Processes for identifying and assessing climate-related risks (RM-a), regulatory risk subcategory",
       "ifrs_reference": "IFRS S1 Para 36-37",
       "notes": "BRSR asks for monetary value and case count; GRI 2-27 asks for instances of non-compliance; IFRS S1 captures regulation as a risk vector"
     },
@@ -116,7 +116,7 @@
     },
     {
       "brsr_id": "P2-S2",
-      "brsr_label": "Sustainable sourcing — percentage of inputs sourced sustainably",
+      "brsr_label": "Sustainable sourcing, percentage of inputs sourced sustainably",
       "brsr_section": "Principle 2 Essential",
       "gri_standard": "GRI 204-1; GRI 301-1; GRI 308-1",
       "gri_label": "Procurement practices; Materials used; Supplier environmental assessment",
@@ -233,7 +233,7 @@
       "gri_label": "OHS management system; Workers covered by an OHS management system",
       "tcfd_pillar": "—",
       "tcfd_detail": "Physical risk to workforce (indirect)",
-      "ifrs_reference": "IFRS S2 Para 21 (climate resilience — workforce physical risk, indirect)",
+      "ifrs_reference": "IFRS S2 Para 21 (climate resilience, workforce physical risk, indirect)",
       "notes": "BRSR asks whether system is certified (ISO 45001 etc.) and percentage of workforce covered; GRI 403-1 expects system description; IFRS S2 only relevant if climate-linked occupational hazards exist"
     },
     {
@@ -254,7 +254,7 @@
       "gri_standard": "GRI 403-10",
       "gri_label": "Work-related ill health",
       "tcfd_pillar": "—",
-      "tcfd_detail": "Physical risk — heat stress, occupational disease (indirect climate link)",
+      "tcfd_detail": "Physical risk, heat stress, occupational disease (indirect climate link)",
       "ifrs_reference": "—",
       "notes": "BRSR asks for number of fatalities and cases due to ill health for employees and workers; GRI 403-10 expects types of ill health plus hazard identification; climate link exists for heat-exposed sectors"
     },
@@ -288,7 +288,7 @@
       "gri_label": "Freedom of association and collective bargaining; Minimum notice periods regarding operational changes",
       "tcfd_pillar": "—",
       "tcfd_detail": "Just Transition considerations (indirect)",
-      "ifrs_reference": "IFRS S2 Para 14(a) (transition planning — workforce impact, indirect)",
+      "ifrs_reference": "IFRS S2 Para 14(a) (transition planning, workforce impact, indirect)",
       "notes": "BRSR asks for percentage of permanent employees who are members; GRI 407-1 focuses on operations where rights may be at risk"
     },
     {
@@ -304,7 +304,7 @@
     },
     {
       "brsr_id": "P3-L14",
-      "brsr_label": "Wages paid — equal to or above minimum wage (employees and workers)",
+      "brsr_label": "Wages paid, equal to or above minimum wage (employees and workers)",
       "brsr_section": "Principle 3 Essential",
       "gri_standard": "GRI 202-1",
       "gri_label": "Ratios of standard entry level wage by gender compared to local minimum wage",
@@ -321,7 +321,7 @@
       "gri_standard": "GRI 2-29",
       "gri_label": "Approach to stakeholder engagement",
       "tcfd_pillar": "Governance",
-      "tcfd_detail": "Gov-a/Gov-b — stakeholder input into climate governance (indirect)",
+      "tcfd_detail": "Gov-a/Gov-b, stakeholder input into climate governance (indirect)",
       "ifrs_reference": "IFRS S1 Para 26-27 (governance process includes stakeholder consideration)",
       "notes": "BRSR mandates listing vulnerable/marginalized stakeholders; GRI 2-29 asks for categories of stakeholders and how they are identified; TCFD/IFRS expect stakeholder consideration in governance process"
     },
@@ -343,7 +343,7 @@
       "gri_standard": "GRI 3-1; GRI 3-2",
       "gri_label": "Process to determine material topics; List of material topics",
       "tcfd_pillar": "Strategy",
-      "tcfd_detail": "Strat-a — identification of climate-related risks and opportunities",
+      "tcfd_detail": "Strat-a, identification of climate-related risks and opportunities",
       "ifrs_reference": "IFRS S1 Para 28-30",
       "notes": "BRSR asks for list of material topics; GRI 3 requires a double materiality process; IFRS S1 applies financial materiality lens; BRSR materiality assessment is becoming de facto double materiality"
     },
@@ -455,7 +455,7 @@
       "gri_standard": "GRI 302-1 (renewable share)",
       "gri_label": "Energy consumption within the organization",
       "tcfd_pillar": "Metrics and Targets",
-      "tcfd_detail": "Transition metric — clean energy deployment (M&T-b)",
+      "tcfd_detail": "Transition metric, clean energy deployment (M&T-b)",
       "ifrs_reference": "IFRS S2 Para 29(a); IFRS S2 Appendix B Industry Metrics (sector-specific)",
       "notes": "BRSR asks for percentage; GRI embeds renewable share in 302-1; IFRS S2 industry-specific metrics may require renewable percentage for energy-intensive sectors"
     },
@@ -488,7 +488,7 @@
       "gri_standard": "GRI 303-5",
       "gri_label": "Water consumption",
       "tcfd_pillar": "Metrics and Targets",
-      "tcfd_detail": "M&T-b — intensity metrics",
+      "tcfd_detail": "M&T-b, intensity metrics",
       "ifrs_reference": "IFRS S2 Appendix B (sector-specific)",
       "notes": "BRSR asks for total consumption and intensity; GRI 303-5 reports consumption in megaliters; IFRS S2 water intensity is sector-dependent"
     },
@@ -510,7 +510,7 @@
       "gri_standard": "GRI 303-2",
       "gri_label": "Management of water discharge-related impacts",
       "tcfd_pillar": "Risk Management",
-      "tcfd_detail": "Physical risk mitigation — water scarcity response (RM-b)",
+      "tcfd_detail": "Physical risk mitigation, water scarcity response (RM-b)",
       "ifrs_reference": "IFRS S2 Para 22 (climate resilience)",
       "notes": "India-specific regulatory requirement for certain sectors; GRI 303-2 asks for water discharge standards; TCFD/IFRS S2 relevant under physical risk management for water-scarce operations"
     },
@@ -576,7 +576,7 @@
       "gri_standard": "GRI 305-5 (partial)",
       "gri_label": "Reduction of GHG emissions (offsets noted separately)",
       "tcfd_pillar": "Metrics and Targets",
-      "tcfd_detail": "M&T-c — if offsets are part of net-zero strategy",
+      "tcfd_detail": "M&T-c, if offsets are part of net-zero strategy",
       "ifrs_reference": "IFRS S2 Para 36(e)",
       "notes": "BRSR asks for amount of offsets and type; GRI expects offsets disclosed separately from reduction; IFRS S2 Para 36(e) explicitly requires disclosure of offset use in targets, including type and crediting scheme"
     },
@@ -631,13 +631,13 @@
       "gri_standard": "GRI 304-1; GRI 413-1",
       "gri_label": "Operations in areas of high biodiversity value; Operations with local community engagement and impact assessments",
       "tcfd_pillar": "Risk Management",
-      "tcfd_detail": "RM-a — identifying physical and transition risks",
+      "tcfd_detail": "RM-a, identifying physical and transition risks",
       "ifrs_reference": "IFRS S1 Para 36-39",
       "notes": "BRSR asks whether EIA has been undertaken for expansion/new projects and if results are publicly available; GRI captures this indirectly via biodiversity and community impact; TCFD/IFRS frame it as part of risk identification"
     },
     {
       "brsr_id": "P6-E22",
-      "brsr_label": "Biodiversity — operations in or adjacent to ecologically sensitive areas",
+      "brsr_label": "Biodiversity, operations in or adjacent to ecologically sensitive areas",
       "brsr_section": "Principle 6 Essential",
       "gri_standard": "GRI 304-1; GRI 304-2",
       "gri_label": "Operational sites in areas of high biodiversity value; Significant impacts on biodiversity",
@@ -664,8 +664,8 @@
       "gri_standard": "GRI 2-27",
       "gri_label": "Compliance with laws and regulations",
       "tcfd_pillar": "Risk Management",
-      "tcfd_detail": "RM-a — regulatory risk (transition risk sub-category)",
-      "ifrs_reference": "IFRS S2 Para 10(a) (transition risks — policy and legal)",
+      "tcfd_detail": "RM-a, regulatory risk (transition risk sub-category)",
+      "ifrs_reference": "IFRS S2 Para 10(a) (transition risks, policy and legal)",
       "notes": "BRSR asks for amount of fines and number of cases; GRI 2-27 asks for instances of non-compliance; IFRS S2 includes policy/legal transition risk"
     },
     {
@@ -675,7 +675,7 @@
       "gri_standard": "GRI 201-2",
       "gri_label": "Financial implications and other risks and opportunities due to climate change",
       "tcfd_pillar": "Strategy",
-      "tcfd_detail": "Strat-a — Climate-related risks and opportunities identified over short, medium, and long term",
+      "tcfd_detail": "Strat-a, Climate-related risks and opportunities identified over short, medium, and long term",
       "ifrs_reference": "IFRS S2 Para 10-12",
       "notes": "Strongest TCFD/IFRS alignment; BRSR Core is converging toward TCFD-style climate risk disclosure; GRI 201-2 captures financial implications; IFRS S2 requires scenario context"
     },
@@ -686,7 +686,7 @@
       "gri_standard": "GRI 201-2 (partial)",
       "gri_label": "Financial implications due to climate change",
       "tcfd_pillar": "Strategy",
-      "tcfd_detail": "Strat-c — Resilience of strategy under different climate scenarios, including 2°C or lower",
+      "tcfd_detail": "Strat-c, Resilience of strategy under different climate scenarios, including 2°C or lower",
       "ifrs_reference": "IFRS S2 Para 22",
       "notes": "BRSR Core phased requirement; TCFD/IFRS S2 expect qualitative and, where possible, quantitative scenario analysis; GRI 201-2 asks for risks/opportunities but does not mandate scenario methodology"
     },
@@ -697,7 +697,7 @@
       "gri_standard": "—",
       "gri_label": "No direct GRI equivalent",
       "tcfd_pillar": "Metrics and Targets",
-      "tcfd_detail": "M&T-b — internal carbon prices (supplemental guidance)",
+      "tcfd_detail": "M&T-b, internal carbon prices (supplemental guidance)",
       "ifrs_reference": "IFRS S2 Para 29(g)",
       "notes": "BRSR asks whether entity uses an internal carbon price and its value; TCFD supplemental guidance recommends disclosure; IFRS S2 Para 29(g) mandates disclosure if used in decision-making; GRI has no dedicated standard"
     },
@@ -715,7 +715,7 @@
     },
     {
       "brsr_id": "P7-R2",
-      "brsr_label": "Anti-competitive conduct — cases and penalties",
+      "brsr_label": "Anti-competitive conduct, cases and penalties",
       "brsr_section": "Principle 7 Essential",
       "gri_standard": "GRI 206-1",
       "gri_label": "Legal actions for anti-competitive behavior, anti-trust, and monopoly practices",
@@ -731,7 +731,7 @@
       "gri_standard": "GRI 415-1",
       "gri_label": "Political contributions",
       "tcfd_pillar": "Governance",
-      "tcfd_detail": "Gov-a — if lobbying positions are relevant to climate policy advocacy",
+      "tcfd_detail": "Gov-a, if lobbying positions are relevant to climate policy advocacy",
       "ifrs_reference": "IFRS S2 Para 14(a)(iv) (climate-related public policy engagement as part of transition plan)",
       "notes": "BRSR asks whether the entity has taken public positions on ESG issues; GRI 415-1 focuses on political contributions; IFRS S2 captures climate-related policy engagement within transition plan disclosure"
     },
@@ -777,7 +777,7 @@
       "gri_label": "Operations with local community engagement, impact assessments, and development programs",
       "tcfd_pillar": "—",
       "tcfd_detail": "Just Transition considerations (indirect)",
-      "ifrs_reference": "IFRS S2 Para 14(a) (transition plan — social considerations, indirect)",
+      "ifrs_reference": "IFRS S2 Para 14(a) (transition plan, social considerations, indirect)",
       "notes": "BRSR requires specifying beneficiary demographics; GRI 413-1 focuses on community engagement programs but without India-specific social categories; IFRS S2 Just Transition lens is emerging"
     },
     {
@@ -816,7 +816,7 @@
     },
     {
       "brsr_id": "P9-C3",
-      "brsr_label": "Data privacy — complaints and breaches",
+      "brsr_label": "Data privacy, complaints and breaches",
       "brsr_section": "Principle 9 Essential",
       "gri_standard": "GRI 418-1",
       "gri_label": "Substantiated complaints concerning breaches of customer privacy and losses of customer data",
@@ -860,7 +860,7 @@
     },
     {
       "brsr_id": "P9-C7",
-      "brsr_label": "Safe and informed usage (beyond labeling — voluntary product stewardship)",
+      "brsr_label": "Safe and informed usage (beyond labeling, voluntary product stewardship)",
       "brsr_section": "Principle 9 Essential",
       "gri_standard": "GRI 416-1",
       "gri_label": "Assessment of health and safety impacts of product and service categories",

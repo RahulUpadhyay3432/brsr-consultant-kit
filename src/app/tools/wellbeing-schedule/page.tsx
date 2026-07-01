@@ -72,11 +72,11 @@ export default function WellbeingSchedulePage() {
                     <div key={i} className="px-5 py-4 grid sm:grid-cols-[1fr_1fr] gap-x-6 gap-y-1.5">
                       <div>
                         <p className="text-[14px] font-semibold text-ink leading-snug">{r.head}</p>
-                        <p className="text-[12.5px] text-ink-muted mt-1 leading-relaxed">{r.relevance}</p>
+                        <p className="text-[13px] text-ink-body mt-1 leading-relaxed">{r.relevance}</p>
                       </div>
                       <div>
-                        <p className="text-[13px] text-ink-body leading-snug font-mono">{r.ledger}</p>
-                        <p className="text-[12.5px] text-ink-muted mt-1 leading-relaxed">{r.notes}</p>
+                        <p className="text-[13.5px] text-ink font-medium leading-snug">{r.ledger}</p>
+                        <p className="text-[13px] text-ink-body mt-1 leading-relaxed">{r.notes}</p>
                       </div>
                     </div>
                   ))}

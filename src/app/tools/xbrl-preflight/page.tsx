@@ -106,7 +106,7 @@ function CheckItem({ n, title, why, fix, source }: {
             <p className="text-[14px] text-ink-body leading-relaxed">
               <span className="font-semibold text-[#0E7A56]">Fix: </span>{fix}
             </p>
-            <p className="text-[12.5px] text-ink-muted leading-relaxed pt-2 border-t border-line-soft">
+            <p className="text-[13px] text-ink-body leading-relaxed pt-2 border-t border-line-soft">
               Source: {source}
             </p>
           </div>

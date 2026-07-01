@@ -6,91 +6,91 @@
       "title": "How do I start a report?",
       "category": "howto",
       "keywords": ["start", "begin", "new", "report", "create", "generate", "first", "how do i use", "get started"],
-      "answer": "Start a free readiness report in two steps, all in your browser.\n1. **Start a free report** — on the home page, click 'Start a free report'.\n2. **Fill the short intake** — client name, industry, size, and their existing compliance filings.\n\nThe gap-analysed report is generated instantly, on your device."
+      "answer": "Start a free readiness report in two steps, all in your browser.\n1. **Start a free report**, on the home page, click 'Start a free report'.\n2. **Fill the short intake**, client name, industry, size, and their existing compliance filings.\n\nThe gap-analysed report is generated instantly, on your device."
     },
     {
       "id": "filings-gap",
       "title": "Why should I add the client's existing filings?",
       "category": "howto",
       "keywords": ["filings", "existing", "compliance", "pcb", "epr", "pat", "zld", "already covered", "gap", "gap analysis", "why add"],
-      "answer": "The 'Existing Compliance Filings' field (PCB, EPR, PAT, ZLD and so on) is what powers the gap analysis.\n- **Tick what they file** — and the tool marks the BRSR fields those filings already cover as 'Ready to pull'.\n- **No double work** — you don't collect the same data twice.\n- **Skip it** — and every field looks like fresh collection."
+      "answer": "The 'Existing Compliance Filings' field (PCB, EPR, PAT, ZLD and so on) is what powers the gap analysis.\n- **Tick what they file**, and the tool marks the BRSR fields those filings already cover as 'Ready to pull'.\n- **No double work**, you don't collect the same data twice.\n- **Skip it**, and every field looks like fresh collection."
     },
     {
       "id": "ready-verify-collect",
       "title": "What do Ready, Verify and Collect mean?",
       "category": "howto",
       "keywords": ["ready", "verify", "collect", "status", "colour", "color", "badge", "what does", "mean", "pull from filing", "needs verification", "collect fresh"],
-      "answer": "Each BRSR field is colour-coded by status.\n- **Ready to pull** — the data already exists in an existing filing.\n- **Needs verification** — partly covered, one piece missing.\n- **Collect fresh** — not in any filing, gather it new.\n- **Not applicable** — a manufacturing-only disclosure hidden for service-sector clients."
+      "answer": "Each BRSR field is colour-coded by status.\n- **Ready to pull**, the data already exists in an existing filing.\n- **Needs verification**, partly covered, one piece missing.\n- **Collect fresh**, not in any filing, gather it new.\n- **Not applicable**, a manufacturing-only disclosure hidden for service-sector clients."
     },
     {
       "id": "mark-collected",
       "title": "How do I mark an item as collected?",
       "category": "howto",
       "keywords": ["mark", "collected", "done", "tick", "check off", "complete", "track", "progress", "hide collected"],
-      "answer": "Track progress on any field in the Action Plan.\n1. **Expand the field** — and use 'Mark as collected'.\n2. **Hide collected** — toggle it to focus on what's left.\n\nYour progress is saved on your device, so it survives a refresh or restart."
+      "answer": "Track progress on any field in the Action Plan.\n1. **Expand the field**, and use 'Mark as collected'.\n2. **Hide collected**, toggle it to focus on what's left.\n\nYour progress is saved on your device, so it survives a refresh or restart."
     },
     {
       "id": "csv-export",
       "title": "Where is the CSV export?",
       "category": "howto",
       "keywords": ["csv", "export", "excel", "spreadsheet", "download data", "full checklist", "where is"],
-      "answer": "Two CSV exports, both on your device.\n- **Action Plan → Export CSV** — the full Section A/B/C checklist (status, gap, how-to-collect, collected flags).\n- **Materiality → Assessment template** — the suggested topics with empty scoring columns for your stakeholder process.\n\nEverything stays in your browser."
+      "answer": "Two CSV exports, both on your device.\n- **Action Plan → Export CSV**, the full Section A/B/C checklist (status, gap, how-to-collect, collected flags).\n- **Materiality → Assessment template**, the suggested topics with empty scoring columns for your stakeholder process.\n\nEverything stays in your browser."
     },
     {
       "id": "pdf-brief",
       "title": "What is the Download PDF / data-request brief?",
       "category": "howto",
       "keywords": ["pdf", "download pdf", "brief", "data request", "client", "send", "share", "report pdf"],
-      "answer": "'Download PDF' makes a clean, structured brief you can send straight to the client's team.\n- **Client-ready** — a 'BRSR data request' brief, no Chrome print header or extension overlays.\n- **Grouped by owner** — gaps sorted by the team that usually owns each item (HR, EHS, energy manager, company secretary).\n- **On-device** — generated in your browser."
+      "answer": "'Download PDF' makes a clean, structured brief you can send straight to the client's team.\n- **Client-ready**, a 'BRSR data request' brief, no Chrome print header or extension overlays.\n- **Grouped by owner**, gaps sorted by the team that usually owns each item (HR, EHS, energy manager, company secretary).\n- **On-device**, generated in your browser."
     },
     {
       "id": "upload-last-year",
       "title": "How do I upload last year's report?",
       "category": "howto",
       "keywords": ["upload", "last year", "previous", "pdf", "prior", "returning client", "detect", "already documented"],
-      "answer": "Carry forward what a returning client already disclosed.\n1. **Upload last year's report** — at the top of the Action Plan.\n2. **Read on your device** — the PDF never leaves your browser.\n3. **'Last year' badges** — disclosures documented last year are tagged, so you know what to carry forward versus collect fresh."
+      "answer": "Carry forward what a returning client already disclosed.\n1. **Upload last year's report**, at the top of the Action Plan.\n2. **Read on your device**, the PDF never leaves your browser.\n3. **'Last year' badges**, disclosures documented last year are tagged, so you know what to carry forward versus collect fresh."
     },
     {
       "id": "materiality",
       "title": "How does Suggested Materiality work?",
       "category": "howto",
       "keywords": ["materiality", "material", "topics", "shortlist", "add to shortlist", "esg topics", "suggested"],
-      "answer": "The Materiality tab suggests ESG topics that matter for the client's industry.\n1. **Browse by theme** — topics grouped by Environment, Social and Governance.\n2. **Add to shortlist** — pick the ones to carry into the client's stakeholder process.\n\nIt is a **starting point, not a finished assessment** — a BRSR-compliant materiality assessment still needs stakeholder engagement."
+      "answer": "The Materiality tab suggests ESG topics that matter for the client's industry.\n1. **Browse by theme**, topics grouped by Environment, Social and Governance.\n2. **Add to shortlist**, pick the ones to carry into the client's stakeholder process.\n\nIt is a **starting point, not a finished assessment**, a BRSR-compliant materiality assessment still needs stakeholder engagement."
     },
     {
       "id": "alignment",
       "title": "What is the Alignment tab?",
       "category": "howto",
       "keywords": ["alignment", "framework", "mapping", "gri", "tcfd", "ifrs", "tnfd", "msci", "djsi", "crosswalk", "report across"],
-      "answer": "Alignment is the cross-framework crosswalk — collect once, report many.\n- **Frameworks** — maps every BRSR disclosure to GRI, TCFD, IFRS S1/S2 and TNFD (nature).\n- **Ratings** — plus MSCI and S&P/DJSI rating criteria.\n\nOne round of BRSR data serves every other report your client needs."
+      "answer": "Alignment is the cross-framework crosswalk, collect once, report many.\n- **Frameworks**, maps every BRSR disclosure to GRI, TCFD, IFRS S1/S2 and TNFD (nature).\n- **Ratings**, plus MSCI and S&P/DJSI rating criteria.\n\nOne round of BRSR data serves every other report your client needs."
     },
     {
       "id": "collect-tier",
       "title": "What is Collect / data requests?",
       "category": "howto",
       "keywords": ["collect", "data request", "data owner", "chase", "team", "email", "reminder", "paid", "tier", "login", "requests"],
-      "answer": "Collect is the Pro tier for chasing BRSR data from a client's team (behind a passcode at /requests).\n1. **Add data owners** — each gets a no-login secure link.\n2. **Saaksh emails** — a branded request, then auto-reminders, and alerts you on submit.\n3. **Auto-compute** — emissions are calculated and a draft is assembled as values come in."
+      "answer": "Collect is the Pro tier for chasing BRSR data from a client's team (behind a passcode at /requests).\n1. **Add data owners**, each gets a no-login secure link.\n2. **Saaksh emails**, a branded request, then auto-reminders, and alerts you on submit.\n3. **Auto-compute**, emissions are calculated and a draft is assembled as values come in."
     },
     {
       "id": "save-progress",
       "title": "Will I lose my work if I close the browser?",
       "category": "howto",
       "keywords": ["save", "saved", "lose", "progress", "restart", "close", "refresh", "persist", "data lost", "shut down"],
-      "answer": "No — your work is saved on your device and survives a close, refresh or restart.\n- **What's saved** — form answers, collected ticks, calculator inputs and your materiality shortlist.\n- **Coming back** — the home page shows a 'Continue where you left off' banner.\n- **The catch** — it is per-device and per-browser; incognito or clearing browser data will erase it, so back it up."
+      "answer": "No, your work is saved on your device and survives a close, refresh or restart.\n- **What's saved**, form answers, collected ticks, calculator inputs and your materiality shortlist.\n- **Coming back**, the home page shows a 'Continue where you left off' banner.\n- **The catch**, it is per-device and per-browser; incognito or clearing browser data will erase it, so back it up."
     },
     {
       "id": "privacy",
       "title": "Is my client's data stored anywhere?",
       "category": "howto",
       "keywords": ["privacy", "stored", "data", "secure", "server", "upload", "on device", "leaves", "browser", "confidential"],
-      "answer": "It depends on which part of Saaksh you use.\n- **Free readiness tool** — no. Everything runs in your browser; nothing is uploaded or stored on a server.\n- **Pro Collect tier** — yes, it stores the data you collect (securely), because it has to coordinate a client's team.\n\nThe free tool is 100% on-device."
+      "answer": "It depends on which part of Saaksh you use.\n- **Free readiness tool**, no. Everything runs in your browser; nothing is uploaded or stored on a server.\n- **Pro Collect tier**, yes, it stores the data you collect (securely), because it has to coordinate a client's team.\n\nThe free tool is 100% on-device."
     },
     {
       "id": "calculators",
       "title": "How do the emission calculators work?",
       "category": "howto",
       "keywords": ["calculator", "emissions", "ghg", "scope 1", "scope 2", "energy", "water", "compute", "p6", "factor"],
-      "answer": "The P6 environment fields have built-in calculators for GHG Scope 1 & 2, energy and water.\n1. **Enter activity data** — electricity units, diesel litres and so on.\n2. **Cited factors** — the tool computes emissions using the CEA grid factor and IPCC/GHG-Protocol fuel factors.\n3. **Saved & shared** — inputs persist on your device and carry across the related fields."
+      "answer": "The P6 environment fields have built-in calculators for GHG Scope 1 & 2, energy and water.\n1. **Enter activity data**, electricity units, diesel litres and so on.\n2. **Cited factors**, the tool computes emissions using the CEA grid factor and IPCC/GHG-Protocol fuel factors.\n3. **Saved & shared**, inputs persist on your device and carry across the related fields."
     },
     {
       "id": "brsr",
@@ -174,84 +174,84 @@
       "title": "What do I do next?",
       "category": "howto",
       "keywords": ["what next", "what do i do", "next step", "now what", "getting started", "where to start", "how to use saaksh", "navigate", "lost", "stuck"],
-      "answer": "Here's the sequence from a blank format to a client-ready plan.\n1. **Start a free report** — fill the short intake for an instant gap analysis, plus a CSV and a client-ready PDF brief.\n2. **Work the Action Plan** — tick items as collected.\n3. **Review Materiality & Alignment** — the suggested topics and the cross-framework crosswalk.\n4. **Move to Pro (Collect)** — at /requests, create a campaign and add data owners to chase data from the client's team."
+      "answer": "Here's the sequence from a blank format to a client-ready plan.\n1. **Start a free report**, fill the short intake for an instant gap analysis, plus a CSV and a client-ready PDF brief.\n2. **Work the Action Plan**, tick items as collected.\n3. **Review Materiality & Alignment**, the suggested topics and the cross-framework crosswalk.\n4. **Move to Pro (Collect)**, at /requests, create a campaign and add data owners to chase data from the client's team."
     },
     {
       "id": "add-data-owner",
       "title": "How do I add a data owner?",
       "category": "howto",
       "keywords": ["add data owner", "add owner", "data owner", "assign", "person", "contact", "team member", "collect from", "pick fields"],
-      "answer": "Add data owners from a campaign at /requests/[id].\n1. **Open '+ Add a data owner'** — the panel on the campaign page.\n2. **Enter name and email** — or pick from your saved contacts for that client.\n3. **Choose their BRSR fields** — and send; they get a no-login secure link to a form.\n\nEach owner you add is also saved to that client's contacts, so it's one tap next time."
+      "answer": "Add data owners from a campaign at /requests/[id].\n1. **Open '+ Add a data owner'**, the panel on the campaign page.\n2. **Enter name and email**, or pick from your saved contacts for that client.\n3. **Choose their BRSR fields**, and send; they get a no-login secure link to a form.\n\nEach owner you add is also saved to that client's contacts, so it's one tap next time."
     },
     {
       "id": "collect-from-team",
       "title": "How do I collect BRSR data from a client's team?",
       "category": "howto",
       "keywords": ["collect data", "collect from team", "chase data", "client team", "gather data", "request data", "send to team", "data collection", "owners"],
-      "answer": "Use Pro (Collect) at /requests to chase data from the client's team.\n1. **Create a campaign** — for the client.\n2. **Add data owners** — the people who own each set of numbers, and assign each their BRSR fields.\n3. **Saaksh chases** — sends a branded request email with a no-login link, alerts you on submit, and auto-reminds anyone pending.\n4. **Auto-compute** — as values come in, emissions are calculated and a draft is assembled."
+      "answer": "Use Pro (Collect) at /requests to chase data from the client's team.\n1. **Create a campaign**, for the client.\n2. **Add data owners**, the people who own each set of numbers, and assign each their BRSR fields.\n3. **Saaksh chases**, sends a branded request email with a no-login link, alerts you on submit, and auto-reminds anyone pending.\n4. **Auto-compute**, as values come in, emissions are calculated and a draft is assembled."
     },
     {
       "id": "assurance-ledger",
       "title": "What is the assurance / data-ownership ledger?",
       "category": "howto",
       "keywords": ["assurance", "ledger", "data ownership", "audit trail", "evidence trail", "who provided", "data owner trail", "assurance pack", "reasonable assurance", "export ledger"],
-      "answer": "The 'Assurance readiness' panel on a campaign turns everything Collect captured into one export.\n- **Per data point** — the BRSR code, the value, the named data owner and email, whether evidence was attached, and the cited basis for any computed figure.\n- **Download** — a CSV ledger, the evidence trail BRSR Core reasonable assurance now expects.\n\nIt only surfaces what was actually collected — **nothing is invented**."
+      "answer": "The 'Assurance readiness' panel on a campaign turns everything Collect captured into one export.\n- **Per data point**, the BRSR code, the value, the named data owner and email, whether evidence was attached, and the cited basis for any computed figure.\n- **Download**, a CSV ledger, the evidence trail BRSR Core reasonable assurance now expects.\n\nIt only surfaces what was actually collected, **nothing is invented**."
     },
     {
       "id": "how-collect-works",
       "title": "How does Collect work?",
       "category": "howto",
       "keywords": ["how collect works", "collect overview", "what is collect", "collect flow", "campaign", "how does pro work", "data request product"],
-      "answer": "Collect is the Pro workflow for collecting BRSR data from a client's team.\n1. **Create a campaign** — for one client, add data owners and assign their BRSR fields.\n2. **Saaksh emails** — each owner a no-login link; you see live status and they get auto-reminders.\n3. **Auto-emissions** — submitted activity data (electricity, diesel) converts to emissions, each figure attributed to who provided it.\n4. **Generate outputs** — a grounded BRSR draft plus an assurance-ready ledger."
+      "answer": "Collect is the Pro workflow for collecting BRSR data from a client's team.\n1. **Create a campaign**, for one client, add data owners and assign their BRSR fields.\n2. **Saaksh emails**, each owner a no-login link; you see live status and they get auto-reminders.\n3. **Auto-emissions**, submitted activity data (electricity, diesel) converts to emissions, each figure attributed to who provided it.\n4. **Generate outputs**, a grounded BRSR draft plus an assurance-ready ledger."
     },
     {
       "id": "pro-vs-free",
       "title": "What does Pro give me over the free tool?",
       "category": "howto",
       "keywords": ["pro", "free vs pro", "paid", "upgrade", "what is pro", "difference free pro", "pro features", "why pro", "premium"],
-      "answer": "The line is simple: Free is to understand and prepare; Pro is the workspace that does the work.\n- **Free (on your device)** — the gap analysis, built-in GHG/energy/water calculators, suggested materiality, cross-framework mapping, AI field guidance on every disclosure, and CSV plus PDF exports.\n- **Pro** — Collect (chase data from the client's team), the document auto-fill importer, auto-computed emissions, the assurance ledger, AI narrative draft, and the proposal and fee builder."
+      "answer": "The line is simple: Free is to understand and prepare; Pro is the workspace that does the work.\n- **Free (on your device)**, the gap analysis, built-in GHG/energy/water calculators, suggested materiality, cross-framework mapping, AI field guidance on every disclosure, and CSV plus PDF exports.\n- **Pro**, Collect (chase data from the client's team), the document auto-fill importer, auto-computed emissions, the assurance ledger, AI narrative draft, and the proposal and fee builder."
     },
     {
       "id": "auto-fill-documents",
       "title": "How do I auto-fill from my documents?",
       "category": "howto",
       "keywords": ["auto fill", "autofill", "import", "importer", "upload document", "pre-fill", "last year report", "extract", "annual report", "pull values"],
-      "answer": "The import panel on a campaign pre-fills fields from the client's existing report.\n1. **Upload the report** — last year's BRSR or annual report.\n2. **Read in your browser** — the PDF text is extracted on-device; figures come back as reviewable suggestions, each with the exact source sentence and a confidence badge.\n3. **Tick what you trust** — nothing auto-applies; only the ones you tick are saved.\n\nThe AI only returns values **literally present** in the document — it never invents."
+      "answer": "The import panel on a campaign pre-fills fields from the client's existing report.\n1. **Upload the report**, last year's BRSR or annual report.\n2. **Read in your browser**, the PDF text is extracted on-device; figures come back as reviewable suggestions, each with the exact source sentence and a confidence badge.\n3. **Tick what you trust**, nothing auto-applies; only the ones you tick are saved.\n\nThe AI only returns values **literally present** in the document, it never invents."
     },
     {
       "id": "generate-draft",
       "title": "How do I generate the BRSR draft?",
       "category": "howto",
       "keywords": ["generate draft", "draft", "brsr draft", "build draft", "draft responses", "ai narrative", "write up", "printable draft"],
-      "answer": "Turn collected data into a draft from the campaign page.\n1. **Generate draft** — a deterministic, printable draft of the BRSR responses, grouped by Section and Principle, with the emissions block and a 'nothing is invented' note.\n2. **Optional AI narrative** — a short grounded paragraph per principle from the submitted facts, labelled 'AI draft, review before filing'.\n\nThe narrative **never invents or alters a number**."
+      "answer": "Turn collected data into a draft from the campaign page.\n1. **Generate draft**, a deterministic, printable draft of the BRSR responses, grouped by Section and Principle, with the emissions block and a 'nothing is invented' note.\n2. **Optional AI narrative**, a short grounded paragraph per principle from the submitted facts, labelled 'AI draft, review before filing'.\n\nThe narrative **never invents or alters a number**."
     },
     {
       "id": "cbam-module",
       "title": "What is the CBAM readiness module?",
       "category": "howto",
       "keywords": ["cbam module", "cbam readiness", "beyond brsr", "cbam check", "eu export", "cbam applies", "regulatory readiness", "ccts readiness"],
-      "answer": "The free report's 'Beyond BRSR' tab has a CBAM readiness check (and a CCTS one for India).\n- **Plain verdict** — likely, may, or unlikely to apply, from the client's industry and export markets.\n- **What to prepare** — a dated timeline, a readiness checklist, and cited sources.\n\nIt's a **readiness check** to help you prepare, not a liability calculation of embedded emissions."
+      "answer": "The free report's 'Beyond BRSR' tab has a CBAM readiness check (and a CCTS one for India).\n- **Plain verdict**, likely, may, or unlikely to apply, from the client's industry and export markets.\n- **What to prepare**, a dated timeline, a readiness checklist, and cited sources.\n\nIt's a **readiness check** to help you prepare, not a liability calculation of embedded emissions."
     },
     {
       "id": "send-reminders",
       "title": "How do I send reminders to owners?",
       "category": "howto",
       "keywords": ["reminder", "remind", "chase", "follow up", "nudge", "pending owners", "auto reminder", "remind all", "not responded"],
-      "answer": "Saaksh chases pending owners for you.\n- **Automatic cadence** — reminders go out a few days apart, up to a few times, with a final nudge near the deadline.\n- **Visible status** — each owner card shows when they were last emailed and how many reminders have gone out.\n- **Manual nudge** — you can also trigger a reminder to everyone still pending from the campaign page."
+      "answer": "Saaksh chases pending owners for you.\n- **Automatic cadence**, reminders go out a few days apart, up to a few times, with a final nudge near the deadline.\n- **Visible status**, each owner card shows when they were last emailed and how many reminders have gone out.\n- **Manual nudge**, you can also trigger a reminder to everyone still pending from the campaign page."
     },
     {
       "id": "sample-client",
       "title": "What is a sample client?",
       "category": "howto",
       "keywords": ["sample client", "sample campaign", "demo", "try collect", "example", "test campaign", "see how it works", "load sample"],
-      "answer": "A sample client is a pre-filled demo campaign so you can see how Collect works first.\n- **Ready-made** — it loads a campaign with example owners and fields.\n- **Explore freely** — try the owners list, emissions, draft, and assurance ledger before running your own.\n\nIt's just for exploring — use a **real campaign** for actual client data."
+      "answer": "A sample client is a pre-filled demo campaign so you can see how Collect works first.\n- **Ready-made**, it loads a campaign with example owners and fields.\n- **Explore freely**, try the owners list, emissions, draft, and assurance ledger before running your own.\n\nIt's just for exploring, use a **real campaign** for actual client data."
     },
     {
       "id": "proposal-builder",
       "title": "How do I build a proposal and fee?",
       "category": "howto",
       "keywords": ["proposal", "fee", "pricing", "quote", "scope", "win work", "proposal builder", "fee builder", "rates", "estimate"],
-      "answer": "The proposal and fee builder (Pro, at /requests/proposal) helps you scope and price an engagement.\n1. **Enter scope and your rates** — the client's scope plus your own numbers.\n2. **Live breakdown** — a transparent, itemised fee estimate and a downloadable branded proposal PDF.\n\nIt structures **your own numbers** and never asserts a market price, so adjust to your market. It runs in your browser and stores nothing."
+      "answer": "The proposal and fee builder (Pro, at /requests/proposal) helps you scope and price an engagement.\n1. **Enter scope and your rates**, the client's scope plus your own numbers.\n2. **Live breakdown**, a transparent, itemised fee estimate and a downloadable branded proposal PDF.\n\nIt structures **your own numbers** and never asserts a market price, so adjust to your market. It runs in your browser and stores nothing."
     }
   ]
 }

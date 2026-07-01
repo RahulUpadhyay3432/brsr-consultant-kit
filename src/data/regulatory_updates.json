@@ -11,7 +11,7 @@
       "tag": "CBAM",
       "title": "EU CBAM definitive period is now live",
       "summary": "Importers of covered goods (iron & steel, aluminium, cement, fertiliser, hydrogen, electricity) must be authorised CBAM declarants and have embedded emissions third-party verified. Indian exporters of these goods to the EU are in scope.",
-      "source_label": "European Commission — CBAM",
+      "source_label": "European Commission, CBAM",
       "source_url": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en"
     },
     {
@@ -21,7 +21,7 @@
       "tag": "CCTS",
       "title": "India's CCTS: GEI targets notified for the first sectors",
       "summary": "Greenhouse-gas emission-intensity targets are notified for roughly 490 obligated entities across the first energy-intensive sectors, with Iron & Steel and Fertiliser to follow. FY 2025-26 and FY 2026-27 are the first two compliance years.",
-      "source_label": "ICAP — India CCTS",
+      "source_label": "ICAP, India CCTS",
       "source_url": "https://icapcarbonaction.com/en/news/india-notifies-emission-intensity-targets-nine-sectors-under-carbon-credit-trading-scheme"
     },
     {
@@ -31,7 +31,7 @@
       "tag": "BRSR Core",
       "title": "BRSR Core assurance reaches the top 500",
       "summary": "Reasonable assurance on the nine BRSR Core attributes applies to the top 500 listed companies this reporting year, on SEBI's glide path that reaches the top 1000 by FY 2026-27. Assurance is under ICAI SSAE 3000 / SAE 3410.",
-      "source_label": "SEBI — BRSR Core circular (12 Jul 2023)",
+      "source_label": "SEBI, BRSR Core circular (12 Jul 2023)",
       "source_url": "https://www.sebi.gov.in/legal/circulars/jul-2023/brsr-core-framework-for-assurance-and-esg-disclosures-for-value-chain_73854.html"
     },
     {
@@ -41,7 +41,7 @@
       "tag": "SEBI",
       "title": "SEBI's March 2025 BRSR amendments",
       "summary": "SEBI eased value-chain disclosure (voluntary, on an assessment-or-assurance basis), clarified the assurance-vs-assessment distinction, and refined several Section-C indicators. All changes are reflected in the Saaksh knowledge base.",
-      "source_label": "SEBI — BRSR Format",
+      "source_label": "SEBI, BRSR Format",
       "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/jul-2023/Annexure_II-Updated-BRSR_p.PDF"
     },
     {
@@ -51,7 +51,7 @@
       "tag": "BRSR",
       "title": "Value-chain disclosure becomes the next obligation",
       "summary": "Value-chain ESG disclosure is voluntary for FY 2025-26 and expected to apply from FY 2026-27 for the top 250. Start mapping which value-chain partners make up 75% of purchases and sales now, so the data path exists before it is mandatory.",
-      "source_label": "SEBI — BRSR Core circular",
+      "source_label": "SEBI, BRSR Core circular",
       "source_url": "https://www.sebi.gov.in/legal/circulars/jul-2023/brsr-core-framework-for-assurance-and-esg-disclosures-for-value-chain_73854.html"
     },
     {
@@ -61,7 +61,7 @@
       "tag": "CBAM",
       "title": "First CBAM certificate surrender falls due",
       "summary": "CBAM certificates go on sale from February 2027; the first surrender, for 2026 imports, is due 30 September 2027. The payable share of embedded emissions phases in from 2.5% in 2026 toward 100% by 2034.",
-      "source_label": "European Commission — CBAM",
+      "source_label": "European Commission, CBAM",
       "source_url": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en"
     },
     {
@@ -71,7 +71,7 @@
       "tag": "CBAM",
       "title": "A CBAM de-minimis exempts small importers",
       "summary": "Under the EU Omnibus simplification, a new per-importer de-minimis (around 50 tonnes a year) exempts small importers from CBAM obligations ahead of the 2026 compliance phase.",
-      "source_label": "ICAP — CBAM simplifications",
+      "source_label": "ICAP, CBAM simplifications",
       "source_url": "https://icapcarbonaction.com/en/news/eu-adopts-simplifications-cbam-rules-ahead-compliance-phase-starting-2026"
     },
     {
@@ -81,7 +81,7 @@
       "tag": "GHG",
       "title": "Scope 3 stays voluntary, but increasingly expected",
       "summary": "Scope 3 (value-chain) emissions remain a BRSR leadership (voluntary) indicator, but assurers and rating agencies increasingly expect at least a screening estimate. A category 4–9 activity-based screen is a defensible starting point.",
-      "source_label": "SEBI — BRSR Format",
+      "source_label": "SEBI, BRSR Format",
       "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/jul-2023/Annexure_II-Updated-BRSR_p.PDF"
     }
   ]

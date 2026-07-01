@@ -167,7 +167,7 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
         </p>
       </div>
 
-      {/* Downloadable templates — first section, no border-t */}
+      {/* Downloadable templates, first section, no border-t */}
       <section className="space-y-3">
         <h2 className="text-[18.5px] font-bold text-stone-900">Templates</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -430,7 +430,7 @@ function DisclosureExamplesSection() {
           </svg>
           <input
             type="text"
-            placeholder="Search by field ID or label — e.g. P6-E1, emissions, wages..."
+            placeholder="Search by field ID or label, e.g. P6-E1, emissions, wages..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setOpenId(null); }}
             className="w-full max-w-[520px] pl-10 pr-3 py-2.5 text-[13.5px] text-stone-800 bg-white border border-stone-300 rounded-lg placeholder:text-stone-400 focus:outline-none focus:border-brand-400 focus:ring-1 focus:ring-brand-300 transition-colors"

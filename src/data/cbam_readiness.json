@@ -2,10 +2,10 @@
   "_meta": {
     "name": "EU Carbon Border Adjustment Mechanism (CBAM)",
     "what": "The EU's carbon levy on imports of certain carbon-intensive goods. An Indian exporter of covered goods to the EU must report the embedded emissions of those goods and, from the definitive period, see a financial obligation applied at the EU border.",
-    "status_note": "This is a readiness check — who is in scope and what to prepare. It is not a CBAM liability calculation; embedded-emissions quantification + the certificate cost is a separate, heavier step.",
+    "status_note": "This is a readiness check, who is in scope and what to prepare. It is not a CBAM liability calculation; embedded-emissions quantification + the certificate cost is a separate, heavier step.",
     "primary_sources": [
-      { "label": "European Commission — Carbon Border Adjustment Mechanism", "url": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en" },
-      { "label": "ICAP — EU adopts CBAM simplifications ahead of 2026 compliance", "url": "https://icapcarbonaction.com/en/news/eu-adopts-simplifications-cbam-rules-ahead-compliance-phase-starting-2026" }
+      { "label": "European Commission, Carbon Border Adjustment Mechanism", "url": "https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en" },
+      { "label": "ICAP, EU adopts CBAM simplifications ahead of 2026 compliance", "url": "https://icapcarbonaction.com/en/news/eu-adopts-simplifications-cbam-rules-ahead-compliance-phase-starting-2026" }
     ]
   },
   "covered_goods": ["Cement", "Iron & steel", "Aluminium", "Fertilisers", "Electricity", "Hydrogen"],
@@ -16,17 +16,17 @@
     "power_and_energy": { "covered": true, "partial": true, "goods": ["Electricity"], "note": "Covered for electricity exported into the EU grid; most Indian generators do not export power to the EU." }
   },
   "timeline": [
-    { "date": "1 Oct 2023 – 31 Dec 2025", "event": "Transitional period — quarterly reporting of embedded emissions only, no financial charge.", "source": "European Commission" },
-    { "date": "1 Jan 2026", "event": "Definitive period begins — importers must be authorised CBAM declarants; embedded emissions must be third-party verified.", "source": "European Commission" },
+    { "date": "1 Oct 2023 – 31 Dec 2025", "event": "Transitional period, quarterly reporting of embedded emissions only, no financial charge.", "source": "European Commission" },
+    { "date": "1 Jan 2026", "event": "Definitive period begins, importers must be authorised CBAM declarants; embedded emissions must be third-party verified.", "source": "European Commission" },
     { "date": "From 2026", "event": "A new ~50-tonne/year per-importer de-minimis exempts small importers (Omnibus simplification).", "source": "ICAP" },
     { "date": "1 Feb 2027", "event": "Sale of CBAM certificates begins; first surrender (for 2026 imports) due 30 Sep 2027.", "source": "European Commission" },
     { "date": "2026 → 2034", "event": "Financial obligation phases in: the payable share of embedded emissions rises from 2.5% (2026) toward 100% (2034).", "source": "European Commission" }
   ],
   "checklist": [
     { "task": "Confirm whether your exported goods are CBAM-covered", "detail": "Map your product HS/CN codes to the six covered goods (cement, iron & steel, aluminium, fertilisers, electricity, hydrogen). Only covered goods entering the EU trigger CBAM." },
-    { "task": "Identify the EU importer of record", "detail": "The CBAM obligation legally sits with the EU importer (the authorised declarant), but they will need your installation-level emissions data — clarify who reports and who supplies the data." },
-    { "task": "Measure embedded emissions per installation", "detail": "Calculate direct (and, where required, indirect) embedded emissions for each good at the producing installation, per the EU's CBAM methodology — not an industry average where actual data exists." },
-    { "task": "Arrange third-party verification", "detail": "From 2026, embedded-emissions data must be verified by an EU-accredited verifier; unverified shipments default to high EU benchmark values. Verifier availability in India is limited — start early." },
+    { "task": "Identify the EU importer of record", "detail": "The CBAM obligation legally sits with the EU importer (the authorised declarant), but they will need your installation-level emissions data, clarify who reports and who supplies the data." },
+    { "task": "Measure embedded emissions per installation", "detail": "Calculate direct (and, where required, indirect) embedded emissions for each good at the producing installation, per the EU's CBAM methodology, not an industry average where actual data exists." },
+    { "task": "Arrange third-party verification", "detail": "From 2026, embedded-emissions data must be verified by an EU-accredited verifier; unverified shipments default to high EU benchmark values. Verifier availability in India is limited, start early." },
     { "task": "Set up quarterly data exchange", "detail": "Establish a repeatable process to give your EU importer verified emissions data each quarter, with supporting documentation retained for audit." }
   ]
 }

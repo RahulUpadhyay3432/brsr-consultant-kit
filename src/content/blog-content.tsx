@@ -1,6 +1,6 @@
 import React from "react";
 
-// Reading serif for long-form body — Newsreader (loaded app-wide), Georgia fallback.
+// Reading serif for long-form body, Newsreader (loaded app-wide), Georgia fallback.
 const SERIF: React.CSSProperties = { fontFamily: "var(--font-newsreader), Georgia, 'Times New Roman', serif" };
 // Display serif for editorial headings.
 const SERIF_DISPLAY: React.CSSProperties = { fontFamily: "var(--font-newsreader), Georgia, serif" };
@@ -278,7 +278,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       <UL items={[
         "Identify the suppliers that account for 2% or more of purchases by value.",
         "Check if those suppliers file BRSR themselves or have any ESG data available.",
-        "Start a Scope 3 Category 1 (purchased goods) screening — even a high-level estimate establishes a baseline.",
+        "Start a Scope 3 Category 1 (purchased goods) screening, even a high-level estimate establishes a baseline.",
         "Document the methodology, because the assurer will ask.",
       ]} />
 
@@ -289,7 +289,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       </P>
       <UL items={[
         "Reporting period is the financial year (April-March), not the calendar year.",
-        "Absolute figures must be reported alongside intensity ratios — not instead of them.",
+        "Absolute figures must be reported alongside intensity ratios, not instead of them.",
         "For P6-E1 (GHG), both Scope 1 and Scope 2 are required; Scope 3 remains voluntary.",
         "The \"well-being\" disclosures in P3 must cover all workers, not just permanent employees.",
         "Section A disclosures updated to include the company's BRSR contact person and their designation.",
@@ -395,14 +395,14 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
       <H2>The three common mistakes</H2>
       <UL items={[
-        <>Missing Scope 2 entirely — many first-time filers report only Scope 1 from diesel and omit electricity.</>,
-        <>Using a stale CEA factor — Version 19.0 or 20.0 instead of the current 21.0 (0.710 vs 0.716 kg CO2e/kWh — a small difference that will be flagged by an assurer).</>,
-        <>Reporting in kg instead of tCO2e — divide by 1,000 after multiplying by the emission factor.</>,
+        <>Missing Scope 2 entirely, many first-time filers report only Scope 1 from diesel and omit electricity.</>,
+        <>Using a stale CEA factor, Version 19.0 or 20.0 instead of the current 21.0 (0.710 vs 0.716 kg CO2e/kWh, a small difference that will be flagged by an assurer).</>,
+        <>Reporting in kg instead of tCO2e, divide by 1,000 after multiplying by the emission factor.</>,
       ]} />
       <Callout title="Saaksh's built-in GHG calculator handles all of this" color="green">
         The P6-E1 calculator in Saaksh uses the current CEA factor (v21.0, 0.710) and IPCC 2006 diesel
         factor, cites them by version in the output, and computes both absolute figures and intensity ratios.
-        It runs entirely in your browser — no data leaves your device.
+        It runs entirely in your browser, no data leaves your device.
       </Callout>
 
       <FAQ items={[
@@ -451,7 +451,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       ]} />
       <P>
         All companies to which BRSR applies must file BRSR Essential in their Annual Report. No assurance
-        is mandated for Essential-only filers — though companies can voluntarily arrange limited assurance.
+        is mandated for Essential-only filers, though companies can voluntarily arrange limited assurance.
       </P>
 
       <H2>BRSR Core: the 42 KPIs that need assurance</H2>
@@ -492,7 +492,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       <H2>Practical advice for consultants</H2>
       <P>
         If your client is in the top 500, raise the assurance requirement in your kickoff meeting. Build
-        the data trail from day one — it costs almost nothing extra during data collection but can save
+        the data trail from day one, it costs almost nothing extra during data collection but can save
         weeks of rework if the assurer asks for evidence later. And choose the assurer early: SEBI-registered
         ESG assurers have limited capacity and are booking out months in advance as the Core mandate expands.
       </P>
@@ -523,12 +523,12 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
     <>
       <P>
         Certain BRSR disclosures consistently generate confusion, data gaps, and revision rounds across
-        manufacturing clients. These are not necessarily the most complex disclosures — they are the ones
+        manufacturing clients. These are not necessarily the most complex disclosures, they are the ones
         where the data is scattered, the format is ambiguous, or the underlying concept is misunderstood.
         Here are the five that come up most often.
       </P>
 
-      <H2>1. P6-E1: GHG emissions — Scope confusion</H2>
+      <H2>1. P6-E1: GHG emissions, Scope confusion</H2>
       <P>
         The most common mistake is reporting Scope 1 (diesel, LPG) but omitting Scope 2 (grid electricity).
         Both are required under P6-E1. A second common mistake is reporting in kg CO2e rather than tCO2e —
@@ -536,7 +536,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
         FY 2025-26.
       </P>
 
-      <H2>2. P3-E1: Total workforce — contractor headcount</H2>
+      <H2>2. P3-E1: Total workforce, contractor headcount</H2>
       <P>
         P3-E1 asks for total workforce including contractual workers, part-time workers, and workers from
         staffing agencies. Most HR systems track only permanent and direct-hire contract employees.
@@ -562,17 +562,17 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
         the CPCB portal data. This is a compliance risk beyond just the BRSR filing.
       </P>
 
-      <H2>4. P6-E7: Energy intensity — wrong denominator</H2>
+      <H2>4. P6-E7: Energy intensity, wrong denominator</H2>
       <P>
         P6-E7 asks for energy intensity. The format allows turnover (₹ crore) or physical output (units/tonnes)
-        as the denominator. Most manufacturers use turnover — which is fine — but common mistakes include:
+        as the denominator. Most manufacturers use turnover, which is fine, but common mistakes include:
         using gross revenue before returns/discounts, or using the previous year's turnover for the current
         year's intensity figure. Use net revenue for the same financial year.
       </P>
 
       <H2>5. P5-E4 & P5-E5: Wages paid to women and minimum wage</H2>
       <P>
-        P5-E4 asks whether the company pays wages above the minimum wage — and separately asks for the
+        P5-E4 asks whether the company pays wages above the minimum wage, and separately asks for the
         wages paid to women as a percentage of total wages. The minimum wage comparison is often done at
         company level rather than by state (minimum wage is state-specific in India), which can give a
         misleading picture. The gender wage ratio is frequently unavailable because payroll is not broken
@@ -615,7 +615,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
     <>
       <P>
         The EU Carbon Border Adjustment Mechanism moved out of its transitional phase on 1 January 2026.
-        For Indian manufacturers exporting to the EU, this is no longer a future concern — CBAM
+        For Indian manufacturers exporting to the EU, this is no longer a future concern, CBAM
         obligations are live, and the first annual report (covering calendar year 2026) will be due in
         May 2027. Here is what you need to know.
       </P>
@@ -630,7 +630,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       <P>
         The obligation sits with the EU importer, not the Indian exporter. But the EU importer can only
         discharge their CBAM obligation if they have accurate embedded-emission data from the manufacturer.
-        That data must come from you — the Indian exporter.
+        That data must come from you, the Indian exporter.
       </P>
 
       <H2>Covered goods (as of 2026)</H2>
@@ -662,7 +662,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
       <H2>Steps for Indian exporters this year</H2>
       <UL items={[
-        "Check if your products fall under the covered CN codes — the CBAM Regulation Annex I is the reference.",
+        "Check if your products fall under the covered CN codes, the CBAM Regulation Annex I is the reference.",
         "Identify which of your EU customers will be affected (importers with annual imports above the de minimis threshold).",
         "Calculate or commission a calculation of embedded emissions per tonne of each CBAM-covered product you export.",
         "Prepare a data package: production data, fuel and electricity consumption, emission factors (with versions cited), allocation methodology.",
@@ -672,7 +672,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       <H2>What happens if you do not comply</H2>
       <P>
         If an Indian exporter cannot provide embedded emission data, the EU importer must use CBAM default
-        values set by the EU Commission — which are based on the average EU production carbon intensity and
+        values set by the EU Commission, which are based on the average EU production carbon intensity and
         are deliberately conservative (punishing) to incentivise real data. EU importers working with
         suppliers who cannot provide data will face either higher CBAM costs or will shift to suppliers who
         can. The commercial pressure from EU buyers will drive compliance more than any regulatory penalty.
@@ -1004,7 +1004,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       </P>
       <P>
         The EHS manager will typically have this data in their CPCB/SPCB compliance registers. Offer to
-        extract it yourself if they share the registers — this is faster than waiting for them to compile a
+        extract it yourself if they share the registers, this is faster than waiting for them to compile a
         summary.
       </P>
 
@@ -1047,7 +1047,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
         },
         {
           q: "What is the most reliable way to collect energy data from plant teams?",
-          a: "Ask for utility meter readings (electricity from EB bills, diesel from fuel purchase records) on a monthly basis. Do not accept annual summaries — they are often rough estimates. Monthly records allow verification: any month that deviates significantly from the average can be investigated before it goes into the BRSR."
+          a: "Ask for utility meter readings (electricity from EB bills, diesel from fuel purchase records) on a monthly basis. Do not accept annual summaries, they are often rough estimates. Monthly records allow verification: any month that deviates significantly from the average can be investigated before it goes into the BRSR."
         },
         {
           q: "How should a consultant handle a client team that does not respond to data requests?",
@@ -1194,17 +1194,17 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
         each of these can be marked "not applicable" with a brief written justification. The indicators are:
       </P>
       <UL items={[
-        <><Mono>P2-E3</Mono>: EPR registration for plastic waste — applies to producers of plastic-packaged goods, not software companies.</>,
-        <><Mono>P2-E4</Mono>: Extended Producer Responsibility for e-waste — applies to manufacturers of electronic products.</>,
-        <><Mono>P2-L4</Mono>: Producer responsibility for products — manufacturing-specific.</>,
-        <><Mono>P2-L5</Mono>: Reclaimable products and packaging — manufacturing-specific.</>,
-        <><Mono>P6-E2</Mono>: Air emissions from stacks and fugitive sources — applies to plants with industrial combustion or process emissions.</>,
-        <><Mono>P6-E4</Mono>: Volume of effluent generated — applies to wet-process manufacturing.</>,
-        <><Mono>P6-E5</Mono>: Zero Liquid Discharge compliance — applies to process industries.</>,
-        <><Mono>P6-E6</Mono>: Water body impacts — applies to companies with industrial effluent discharge.</>,
-        <><Mono>P6-E11</Mono>: Environmental fines for manufacturing violations — not applicable to non-manufacturers.</>,
-        <><Mono>P6-E12</Mono>: Environmental Impact Assessment — required for factory expansions, not office IT operations.</>,
-        <><Mono>P6-L3</Mono>: Biodiversity management plan — applies to companies with operations near sensitive ecological areas, typically manufacturers.</>,
+        <><Mono>P2-E3</Mono>: EPR registration for plastic waste, applies to producers of plastic-packaged goods, not software companies.</>,
+        <><Mono>P2-E4</Mono>: Extended Producer Responsibility for e-waste, applies to manufacturers of electronic products.</>,
+        <><Mono>P2-L4</Mono>: Producer responsibility for products, manufacturing-specific.</>,
+        <><Mono>P2-L5</Mono>: Reclaimable products and packaging, manufacturing-specific.</>,
+        <><Mono>P6-E2</Mono>: Air emissions from stacks and fugitive sources, applies to plants with industrial combustion or process emissions.</>,
+        <><Mono>P6-E4</Mono>: Volume of effluent generated, applies to wet-process manufacturing.</>,
+        <><Mono>P6-E5</Mono>: Zero Liquid Discharge compliance, applies to process industries.</>,
+        <><Mono>P6-E6</Mono>: Water body impacts, applies to companies with industrial effluent discharge.</>,
+        <><Mono>P6-E11</Mono>: Environmental fines for manufacturing violations, not applicable to non-manufacturers.</>,
+        <><Mono>P6-E12</Mono>: Environmental Impact Assessment, required for factory expansions, not office IT operations.</>,
+        <><Mono>P6-L3</Mono>: Biodiversity management plan, applies to companies with operations near sensitive ecological areas, typically manufacturers.</>,
       ]} />
       <Callout title="Not applicable requires a written justification" color="amber">
         SEBI does not permit a blank field or a bare "N/A" for these indicators. Each "not applicable"

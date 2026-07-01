@@ -1,5 +1,5 @@
 {
-  "note": "Curated list of prominent Indian listed companies (largely BRSR filers in the top ~1000 by market cap), used to power the company-name autocomplete. Each entry carries an industry (mapped to the tool's industry list) and sector so picking a company can pre-fill those fields. 'other' is used where the company's business doesn't map to one of the tool's 11 industries (banks, NBFCs, insurers, telecom, retail, diversified) — the consultant can always adjust.",
+  "note": "Curated list of prominent Indian listed companies (largely BRSR filers in the top ~1000 by market cap), used to power the company-name autocomplete. Each entry carries an industry (mapped to the tool's industry list) and sector so picking a company can pre-fill those fields. 'other' is used where the company's business doesn't map to one of the tool's 11 industries (banks, NBFCs, insurers, telecom, retail, diversified), the consultant can always adjust.",
   "companies": [
     { "name": "Tata Consultancy Services", "industry": "it_services", "sector": "services" },
     { "name": "Infosys", "industry": "it_services", "sector": "services" },

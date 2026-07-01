@@ -95,7 +95,7 @@ export const TEAM_EMAILS: TeamEmail[] = [
 // Returns a subject line and a plain-text body, ready for the clipboard.
 export function buildTeamEmail(t: TeamEmail, opts: { company?: string; fy: string }): { subject: string; body: string } {
   const company = (opts.company || "").trim() || "the client";
-  const subject = `Data request for ${company}'s BRSR report — ${t.chip}`;
+  const subject = `Data request for ${company}'s BRSR report, ${t.chip}`;
   const bullets = t.asks.map((a) => `  • ${a}`).join("\n");
   const body =
     `Hi,\n\n` +

@@ -4,9 +4,9 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 
 export const metadata: Metadata = {
-  title: "Cross-framework mapping — BRSR to GRI, TCFD, IFRS, TNFD | Saaksh",
+  title: "Cross-framework mapping, BRSR to GRI, TCFD, IFRS, TNFD | Saaksh",
   description:
-    "Map your client's BRSR data across GRI, TCFD, IFRS S1/S2, TNFD and the MSCI / DJSI rating criteria — collect once, report to many frameworks. Free and on-device.",
+    "Map your client's BRSR data across GRI, TCFD, IFRS S1/S2, TNFD and the MSCI / DJSI rating criteria, collect once, report to many frameworks. Free and on-device.",
 };
 
 const FRAMEWORKS = [

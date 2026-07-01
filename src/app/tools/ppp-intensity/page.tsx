@@ -85,7 +85,7 @@ export default function PppIntensityPage() {
 
               <div>
                 <Field label="PPP conversion factor" unit="₹ / int'l $" value={inp.pppFactor} onChange={set("pppFactor")} />
-                <p className="text-[12.5px] text-ink-muted mt-2 leading-relaxed">
+                <p className="text-[13px] text-ink-body mt-2 leading-relaxed">
                   Pre-filled with the World Bank {PPP_YEAR} value. Editable, override with the current-year figure before filing.
                 </p>
               </div>
@@ -108,7 +108,7 @@ export default function PppIntensityPage() {
                     <div className="border-t border-[#CDE2F6] pt-2.5 mt-2.5">
                       <ResultRow label={`PPP-adjusted intensity`} value={fmt(r.pppIntensityPerMillionIntl ?? 0)} unit={`${mlabel} / M int'l $`} bold />
                     </div>
-                    <p className="text-[12.5px] text-ink-muted mt-1.5 leading-relaxed">
+                    <p className="text-[13px] text-ink-body mt-1.5 leading-relaxed">
                       Computed as the metric divided by PPP-adjusted turnover ({fmtInt(r.pppRevenueIntl)} int&rsquo;l $ at ₹{fmt(r.factor)} per int&rsquo;l $). A higher PPP factor converts each rupee of turnover into more international dollars, so the PPP intensity sits above the raw market-rate figure.
                     </p>
                   </div>
@@ -124,10 +124,10 @@ export default function PppIntensityPage() {
 
               <div className="rounded-xl border border-line bg-white p-5">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.10em] text-brand-700 mb-2">Method &amp; formula</p>
-                <p className="text-[13px] text-ink-muted leading-relaxed font-mono bg-band rounded-lg px-3 py-2.5 mb-3">
+                <p className="text-[13px] text-ink-body leading-relaxed font-mono bg-band rounded-lg px-3 py-2.5 mb-3">
                   PPP intensity = metric ÷ (revenue in ₹ ÷ PPP factor)
                 </p>
-                <p className="text-[12.5px] text-ink-muted leading-relaxed">
+                <p className="text-[13px] text-ink-body leading-relaxed">
                   BRSR reports intensity per rupee of turnover (P6). This tool adds an optional PPP-adjusted view for peer comparison; it does not replace the rupee figure you file.
                 </p>
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-3 pt-3 border-t border-line-soft">
@@ -141,7 +141,7 @@ export default function PppIntensityPage() {
                     SEBI BRSR Format (P6 intensity) ↗
                   </a>
                 </div>
-                <p className="text-[12px] text-ink-muted mt-2.5 leading-relaxed">{PPP_META.vintage_note}</p>
+                <p className="text-[13px] text-ink-muted mt-2.5 leading-relaxed">{PPP_META.vintage_note}</p>
               </div>
 
               <p className="text-[13px] text-ink-muted leading-relaxed">

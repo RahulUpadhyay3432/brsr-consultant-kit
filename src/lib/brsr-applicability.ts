@@ -1,9 +1,9 @@
-// BRSR applicability checker — pure, cited logic for a standalone free tool.
+// BRSR applicability checker, pure, cited logic for a standalone free tool.
 // Answers "must this company file BRSR / BRSR Core / value-chain disclosure, and when?"
 // from a few inputs. On-device, no fabrication; every verdict carries its reason + source.
 //
 // Sources:
-//  - BRSR mandate: SEBI LODR Reg 34(2)(f) — top 1000 listed by market cap (from FY 2022-23).
+//  - BRSR mandate: SEBI LODR Reg 34(2)(f), top 1000 listed by market cap (from FY 2022-23).
 //  - BRSR Core reasonable-assurance glide path + value chain: SEBI circular 12 Jul 2023
 //    (BRSR Core) and SEBI "ease of doing business" circular 28 Mar 2025
 //    (SEBI/HO/CFD/CFD-PoD-1/P/CIR/2025/42), which deferred value-chain reporting and
@@ -61,7 +61,7 @@ export function assessBrsrApplicability(inp: ApplicabilityInputs): Applicability
   if (inTop1000) {
     brsr = {
       id: "brsr", title: "BRSR report (Section A, B & C)", verdict: "applies",
-      timing: "Mandatory now — FY 2025-26",
+      timing: "Mandatory now, FY 2025-26",
       reason: "BRSR is mandatory for the top 1000 listed companies by market capitalisation. A company in this band files the full BRSR with its annual report.",
       sources: [SRC_BRSR],
     };
@@ -81,12 +81,12 @@ export function assessBrsrApplicability(inp: ApplicabilityInputs): Applicability
     };
   }
 
-  // 2) BRSR Core (reasonable assurance) — glide path by rank band
+  // 2) BRSR Core (reasonable assurance), glide path by rank band
   let core: ApplicabilityResult;
   if (inp.rankBand === "top150" || inp.rankBand === "top250" || inp.rankBand === "top500") {
     core = {
       id: "core", title: "BRSR Core, reasonable assurance", verdict: "applies",
-      timing: "Mandatory now — FY 2025-26 (top 500)",
+      timing: "Mandatory now, FY 2025-26 (top 500)",
       reason: "Reasonable assurance of the 9 BRSR Core attributes is mandatory for the top 500 listed companies by market cap in FY 2025-26. Your client needs an assurance provider and an evidence trail for every Core KPI.",
       sources: [SRC_CORE, SRC_MAR25],
     };

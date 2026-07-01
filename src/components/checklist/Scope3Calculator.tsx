@@ -100,7 +100,7 @@ export default function Scope3Calculator({ inputs, turnoverCrore, onChange }: Pr
         {/* Cat 1 deferred note */}
         <div className="rounded-xl border border-[#CDE2F6] bg-[#F8FBFE] px-4 py-3">
           <p className="text-[12px] text-ink-muted leading-relaxed">
-            <span className="font-semibold text-ink-body">Cat 1 — purchased goods & services</span>{" "}
+            <span className="font-semibold text-ink-body">Cat 1, purchased goods & services</span>{" "}
             is not included. It needs supplier-specific emission intensities or spend-based EEIO factors; add from supplier data for a complete inventory.
           </p>
         </div>
@@ -151,7 +151,7 @@ export default function Scope3Calculator({ inputs, turnoverCrore, onChange }: Pr
         </div>
 
         {/* Methodology footnote */}
-        <div className="text-[10.5px] text-ink-faint leading-relaxed space-y-0.5 border-t border-line pt-3">
+        <div className="text-[12.5px] text-ink-muted leading-relaxed space-y-0.5 border-t border-line pt-3">
           <p>
             <span className="font-medium text-ink-muted">Method:</span>{" "}
             GHG Protocol Corporate Value Chain (Scope 3) Standard, activity/distance-based.{" "}

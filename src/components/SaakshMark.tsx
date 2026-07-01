@@ -1,4 +1,4 @@
-// The Saaksh brand mark — "Ledger S": three descending rows of cited evidence
+// The Saaksh brand mark, "Ledger S": three descending rows of cited evidence
 // with a blue "verified" pin. Renders the whole tile + glyph as one SVG so every
 // call site is identical. `forest` = navy tile with white bars (default);
 // `subtle` = translucent tile for dark rails (still white bars).

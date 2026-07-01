@@ -184,8 +184,8 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
           <div className="max-w-[220px]">
             <Field label="Turnover" unit="₹ crore" value={inputs.turnover_crore} onChange={set("turnover_crore")} />
           </div>
-          <p className="text-[11px] text-ink-faint mt-1.5">
-            Shared across energy, GHG, and water intensity calculations — enter once.
+          <p className="text-[13px] text-ink-muted mt-1.5">
+            Shared across energy, GHG, and water intensity calculations, enter once.
           </p>
         </div>
 

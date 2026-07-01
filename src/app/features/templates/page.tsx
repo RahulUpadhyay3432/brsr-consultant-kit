@@ -3,9 +3,9 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
-  title: "BRSR Templates & Guides — Saaksh",
+  title: "BRSR Templates & Guides, Saaksh",
   description:
-    "Downloadable BRSR templates, engagement timelines, and cited how-to guides — built in your browser from real SEBI format data, no login required.",
+    "Downloadable BRSR templates, engagement timelines, and cited how-to guides, built in your browser from real SEBI format data, no login required.",
 };
 
 export default function TemplatesPage() {
@@ -34,7 +34,7 @@ export default function TemplatesPage() {
             BRSR Templates &amp; Guides
           </h1>
           <p className="text-lg max-w-[640px] leading-relaxed" style={{ color: "rgba(255,255,255,0.70)" }}>
-            Downloadable BRSR workbooks, engagement timelines, and cited how-to guides — built in
+            Downloadable BRSR workbooks, engagement timelines, and cited how-to guides, built in
             your browser, no login, nothing stored.
           </p>
         </div>
@@ -42,14 +42,14 @@ export default function TemplatesPage() {
 
       <div className="max-w-[1100px] mx-auto px-6 py-14 space-y-16">
 
-        {/* Section 1 — Downloadable templates */}
+        {/* Section 1, Downloadable templates */}
         <section>
           <h2 className="font-display text-2xl mb-3" style={{ color: "#0F172A" }}>
             Downloadable templates
           </h2>
           <p className="text-sm mb-8 max-w-[560px]" style={{ color: "#5B6573" }}>
             Generated in your browser from the official BRSR format. Download as CSV, open in Excel
-            or Google Sheets. Nothing stored — regenerated fresh each time.
+            or Google Sheets. Nothing stored, regenerated fresh each time.
           </p>
           <div className="grid md:grid-cols-3 gap-6">
             {[
@@ -144,7 +144,7 @@ export default function TemplatesPage() {
           </div>
         </section>
 
-        {/* Section 2 — Engagement Timeline */}
+        {/* Section 2, Engagement Timeline */}
         <section>
           <div
             className="rounded-xl p-8 md:p-10 border"
@@ -223,14 +223,14 @@ export default function TemplatesPage() {
           </div>
         </section>
 
-        {/* Section 3 — Cited how-to guides */}
+        {/* Section 3, Cited how-to guides */}
         <section>
           <h2 className="font-display text-2xl mb-3" style={{ color: "#0F172A" }}>
             Cited how-to guides
           </h2>
           <p className="text-sm mb-8 max-w-[560px]" style={{ color: "#5B6573" }}>
             Guides your team would otherwise spend hours hunting across SEBI circulars and
-            international standards — compiled and kept current.
+            international standards, compiled and kept current.
           </p>
           <div className="space-y-4">
             {[
@@ -307,7 +307,7 @@ export default function TemplatesPage() {
           </div>
         </section>
 
-        {/* Section 4 — Honest framing */}
+        {/* Section 4, Honest framing */}
         <section>
           <div
             className="rounded-xl p-7 border"
@@ -345,7 +345,7 @@ export default function TemplatesPage() {
             Open the templates →
           </Link>
           <p className="text-sm mt-4" style={{ color: "#5B6573" }}>
-            Templates are inside the report — generate a free report first, then open the
+            Templates are inside the report, generate a free report first, then open the
             Templates tab.
           </p>
         </section>

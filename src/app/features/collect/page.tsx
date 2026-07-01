@@ -1,7 +1,7 @@
 import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata = {
-  title: "Collect — BRSR Data Collection — Saaksh",
+  title: "Collect, BRSR Data Collection, Saaksh",
   description:
     "Chase BRSR data from your client's team with branded emails, auto-reminders, and no-login owner submissions. Stop managing this over WhatsApp.",
 };
@@ -31,7 +31,7 @@ const STEPS = [
   {
     title: "Send branded request emails",
     description:
-      "One click sends a personalized, structured request email to each owner. They get a direct link to their own submission form — no login, no app to install.",
+      "One click sends a personalized, structured request email to each owner. They get a direct link to their own submission form, no login, no app to install.",
   },
   {
     title: "Owners submit on a no-login form",
@@ -354,7 +354,7 @@ export default function CollectPage() {
             >
               Each submitted data point is attributed: who provided it, when,
               from which document. The assurance-readiness CSV export gives your
-              assurer a complete data-ownership trail — name, role, email,
+              assurer a complete data-ownership trail, name, role, email,
               field, value, evidence attached (yes/no), calculation basis. BRSR
               Core reasonable assurance is becoming mandatory for the top 500
               companies. Collect is built for that world.

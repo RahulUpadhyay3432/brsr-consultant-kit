@@ -3,7 +3,7 @@ import LegalPage, { Section } from "@/components/LegalPage";
 import { SUBPROCESSORS } from "@/lib/subprocessors";
 
 export const metadata: Metadata = {
-  title: "Security & Trust — Saaksh",
+  title: "Security & Trust, Saaksh",
   description: "How Saaksh protects your data: encryption, access control, sub-processors, and our roadmap.",
 };
 
@@ -33,7 +33,7 @@ export default function SecurityPage() {
         <ul className="mt-2 space-y-1.5">
           {SUBPROCESSORS.map((s) => (
             <li key={s.name} className="text-[13.5px] text-stone-700">
-              <strong>{s.name}</strong> — {s.purpose} <span className="text-stone-500">({s.region})</span>
+              <strong>{s.name}</strong>, {s.purpose} <span className="text-stone-500">({s.region})</span>
             </li>
           ))}
         </ul>

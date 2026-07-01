@@ -43,7 +43,7 @@ const TABS = [
 // "sources" + "templates" are reference panels, not workspace steps, so they live outside TABS.
 type TabId = (typeof TABS)[number]["id"] | "sources" | "templates";
 
-// Per-tab accent colour — gives the sidebar a calm spread of brand-adjacent hues
+// Per-tab accent colour, gives the sidebar a calm spread of brand-adjacent hues
 // instead of a flat monochrome stack.
 const ICON_COLOR: Record<string, string> = {
   overview:     "#0B6FD4", // brand blue

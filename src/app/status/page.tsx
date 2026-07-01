@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalPage, { Section } from "@/components/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Status — Saaksh",
+  title: "Status, Saaksh",
   description: "Saaksh service status.",
 };
 

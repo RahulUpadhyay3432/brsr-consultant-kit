@@ -3,25 +3,25 @@
     "title": "BRSR ↔ TNFD indicative crosswalk",
     "framework": "Taskforce on Nature-related Financial Disclosures (TNFD) Recommendations v1.0 (Sept 2023)",
     "pillars": ["Governance", "Strategy", "Risk and Impact Management", "Metrics and Targets"],
-    "note": "Indicative mapping of the nature-related BRSR disclosures (water, pollution, waste, biodiversity, land, value-chain dependencies) to TNFD's four pillars and the LEAP approach. A consultant aid, not an official SEBI/TNFD crosswalk. GHG/climate disclosures are intentionally left to TCFD/IFRS S2 — TNFD covers nature beyond climate.",
+    "note": "Indicative mapping of the nature-related BRSR disclosures (water, pollution, waste, biodiversity, land, value-chain dependencies) to TNFD's four pillars and the LEAP approach. A consultant aid, not an official SEBI/TNFD crosswalk. GHG/climate disclosures are intentionally left to TCFD/IFRS S2, TNFD covers nature beyond climate.",
     "id_convention": "keyed by the framework_mappings.json brsr_id"
   },
   "mappings": {
     "P1-G1": { "pillar": "Governance", "detail": "Board oversight of nature-related dependencies, impacts, risks and opportunities (TNFD Governance A)" },
     "P1-G2": { "pillar": "Governance", "detail": "Management's role in assessing and managing nature-related issues (TNFD Governance B)" },
     "P4-Q3": { "pillar": "Governance", "detail": "Engagement with affected stakeholders and communities on nature-related issues (TNFD Governance C)" },
-    "P2-S2": { "pillar": "Strategy", "detail": "Value-chain dependencies on nature addressed through sustainable sourcing (TNFD Strategy — dependencies)" },
-    "P6-E22": { "pillar": "Strategy", "detail": "Operations in/adjacent to ecologically sensitive areas — priority locations and biodiversity impacts (TNFD Strategy + LEAP Locate)" },
+    "P2-S2": { "pillar": "Strategy", "detail": "Value-chain dependencies on nature addressed through sustainable sourcing (TNFD Strategy, dependencies)" },
+    "P6-E22": { "pillar": "Strategy", "detail": "Operations in/adjacent to ecologically sensitive areas, priority locations and biodiversity impacts (TNFD Strategy + LEAP Locate)" },
     "P2-S4": { "pillar": "Risk and Impact Management", "detail": "Life Cycle Assessment surfaces value-chain nature impacts (TNFD LEAP Evaluate/Assess)" },
     "P6-E10": { "pillar": "Risk and Impact Management", "detail": "Managing water-pollution impacts via Zero Liquid Discharge (TNFD Risk and Impact Management)" },
     "P6-E21": { "pillar": "Risk and Impact Management", "detail": "Process to identify and assess project impacts on nature (EIA ≈ TNFD LEAP Evaluate)" },
-    "P6-E7": { "pillar": "Metrics and Targets", "detail": "Water withdrawal by source — a TNFD core global disclosure metric (freshwater dependency)" },
-    "P6-E8": { "pillar": "Metrics and Targets", "detail": "Water consumption and intensity — TNFD core water metric" },
-    "P6-E9": { "pillar": "Metrics and Targets", "detail": "Pollutants released to water via discharge — TNFD impact-driver metric" },
-    "P6-E17": { "pillar": "Metrics and Targets", "detail": "Total waste generated — TNFD waste / pollution impact-driver metric" },
-    "P6-E18": { "pillar": "Metrics and Targets", "detail": "Waste recovered / circularity — TNFD resource-use metric" },
-    "P6-E19": { "pillar": "Metrics and Targets", "detail": "Waste directed to disposal — TNFD pollution metric" },
-    "P6-E20": { "pillar": "Metrics and Targets", "detail": "Non-GHG air pollutants (NOx, SOx, PM) — TNFD pollution impact-driver" },
-    "P6-E23": { "pillar": "Metrics and Targets", "detail": "Single-use plastic reduction — TNFD plastic-pollution metric" }
+    "P6-E7": { "pillar": "Metrics and Targets", "detail": "Water withdrawal by source, a TNFD core global disclosure metric (freshwater dependency)" },
+    "P6-E8": { "pillar": "Metrics and Targets", "detail": "Water consumption and intensity, TNFD core water metric" },
+    "P6-E9": { "pillar": "Metrics and Targets", "detail": "Pollutants released to water via discharge, TNFD impact-driver metric" },
+    "P6-E17": { "pillar": "Metrics and Targets", "detail": "Total waste generated, TNFD waste / pollution impact-driver metric" },
+    "P6-E18": { "pillar": "Metrics and Targets", "detail": "Waste recovered / circularity, TNFD resource-use metric" },
+    "P6-E19": { "pillar": "Metrics and Targets", "detail": "Waste directed to disposal, TNFD pollution metric" },
+    "P6-E20": { "pillar": "Metrics and Targets", "detail": "Non-GHG air pollutants (NOx, SOx, PM), TNFD pollution impact-driver" },
+    "P6-E23": { "pillar": "Metrics and Targets", "detail": "Single-use plastic reduction, TNFD plastic-pollution metric" }
   }
 }

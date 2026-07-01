@@ -2,7 +2,7 @@ import Link from "next/link";
 import { SaakshMark } from "@/components/SaakshMark";
 import { FEEDBACK_URL } from "@/lib/links";
 
-/* Slim brand footer for the blog surface — no personal byline, no newsletter. */
+/* Slim brand footer for the blog surface, no personal byline, no newsletter. */
 export function BlogFooter() {
   const cols: { title: string; links: [string, string][] }[] = [
     {

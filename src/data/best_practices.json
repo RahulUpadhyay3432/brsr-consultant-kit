@@ -1,13 +1,13 @@
 {
   "source": "Curated by Saaksh from recognised Indian regulations and international ESG standards. Principle-level guidance to help consultants suggest practical, credible solutions for each disclosure gap.",
-  "note": "Best practices are mapped at the BRSR principle level — the most accurate granularity, since leading-practice for a topic (e.g. GHG accounting) is broadly consistent across sectors. Sector-specific nuance is handled in the Materiality Assessment.",
+  "note": "Best practices are mapped at the BRSR principle level, the most accurate granularity, since leading-practice for a topic (e.g. GHG accounting) is broadly consistent across sectors. Sector-specific nuance is handled in the Materiality Assessment.",
   "best_practices": {
     "P1": {
       "name": "Ethics, Transparency & Accountability",
       "india": [
         "Adopt a board-approved Code of Conduct and a whistle-blower / vigil mechanism (Companies Act 2013 §177 + SEBI LODR Reg. 22) and publish both on the company website.",
         "Constitute the Risk Management and Stakeholders' Relationship Committees mandated for the top 1000 listed entities, with documented charters and meeting records.",
-        "Track and disclose anti-corruption training coverage by employee category — as Tata and Infosys do — rather than a simple Yes/No."
+        "Track and disclose anti-corruption training coverage by employee category, as Tata and Infosys do, rather than a simple Yes/No."
       ],
       "international": [
         "Certify the anti-bribery programme to ISO 37001 (Anti-Bribery Management Systems) and align with UN Global Compact Principle 10.",
@@ -67,7 +67,7 @@
       "international": [
         "Measure Scope 1, 2 and 3 emissions to the GHG Protocol and set validated Science Based Targets (SBTi).",
         "Operate an ISO 14001 environmental management system and disclose through CDP (Climate / Water).",
-        "Move waste up the hierarchy — recycling, co-processing and circular-economy diversion from landfill."
+        "Move waste up the hierarchy, recycling, co-processing and circular-economy diversion from landfill."
       ]
     },
     "P7": {
@@ -84,7 +84,7 @@
       "name": "Inclusive Growth & Equitable Development",
       "india": [
         "Align CSR spend (Companies Act §135) to the SDGs and conduct Social Impact Assessments for major projects.",
-        "Prioritise local procurement and employment, and report beneficiary outcomes — not just rupees spent."
+        "Prioritise local procurement and employment, and report beneficiary outcomes, not just rupees spent."
       ],
       "international": [
         "Quantify community programmes using Social Return on Investment (SROI) or the B Impact Assessment.",
