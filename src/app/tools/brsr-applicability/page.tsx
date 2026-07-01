@@ -77,7 +77,7 @@ export default function BrsrApplicabilityPage() {
             <h1 className="font-display font-bold text-[2rem] sm:text-[2.5rem] text-white leading-[1.1] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
               Does your client have to file BRSR, and by when?
             </h1>
-            <p className="text-[15px] text-[#9FB0C4] leading-relaxed mt-3 max-w-[620px]">
+            <p className="text-[15.5px] text-ondark-muted leading-relaxed mt-3 max-w-[620px]">
               Answer three questions and get a cited verdict on BRSR, BRSR Core assurance, and value-chain disclosure, with the financial year each obligation starts. Nothing is stored; this runs in your browser.
             </p>
           </div>

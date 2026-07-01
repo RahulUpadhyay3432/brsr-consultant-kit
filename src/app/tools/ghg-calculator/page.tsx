@@ -33,7 +33,7 @@ export default function GhgCalculatorPage() {
             <h1 className="font-display font-bold text-[2rem] sm:text-[2.5rem] text-white leading-[1.1] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
               GHG, energy & water calculator
             </h1>
-            <p className="text-[15px] text-[#9FB0C4] leading-relaxed mt-3 max-w-[600px]">
+            <p className="text-[15.5px] text-ondark-muted leading-relaxed mt-3 max-w-[600px]">
               Scope 1 & 2 emissions, total energy, and water withdrawal, from activity data. CEA grid factor v21.0, IPCC 2006 fuel factors, every figure cited. Nothing leaves your browser.
             </p>
           </div>

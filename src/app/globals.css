@@ -16,7 +16,11 @@
   --body:      #28303B;   /* body text (near-black, strong contrast) */
   --muted:     #5B6573;   /* secondary text */
   --ink-faint: #616A78;   /* smallest labels only (<=11px uppercase mono) */
-  --ink-on-navy: #C4D0E0; /* readable subtext on the navy hero (#0F1E33) */
+  /* Text on dark surfaces (navy #0F1E33 / near-black footer #0A1422). Tuned to
+     clear WCAG AA: on-dark ~10:1, on-dark-muted ~5.5:1, on-dark-faint ~4.6:1. */
+  --on-dark:       #DCE6F2; /* body/links on dark */
+  --on-dark-muted: #AEBED0; /* secondary prose on dark */
+  --on-dark-faint: #93A4B8; /* small labels on dark (was the too-dark greys) */
 
   /* Custom easing */
   --ease-out:    cubic-bezier(0.23, 1, 0.32, 1);

@@ -49,7 +49,7 @@ export function ToolHero({
             </ul>
           )}
           {whoFor && (
-            <p className="text-[12.5px] text-[#8FA2B8] mt-5 leading-relaxed">{whoFor}</p>
+            <p className="text-[12.5px] text-ondark-faint mt-5 leading-relaxed">{whoFor}</p>
           )}
         </div>
       </div>

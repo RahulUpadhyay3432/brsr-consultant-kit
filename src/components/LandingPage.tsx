@@ -215,9 +215,9 @@ function TierCards({ onStart }: { onStart: () => void }) {
           <span className="font-display font-bold text-[28px] text-white tracking-tight">Pro</span>
           <span className="font-mono text-[11px] font-semibold tracking-wide text-forest bg-brand-400 px-2.5 py-1 rounded-full shrink-0">Paid</span>
         </div>
-        <p className="relative text-[14.5px] text-[#93B5CC] leading-snug">Collect, compute &amp; close the engagement.</p>
-        <p className="relative text-[12px] font-mono text-[#5D7F99] mt-1 mb-5">Manual onboarding &middot; Priced per engagement</p>
-        <p className="relative text-[11.5px] font-mono text-[#5D7F99] uppercase tracking-wide mb-3">Everything in Free, plus:</p>
+        <p className="relative text-[14.5px] text-ondark-muted leading-snug">Collect, compute &amp; close the engagement.</p>
+        <p className="relative text-[12px] font-mono text-ondark-faint mt-1 mb-5">Manual onboarding &middot; Priced per engagement</p>
+        <p className="relative text-[11.5px] font-mono text-ondark-faint uppercase tracking-wide mb-3">Everything in Free, plus:</p>
         <ul className="relative space-y-3 flex-1">
           {PRO_FEATURES.map((f) => (
             <li key={f} className="flex items-start gap-2.5 text-[13.5px] text-white/85 leading-snug">
@@ -232,7 +232,7 @@ function TierCards({ onStart }: { onStart: () => void }) {
         >
           Request access <IcoArrow />
         </a>
-        <p className="relative text-[12px] text-[#5D7F99] mt-3 text-center">Early access, manually onboarded. Talk to us first.</p>
+        <p className="relative text-[12px] text-ondark-faint mt-3 text-center">Early access, manually onboarded. Talk to us first.</p>
       </div>
     </div>
   );
@@ -922,15 +922,15 @@ function FilingAuditBand() {
           </Link>
 
           {/* Secondary: three compact rows in one card */}
-          <div className="rounded-2xl border border-line bg-white divide-y divide-line overflow-hidden">
+          <div className="rounded-2xl border border-line bg-white shadow-elev-1 divide-y divide-line overflow-hidden">
             {secondary.map((s) => (
               <Link key={s.href} href={s.href}
                 className="group flex items-start gap-4 px-6 py-5 hover:bg-band transition-colors">
                 <div className="flex-1 min-w-0">
-                  <p className="text-[15px] font-semibold text-ink leading-snug">{s.label}</p>
+                  <p className="text-[15px] font-semibold text-ink leading-snug group-hover:text-brand-700 transition-colors">{s.label}</p>
                   <p className="text-[13px] text-ink-muted leading-relaxed mt-1">{s.sub}</p>
                 </div>
-                <span className="mt-1 flex-shrink-0"><IcoArrow /></span>
+                <span className="mt-1 flex-shrink-0 text-brand-700"><IcoArrow /></span>
               </Link>
             ))}
           </div>
@@ -1148,7 +1148,7 @@ function FeaturesGrid({ onStart, scrollTo }: { onStart: () => void; scrollTo: (i
             <button
               key={f.title}
               onClick={f.action}
-              className="group text-left bg-white rounded-2xl p-6 border border-line shadow-elev-1 hover:shadow-elev-2 hover:border-brand-200 transition-all duration-200 pressable"
+              className="group text-left bg-white rounded-2xl p-6 border border-line shadow-elev-1 hover:shadow-elev-2 hover:-translate-y-0.5 hover:border-brand-200 transition-all duration-200 pressable"
             >
               <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${f.iconBg}`}>
                 {f.icon}
@@ -1162,7 +1162,7 @@ function FeaturesGrid({ onStart, scrollTo }: { onStart: () => void; scrollTo: (i
           ))}
         </div>
 
-        <p className="font-mono text-[12px] text-ink-faint mt-8 text-center">
+        <p className="font-mono text-[12px] text-ink-muted mt-8 text-center">
           Everything above is free · No login · Client data never leaves your browser
         </p>
       </div>
@@ -1667,7 +1667,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               { t: "Compliance importer",     tag: "Pro",  b: "Reads the client's entire document, whether 10 pages or 80, and pre-fills figures across all 108 BRSR fields. Every value shows the exact sentence it came from. It never invents a number." },
               { t: "Grounded narrative draft", tag: "Pro", b: "Turns the numbers you collected into review-ready prose. Every figure traces back to its source; gaps are flagged, not guessed." },
             ].map((p) => (
-              <div key={p.t} className="bg-white rounded-2xl border border-line p-6 flex flex-col">
+              <div key={p.t} className="bg-white rounded-2xl border border-line shadow-elev-1 p-6 flex flex-col">
                 <div className="flex items-start justify-between mb-5">
                   <div className="w-9 h-9 bg-stone-100 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg className="w-4 h-4 text-ink-muted" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">

@@ -45,6 +45,8 @@ const config: Config = {
         // faint darkened from #6B7585 so small labels stay legible; reserved for
         // <=11px uppercase mono labels. Content/secondary copy uses muted or darker.
         ink:     { DEFAULT: "#0F172A", body: "#28303B", muted: "#5B6573", faint: "#616A78" },
+        // Text on dark surfaces (navy #0F1E33, near-black footer #0A1422), AA-tuned.
+        ondark:  { DEFAULT: "#DCE6F2", muted: "#AEBED0", faint: "#93A4B8" },
       },
       // One navy-tinted elevation scale (never pure black) so cards lift off the page.
       boxShadow: {

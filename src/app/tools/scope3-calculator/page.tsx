@@ -27,7 +27,7 @@ export default function Scope3CalculatorPage() {
             <h1 className="font-display font-bold text-[2rem] sm:text-[2.5rem] text-white leading-[1.1] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
               Scope 3 screening calculator
             </h1>
-            <p className="text-[15px] text-[#9FB0C4] leading-relaxed mt-3 max-w-[600px]">
+            <p className="text-[15.5px] text-ondark-muted leading-relaxed mt-3 max-w-[600px]">
               Activity-based Scope 3 estimate across business travel, commuting, transport and waste. GHG Protocol Scope 3 Standard; DEFRA/DESNZ 2024 factors, cited per line. Runs entirely in your browser.
             </p>
           </div>

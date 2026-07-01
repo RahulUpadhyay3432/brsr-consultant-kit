@@ -25,7 +25,7 @@ export default function MaterialityToolPage() {
             <h1 className="font-display font-bold text-[2rem] sm:text-[2.5rem] text-white leading-[1.1] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
               Materiality matrix builder
             </h1>
-            <p className="text-[15px] text-[#9FB0C4] leading-relaxed mt-3 max-w-[600px]">
+            <p className="text-[15.5px] text-ondark-muted leading-relaxed mt-3 max-w-[600px]">
               Start from the ESG topics that typically matter most in your client&apos;s industry, shortlist them, and export as a CSV to carry into a stakeholder process. A starting format, not a finished assessment.
             </p>
           </div>
