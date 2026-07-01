@@ -690,15 +690,6 @@ function Header({
 
         {/* Right side */}
         <div className="flex items-center gap-2 ml-auto">
-          {resume && (
-            <button
-              onClick={resume.onResume}
-              className="hidden sm:flex items-center gap-2 text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-200 px-3 py-1.5 rounded-lg hover:bg-brand-100 transition-colors pressable"
-            >
-              <span className="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0" />
-              {resume.companyName ? `Open ${resume.companyName} report` : "Open saved report"} →
-            </button>
-          )}
           <button
             onClick={onStart}
             className="inline-flex items-center gap-1.5 bg-forest text-white text-[13.5px] font-semibold px-4 py-2 rounded-lg hover:bg-forest-light transition-colors pressable"
@@ -1480,6 +1471,21 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                   See how it works
                 </button>
               </div>
+
+              {resume && (
+                <button
+                  onClick={resume.onResume}
+                  className="anim-up-md mt-4 inline-flex items-center gap-2.5 bg-brand-50 border border-brand-200 text-brand-700 text-[14.5px] font-semibold px-4 py-2.5 rounded-xl hover:bg-brand-100 transition-colors pressable"
+                  style={{ animationDelay: "300ms" }}
+                >
+                  <span className="w-2 h-2 rounded-full bg-brand-500 flex-shrink-0" />
+                  Continue from where you left off
+                  {resume.companyName && (
+                    <span className="text-brand-500 font-normal">· {resume.companyName}</span>
+                  )}
+                  <span className="ml-0.5">→</span>
+                </button>
+              )}
 
               <p className="anim-up-md text-[13.5px] text-ink-muted mt-5" style={{ animationDelay: "300ms" }}>
                 Used by <span className="font-semibold text-ink">75+ consultants</span> preparing BRSR reports across India.
