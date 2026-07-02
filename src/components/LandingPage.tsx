@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import CookieSettingsLink from "@/components/CookieSettingsLink";
 import { SaakshMark } from "@/components/SaakshMark";
 import { REQUEST_ACCESS_URL } from "@/lib/links";
@@ -1570,9 +1571,12 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               { n: "4", t: "Hand it off, or go further with Pro", chips: ["PDF brief", "CSV export", "Shareable link", "Collect (Pro)"], act: "export a client-ready PDF brief and a CSV of every gap, or share a link. When you're ready to chase the data from the client's team, upgrade to Collect (Pro).", out: "a clear path from a blank format to a defensible, filed report." },
             ].map((s, i) => (
               <div key={s.n} data-reveal style={{ transitionDelay: `${(i % 2) * 80}ms` }} className="card-lift rounded-2xl bg-white border border-line shadow-elev-1 p-6 sm:p-7">
-                <div className="flex items-center gap-3">
-                  <span className="w-9 h-9 rounded-xl bg-forest text-white flex items-center justify-center font-display font-bold text-[15px] flex-shrink-0">{s.n}</span>
-                  <h3 className="text-[18px] font-semibold text-ink tracking-tight leading-snug">{s.t}</h3>
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <span className="w-9 h-9 rounded-xl bg-forest text-white flex items-center justify-center font-display font-bold text-[15px] flex-shrink-0">{s.n}</span>
+                    <h3 className="text-[18px] font-semibold text-ink tracking-tight leading-snug">{s.t}</h3>
+                  </div>
+                  <Image src={`/product/how-${s.n}.png`} alt="" width={128} height={128} className="w-16 h-16 flex-shrink-0 -mt-1 -mr-1 select-none" aria-hidden />
                 </div>
                 <div className="mt-4 space-y-2.5">
                   <p className="text-[14px] text-ink-body leading-relaxed">
@@ -1843,6 +1847,12 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           </div>
         </div>
       </section>
+
+      {/* ── Nature band (a quiet breath before the close) ─────────────────── */}
+      <div className="relative h-[200px] sm:h-[300px] overflow-hidden">
+        <Image src="/product/nature-river.jpg" alt="" aria-hidden width={1100} height={1344} sizes="100vw" className="w-full h-full object-cover object-center" />
+        <div className="absolute inset-0 bg-forest/35" />
+      </div>
 
       {/* ── Final CTA ────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden bg-gradient-to-br from-forest via-[#123a6b] to-brand-800 text-white">

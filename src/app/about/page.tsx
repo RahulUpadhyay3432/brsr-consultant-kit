@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { GlowOrb, Contours, Blob } from "@/components/brand/Decor";
-import { SaakshMark } from "@/components/SaakshMark";
 
 export const metadata: Metadata = {
   title: "About Saaksh: who built it and why",
@@ -107,13 +107,15 @@ export default function AboutPage() {
 
         {/* ── Vision & mission (two-column, with the "vision" visual) ──────────── */}
         <section className="relative overflow-hidden glow-soft">
-          <div className="mx-auto w-full max-w-[1120px] px-5 sm:px-8 py-20 grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-            <div className="lg:col-span-7" data-reveal>
-              <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-700">Vision &amp; mission</p>
-              <h2 className="font-editorial font-semibold text-ink text-[2rem] sm:text-[2.4rem] leading-[1.1] tracking-[-0.015em] mt-3">
-                Put big-firm tooling in every consultant&apos;s hands.
-              </h2>
-              <div className="mt-7 space-y-6">
+          <div className="mx-auto w-full max-w-[1120px] px-5 sm:px-8 py-20">
+            <div className="grid lg:grid-cols-12 gap-10 lg:gap-14">
+              <div className="lg:col-span-5" data-reveal>
+                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-700">Vision &amp; mission</p>
+                <h2 className="font-editorial font-semibold text-ink text-[2rem] sm:text-[2.4rem] leading-[1.1] tracking-[-0.015em] mt-3">
+                  Put big-firm tooling in every consultant&apos;s hands.
+                </h2>
+              </div>
+              <div className="lg:col-span-7 space-y-6" data-reveal style={{ transitionDelay: "80ms" }}>
                 <div className="relative rounded-2xl border border-line bg-white p-6 shadow-elev-1">
                   <p className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-700 mb-2">Mission</p>
                   <p className="text-[16px] text-ink-body leading-[1.65]">
@@ -133,20 +135,21 @@ export default function AboutPage() {
               </div>
             </div>
 
-            {/* The "vision" visual — an on-brand navy card (swap in a photo later) */}
-            <div className="lg:col-span-5" data-reveal style={{ transitionDelay: "90ms" }}>
-              <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-forest glow-dark shadow-elev-3 border border-white/10">
-                <GlowOrb tone="brand" className="w-[380px] h-[380px] -bottom-32 -right-24" />
-                <Contours className="w-[520px] h-[520px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-brand-400" stroke="#4D97F0" opacity={0.16} />
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8">
-                  <SaakshMark size={64} />
-                  <p className="font-editorial text-white text-[1.5rem] leading-snug mt-6 tracking-[-0.01em]">
-                    Evidence, by name and by design.
-                  </p>
-                  <p className="text-[13.5px] text-ondark-muted leading-relaxed mt-3 max-w-[240px]">
-                    Sākṣya: the witness, the cited proof behind every number.
-                  </p>
-                </div>
+            {/* Full-width vision band — sustainability meeting clarity */}
+            <div className="relative mt-14 rounded-3xl overflow-hidden shadow-elev-3 border border-white/10" data-reveal>
+              <Image
+                src="/product/about-vision.jpg"
+                alt="Misty green tea-garden hills at dawn meeting a modern glass building, sustainability meeting clarity."
+                width={1600}
+                height={1067}
+                sizes="(max-width: 1120px) 100vw, 1120px"
+                className="w-full h-[260px] sm:h-[400px] object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-forest/85 via-forest/25 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-7 sm:p-10">
+                <p className="font-editorial font-semibold text-white text-[1.4rem] sm:text-[1.9rem] leading-snug tracking-[-0.015em] max-w-[560px]">
+                  One dataset. Every framework. Every figure traced to its source.
+                </p>
               </div>
             </div>
           </div>
@@ -176,6 +179,12 @@ export default function AboutPage() {
             </ol>
           </div>
         </section>
+
+        {/* ── Nature band (atmosphere, the "why") ───────────────────────────────── */}
+        <div className="relative h-[200px] sm:h-[280px] overflow-hidden">
+          <Image src="/product/nature-forest.jpg" alt="" aria-hidden width={1100} height={1344} sizes="100vw" className="w-full h-full object-cover object-center" />
+          <div className="absolute inset-0 bg-forest/35" />
+        </div>
 
         {/* ── The problem (two-column: heading left, narrative right) ───────────── */}
         <section>
