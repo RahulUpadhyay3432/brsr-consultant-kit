@@ -22,7 +22,7 @@ export function CommunityJoin() {
       <div className="rounded-xl border border-dashed border-line bg-band px-5 py-4 text-center">
         <p className="text-[14px] font-semibold text-ink">Invite link coming soon</p>
         <p className="text-[13px] text-ink-muted leading-relaxed mt-1">
-          We&apos;re setting the group up now. Check back shortly, or start a free report in the meantime.
+          We&apos;re setting the community up now. Check back shortly, or start a free report in the meantime.
         </p>
       </div>
     );
@@ -37,7 +37,7 @@ export function CommunityJoin() {
       className="pressable inline-flex items-center justify-center gap-2.5 rounded-xl bg-[#25D366] text-white text-[15px] font-semibold px-6 py-3.5 hover:bg-[#1EB855] transition-colors"
     >
       <WhatsAppGlyph />
-      Join the WhatsApp group
+      Join the community
     </a>
   );
 }

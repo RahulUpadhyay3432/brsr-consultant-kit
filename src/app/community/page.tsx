@@ -7,7 +7,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { GlowOrb, Contours, Blob } from "@/components/brand/Decor";
 
 export const metadata: Metadata = {
-  title: "Community: the group for ESG consultants",
+  title: "Community for Indian ESG consultants",
   description:
     "Join the Saaksh community of independent Indian ESG consultants. Cited regulatory updates that matter, practical answers from people who do the work, and first look at new tools.",
 };
@@ -93,14 +93,14 @@ export default function CommunityPage() {
                 Join on WhatsApp
               </h2>
               <p className="text-[15px] text-ink-body leading-relaxed mt-2.5 max-w-[460px] mx-auto">
-                A focused group, updates and practical discussion for practising ESG consultants. No spam, nothing that
+                A focused community, updates and practical discussion for practising ESG consultants. No spam, nothing that
                 doesn&apos;t earn your attention, and you can leave any time.
               </p>
               <div className="mt-7 flex justify-center">
                 <CommunityJoin />
               </div>
               <p className="text-[12.5px] text-ink-muted mt-4">
-                A LinkedIn group is coming soon, so you can follow along there too.
+                We&apos;ll be on LinkedIn soon too, so you can follow along there.
               </p>
             </div>
           </section>
