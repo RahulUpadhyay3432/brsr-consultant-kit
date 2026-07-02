@@ -53,7 +53,7 @@ export function BlogToc() {
     <nav className="sticky top-24 pt-1">
       <p
         style={{
-          fontFamily: "ui-monospace, 'IBM Plex Mono', monospace",
+          fontFamily: "var(--font-hanken), -apple-system, system-ui, sans-serif",
           fontSize: "10.5px",
           fontWeight: 600,
           letterSpacing: "0.09em",

@@ -1587,9 +1587,9 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                     <span><span className="font-semibold text-ink">You get:</span> {s.out}</span>
                   </p>
                 </div>
-                <div className="mt-4 pt-4 border-t border-line-soft flex flex-wrap gap-1.5">
+                <div className="mt-4 pt-4 border-t border-line-soft flex flex-wrap gap-2">
                   {s.chips.map((c) => (
-                    <span key={c} className="font-mono text-[10.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 rounded-full px-2 py-0.5">{c}</span>
+                    <span key={c} className="text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 rounded-full px-2.5 py-1">{c}</span>
                   ))}
                 </div>
               </div>

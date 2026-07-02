@@ -18,8 +18,6 @@ const JOBS = [
   ["Hanken Grotesk", "wght@500", "HankenGrotesk-500.woff2"],
   ["Hanken Grotesk", "wght@600", "HankenGrotesk-600.woff2"],
   ["Hanken Grotesk", "wght@700", "HankenGrotesk-700.woff2"],
-  ["IBM Plex Mono", "wght@400", "IBMPlexMono-400.woff2"],
-  ["IBM Plex Mono", "wght@500", "IBMPlexMono-500.woff2"],
 ];
 
 let ok = 0;

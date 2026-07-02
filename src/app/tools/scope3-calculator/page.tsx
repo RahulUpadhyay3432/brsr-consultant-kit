@@ -28,15 +28,15 @@ function ValueChainRibbon() {
     <svg viewBox="0 0 280 132" className="w-full" role="img" aria-label="Value chain: upstream, operations, downstream">
       <rect x="6" y="34" width="74" height="44" rx="10" fill="#EAF4FE" stroke="#CDE2F6" strokeWidth="1.2" />
       <text x="43" y="52" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#0B5FB0">Upstream</text>
-      <text x="43" y="66" textAnchor="middle" fontFamily="var(--font-plex-mono), monospace" fontSize="8" fill="#5B6573">Cat 4</text>
+      <text x="43" y="66" textAnchor="middle" fontFamily="var(--font-hanken), sans-serif" fontSize="8" fill="#5B6573">Cat 4</text>
       <line x1="82" y1="56" x2="100" y2="56" stroke="#94A3B8" strokeWidth="1.8" markerEnd="url(#s3ar)" />
       <rect x="103" y="28" width="74" height="56" rx="10" fill="#0F1E33" />
       <text x="140" y="50" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#fff">Operations</text>
-      <text x="140" y="66" textAnchor="middle" fontFamily="var(--font-plex-mono), monospace" fontSize="8" fill="#9DB2CE">Cat 5 · 6 · 7</text>
+      <text x="140" y="66" textAnchor="middle" fontFamily="var(--font-hanken), sans-serif" fontSize="8" fill="#9DB2CE">Cat 5 · 6 · 7</text>
       <line x1="179" y1="56" x2="197" y2="56" stroke="#94A3B8" strokeWidth="1.8" markerEnd="url(#s3ar)" />
       <rect x="200" y="34" width="74" height="44" rx="10" fill="#FDEDE9" stroke="#F8C9BD" strokeWidth="1.2" />
       <text x="237" y="52" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#C24428">Downstream</text>
-      <text x="237" y="66" textAnchor="middle" fontFamily="var(--font-plex-mono), monospace" fontSize="8" fill="#5B6573">Cat 9</text>
+      <text x="237" y="66" textAnchor="middle" fontFamily="var(--font-hanken), sans-serif" fontSize="8" fill="#5B6573">Cat 9</text>
       <text x="140" y="108" textAnchor="middle" fontSize="10" fill="#5B6573">Screened here: Cat 4, 5, 6, 7 & 9</text>
       <text x="140" y="122" textAnchor="middle" fontSize="9.5" fill="#8A938D">Cat 1 (purchased goods) needs supplier data</text>
       <defs>

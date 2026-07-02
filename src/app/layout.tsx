@@ -7,8 +7,8 @@ import { jsonLdHtml } from "@/lib/jsonld";
 import "./globals.css";
 
 // Self-hosted (no next/font/google on this machine). Newsreader = display serif,
-// Hanken Grotesk = body sans, IBM Plex Mono = mono. Files fetched once by
-// scripts/fetch-fonts.mjs.
+// Hanken Grotesk = body sans (also what `font-mono` now resolves to; the product
+// uses no monospace typeface). Files fetched once by scripts/fetch-fonts.mjs.
 const newsreader = localFont({
   src: [
     { path: "./fonts/Newsreader-400.woff2", weight: "400", style: "normal" },
@@ -29,15 +29,6 @@ const hanken = localFont({
   variable: "--font-hanken",
   display: "swap",
 });
-const plexMono = localFont({
-  src: [
-    { path: "./fonts/IBMPlexMono-400.woff2", weight: "400", style: "normal" },
-    { path: "./fonts/IBMPlexMono-500.woff2", weight: "500", style: "normal" },
-  ],
-  variable: "--font-plex-mono",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://saaksh.co"),
   title: {
@@ -69,7 +60,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${newsreader.variable} ${hanken.variable} ${plexMono.variable} text-stone-900`}
+        className={`${newsreader.variable} ${hanken.variable} text-stone-900`}
       >
         <script
           type="application/ld+json"

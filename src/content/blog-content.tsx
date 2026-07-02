@@ -91,7 +91,7 @@ function OL({ items }: { items: React.ReactNode[] }) {
             marginBottom: "0.65rem",
           }}
         >
-          <span style={{ fontFamily: "ui-monospace, 'IBM Plex Mono', monospace", fontSize: "12px", fontWeight: 700, color: "#1E9DF2", flexShrink: 0, marginTop: "5px", minWidth: "20px" }}>
+          <span style={{ fontFamily: "var(--font-hanken), -apple-system, system-ui, sans-serif", fontSize: "12px", fontWeight: 700, color: "#1E9DF2", flexShrink: 0, marginTop: "5px", minWidth: "20px" }}>
             {String(i + 1).padStart(2, "0")}
           </span>
           <span>{item}</span>
@@ -118,7 +118,7 @@ function Callout({ title, children, color = "blue" }: { title: string; children:
 
 function Mono({ children }: { children: React.ReactNode }) {
   return (
-    <code style={{ fontFamily: "ui-monospace, 'IBM Plex Mono', monospace", fontSize: "14px", backgroundColor: "#EFF3FA", color: "#0B5FB0", padding: "2px 6px", borderRadius: "5px" }}>
+    <code style={{ fontFamily: "var(--font-hanken), -apple-system, system-ui, sans-serif", fontSize: "14px", backgroundColor: "#EFF3FA", color: "#0B5FB0", padding: "2px 6px", borderRadius: "5px" }}>
       {children}
     </code>
   );
@@ -156,7 +156,7 @@ function Table({ headers, rows }: { headers: string[]; rows: string[][] }) {
 function KeyTakeaways({ items }: { items: string[] }) {
   return (
     <div style={{ borderRadius: "16px", border: "2px solid #1E9DF2", backgroundColor: "#EAF4FE", padding: "22px 24px", margin: "2rem 0" }}>
-      <p style={{ fontFamily: "ui-monospace, 'IBM Plex Mono', monospace", fontSize: "10.5px", fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase", color: "#0B5FB0", marginBottom: "14px" }}>
+      <p style={{ fontFamily: "var(--font-hanken), -apple-system, system-ui, sans-serif", fontSize: "10.5px", fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase", color: "#0B5FB0", marginBottom: "14px" }}>
         Key takeaways
       </p>
       <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
@@ -230,7 +230,7 @@ function ImagePlaceholder({ alt, prompt }: { alt: string; prompt: string }) {
         <p style={{ fontFamily: "var(--font-hanken), system-ui, sans-serif", fontWeight: 600, fontSize: "13px", color: "#5B6573", textAlign: "center" }}>
           {alt}
         </p>
-        <p style={{ fontFamily: "ui-monospace, 'IBM Plex Mono', monospace", fontSize: "11px", color: "#94A3B8", textAlign: "center", maxWidth: "480px", lineHeight: "1.6" }}>
+        <p style={{ fontFamily: "var(--font-hanken), -apple-system, system-ui, sans-serif", fontSize: "11px", color: "#94A3B8", textAlign: "center", maxWidth: "480px", lineHeight: "1.6" }}>
           <strong>AI image prompt:</strong> {prompt}
         </p>
       </div>

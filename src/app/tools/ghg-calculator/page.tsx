@@ -33,7 +33,7 @@ function ScopeDiagram() {
     <svg viewBox="0 0 280 190" className="w-full" role="img" aria-label="Scope 1, 2 and 3 emission boundaries">
       {/* Scope 3 outer boundary */}
       <rect x="5" y="5" width="270" height="180" rx="16" fill="none" stroke="#94A3B8" strokeWidth="1.4" strokeDasharray="5 4" />
-      <text x="18" y="24" fontFamily="var(--font-plex-mono), monospace" fontSize="10" fill="#64748B">SCOPE 3 · value chain</text>
+      <text x="18" y="24" fontFamily="var(--font-hanken), sans-serif" fontSize="10" fill="#64748B">SCOPE 3 · value chain</text>
       {/* Operations box */}
       <rect x="86" y="66" width="108" height="70" rx="12" fill="#EAF4FE" stroke="#0F1E33" strokeWidth="1.4" />
       <text x="140" y="105" textAnchor="middle" fontSize="11" fontWeight="600" fill="#0F1E33">Your operations</text>
@@ -41,11 +41,11 @@ function ScopeDiagram() {
       <rect x="18" y="86" width="34" height="30" rx="7" fill="#1E9DF2" />
       <path d="M37 92l-6 10h5l-4 8 9-12h-5z" fill="#fff" />
       <line x1="52" y1="101" x2="82" y2="101" stroke="#1E9DF2" strokeWidth="2" markerEnd="url(#ar)" />
-      <text x="35" y="132" textAnchor="middle" fontFamily="var(--font-plex-mono), monospace" fontSize="8.5" fill="#0B5FB0">S2 · grid</text>
+      <text x="35" y="132" textAnchor="middle" fontFamily="var(--font-hanken), sans-serif" fontSize="8.5" fill="#0B5FB0">S2 · grid</text>
       {/* Scope 1: fuel flame on operations */}
       <circle cx="140" cy="66" r="13" fill="#F2674A" />
       <path d="M140 59c3 3 4 6 2 9a3.2 3.2 0 01-6-0.4c0-2 1.5-3 1.5-5 1.5 1 2.5 1 2.5-3.6z" fill="#fff" />
-      <text x="140" y="156" textAnchor="middle" fontFamily="var(--font-plex-mono), monospace" fontSize="8.5" fill="#C24428">S1 · on-site fuel</text>
+      <text x="140" y="156" textAnchor="middle" fontFamily="var(--font-hanken), sans-serif" fontSize="8.5" fill="#C24428">S1 · on-site fuel</text>
       <defs>
         <marker id="ar" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
           <path d="M0 0l6 3-6 3z" fill="#1E9DF2" />

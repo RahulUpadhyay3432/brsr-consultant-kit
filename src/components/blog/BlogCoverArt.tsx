@@ -2,7 +2,7 @@ import React from "react";
 import { BlogPost } from "@/data/blog-posts";
 
 const W = "rgba(255,255,255,";
-const mono: React.CSSProperties = { fontFamily: "ui-monospace, 'IBM Plex Mono', monospace" };
+const mono: React.CSSProperties = { fontFamily: "var(--font-hanken), -apple-system, system-ui, sans-serif" };
 
 /* ─── Original 5 covers ──────────────────────────────────────────────────── */
 

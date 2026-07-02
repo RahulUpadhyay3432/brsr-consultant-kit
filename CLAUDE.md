@@ -329,7 +329,7 @@ vercel.json                         # Vercel Cron schedule
 - Background: cream paper `#FAF8F3` with subtle glow (`.bg-grid`), 1.5px evergreen hairline on top
 - Status badges: green (Ready to pull), amber (Needs verification), **ember/orange** (Collect fresh), slate (Not applicable)
 - Framework badges: blue (GRI), violet (TCFD/MSCI), emerald (IFRS), amber (DJSI); the "Last year" upload tag is now brand (was indigo)
-- Fonts (self-hosted in `src/app/fonts/`): **Hanken Grotesk** body, **Newsreader** serif for `.font-display` headings, **IBM Plex Mono** for labels/citations/code chips
+- Fonts (self-hosted in `src/app/fonts/`): **Hanken Grotesk** body + display, **Newsreader** serif for `.font-editorial` big headings. **No monospace typeface** — the product uses zero mono (user found it unprofessional; retired 2026-07-03). The Tailwind `mono` token in `tailwind.config.ts` is deliberately repointed to the Hanken sans stack, so the ~200 legacy `font-mono` class usages (eyebrows/labels/code chips/numbers) all render Hanken; the IBM Plex Mono webfont + `--font-plex-mono` loader were removed. Don't reintroduce a mono font or `var(--font-plex-mono)`. For code/data chips use tinted-pill styling + `tabular-nums`, not a mono family.
 - **Motion system** (`cubic-bezier(0.2,0,0,1)`, 160/280/420ms): `.anim-up-sm`, `.anim-up-md`, `.anim-up-hero`, `.anim-card`
 - **Micro-interactions**: `.pressable`, `.chip-spring`, `.check-path`. All respect `prefers-reduced-motion`.
 - Tab icons are inline SVGs (no emoji)

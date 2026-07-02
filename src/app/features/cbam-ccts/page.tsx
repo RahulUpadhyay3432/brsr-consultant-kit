@@ -74,7 +74,7 @@ export default function CbamCctsPage() {
               display: "inline-block",
               background: "#EFF3FA",
               color: "#5B6573",
-              fontFamily: "var(--font-mono, monospace)",
+              fontFamily: "var(--font-hanken), sans-serif",
               fontSize: "11px",
               fontWeight: 600,
               letterSpacing: "0.08em",
@@ -485,7 +485,7 @@ export default function CbamCctsPage() {
           <p
             style={{
               color: "#5B6573",
-              fontFamily: "var(--font-mono, monospace)",
+              fontFamily: "var(--font-hanken), sans-serif",
               fontSize: "12px",
               lineHeight: 1.7,
               margin: 0,
