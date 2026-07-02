@@ -47,6 +47,7 @@ export function MobileNav() {
           <div className="dropdown-in absolute right-3 top-full mt-2 z-50 w-[280px] max-h-[75vh] overflow-y-auto bg-white border border-line rounded-2xl shadow-elev-2 py-2">
             <div className="px-1 pt-1">
               <Link href="/pricing" onClick={close} className={linkCls}>Pricing</Link>
+              <Link href="/community" onClick={close} className={linkCls}>Community</Link>
             </div>
 
             <div className="border-t border-line-soft" />

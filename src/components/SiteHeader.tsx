@@ -114,6 +114,7 @@ export function SiteHeader({ active }: { active?: string } = {}) {
           </div>
 
           <Link href="/pricing" className={linkCls("pricing")}>Pricing</Link>
+          <Link href="/community" className={linkCls("community")}>Community</Link>
 
           {/* Resources dropdown (Latest + Blog + Methodology + About) */}
           <div className="relative" onMouseEnter={() => openDropdown("resources")} onMouseLeave={closeDropdown}>

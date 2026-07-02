@@ -6,6 +6,7 @@
 // on-device, so it can only surface vetted answers, never invent one.
 
 import { useState, useMemo, useEffect, type ReactNode } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { searchHelp, type HelpTopic } from "@/lib/help-search";
 import helpData from "@/data/help_topics.json";
@@ -253,6 +254,19 @@ export default function HelpWidget() {
 
           {/* Footer */}
           <div className="border-t border-line divide-y divide-line-soft">
+            <div className="px-4 py-2.5 flex items-center justify-between">
+              <span className="text-[12.5px] text-ink-muted">Updates that matter for consultants?</span>
+              <Link
+                href="/community"
+                onClick={() => track("community_joined", { from: "help_widget" })}
+                className="text-[12.5px] font-semibold text-brand-700 hover:text-brand-800 inline-flex items-center gap-1"
+              >
+                Join the community
+                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </Link>
+            </div>
             <div className="px-4 py-2.5 flex items-center justify-between">
               <span className="text-[12.5px] text-ink-muted">Something we could do better?</span>
               <a

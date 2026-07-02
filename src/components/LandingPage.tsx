@@ -602,6 +602,7 @@ function Header({
           </div>
 
           <Link href="/pricing" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Pricing</Link>
+          <Link href="/community" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Community</Link>
 
           {/* Resources dropdown (Latest + Blog + Methodology + About) */}
           <div
@@ -1344,6 +1345,7 @@ function Footer({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: str
           <ul className="mt-2.5 space-y-1.5">
             {[
               ["/blog", "Blog"],
+              ["/community", "Community"],
               ["/pricing", "Pricing"],
               ["/features/gap-analysis", "Gap analysis guide"],
               ["/features/ghg-calculator", "GHG calculator guide"],

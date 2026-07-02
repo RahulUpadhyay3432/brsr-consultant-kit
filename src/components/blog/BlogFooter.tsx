@@ -19,6 +19,7 @@ export function BlogFooter() {
       links: [
         ["/latest", "Latest updates"],
         ["/blog", "Blog"],
+        ["/community", "Community"],
         ["/pricing", "Pricing"],
         ["/methodology", "Methodology"],
       ],

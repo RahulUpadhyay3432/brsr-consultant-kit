@@ -55,6 +55,7 @@ const ICON_COLOR: Record<string, string> = {
   templates:    "#C2871B", // amber
   sources:      "#5B6573", // slate
   collect:      "#F2674A", // coral
+  community:    "#1EA362", // green
 };
 
 // Colourful duotone nav icons: a soft accent-tinted fill behind a crisp accent glyph.
@@ -123,6 +124,14 @@ function TabIcon({ id, className, active = true }: { id: string; className?: str
     <svg {...p}>
       <path d="M14 2.2L9 14l-2.4-5.2L1.5 6.4 14 2.2z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth={1.45} strokeLinecap="round" strokeLinejoin="round" />
       <path d="M14 2.2L6.6 8.8" {...fg} />
+    </svg>
+  );
+  if (id === "community") return (
+    <svg {...p}>
+      <path d="M2.5 4a1.5 1.5 0 011.5-1.5h8A1.5 1.5 0 0113.5 4v4.6A1.5 1.5 0 0112 10h-5l-3 2.6V10a1.5 1.5 0 01-1.5-1.4V4z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth={1.45} strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="5.6" cy="6.2" r="0.8" fill="currentColor" />
+      <circle cx="8" cy="6.2" r="0.8" fill="currentColor" />
+      <circle cx="10.4" cy="6.2" r="0.8" fill="currentColor" />
     </svg>
   );
   return null;
@@ -336,6 +345,23 @@ function Sidebar({
               <TabIcon id="collect" className="flex-shrink-0 text-stone-400 group-hover:text-stone-500" />
               <span className="flex-1 text-left">Collect</span>
               <span className="font-mono text-[9.5px] uppercase tracking-[0.08em] font-semibold text-[#0B5FB0] bg-[#EAF4FE] rounded px-1.5 py-0.5 leading-none flex-shrink-0">Pro</span>
+              <svg className="w-3 h-3 text-stone-300 group-hover:text-stone-500 transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+
+        <div>
+          <p className="px-2.5 mb-1.5 text-[11.5px] font-bold uppercase tracking-[0.14em] text-stone-500">Community</p>
+          <div className="space-y-0.5">
+            <Link
+              href="/community"
+              className="group flex items-center gap-2.5 w-full px-2.5 py-[7px] rounded-lg text-[13.5px] font-medium
+                text-stone-600 hover:bg-stone-100/70 transition-colors pressable"
+            >
+              <TabIcon id="community" className="flex-shrink-0" />
+              <span className="flex-1 text-left">Join the community</span>
               <svg className="w-3 h-3 text-stone-300 group-hover:text-stone-500 transition-colors flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
               </svg>

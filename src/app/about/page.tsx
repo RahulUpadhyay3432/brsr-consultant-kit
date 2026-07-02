@@ -53,6 +53,31 @@ export default function AboutPage() {
       <main className="flex-1">
         <div className="mx-auto w-full max-w-[720px] px-5 sm:px-8 py-16">
 
+          {/* Vision & mission */}
+          <section className="mb-14">
+            <h2 className="font-display font-bold text-[1.7rem] text-ink leading-tight tracking-[-0.015em] mb-6">
+              Vision &amp; mission
+            </h2>
+            <div className="space-y-7">
+              <div>
+                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-700 mb-2">Mission</p>
+                <p className="font-display text-[1.15rem] sm:text-[1.28rem] text-ink leading-[1.5] tracking-[-0.01em]">
+                  Put the tooling that only big consultancies can afford into the hands of every independent ESG
+                  consultant in India, so a solo practice can prepare a BRSR report that is as fast, as complete,
+                  and as defensible as a large firm&apos;s.
+                </p>
+              </div>
+              <div>
+                <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-700 mb-2">Vision</p>
+                <p className="font-display text-[1.15rem] sm:text-[1.28rem] text-ink leading-[1.5] tracking-[-0.01em]">
+                  One compliance platform for Indian sustainability reporting that starts with BRSR and grows into
+                  CBAM, CCTS and the wider ESG stack, where a consultant collects a client&apos;s data once and
+                  reports it to every framework, and every figure traces back to its source.
+                </p>
+              </div>
+            </div>
+          </section>
+
           {/* The problem */}
           <section className="mb-14">
             <h2 className="font-display font-bold text-[1.7rem] text-ink leading-tight tracking-[-0.015em] mb-4">
