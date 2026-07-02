@@ -35,7 +35,7 @@ const SIGNALS: Record<string, string[]> = {
   // ── P3 Employee Wellbeing ──────────────────────────────────────────────
   "P3-E2": ["retirement benefits", "provident fund", "gratuity"],
   "P3-E4": ["equal opportunity policy", "persons with disabilities act"],
-  "P3-E6": ["grievance redressal", "mechanism to receive and redress grievances"],
+  "P3-E6": ["grievance redressal", "receive and redress grievances"],
   "P3-E7": ["recognised by the listed entity", "association(s) or unions", "trade union"],
   "P3-E10": ["occupational health and safety management system", "health and safety management system", "iso 45001"],
   "P3-E11": ["lost time injury", "ltifr", "safety related incidents", "high consequence work-related injury"],
@@ -92,7 +92,7 @@ const SIGNALS: Record<string, string[]> = {
   "SB-3":  ["extend to your value chain partners", "extend to value chain partners"],
   "SB-4":  ["national and international codes", "certifications/labels/standards"],
   "SB-5":  ["specific commitments, goals", "goals and targets set by the entity"],
-  "SB-6":  ["performance against the specific commitments", "reasons for non-achievement"],
+  "SB-6":  ["against the specific commitments", "reasons in case the same are not met", "reasons for non-achievement"],
   "SB-7":  ["statement by director responsible", "statement of the director responsible"],
   "SB-8":  ["highest authority responsible for implementation"],
   "SB-9":  ["specified committee of the board", "decision making on sustainability"],

@@ -258,6 +258,9 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
                   {ghg.scope1_breakdown.length === 0 && (
                     <ResultRow label="Scope 1" value="0.00" unit="tCO₂e" muted />
                   )}
+                  <p className="text-[10px] text-ink-faint leading-snug">
+                    Fuel combustion only. Refrigerant/fugitive and process emissions are not included, add them to Scope 1 separately if material.
+                  </p>
                   <div>
                     <ResultRow label="Scope 2 (grid electricity)" value={fmtNum(ghg.scope2_tco2e, 2)} unit="tCO₂e" />
                     <p className="text-[10px] text-ink-faint mt-0.5 leading-snug">
