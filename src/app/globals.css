@@ -34,11 +34,21 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Display headings — bold modern sans (Clean Forest). Serif retired from product UI. */
+/* Display headings — bold modern sans. Used for the wordmark + dense product UI. */
 .font-display {
   font-family: var(--font-hanken), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+
+/* Editorial serif — Newsreader — for large marketing/content headings only (heroes,
+   section titles on /about, /methodology, homepage section h2s). Warmth + a premium
+   editorial voice; body + functional/table headers stay Hanken sans. Weight is set
+   per-heading (Newsreader ships 400/500/600). Beats the * rule via class specificity. */
+.font-editorial {
+  font-family: var(--font-newsreader), Georgia, Cambria, 'Times New Roman', serif;
+  letter-spacing: -0.015em;
+  font-feature-settings: "liga" 1, "kern" 1;
 }
 
 body {
@@ -59,6 +69,39 @@ body {
   background-image:
     radial-gradient(ellipse 70% 50% at 50% 0%, rgba(30, 157, 242, 0.10) 0%, transparent 60%);
 }
+
+/* Atmospheric glow behind light-surface heroes/bands — a faint navy→blue wash so a
+   section reads as lit and layered, not a flat white slab. Depth, not decoration. */
+.glow-soft {
+  background-image:
+    radial-gradient(ellipse 60% 55% at 50% 0%, rgba(30, 157, 242, 0.09) 0%, transparent 62%),
+    radial-gradient(ellipse 45% 40% at 85% 20%, rgba(11, 111, 212, 0.05) 0%, transparent 60%);
+}
+
+/* Tactile card — soft lift + shadow-grow + a faint top sheen on hover (the uiverse
+   feel, built in-house). Pair with a base shadow-elev-1 on the card. */
+.card-lift {
+  transition: transform 260ms var(--m-enter), box-shadow 260ms var(--m-enter);
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 10px rgba(15, 30, 51, 0.06), 0 22px 48px rgba(15, 30, 51, 0.12);
+}
+
+/* Primary CTA — a soft brand glow that blooms on hover (adds to .pressable lift). */
+.cta-glow {
+  transition: transform 120ms var(--ease-out), box-shadow 220ms var(--m-enter), background-color 140ms ease;
+  box-shadow: 0 1px 2px rgba(15, 30, 51, 0.12);
+}
+.cta-glow:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(11, 111, 212, 0.34);
+}
+.cta-glow:active { transform: translateY(0) scale(0.985); }
+
+/* Arrow-nudge — a trailing arrow slides right on the parent's hover (button delight). */
+.group:hover .arrow-nudge { transform: translateX(3px); }
+.arrow-nudge { transition: transform 200ms var(--m-enter); }
 
 /* Hairline accent at the top — 1px, intentional */
 body::before {

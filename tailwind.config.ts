@@ -52,13 +52,15 @@ const config: Config = {
       boxShadow: {
         "elev-1":       "0 1px 2px rgba(15,30,51,0.04), 0 4px 12px rgba(15,30,51,0.05)",
         "elev-2":       "0 2px 6px rgba(15,30,51,0.05), 0 12px 32px rgba(15,30,51,0.08)",
+        "elev-3":       "0 4px 10px rgba(15,30,51,0.06), 0 24px 56px rgba(15,30,51,0.12)",
         "elev-1-hover": "0 2px 4px rgba(15,30,51,0.05), 0 8px 20px rgba(15,30,51,0.07)",
       },
       fontFamily: {
-        // Hanken Grotesk body · Newsreader display serif · IBM Plex Mono (self-hosted)
+        // Hanken Grotesk body · Newsreader = editorial serif for big headings · IBM Plex Mono
         sans: ["var(--font-hanken)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "system-ui", "sans-serif"],
         mono: ["var(--font-plex-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
         display: ["var(--font-hanken)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "system-ui", "sans-serif"],
+        serif: ["var(--font-newsreader)", "Georgia", "Cambria", "Times New Roman", "serif"],
       },
     },
   },
