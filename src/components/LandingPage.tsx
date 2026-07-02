@@ -602,6 +602,7 @@ function Header({
             </div>
           </div>
 
+          <a href="#how" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">How it works</a>
           <Link href="/pricing" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Pricing</Link>
           <Link href="/community" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Community</Link>
 
@@ -1018,7 +1019,9 @@ function ProductPreviewSection({ onStart }: { onStart: () => void }) {
 }
 
 /* ── Free features grid ────────────────────────────────────────────────────── */
-function FeaturesGrid({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: string) => () => void }) {
+// Each card links to the REAL page for that tool (verified routes) — never a
+// same-page scroll to a demo. That is where the consultant actually does the work.
+function FeaturesGrid({ onStart }: { onStart: () => void }) {
   const features = [
     {
       icon: <IcoClipboard />,
@@ -1026,15 +1029,15 @@ function FeaturesGrid({ onStart, scrollTo }: { onStart: () => void; scrollTo: (i
       title: "BRSR gap analysis",
       desc: "All 108 disclosures sorted into Ready, Verify or Collect, matched against the company's existing filings.",
       cta: "Start free",
-      action: onStart,
+      href: "/start",
     },
     {
       icon: <IcoBarChart />,
       iconBg: "bg-[#EAF4FE] text-brand-600",
       title: "GHG & emissions calculators",
       desc: "Scope 1, 2 and 3 screening. CEA and IPCC conversion factors, version noted on every line.",
-      cta: "See calculator",
-      action: scrollTo("calculators"),
+      cta: "Open the calculator",
+      href: "/tools/ghg-calculator",
     },
     {
       icon: <IcoNetwork />,
@@ -1042,7 +1045,7 @@ function FeaturesGrid({ onStart, scrollTo }: { onStart: () => void; scrollTo: (i
       title: "Cross-framework mapping",
       desc: "Every BRSR disclosure linked to GRI, TCFD, IFRS S1/S2 and TNFD. 68 mappings, exportable as CSV.",
       cta: "Explore mapping",
-      action: onStart,
+      href: "/features/alignment",
     },
     {
       icon: <IcoFileText />,
@@ -1050,15 +1053,15 @@ function FeaturesGrid({ onStart, scrollTo }: { onStart: () => void; scrollTo: (i
       title: "Templates & workbooks",
       desc: "BRSR response workbook, materiality assessment grid, stakeholder engagement plan. Download in one click.",
       cta: "See templates",
-      action: scrollTo("tools"),
+      href: "/features/templates",
     },
     {
       icon: <IcoCalendar />,
       iconBg: "bg-[#FFF7ED] text-orange-500",
       title: "Engagement timeline",
       desc: "A 12 or 20-week milestone plan tailored to your filing deadline. Download as CSV for the client.",
-      cta: "Generate timeline",
-      action: scrollTo("tools"),
+      cta: "See the planner",
+      href: "/features/templates",
     },
     {
       icon: <IcoGlobe />,
@@ -1066,7 +1069,7 @@ function FeaturesGrid({ onStart, scrollTo }: { onStart: () => void; scrollTo: (i
       title: "CBAM & CCTS readiness",
       desc: "EU Carbon Border Adjustment and India's Carbon Credit Trading Scheme, who's in scope and what to prepare.",
       cta: "Check readiness",
-      action: onStart,
+      href: "/features/cbam-ccts",
     },
   ];
 
@@ -1089,10 +1092,10 @@ function FeaturesGrid({ onStart, scrollTo }: { onStart: () => void; scrollTo: (i
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {features.map((f) => (
-            <button
+            <Link
               key={f.title}
-              onClick={f.action}
-              className="group text-left bg-white rounded-2xl p-6 border border-line shadow-elev-1 hover:shadow-elev-2 hover:-translate-y-0.5 hover:border-brand-200 transition-all duration-200 pressable"
+              href={f.href}
+              className="group card-lift text-left bg-white rounded-2xl p-6 border border-line shadow-elev-1 hover:border-brand-200"
             >
               <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${f.iconBg}`}>
                 {f.icon}
@@ -1100,9 +1103,9 @@ function FeaturesGrid({ onStart, scrollTo }: { onStart: () => void; scrollTo: (i
               <h3 className="font-semibold text-ink text-[15px] leading-snug">{f.title}</h3>
               <p className={`text-[13.5px] ${BODY} leading-relaxed mt-2`}>{f.desc}</p>
               <p className="flex items-center gap-1.5 text-[12.5px] font-semibold text-brand-600 mt-4 group-hover:text-brand-700 transition-colors">
-                {f.cta} <IcoArrow />
+                {f.cta} <span className="arrow-nudge inline-flex"><IcoArrow /></span>
               </p>
-            </button>
+            </Link>
           ))}
         </div>
 
@@ -1545,27 +1548,28 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       <ProductPreviewSection onStart={onStart} />
 
       {/* ── Free features grid ───────────────────────────────────────────── */}
-      <FeaturesGrid onStart={onStart} scrollTo={scrollTo} />
+      <FeaturesGrid onStart={onStart} />
 
       {/* ── How it works ─────────────────────────────────────────────────── */}
-      <section id="how" className="bg-band border-y border-line">
+      <section id="how" className="bg-band border-y border-line scroll-mt-24">
         <div data-reveal className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
           <p className="font-mono text-[11.5px] font-medium uppercase tracking-[0.12em] text-brand-700 mb-3">How it works</p>
           <h2 className="font-editorial font-semibold text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
             From a blank format to a filed report.
           </h2>
-          <p className={`text-[16.5px] ${BODY} leading-relaxed mt-4 max-w-[620px]`}>
-            Four steps, no setup and no account. Each one tells you exactly what you do and what you get back.
+          <p className={`text-[16.5px] ${BODY} leading-relaxed mt-4 max-w-[640px]`}>
+            Four steps take you from a blank 108-field format to a filed report, with every calculator, framework and
+            export along the way. No setup, no account. Each step shows exactly what you do and what you get back.
           </p>
 
           <div className="grid md:grid-cols-2 gap-5 mt-12">
             {[
-              { n: "1", t: "Describe the client", act: "a 2-minute intake, sector, listing category, existing filings and export markets. No login, everything on your device.", out: "an instant, gap-analysed action plan, cited to SEBI & ICAI, nothing uploaded." },
-              { n: "2", t: "Work the action plan", act: "see all 108 BRSR fields sorted into Ready, Verify and Collect, each with plain-English guidance, the SEBI citation and built-in GHG, energy and water calculators. Upload last year's report to auto-tag what's already documented.", out: "a precise list of only what's genuinely new to collect, with the emissions maths already done." },
-              { n: "3", t: "Report across frameworks", act: "add the suggested material topics, map every disclosure to GRI, TCFD, IFRS and TNFD (plus MSCI and DJSI), check CBAM and CCTS scope, and copy ready-to-send request emails and templates.", out: "one dataset that feeds every framework and the client's stakeholder process." },
-              { n: "4", t: "Hand it off, or go further with Pro", act: "export a client-ready PDF brief and a CSV of every gap, or share a link. When you're ready to chase the data from the client's team, upgrade to Collect (Pro).", out: "a clear path from a blank format to a defensible, filed report." },
-            ].map((s) => (
-              <div key={s.n} className="rounded-2xl bg-white border border-line shadow-elev-1 p-6 sm:p-7">
+              { n: "1", t: "Describe the client", chips: ["2-minute intake", "On-device", "No login", "Instant gap analysis"], act: "a 2-minute intake, sector, listing category, existing filings and export markets. No login, everything on your device.", out: "an instant, gap-analysed action plan, cited to SEBI & ICAI, nothing uploaded." },
+              { n: "2", t: "Work the action plan", chips: ["108 BRSR fields", "GHG · energy · water", "Scope 3 screening", "Upload last year", "SEBI-cited"], act: "see all 108 BRSR fields sorted into Ready, Verify and Collect, each with plain-English guidance, the SEBI citation and built-in GHG, energy and water calculators. Upload last year's report to auto-tag what's already documented.", out: "a precise list of only what's genuinely new to collect, with the emissions maths already done." },
+              { n: "3", t: "Report across frameworks", chips: ["GRI · TCFD · IFRS · TNFD", "MSCI · DJSI", "Materiality", "CBAM · CCTS", "Request emails"], act: "add the suggested material topics, map every disclosure to GRI, TCFD, IFRS and TNFD (plus MSCI and DJSI), check CBAM and CCTS scope, and copy ready-to-send request emails and templates.", out: "one dataset that feeds every framework and the client's stakeholder process." },
+              { n: "4", t: "Hand it off, or go further with Pro", chips: ["PDF brief", "CSV export", "Shareable link", "Collect (Pro)"], act: "export a client-ready PDF brief and a CSV of every gap, or share a link. When you're ready to chase the data from the client's team, upgrade to Collect (Pro).", out: "a clear path from a blank format to a defensible, filed report." },
+            ].map((s, i) => (
+              <div key={s.n} data-reveal style={{ transitionDelay: `${(i % 2) * 80}ms` }} className="card-lift rounded-2xl bg-white border border-line shadow-elev-1 p-6 sm:p-7">
                 <div className="flex items-center gap-3">
                   <span className="w-9 h-9 rounded-xl bg-forest text-white flex items-center justify-center font-display font-bold text-[15px] flex-shrink-0">{s.n}</span>
                   <h3 className="text-[18px] font-semibold text-ink tracking-tight leading-snug">{s.t}</h3>
@@ -1578,6 +1582,11 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                     <svg className="w-4 h-4 text-brand-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.3} strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
                     <span><span className="font-semibold text-ink">You get:</span> {s.out}</span>
                   </p>
+                </div>
+                <div className="mt-4 pt-4 border-t border-line-soft flex flex-wrap gap-1.5">
+                  {s.chips.map((c) => (
+                    <span key={c} className="font-mono text-[10.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 rounded-full px-2 py-0.5">{c}</span>
+                  ))}
                 </div>
               </div>
             ))}
@@ -1629,9 +1638,16 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         <p className={`text-[16.5px] ${BODY} leading-relaxed`}>
           Built-in GHG, energy, water and Scope 3 screening calculators convert raw activity data into BRSR-ready figures, using CEA and IPCC factors with the version noted on every line.
         </p>
+        <p className={`text-[14.5px] ${BODY} leading-relaxed mt-3`}>
+          Every figure exports to a full CSV and a client-ready PDF brief, straight from your report, cited line by line.
+        </p>
         <div className="mt-6 flex flex-wrap gap-3">
-          <span className="inline-flex items-center gap-1.5 text-[14px] font-medium text-ink bg-white border border-line px-3.5 py-2 rounded-lg">Export CSV</span>
-          <span className="inline-flex items-center gap-1.5 text-[14px] font-semibold text-white bg-forest px-3.5 py-2 rounded-lg">Client-ready PDF brief</span>
+          <Link href="/tools/ghg-calculator" className="group cta-glow inline-flex items-center gap-2 bg-forest text-white text-[14px] font-semibold px-4 py-2.5 rounded-xl hover:bg-forest-light">
+            Open the calculator <span className="arrow-nudge inline-flex"><IcoArrow /></span>
+          </Link>
+          <Link href="/start" className="pressable inline-flex items-center gap-2 text-[14px] font-semibold text-brand-700 bg-white border border-line px-4 py-2.5 rounded-xl hover:bg-band transition-colors">
+            Start free to export
+          </Link>
         </div>
       </FeatureRow>
 

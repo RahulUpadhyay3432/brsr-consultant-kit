@@ -120,7 +120,10 @@ export default function HelpWidget() {
     const q = raw.trim();
     if (!q) return;
     setAsked(q);
-    setOpenId(null);
+    // Auto-open the best match so the answer is visible immediately (pressing
+    // Enter used to collapse everything, leaving only clickable titles).
+    const top = searchHelp(q, TOPICS)[0];
+    setOpenId(top ? top.id : null);
   }
 
   useEffect(() => {
