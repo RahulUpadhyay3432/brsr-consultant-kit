@@ -17,9 +17,8 @@ export const FEEDBACK_URL =
 
 // The consultant WhatsApp community invite. One constant, so the /community
 // page, the nav, the report sidebar and the help widget all light up the moment
-// the real invite is pasted here.
-// TODO: paste the WhatsApp group invite link (https://chat.whatsapp.com/...).
-export const COMMUNITY_WHATSAPP_URL = "";
+// the real invite is set here.
+export const COMMUNITY_WHATSAPP_URL = "https://chat.whatsapp.com/HKSf5r4Mza85hCN2clvwIn";
 
 // True once a real invite is set, so CTAs can render a "coming soon" state
 // instead of a dead link while the URL is still a placeholder.
