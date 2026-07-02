@@ -11,6 +11,18 @@ const KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 // A private bucket the user creates once in the Supabase dashboard.
 export const EVIDENCE_BUCKET = "brsr-evidence";
 
+// Bounds on what an owner can attach (token-gated path, but capped anyway).
+export const MAX_EVIDENCE_BYTES = 10 * 1024 * 1024; // 10 MB
+const ALLOWED_EVIDENCE_TYPES = new Set<string>([
+  "application/pdf",
+  "image/png", "image/jpeg", "image/webp", "image/gif",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "text/csv", "text/plain",
+]);
+
 function env(): { url: string; key: string } {
   if (!URL || !KEY) throw new Error("Supabase env not set");
   return { url: URL, key: KEY };
@@ -28,6 +40,13 @@ export interface UploadedEvidence { path: string; name: string }
 // any failure so a flaky upload never blocks the owner's number from saving.
 export async function uploadEvidence(itemId: string, file: File): Promise<UploadedEvidence | null> {
   try {
+    // Reject oversize files and disallowed / attacker-supplied MIME types before
+    // touching storage. Silently returns null (best-effort), the owner's number
+    // still saves, only the unsupported attachment is dropped.
+    if (file.size > MAX_EVIDENCE_BYTES) return null;
+    if (file.type && !ALLOWED_EVIDENCE_TYPES.has(file.type)) return null;
+    const contentType = ALLOWED_EVIDENCE_TYPES.has(file.type) ? file.type : "application/octet-stream";
+
     const { url, key } = env();
     const clean = sanitize(file.name || "evidence");
     const path = `${itemId}/${clean}`;
@@ -37,7 +56,7 @@ export async function uploadEvidence(itemId: string, file: File): Promise<Upload
       headers: {
         apikey: key,
         Authorization: `Bearer ${key}`,
-        "Content-Type": file.type || "application/octet-stream",
+        "Content-Type": contentType,
         "x-upsert": "true", // overwrite if the owner re-submits the same field
       },
       body: bytes,

@@ -5,9 +5,9 @@ import { BlogFooter } from "@/components/blog/BlogFooter";
 import { CommunityJoin } from "@/components/CommunityJoin";
 
 export const metadata: Metadata = {
-  title: "Community: the group for BRSR consultants",
+  title: "Community: the group for ESG consultants",
   description:
-    "Join the Saaksh community of independent Indian ESG consultants. Cited regulatory updates that matter, practical answers from people who file BRSR, and first look at new tools.",
+    "Join the Saaksh community of independent Indian ESG consultants. Cited regulatory updates that matter, practical answers from people who do the work, and first look at new tools.",
 };
 
 const BENEFITS: { title: string; body: string }[] = [
@@ -16,8 +16,8 @@ const BENEFITS: { title: string; body: string }[] = [
     body: "SEBI amendments, BRSR Core timelines, CBAM and CCTS moves, distilled to what actually changes your work, with the source linked. Signal, not noise.",
   },
   {
-    title: "Answers from people who file",
-    body: "Ask the questions the format doesn't answer and get replies from consultants who have filed, not a support bot reading a script.",
+    title: "Answers from people who do the work",
+    body: "Ask the questions the frameworks don't answer and get replies from consultants who do this daily, not a support bot reading a script.",
   },
   {
     title: "First look at new tools",
@@ -37,7 +37,7 @@ export default function CommunityPage() {
             Community
           </p>
           <h1 className="font-display font-bold text-[2.2rem] sm:text-[2.9rem] text-white leading-[1.08] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
-            The Saaksh community for BRSR consultants.
+            The Saaksh community for ESG consultants.
           </h1>
           <p className="text-[16px] text-[#C4D0E0] leading-relaxed mt-4 max-w-[620px]">
             Where India&apos;s independent ESG consultants get the regulatory moves that matter first, and
@@ -71,7 +71,7 @@ export default function CommunityPage() {
               Join on WhatsApp
             </h2>
             <p className="text-[14.5px] text-ink-body leading-relaxed mt-2 max-w-[440px] mx-auto">
-              A focused group, updates and practical discussion for practising BRSR consultants. No spam,
+              A focused group, updates and practical discussion for practising ESG consultants. No spam,
               nothing that doesn&apos;t earn your attention, and you can leave any time.
             </p>
             <div className="mt-6 flex justify-center">

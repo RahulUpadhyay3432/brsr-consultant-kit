@@ -346,6 +346,19 @@ export async function addAccessRequest(req: {
   });
 }
 
+// True if a Pro-access request from this email was recorded since `sinceIso`.
+// Lets the public action dedupe repeat submissions (and suppress the founder
+// email) without a schema change. Values are encodeURIComponent'd like every
+// other filter in this file.
+export async function recentAccessRequestExists(email: string, sinceIso: string): Promise<boolean> {
+  const res = await rest(
+    `brsr_access_requests?email=eq.${encodeURIComponent(email.toLowerCase())}` +
+    `&created_at=gt.${encodeURIComponent(sinceIso)}&select=id&limit=1`
+  );
+  const rows = (await res.json()) as unknown[];
+  return Array.isArray(rows) && rows.length > 0;
+}
+
 // ─── Delete an entire campaign + all its children ───────────────────────────
 // Done in FK-safe order with explicit DELETEs (so it works whether or not the
 // child FKs are ON DELETE CASCADE, no migration required): the items under the

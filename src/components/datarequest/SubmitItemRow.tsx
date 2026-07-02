@@ -95,7 +95,7 @@ export default function SubmitItemRow({
         <input
           type="file"
           name={`file_${item.id}`}
-          accept=".pdf,image/*,.xlsx,.xls,.csv"
+          accept=".pdf,image/*,.xlsx,.xls,.csv,.doc,.docx,.txt"
           aria-label={`Attach the supporting bill or invoice for ${item.label}`}
           className="block max-w-full text-[12px] text-stone-500 cursor-pointer
             file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border file:border-stone-200
@@ -108,7 +108,7 @@ export default function SubmitItemRow({
             {item.evidenceName} attached
           </span>
         ) : (
-          <span className="text-[11.5px] text-stone-500">Attach the bill / invoice (optional)</span>
+          <span className="text-[11.5px] text-stone-500">Attach the bill / invoice (optional, max 10 MB)</span>
         )}
       </div>
     </div>

@@ -7,6 +7,7 @@ import { BlogToc } from "@/components/blog/BlogToc";
 import { BlogHeader } from "@/components/blog/BlogHeader";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 import { SubscribeForm } from "@/components/SubscribeForm";
+import { jsonLdHtml } from "@/lib/jsonld";
 
 const SERIF: React.CSSProperties = { fontFamily: "var(--font-newsreader), Georgia, serif" };
 
@@ -120,7 +121,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="min-h-screen bg-[#FBFCFE] flex flex-col">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }} />
       <BlogHeader />
 
       <main className="flex-1">

@@ -63,28 +63,28 @@ export function RequestAccessForm() {
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="ra-name" className={labelCls}>Your name <span className="text-ember">*</span></label>
-          <input id="ra-name" name="name" required placeholder="Priya Sharma" className={inputCls} />
+          <input id="ra-name" name="name" required maxLength={120} placeholder="Priya Sharma" className={inputCls} />
         </div>
         <div>
           <label htmlFor="ra-org" className={labelCls}>Organisation</label>
-          <input id="ra-org" name="organisation" placeholder="Your firm (optional)" className={inputCls} />
+          <input id="ra-org" name="organisation" maxLength={200} placeholder="Your firm (optional)" className={inputCls} />
         </div>
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="ra-email" className={labelCls}>Work email <span className="text-ember">*</span></label>
-          <input id="ra-email" name="email" type="email" required placeholder="you@firm.com" className={inputCls} />
+          <input id="ra-email" name="email" type="email" required maxLength={254} placeholder="you@firm.com" className={inputCls} />
         </div>
         <div>
           <label htmlFor="ra-clients" className={labelCls}>Roughly how many clients?</label>
-          <input id="ra-clients" name="clients" placeholder="e.g. 3–5" className={inputCls} />
+          <input id="ra-clients" name="clients" maxLength={60} placeholder="e.g. 3–5" className={inputCls} />
         </div>
       </div>
 
       <div>
         <label htmlFor="ra-msg" className={labelCls}>Anything you want us to know?</label>
-        <textarea id="ra-msg" name="message" rows={3} placeholder="What you're hoping Collect can do for you (optional)" className={`${inputCls} resize-none`} />
+        <textarea id="ra-msg" name="message" rows={3} maxLength={2000} placeholder="What you're hoping Collect can do for you (optional)" className={`${inputCls} resize-none`} />
       </div>
 
       {state === "error" && (

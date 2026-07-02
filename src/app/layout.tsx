@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import HelpWidget from "@/components/HelpWidget";
 import { AnalyticsGate } from "@/components/AnalyticsGate";
 import ConsentBanner from "@/components/ConsentBanner";
+import { jsonLdHtml } from "@/lib/jsonld";
 import "./globals.css";
 
 // Self-hosted (no next/font/google on this machine). Newsreader = display serif,
@@ -73,7 +74,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
+            __html: jsonLdHtml({
               "@context": "https://schema.org",
               "@graph": [
                 {
@@ -98,7 +99,7 @@ export default function RootLayout({
               ],
             }),
           }}
-        />
+        />{/* jsonLdHtml escapes "<" so a value can never break out of the script tag */}
         {children}
         <HelpWidget />
         <ConsentBanner />

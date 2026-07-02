@@ -75,6 +75,7 @@ export function SubscribeForm({
               name="email"
               type="email"
               required
+              maxLength={254}
               placeholder="you@firm.com"
               aria-label="Email address"
               className={inputCls}
