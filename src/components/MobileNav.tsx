@@ -7,14 +7,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { REQUEST_ACCESS_URL } from "@/lib/links";
-import { FILING_AUDIT_ITEMS, FREE_NAV_ITEMS } from "@/lib/nav-items";
-
-const PAGES: { label: string; href: string }[] = [
-  { label: "Pricing", href: "/pricing" },
-  { label: "Latest", href: "/latest" },
-  { label: "Blog", href: "/blog" },
-  { label: "About", href: "/about" },
-];
+import { FILING_AUDIT_ITEMS, FREE_NAV_ITEMS, RESOURCES_NAV_ITEMS } from "@/lib/nav-items";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -52,11 +45,9 @@ export function MobileNav() {
           <button aria-hidden="true" tabIndex={-1} onClick={close} className="fixed inset-0 z-40 bg-black/20" />
           {/* Sheet */}
           <div className="dropdown-in absolute right-3 top-full mt-2 z-50 w-[280px] max-h-[75vh] overflow-y-auto bg-white border border-line rounded-2xl shadow-elev-2 py-2">
-            <Section title="Explore">
-              {PAGES.map((p) => (
-                <Link key={p.href} href={p.href} onClick={close} className={linkCls}>{p.label}</Link>
-              ))}
-            </Section>
+            <div className="px-1 pt-1">
+              <Link href="/pricing" onClick={close} className={linkCls}>Pricing</Link>
+            </div>
 
             <div className="border-t border-line-soft" />
             <Section title="Filing & audit tools">
@@ -69,6 +60,13 @@ export function MobileNav() {
             <Section title="Free tools">
               {FREE_NAV_ITEMS.map((it) => (
                 <Link key={it.href + it.label} href={it.href} onClick={close} className={linkCls}>{it.label}</Link>
+              ))}
+            </Section>
+
+            <div className="border-t border-line-soft" />
+            <Section title="Resources">
+              {RESOURCES_NAV_ITEMS.map((it) => (
+                <Link key={it.href} href={it.href} onClick={close} className={linkCls}>{it.label}</Link>
               ))}
             </Section>
 
