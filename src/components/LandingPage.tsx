@@ -1075,7 +1075,7 @@ function FeaturesGrid({ onStart }: { onStart: () => void }) {
   ];
 
   return (
-    <section className="bg-band border-b border-line">
+    <section className="bg-white border-b border-line">
       <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
           <div>
@@ -1539,20 +1539,11 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         </div>
       </section>
 
-      {/* ── Built for ESG consultants ────────────────────────────────────── */}
-      <FilingAuditBand />
-
-      {/* ── Latest (regulation + guidance) ───────────────────────────────── */}
-      <LatestStrip />
-
-      {/* ── Product preview ──────────────────────────────────────────────── */}
-      <ProductPreviewSection onStart={onStart} />
-
-      {/* ── Free features grid ───────────────────────────────────────────── */}
-      <FeaturesGrid onStart={onStart} />
+      {/* ── Pain/solution table (the problem, up front) ──────────────────── */}
+      <PainTable />
 
       {/* ── How it works ─────────────────────────────────────────────────── */}
-      <section id="how" className="bg-band border-y border-line scroll-mt-24">
+      <section id="how" className="bg-white border-y border-line scroll-mt-24">
         <div data-reveal className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
           <p className="font-mono text-[11.5px] font-medium uppercase tracking-[0.12em] text-brand-700 mb-3">How it works</p>
           <h2 className="font-editorial font-semibold text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
@@ -1604,6 +1595,12 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           </div>
         </div>
       </section>
+
+      {/* ── Product preview ──────────────────────────────────────────────── */}
+      <ProductPreviewSection onStart={onStart} />
+
+      {/* ── Free features grid ───────────────────────────────────────────── */}
+      <FeaturesGrid onStart={onStart} />
 
       {/* ── Feature: Action plan ─────────────────────────────────────────── */}
       <FeatureRow id="gap" band eyebrow="The readiness report" title="A gap-analysed action plan, colour-coded." panel={<ActionPlanPanel />}>
@@ -1657,6 +1654,9 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 
       {/* ── Mini tools (interactive, no report needed) ───────────────────── */}
       <MiniToolsSection onStart={onStart} />
+
+      {/* ── Built for ESG consultants ────────────────────────────────────── */}
+      <FilingAuditBand />
 
       {/* ── AI section ───────────────────────────────────────────────────── */}
       <section className="bg-band border-t border-line" data-reveal>
@@ -1735,19 +1735,6 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         <CollectPanel />
       </section>
 
-      {/* ── Free vs Pro ──────────────────────────────────────────────────── */}
-      <section id="pricing" className="bg-band border-t border-line">
-        <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
-          <h2 className="font-editorial font-semibold text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
-            Free prepares the report. Pro runs the whole job.
-          </h2>
-          <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[600px]`}>
-            The readiness tool is genuinely free, on your device. Pro is the workspace that does the work: collecting the data, the AI that reads and drafts, the assurance trail, and the tools to win and price the engagement.
-          </p>
-          <TierCards onStart={onStart} />
-        </div>
-      </section>
-
       {/* ── Saaksh Pro grid ──────────────────────────────────────────────── */}
       <section id="pro" className="bg-white border-t border-line">
         <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
@@ -1777,8 +1764,21 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
         </div>
       </section>
 
-      {/* ── Pain/solution table (after Pro, for those who want the full picture) */}
-      <PainTable />
+      {/* ── Free vs Pro ──────────────────────────────────────────────────── */}
+      <section id="pricing" className="bg-band border-t border-line">
+        <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
+          <h2 className="font-editorial font-semibold text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
+            Free prepares the report. Pro runs the whole job.
+          </h2>
+          <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[600px]`}>
+            The readiness tool is genuinely free, on your device. Pro is the workspace that does the work: collecting the data, the AI that reads and drafts, the assurance trail, and the tools to win and price the engagement.
+          </p>
+          <TierCards onStart={onStart} />
+        </div>
+      </section>
+
+      {/* ── Latest (regulation + guidance) ───────────────────────────────── */}
+      <LatestStrip />
 
       {/* ── Trust cards ──────────────────────────────────────────────────── */}
       <section className="bg-white border-t border-line">
