@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { SiteHeader } from "@/components/SiteHeader";
 import { BlogFooter } from "@/components/blog/BlogFooter";
+import { ToolHero } from "@/components/tools/ToolHero";
+import { ToolLearn } from "@/components/tools/ToolLearn";
 import {
   assessBrsrApplicability, VERDICT_META,
   type RankBand, type ApplicabilityResult,
@@ -66,22 +67,20 @@ export default function BrsrApplicabilityPage() {
 
   return (
     <div className="min-h-screen bg-page flex flex-col">
-      <SiteHeader active="tools" />
       <main className="flex-1">
-        {/* Dark navy hero */}
-        <div className="bg-[#0F1E33]">
-          <div className="max-w-[1180px] mx-auto px-5 sm:px-8 py-10">
-            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6AB4F5] mb-3">
-              Free tool · on-device
-            </p>
-            <h1 className="font-display font-bold text-[2rem] sm:text-[2.5rem] text-white leading-[1.1] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
-              Does your client have to file BRSR, and by when?
-            </h1>
-            <p className="text-[15.5px] text-ondark-muted leading-relaxed mt-3 max-w-[620px]">
-              Answer three questions and get a cited verdict on BRSR, BRSR Core assurance, and value-chain disclosure, with the financial year each obligation starts. Nothing is stored; this runs in your browser.
-            </p>
-          </div>
-        </div>
+        <ToolHero
+          active="tools"
+          eyebrow="Free tool · on-device"
+          title="Does your client have to file BRSR, and by when?"
+          subtitle="Answer three questions and get a cited verdict on BRSR, BRSR Core assurance and value-chain disclosure, with the financial year each obligation starts. Nothing is stored; this runs in your browser."
+          benefits={[
+            "A cited verdict for BRSR, Core assurance and value-chain disclosure",
+            "The financial year each obligation kicks in",
+            "Three questions, answered entirely on-device",
+          ]}
+          whoFor="For the consultant scoping whether, and when, a client falls in scope. A readiness check, not legal advice."
+          maxWidth={1180}
+        />
 
         <div className="anim-up-sm max-w-[1180px] mx-auto px-5 sm:px-8 py-10">
           <div className="grid lg:grid-cols-[360px_1fr] gap-8 lg:gap-12 items-start">
@@ -143,6 +142,18 @@ export default function BrsrApplicabilityPage() {
             </div>
           </div>
         </div>
+
+        <ToolLearn
+          title="How BRSR scope is widening"
+          intro="BRSR didn't arrive all at once. SEBI has widened it in deliberate stages, first who reports at all, then who gets assured, then whose value chain is pulled in. Knowing the phasing tells you what to prepare a client for next."
+          items={[
+            { icon: "building", title: "Who must file", body: "The top 1000 listed companies by market capitalisation file the full BRSR. SEBI phased this in, the top 100, then 500, now 1000, so a client climbing the rankings can come into scope in a given year." },
+            { icon: "seal", title: "The Core assurance glide path", body: "Beyond filing, the BRSR Core attributes need reasonable assurance. That obligation phases in by market cap too, starting with the top 150 and widening down toward the top 1000 over successive years." },
+            { icon: "link", title: "Value-chain disclosure", body: "The frontier is the value chain: significant partners (roughly 2% or more of purchases or sales) of a large listed company are pulled in, reporting BRSR Core on a comply-or-explain basis from FY 2026-27." },
+            { icon: "calendar", title: "Confirm the exact year", body: "SEBI has restated the glide-path years more than once. Treat this tool as a fast readiness check, then confirm the precise financial year for your client against the latest SEBI circular before you commit to it." },
+          ]}
+          maxWidth={1180}
+        />
       </main>
       <BlogFooter />
     </div>

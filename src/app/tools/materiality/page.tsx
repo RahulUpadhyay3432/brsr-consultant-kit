@@ -2,8 +2,9 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { SiteHeader } from "@/components/SiteHeader";
 import { BlogFooter } from "@/components/blog/BlogFooter";
+import { ToolHero } from "@/components/tools/ToolHero";
+import { ToolLearn } from "@/components/tools/ToolLearn";
 import MaterialityMatrix from "@/components/MaterialityMatrix";
 import { materialityTopicsForIndustry } from "@/lib/report-generator";
 import { INDUSTRY_LABELS, type IndustryType } from "@/lib/types";
@@ -14,22 +15,19 @@ export default function MaterialityToolPage() {
 
   return (
     <div className="min-h-screen bg-page flex flex-col">
-      <SiteHeader active="tools" />
       <main className="flex-1">
-        {/* Dark navy hero */}
-        <div className="bg-[#0F1E33]">
-          <div className="max-w-[1100px] mx-auto px-5 sm:px-8 py-10">
-            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6AB4F5] mb-3">
-              Free tool · on-device
-            </p>
-            <h1 className="font-display font-bold text-[2rem] sm:text-[2.5rem] text-white leading-[1.1] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
-              Materiality matrix builder
-            </h1>
-            <p className="text-[15.5px] text-ondark-muted leading-relaxed mt-3 max-w-[600px]">
-              Start from the ESG topics that typically matter most in your client&apos;s industry, shortlist them, and export as a CSV to carry into a stakeholder process. A starting format, not a finished assessment.
-            </p>
-          </div>
-        </div>
+        <ToolHero
+          active="tools"
+          eyebrow="Free tool · on-device"
+          title="Materiality matrix builder"
+          subtitle="Start from the ESG topics that typically matter most in your client's industry, shortlist them, and export a CSV to carry into a stakeholder process. A starting format, not a finished assessment."
+          benefits={[
+            "Industry-specific suggested topics, grouped E / S / G",
+            "Shortlist and export to seed the stakeholder process",
+            "Honest framing: a starting point, not a determination",
+          ]}
+          maxWidth={1100}
+        />
 
         <div className="anim-up-sm max-w-[1100px] mx-auto px-5 sm:px-8 py-10">
           {/* Industry selector */}
@@ -53,6 +51,18 @@ export default function MaterialityToolPage() {
             to see materiality alongside the full BRSR gap analysis.
           </p>
         </div>
+
+        <ToolLearn
+          title="What materiality actually means"
+          intro="Materiality is how you decide which ESG issues are worth reporting and managing. It's the backbone of a credible BRSR narrative, and the one step consultants most often shortcut. Here's what it involves."
+          items={[
+            { icon: "layers", title: "Single vs double materiality", body: "Financial materiality asks what ESG issues affect the company's value. Impact materiality asks what the company does to people and the environment. BRSR and global frameworks increasingly expect both, the 'double' view." },
+            { icon: "grid", title: "The two axes", body: "A matrix plots each topic on significance of impact against influence on stakeholder decisions or enterprise value. Topics in the top-right are where reporting and management effort should concentrate." },
+            { icon: "users", title: "A shortlist isn't an assessment", body: "A real assessment needs stakeholder engagement, surveys, interviews, and management input. This tool gives a defensible starting shortlist by industry; the client's own process turns it into a determination." },
+            { icon: "doc", title: "What BRSR asks", body: "BRSR doesn't mandate a matrix, but it expects you to identify material ESG issues and explain how they're managed. Each shortlisted topic maps to the BRSR principles it touches, so nothing gets missed." },
+          ]}
+          maxWidth={1100}
+        />
       </main>
       <BlogFooter />
     </div>

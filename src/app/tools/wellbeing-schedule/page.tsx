@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 import { ToolHero } from "@/components/tools/ToolHero";
+import { ToolLearn } from "@/components/tools/ToolLearn";
 import { SEBI_BRSR_FORMAT_URL } from "@/components/checklist/constants";
 import { downloadCsv } from "@/lib/export";
 import { WELLBEING_ROWS, buildWellbeingScheduleRows } from "@/lib/wellbeing-schedule";
@@ -124,6 +125,17 @@ export default function WellbeingSchedulePage() {
             </div>
           </div>
         </div>
+
+        <ToolLearn
+          title="Why the P3 well-being number matters"
+          intro="Spending on employee well-being reads like a soft disclosure, but under BRSR Core it's an assured percentage that has to reconcile to the audited accounts. Knowing where it comes from is what makes it defensible."
+          items={[
+            { icon: "seal", title: "An assured figure", body: "BRSR Core tests spend on employee well-being as a percentage of revenue. It isn't a claim you assert, it's a number the assurer traces back to source, so it has to tie out to the ledger." },
+            { icon: "ledger", title: "It lives in the P&L", body: "Every welfare head is already a cost line in the accounts, PF contributions, insurance premia, gratuity provisions. You're assembling the figure from audited numbers, not estimating it, which is exactly why it's assurable." },
+            { icon: "heart", title: "Statutory and voluntary heads", body: "Provident Fund, ESI, gratuity and maternity benefit are mandated by law; health insurance, transport, canteen and welfare funds are voluntary. BRSR counts both, and asks for the employees-versus-workers split." },
+          ]}
+          maxWidth={1080}
+        />
       </main>
       <BlogFooter />
     </div>

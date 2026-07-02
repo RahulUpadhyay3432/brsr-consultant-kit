@@ -284,10 +284,10 @@ function MaterialityPanel() {
         ))}
         <text x="145" y="206" textAnchor="middle" fontSize="8" fill="#8A938D">Impact on enterprise value →</text>
       </svg>
-      <ul className="flex-1 space-y-1.5 self-center">
+      <ul className="flex-1 space-y-2 self-center">
         {pts.map((p) => (
-          <li key={p.n} className="flex items-center gap-2 text-[12px] text-[#3F4A44]">
-            <span className="font-mono text-[10px] w-3 text-ink-faint">{p.n}</span>{p.label}
+          <li key={p.n} className="flex items-center gap-2.5 text-[14px] text-ink-body">
+            <span className="font-mono text-[12px] font-medium w-3.5 text-ink-muted">{p.n}</span>{p.label}
           </li>
         ))}
       </ul>
@@ -307,21 +307,21 @@ function AlignmentPanel() {
     <PanelCard className="p-5">
       <table className="w-full text-left">
         <thead>
-          <tr className="font-mono text-[10px] uppercase tracking-wide text-ink-faint">
-            <th className="font-normal pb-2">Disclosure</th><th className="font-normal pb-2 text-right">GRI</th><th className="font-normal pb-2 text-right">TCFD</th><th className="font-normal pb-2 text-right">IFRS</th><th className="font-normal pb-2 text-right">TNFD</th>
+          <tr className="font-mono text-[11px] uppercase tracking-wide text-ink-muted">
+            <th className="font-medium pb-2">Disclosure</th><th className="font-medium pb-2 text-right">GRI</th><th className="font-medium pb-2 text-right">TCFD</th><th className="font-medium pb-2 text-right">IFRS</th><th className="font-medium pb-2 text-right">TNFD</th>
           </tr>
         </thead>
         <tbody>
           {rows.map((r) => (
             <tr key={r[0]} className="border-t border-line-soft">
-              <td className="py-2.5 text-[13px] text-ink">{r[0]}</td>
-              {r.slice(1).map((v, i) => <td key={i} className="py-2.5 text-right font-mono text-[12px] text-ink-muted">{v}</td>)}
+              <td className="py-2.5 text-[14px] font-medium text-ink">{r[0]}</td>
+              {r.slice(1).map((v, i) => <td key={i} className="py-2.5 text-right font-mono text-[13px] text-ink-body">{v}</td>)}
             </tr>
           ))}
         </tbody>
       </table>
       <div className="flex items-center gap-2 mt-3 pt-3 border-t border-line-soft">
-        <span className="font-mono text-[10.5px] text-ink-faint">Ratings</span>
+        <span className="font-mono text-[11px] text-ink-muted">Ratings</span>
         {["MSCI", "DJSI"].map((r) => <span key={r} className="font-mono text-[10.5px] text-[#10A572] bg-[#EAF4FE] rounded px-1.5 py-0.5">{r}</span>)}
       </div>
     </PanelCard>

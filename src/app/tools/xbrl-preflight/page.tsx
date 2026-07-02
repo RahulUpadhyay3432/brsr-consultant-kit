@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 import { ToolHero } from "@/components/tools/ToolHero";
+import { ToolLearn } from "@/components/tools/ToolLearn";
 import preflight from "@/data/xbrl_preflight.json";
 import {
   parseAmount, toAbsoluteInr, formatInr,
@@ -173,6 +174,17 @@ export default function XbrlPreflightPage() {
             </div>
           </div>
         </div>
+
+        <ToolLearn
+          title="What XBRL is, and why the exchange cares"
+          intro="Most rejections aren't about the ESG content, they're about the format. A quick grasp of what XBRL is and the one convention it enforces prevents almost all of them."
+          items={[
+            { icon: "tag", title: "A machine-readable filing", body: "XBRL tags every number in your BRSR with a taxonomy label, so software reads 'total energy consumed' the same way across every company. The exchange stores structured data, not a PDF a human has to retype." },
+            { icon: "compare", title: "Why SEBI mandates it", body: "Structured filings let SEBI, investors and rating agencies compare thousands of companies automatically and screen for outliers. That's only possible if everyone tags to the same taxonomy, which is why validation is strict." },
+            { icon: "ruler", title: "The units convention", body: "Company accounts are kept in Lakhs or Crores, but the numeric XBRL cells expect absolute rupees. Entering 500 where 5,00,00,000 was meant is the single most common bounce. Convert first, every time." },
+          ]}
+          maxWidth={1120}
+        />
       </main>
       <BlogFooter />
     </div>

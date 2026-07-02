@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 import { ToolHero } from "@/components/tools/ToolHero";
+import { ToolLearn } from "@/components/tools/ToolLearn";
 import { SEBI_BRSR_FORMAT_URL } from "@/components/checklist/constants";
 import {
   calcPppIntensity, DEFAULT_PPP_INPUTS, METRIC_LABEL,
@@ -151,6 +152,17 @@ export default function PppIntensityPage() {
             </div>
           </div>
         </div>
+
+        <ToolLearn
+          title="Why a rupee intensity misleads a global comparison"
+          intro="BRSR asks for emissions intensity per rupee of turnover. That's the right figure to file, but it can't sit next to a European or US peer's number, because a rupee doesn't buy the same output abroad that it does in India. PPP corrects for exactly that."
+          items={[
+            { icon: "globe", title: "The comparison problem", body: "A peer reports tonnes per million dollars of revenue. Convert your rupees at the market exchange rate and Indian intensity looks worse than it is, because the rupee is undervalued against what it actually buys." },
+            { icon: "scale", title: "What PPP does", body: "Purchasing Power Parity restates turnover in international dollars, the amount that buys the same basket of goods everywhere. It strips the currency distortion out of the denominator so the intensity is like-for-like." },
+            { icon: "refresh", title: "One editable, cited factor", body: "The World Bank publishes India's PPP conversion factor each year (about ₹20.45 per international dollar for 2024). It's pre-filled and cited here, override it with the current-year value before you rely on it." },
+          ]}
+          maxWidth={1000}
+        />
       </main>
       <BlogFooter />
     </div>

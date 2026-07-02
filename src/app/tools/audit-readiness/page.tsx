@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 import { ToolHero } from "@/components/tools/ToolHero";
+import { ToolLearn } from "@/components/tools/ToolLearn";
 import { downloadCsv } from "@/lib/export";
 import {
   AUDIT_GROUPS, AUDIT_META, buildAuditReadinessRows, coreCount, totalCount,
@@ -151,6 +152,18 @@ export default function AuditReadinessPage() {
             </div>
           </div>
         </div>
+
+        <ToolLearn
+          title="What BRSR Core assurance actually demands"
+          intro="BRSR Core assurance is where a filing gets tested. The assurer isn't checking whether a number looks plausible, they're asking to see the trail behind it. Understanding what they expect is half the preparation."
+          items={[
+            { icon: "seal", title: "Reasonable, not limited", body: "BRSR Core requires reasonable assurance, the higher bar: the assurer gives a positive opinion that the numbers are right. That means more evidence, sampling and testing than a limited-assurance 'nothing came to our attention' review." },
+            { icon: "trail", title: "Every KPI needs a trail", body: "For each attribute the assurer traces the reported figure back to a source, a meter reading, an invoice, a payroll extract, and to the person who owns it. A number with no document behind it can't be assured." },
+            { icon: "calendar", title: "The glide path", body: "Assurance is phased in by market cap: the top 150 first, widening toward the top 1000. Know which cohort your client is in and which financial year their BRSR Core assurance becomes mandatory." },
+            { icon: "shield", title: "The standards", body: "Engagements run under ICAI's SSAE 3000 or the international ISAE 3000. The assurer must be independent, so the cleaner and more complete your evidence pack, the fewer queries and the shorter the engagement." },
+          ]}
+          maxWidth={1180}
+        />
       </main>
       <BlogFooter />
     </div>
