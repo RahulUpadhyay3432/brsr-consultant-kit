@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 import { RequestAccessForm } from "@/components/RequestAccessForm";
+import { GlowOrb, Contours } from "@/components/brand/Decor";
 
 export const metadata: Metadata = {
   title: "Request Pro access",
@@ -21,22 +22,22 @@ export default function RequestProPage() {
     <div className="min-h-screen bg-page flex flex-col">
       <SiteHeader active="pro" />
 
-      {/* Navy hero */}
-      <div className="bg-[#0F1E33]">
-        <div className="mx-auto w-full max-w-[980px] px-5 sm:px-8 pt-14 pb-12">
-          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6AB4F5] mb-3">
-            Saaksh Pro · Collect
-          </p>
-          <h1 className="font-display font-bold text-[2.1rem] sm:text-[2.8rem] text-white leading-[1.08] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
+      {/* Hero */}
+      <header className="relative overflow-hidden bg-forest glow-dark">
+        <GlowOrb tone="brand" className="w-[500px] h-[500px] -top-44 left-1/3" />
+        <Contours className="w-[400px] h-[400px] -right-20 -top-12 text-brand-400" stroke="#4D97F0" opacity={0.13} />
+        <div className="relative mx-auto w-full max-w-[1120px] px-5 sm:px-8 pt-16 pb-16">
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-400">Saaksh Pro · Collect</p>
+          <h1 className="font-editorial font-semibold text-white mt-4 text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
             Request Pro access
           </h1>
-          <p className="text-[16px] text-[#C4D0E0] leading-relaxed mt-4 max-w-[600px]">
-            Pro is the workspace that runs the engagement: collecting the data from the client&apos;s team,
-            computing and attributing emissions, keeping the assurance trail, and drafting the report. We onboard
-            consultants manually and price per engagement, tell us a little about your practice and we&apos;ll set you up.
+          <p className="text-[17px] text-ondark-muted leading-relaxed mt-5 max-w-[620px]">
+            Pro is the workspace that runs the engagement: collecting the data from the client&apos;s team, computing
+            and attributing emissions, keeping the assurance trail, and drafting the report. We onboard consultants
+            manually and price per engagement, tell us a little about your practice and we&apos;ll set you up.
           </p>
         </div>
-      </div>
+      </header>
 
       <main className="flex-1">
         <div className="mx-auto w-full max-w-[980px] px-5 sm:px-8 py-12">

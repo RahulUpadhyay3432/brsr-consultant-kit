@@ -277,25 +277,20 @@ export default function AboutPage() {
             <div className="lg:col-span-7" data-reveal style={{ transitionDelay: "80ms" }}>
               <div className="space-y-4 text-[16px] text-ink-body leading-[1.75]">
                 <p>
-                  Saaksh is built by <span className="font-semibold text-ink">Rahul Upadhyay</span>, working in the
-                  climate and compliance space. The tool is shaped directly by feedback from practising BRSR
-                  consultants, who validated that data collection, not analysis, is where the real pain sits, and who
-                  continue to steer what gets built next.
+                  Saaksh is built by a group of sustainability and compliance experts, and shaped directly by feedback
+                  from practising ESG consultants, who validated that data collection, not analysis, is where the real
+                  pain sits, and who continue to steer what gets built next.
                 </p>
                 <p>
-                  If you prepare BRSR reports and something here would be more useful done differently, that feedback
-                  shapes the roadmap. Reach out any time.
+                  That feedback is the roadmap. The best way to shape what gets built next is to join the community and
+                  tell us what would make your work easier.
                 </p>
               </div>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <a href="https://www.linkedin.com/in/rahul-upadhyay-a7aa12207/" target="_blank" rel="noopener noreferrer"
-                  className="pressable inline-flex items-center gap-2 rounded-xl border border-line bg-white text-ink text-[14px] font-semibold px-4 py-2.5 hover:bg-band transition-colors">
-                  Connect on LinkedIn
-                </a>
-                <a href="mailto:rahulu626@gmail.com"
-                  className="pressable inline-flex items-center gap-2 rounded-xl border border-line bg-white text-ink text-[14px] font-semibold px-4 py-2.5 hover:bg-band transition-colors">
-                  rahulu626@gmail.com
-                </a>
+              <div className="mt-6">
+                <Link href="/community" className="group cta-glow inline-flex items-center gap-2 rounded-xl bg-forest text-white text-[14px] font-semibold px-5 py-3 hover:bg-forest-light">
+                  Join the community
+                  <svg className="arrow-nudge w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                </Link>
               </div>
             </div>
           </div>

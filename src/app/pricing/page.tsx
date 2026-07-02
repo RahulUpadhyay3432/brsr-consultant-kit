@@ -3,6 +3,8 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 import { TierCards } from "@/components/PricingTable";
+import { ScrollReveal } from "@/components/ScrollReveal";
+import { GlowOrb, Contours } from "@/components/brand/Decor";
 import { REQUEST_ACCESS_URL } from "@/lib/links";
 
 export const metadata: Metadata = {
@@ -37,24 +39,25 @@ const FAQS: { q: string; a: string }[] = [
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-page flex flex-col">
+      <ScrollReveal />
       <SiteHeader active="pricing" />
 
-      {/* Navy hero */}
-      <div className="bg-[#0F1E33]">
-        <div className="mx-auto w-full max-w-[1120px] px-5 sm:px-8 pt-14 pb-12">
-          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6AB4F5] mb-3">
-            Pricing
-          </p>
-          <h1 className="font-display font-bold text-[2.2rem] sm:text-[3rem] text-white leading-[1.06] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
+      {/* Hero */}
+      <header className="relative overflow-hidden bg-forest glow-dark">
+        <GlowOrb tone="brand" className="w-[520px] h-[520px] -top-48 left-1/3" />
+        <Contours className="w-[420px] h-[420px] -right-20 -top-12 text-brand-400" stroke="#4D97F0" opacity={0.13} />
+        <div className="relative mx-auto w-full max-w-[1120px] px-5 sm:px-8 pt-16 pb-16">
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-400">Pricing</p>
+          <h1 className="font-editorial font-semibold text-white mt-4 text-[2.4rem] sm:text-[3.1rem] leading-[1.06] tracking-[-0.02em] max-w-[18ch]" style={{ textWrap: "balance" }}>
             Free prepares the report. Pro runs the whole job.
           </h1>
-          <p className="text-[16px] text-[#C4D0E0] leading-relaxed mt-4 max-w-[640px]">
-            The readiness tool is genuinely free and stays on your device. Pro is the workspace that does the
-            work: collecting the data from the client&apos;s team, computing and attributing emissions, the
-            assurance trail, and the tools to win and price the engagement.
+          <p className="text-[17px] text-ondark-muted leading-relaxed mt-5 max-w-[640px]">
+            The readiness tool is genuinely free and stays on your device. Pro is the workspace that does the work:
+            collecting the data from the client&apos;s team, computing and attributing emissions, the assurance trail,
+            and the tools to win and price the engagement.
           </p>
         </div>
-      </div>
+      </header>
 
       <main className="flex-1">
         <div className="mx-auto w-full max-w-[1120px] px-5 sm:px-8 pb-6">
@@ -73,7 +76,7 @@ export default function PricingPage() {
         {/* FAQ */}
         <section className="bg-band border-t border-line mt-14">
           <div className="mx-auto w-full max-w-[820px] px-5 sm:px-8 py-16">
-            <h2 className="font-display font-bold text-[1.9rem] sm:text-[2.3rem] text-ink leading-[1.1] tracking-[-0.02em] mb-8" style={{ textWrap: "balance" }}>
+            <h2 className="font-editorial font-semibold text-[1.9rem] sm:text-[2.3rem] text-ink leading-[1.1] tracking-[-0.015em] mb-8" style={{ textWrap: "balance" }} data-reveal>
               Common questions
             </h2>
             <div className="space-y-3">
@@ -91,18 +94,20 @@ export default function PricingPage() {
             </div>
 
             {/* Closing CTA */}
-            <div className="mt-12 rounded-2xl bg-forest text-white p-8 flex flex-col sm:flex-row sm:items-center gap-5 shadow-elev-2">
-              <div className="flex-1">
-                <p className="font-display font-bold text-[1.4rem] leading-tight tracking-[-0.015em]">
+            <div className="relative overflow-hidden mt-12 rounded-3xl bg-gradient-to-br from-forest via-[#123a6b] to-brand-800 text-white p-8 sm:p-10 flex flex-col sm:flex-row sm:items-center gap-6 shadow-elev-3">
+              <GlowOrb tone="brand" className="w-[400px] h-[400px] -top-24 -right-16" />
+              <Contours className="w-[380px] h-[380px] -left-16 -bottom-20 text-brand-400" stroke="#4D97F0" opacity={0.13} />
+              <div className="relative flex-1">
+                <p className="font-editorial font-semibold text-[1.7rem] leading-tight tracking-[-0.015em]">
                   Start free, upgrade when you&apos;re collecting.
                 </p>
-                <p className="text-[14px] text-ondark-muted leading-relaxed mt-2 max-w-[440px]">
-                  Run a gap analysis on your next client in under a minute. When you&apos;re ready to chase the
-                  data, request Pro access.
+                <p className="text-[14.5px] text-ondark-muted leading-relaxed mt-2.5 max-w-[440px]">
+                  Run a gap analysis on your next client in under a minute. When you&apos;re ready to chase the data,
+                  request Pro access.
                 </p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-                <Link href="/start" className="pressable inline-flex items-center justify-center gap-2 rounded-xl bg-white text-forest text-[14.5px] font-semibold px-5 py-3 hover:bg-white/90 transition-colors">
+              <div className="relative flex flex-col sm:flex-row gap-3 shrink-0">
+                <Link href="/start" className="cta-glow inline-flex items-center justify-center gap-2 rounded-xl bg-white text-forest text-[14.5px] font-semibold px-5 py-3 hover:bg-white">
                   Start free
                 </Link>
                 <a href={REQUEST_ACCESS_URL} className="pressable inline-flex items-center justify-center gap-2 rounded-xl border border-white/25 text-white text-[14.5px] font-semibold px-5 py-3 hover:bg-white/10 transition-colors">

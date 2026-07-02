@@ -1,4 +1,5 @@
 import { SiteHeader } from "@/components/SiteHeader";
+import { GlowOrb, Contours } from "@/components/brand/Decor";
 
 function CheckDot() {
   return (
@@ -28,15 +29,17 @@ export function ToolHero({
   return (
     <>
       <SiteHeader active={active} />
-      <div className="bg-[#0F1E33]">
-        <div className="mx-auto w-full px-5 sm:px-8 pt-11 pb-10" style={{ maxWidth }}>
-          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6AB4F5] mb-3">
+      <div className="relative overflow-hidden bg-forest glow-dark">
+        <GlowOrb tone="brand" className="w-[480px] h-[480px] -top-44 left-1/3" />
+        <Contours className="w-[380px] h-[380px] -right-16 -top-10 text-brand-400" stroke="#4D97F0" opacity={0.12} />
+        <div className="relative mx-auto w-full px-5 sm:px-8 pt-14 pb-12" style={{ maxWidth }}>
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-400 mb-3.5">
             {eyebrow}
           </p>
-          <h1 className="font-display font-bold text-[2rem] sm:text-[2.55rem] text-white leading-[1.08] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
+          <h1 className="font-editorial font-semibold text-white text-[2.2rem] sm:text-[2.8rem] leading-[1.06] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
             {title}
           </h1>
-          <p className="text-[15.5px] text-[#C4D0E0] leading-relaxed mt-3.5 max-w-[660px]">
+          <p className="text-[16px] text-ondark-muted leading-relaxed mt-4 max-w-[660px]">
             {subtitle}
           </p>
           {benefits && benefits.length > 0 && (

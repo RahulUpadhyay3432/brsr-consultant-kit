@@ -9,6 +9,7 @@ import { TierCards } from "@/components/PricingTable";
 import { SubscribeForm } from "@/components/SubscribeForm";
 import { MobileNav } from "@/components/MobileNav";
 import { useScrollReveal } from "@/lib/useScrollReveal";
+import { GlowOrb, Contours } from "@/components/brand/Decor";
 import { computeTimeline, defaultDeadline, timelineCsvRows } from "@/lib/engagement-timeline";
 import { downloadCsv } from "@/lib/export";
 import { topLatest } from "@/lib/latest";
@@ -197,7 +198,7 @@ function FeatureRow({ id, eyebrow, title, panel, children, band }: { id?: string
       <div data-reveal className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         <div>
           {eyebrow && <p className="font-mono text-[11.5px] font-medium uppercase tracking-[0.12em] text-brand-700 mb-3">{eyebrow}</p>}
-          <h2 className="font-display font-bold text-[2.4rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>{title}</h2>
+          <h2 className="font-editorial font-semibold text-[2.4rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>{title}</h2>
           <div className="mt-5">{children}</div>
         </div>
         <div>{panel}</div>
@@ -775,7 +776,7 @@ function LatestStrip() {
         <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
           <div className="max-w-[600px]">
             <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-700 mb-2.5">Latest</p>
-            <h2 className="font-display font-bold text-[1.7rem] sm:text-[2.1rem] leading-[1.1] tracking-[-0.02em] text-ink" style={{ textWrap: "balance" }}>
+            <h2 className="font-editorial font-semibold text-[1.7rem] sm:text-[2.1rem] leading-[1.1] tracking-[-0.02em] text-ink" style={{ textWrap: "balance" }}>
               Stay ahead of the regulation
             </h2>
             <p className="text-[14.5px] text-ink-muted leading-relaxed mt-2.5">
@@ -831,7 +832,7 @@ function FilingAuditBand() {
           <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-700 mb-3">
             Built for ESG consultants
           </p>
-          <h2 className="font-display font-bold text-[2rem] sm:text-[2.6rem] leading-[1.08] tracking-[-0.02em] text-ink" style={{ textWrap: "balance" }}>
+          <h2 className="font-editorial font-semibold text-[2rem] sm:text-[2.6rem] leading-[1.08] tracking-[-0.02em] text-ink" style={{ textWrap: "balance" }}>
             The last mile: get it filed, get it assured.
           </h2>
           <p className="text-[15px] sm:text-[16px] text-ink-muted leading-relaxed mt-3">
@@ -920,7 +921,7 @@ function ProductPreviewSection({ onStart }: { onStart: () => void }) {
       <div className="max-w-[1000px] mx-auto px-5 sm:px-8">
         {/* Heading */}
         <div className="mb-10">
-          <h2 className="font-display font-bold text-[1.75rem] sm:text-[2.1rem] text-ink leading-tight tracking-[-0.025em] mb-2" style={{ textWrap: "balance" }}>
+          <h2 className="font-editorial font-semibold text-[1.75rem] sm:text-[2.1rem] text-ink leading-tight tracking-[-0.025em] mb-2" style={{ textWrap: "balance" }}>
             Here&apos;s what comes out the other side.
           </h2>
           <p className="text-[15px] text-ink-muted max-w-[520px] leading-relaxed">
@@ -1074,7 +1075,7 @@ function FeaturesGrid({ onStart, scrollTo }: { onStart: () => void; scrollTo: (i
       <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
           <div>
-            <h2 className="font-display font-bold text-[2.3rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
+            <h2 className="font-editorial font-semibold text-[2.3rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
               A full toolkit. All free.
             </h2>
             <p className={`text-[16px] ${BODY} leading-relaxed mt-3 max-w-[540px]`}>
@@ -1136,7 +1137,7 @@ function MiniToolsSection({ onStart }: { onStart: () => void }) {
   return (
     <section id="tools" className="bg-white border-y border-line">
       <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
-        <h2 className="font-display font-bold text-[2.3rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
+        <h2 className="font-editorial font-semibold text-[2.3rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
           Use the tools directly, no report needed.
         </h2>
         <p className={`text-[16px] ${BODY} leading-relaxed mt-3 max-w-[600px]`}>
@@ -1280,7 +1281,7 @@ function PainTable() {
   return (
     <section id="beyond" className="bg-band">
       <div data-reveal className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
-        <h2 className="font-display font-bold text-[2.3rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em] max-w-[620px]" style={{ textWrap: "balance" }}>
+        <h2 className="font-editorial font-semibold text-[2.3rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em] max-w-[620px]" style={{ textWrap: "balance" }}>
           Every part of the work that eats weeks, handled.
         </h2>
         <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[600px]`}>
@@ -1550,7 +1551,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       <section id="how" className="bg-band border-y border-line">
         <div data-reveal className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
           <p className="font-mono text-[11.5px] font-medium uppercase tracking-[0.12em] text-brand-700 mb-3">How it works</p>
-          <h2 className="font-display font-bold text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
+          <h2 className="font-editorial font-semibold text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
             From a blank format to a filed report.
           </h2>
           <p className={`text-[16.5px] ${BODY} leading-relaxed mt-4 max-w-[620px]`}>
@@ -1611,12 +1612,12 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       <section className="bg-white border-y border-line">
         <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-12 lg:gap-16">
           <div>
-            <h2 className="font-display font-bold text-[2.2rem] sm:text-[2.6rem] leading-[1.08] tracking-[-0.025em]">Where to focus, by sector.</h2>
+            <h2 className="font-editorial font-semibold text-[2.2rem] sm:text-[2.6rem] leading-[1.08] tracking-[-0.025em]">Where to focus, by sector.</h2>
             <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[460px]`}>A starting materiality view drawn from the company&apos;s sector, so the conversation begins with the topics that matter most.</p>
             <div className="mt-6"><MaterialityPanel /></div>
           </div>
           <div>
-            <h2 className="font-display font-bold text-[2.2rem] sm:text-[2.6rem] leading-[1.08] tracking-[-0.025em]">One disclosure, mapped everywhere.</h2>
+            <h2 className="font-editorial font-semibold text-[2.2rem] sm:text-[2.6rem] leading-[1.08] tracking-[-0.025em]">One disclosure, mapped everywhere.</h2>
             <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[460px]`}>Each BRSR data point is linked to its equivalent in GRI, TCFD, IFRS S2 and TNFD, plus the ratings that matter to investors.</p>
             <div className="mt-6"><AlignmentPanel /></div>
           </div>
@@ -1646,7 +1647,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
             <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-ink-muted">On AI</p>
           </div>
           {/* Heading */}
-          <h2 className="font-display font-bold text-[2.4rem] sm:text-[3rem] leading-[1.05] tracking-[-0.025em] max-w-[760px]" style={{ textWrap: "balance" }}>
+          <h2 className="font-editorial font-semibold text-[2.4rem] sm:text-[3rem] leading-[1.05] tracking-[-0.025em] max-w-[760px]" style={{ textWrap: "balance" }}>
             AI where it helps, <em>never where it can mislead.</em>
           </h2>
           <p className={`text-[16.5px] ${BODY} leading-relaxed mt-5 max-w-[560px]`}>
@@ -1688,7 +1689,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       <section id="collect" className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20 grid lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-center">
         <div>
           <span className="inline-flex items-center font-mono text-[11px] uppercase tracking-[0.12em] text-[#C2432A] bg-[#FDEBE7] border border-[#F8CFC5] rounded px-2 py-1">Collect · paid tier</span>
-          <h2 className="font-display font-bold text-[2.4rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em] mt-4">Chase the data without chasing people.</h2>
+          <h2 className="font-editorial font-semibold text-[2.4rem] sm:text-[2.9rem] leading-[1.06] tracking-[-0.025em] mt-4">Chase the data without chasing people.</h2>
           <p className={`text-[16.5px] ${BODY} leading-relaxed mt-5 max-w-[470px]`}>
             When the job moves from preparing to collecting, Collect requests BRSR data from the team that holds each number, with branded emails and automatic reminders. They submit through a no-login form with evidence attached, emissions are calculated with cited factors, and an AI draft turns the result into review-ready narrative.
           </p>
@@ -1717,7 +1718,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       {/* ── Free vs Pro ──────────────────────────────────────────────────── */}
       <section id="pricing" className="bg-band border-t border-line">
         <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
-          <h2 className="font-display font-bold text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
+          <h2 className="font-editorial font-semibold text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
             Free prepares the report. Pro runs the whole job.
           </h2>
           <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[600px]`}>
@@ -1731,7 +1732,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       <section id="pro" className="bg-white border-t border-line">
         <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20">
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-brand-700">Saaksh Pro</p>
-          <h2 className="font-display font-bold text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.025em] mt-3" style={{ textWrap: "balance" }}>
+          <h2 className="font-editorial font-semibold text-[2.4rem] sm:text-[3rem] leading-[1.06] tracking-[-0.025em] mt-3" style={{ textWrap: "balance" }}>
             The workspace for the whole engagement.
           </h2>
           <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[620px]`}>
@@ -1768,7 +1769,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                 <span className={`w-11 h-11 rounded-xl flex items-center justify-center ${c.chip}`}>
                   <svg className={`w-5 h-5 ${c.icon}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">{c.glyph}</svg>
                 </span>
-                <h3 className={`font-display font-bold text-[20px] mt-4 ${c.title}`}>{c.t}</h3>
+                <h3 className={`font-editorial font-semibold text-[20px] mt-4 ${c.title}`}>{c.t}</h3>
                 <p className={`text-[15px] leading-relaxed mt-2 ${c.body}`}>{c.b}</p>
               </div>
             ))}
@@ -1811,7 +1812,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               />
             </div>
             <div className="order-2 p-8 sm:p-10 lg:p-12 flex flex-col justify-center">
-              <h2 className="font-display font-bold text-[2.2rem] sm:text-[2.7rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
+              <h2 className="font-editorial font-semibold text-[2.2rem] sm:text-[2.7rem] leading-[1.06] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
                 Used by <span className="text-brand-700">75+ consultants</span>, and counting.
               </h2>
               <p className={`text-[16px] ${BODY} leading-relaxed mt-4 max-w-[480px]`}>
@@ -1828,15 +1829,17 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
       </section>
 
       {/* ── Final CTA ────────────────────────────────────────────────────── */}
-      <section className="bg-forest text-white glow-dark">
-        <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-20 text-center">
-          <h2 className="font-display font-bold text-[2.6rem] sm:text-[3.4rem] leading-[1.05] tracking-[-0.025em]" style={{ textWrap: "balance" }}>
+      <section className="relative overflow-hidden bg-gradient-to-br from-forest via-[#123a6b] to-brand-800 text-white">
+        <GlowOrb tone="brand" className="w-[560px] h-[560px] -top-40 left-1/2 -translate-x-1/2" />
+        <Contours className="w-[460px] h-[460px] -right-24 -bottom-28 text-brand-400" stroke="#4D97F0" opacity={0.13} />
+        <div className="relative max-w-[1280px] mx-auto px-5 sm:px-8 py-24 text-center" data-reveal>
+          <h2 className="font-editorial font-semibold text-[2.6rem] sm:text-[3.4rem] leading-[1.05] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
             Take the work out of your next BRSR report.
           </h2>
-          <button onClick={onStart} className="inline-flex items-center gap-2 bg-brand-500 text-forest text-[16px] font-semibold px-6 py-3.5 rounded-xl hover:bg-brand-400 transition-colors pressable mt-8">
-            Start a free report <IcoArrow />
+          <button onClick={onStart} className="group cta-glow inline-flex items-center gap-2 bg-white text-forest text-[16px] font-semibold px-6 py-3.5 rounded-xl hover:bg-white mt-9">
+            Start a free report <span className="arrow-nudge inline-flex"><IcoArrow /></span>
           </button>
-          <p className="font-mono text-[12px] text-[#9FB6AC] mt-5">No login · Client data never leaves your browser · Cited to SEBI &amp; ICAI</p>
+          <p className="font-mono text-[12px] text-ondark-faint mt-5">No login · Client data never leaves your browser · Cited to SEBI &amp; ICAI</p>
         </div>
       </section>
 
