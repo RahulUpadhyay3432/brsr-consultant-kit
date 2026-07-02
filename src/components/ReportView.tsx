@@ -863,8 +863,8 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
           </button>
           <button
             onClick={exportActiveDocx}
-            className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-stone-700 bg-white
-              border border-stone-200 hover:border-stone-300 hover:bg-stone-50 px-2.5 py-1.5 rounded-lg transition-colors pressable whitespace-nowrap"
+            className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-ink-body bg-white
+              border border-line hover:border-brand-300 hover:bg-band px-2.5 py-1.5 rounded-lg transition-colors pressable whitespace-nowrap"
             title={sub === "frameworks" ? "Download the framework mapping as an editable Word document" : "Download the ratings alignment as an editable Word document"}
           >
             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -872,6 +872,39 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
             </svg>
             Word
           </button>
+        </div>
+      </div>
+
+      {/* How this works, always-visible explainer (mirrors the Materiality tab) */}
+      <div className="rounded-xl border border-line bg-white shadow-elev-1 p-4 sm:p-5">
+        <div className="flex items-start gap-3">
+          <div className="w-8 h-8 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center flex-shrink-0">
+            <svg className="w-4 h-4 text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8" />
+            </svg>
+          </div>
+          <div className="min-w-0">
+            <h3 className="text-[15px] font-semibold text-ink">
+              How this mapping works, collect once and report across frameworks
+            </h3>
+            <p className="text-[13.5px] text-ink-body mt-1.5 leading-relaxed">
+              BRSR overlaps heavily with the global frameworks. This crosswalk maps every BRSR disclosure to its
+              counterpart in <strong className="font-semibold text-ink">GRI, TCFD, IFRS S1/S2 and TNFD</strong> (nature),
+              and to the <strong className="font-semibold text-ink">MSCI</strong> and <strong className="font-semibold text-ink">S&amp;P/DJSI</strong> rating
+              criteria, so one round of BRSR data collection can feed your client&apos;s other reports and rating submissions.
+            </p>
+            <p className="text-[13.5px] text-ink-body mt-2 leading-relaxed">
+              <strong className="font-semibold text-ink">How to use this:</strong> switch between{" "}
+              <span className="font-medium text-brand-700">Reporting frameworks</span> and{" "}
+              <span className="font-medium text-brand-700">ESG ratings</span>, search or filter to a disclosure, and
+              expand any row to see the exact standard reference (e.g. GRI 305, TCFD Governance, IFRS S2). Export the
+              whole crosswalk to CSV or Word to hand to the team.
+            </p>
+            <p className="text-[12.5px] text-ink-muted mt-2.5 leading-relaxed">
+              An indicative mapping to orient the work, not a certified equivalence. Standards evolve, so confirm the
+              exact clause against each framework&apos;s current version before relying on it for a filing.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -885,7 +918,7 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
               onClick={() => setSub(t.key)}
               className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-[13px] font-medium
                 whitespace-nowrap transition-colors pressable
-                ${active ? "bg-white text-stone-800 shadow-sm" : "text-stone-500 hover:text-stone-700"}`}
+                ${active ? "bg-white text-ink shadow-sm" : "text-ink-muted hover:text-ink"}`}
             >
               {t.label}
               <span className={`tabular-nums text-[11px] ${active ? "text-stone-400" : "text-stone-400"}`}>{t.count}</span>
@@ -901,7 +934,7 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
             {statCards.map((s, i) => (
               <div key={i} className="stagger-item bg-white rounded-xl border border-stone-200 p-4 shadow-[0_1px_3px_rgba(80,60,30,0.04)]" style={{ animationDelay: `${i * 45}ms` }}>
                 <p className={`text-[2rem] font-semibold leading-none tabular-nums ${s.tone}`}><AnimatedNumber value={s.n} /></p>
-                <p className="text-[13.5px] font-medium text-stone-600 mt-2">{s.label}</p>
+                <p className="text-[13.5px] font-medium text-ink-muted mt-2">{s.label}</p>
               </div>
             ))}
           </div>
