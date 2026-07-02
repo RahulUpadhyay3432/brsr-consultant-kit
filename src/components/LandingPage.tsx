@@ -770,6 +770,43 @@ function HeroReadinessPanel() {
   );
 }
 
+interface HowStep { n: string; t: string; chips: string[]; act: string; out: string }
+
+const HOW_STEPS: HowStep[] = [
+  { n: "1", t: "Describe the client", chips: ["2-minute intake", "On-device", "No login", "Instant gap analysis"], act: "a 2-minute intake, sector, listing category, existing filings and export markets. No login, everything on your device.", out: "an instant, gap-analysed action plan, cited to SEBI & ICAI, nothing uploaded." },
+  { n: "2", t: "Work the action plan", chips: ["108 BRSR fields", "GHG · energy · water", "Scope 3 screening", "Upload last year", "SEBI-cited"], act: "see all 108 BRSR fields sorted into Ready, Verify and Collect, each with plain-English guidance, the SEBI citation and built-in GHG, energy and water calculators. Upload last year's report to auto-tag what's already documented.", out: "a precise list of only what's genuinely new to collect, with the emissions maths already done." },
+  { n: "3", t: "Report across frameworks", chips: ["GRI · TCFD · IFRS · TNFD", "MSCI · DJSI", "Materiality", "CBAM · CCTS", "Request emails"], act: "add the suggested material topics, map every disclosure to GRI, TCFD, IFRS and TNFD (plus MSCI and DJSI), check CBAM and CCTS scope, and copy ready-to-send request emails and templates.", out: "one dataset that feeds every framework and the client's stakeholder process." },
+  { n: "4", t: "Hand it off, or go further with Pro", chips: ["PDF brief", "CSV export", "Shareable link", "Collect (Pro)"], act: "export a client-ready PDF brief and a CSV of every gap, or share a link. When you're ready to chase the data from the client's team, upgrade to Collect (Pro).", out: "a clear path from a blank format to a defensible, filed report." },
+];
+
+function StepCard({ s, i }: { s: HowStep; i: number }) {
+  return (
+    <div data-reveal style={{ transitionDelay: `${(i % 2) * 80}ms` }} className="card-lift rounded-2xl bg-white border border-line shadow-elev-1 p-5">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <span className="w-9 h-9 rounded-xl bg-forest text-white flex items-center justify-center font-display font-bold text-[15px] flex-shrink-0">{s.n}</span>
+          <h3 className="text-[18px] font-semibold text-ink tracking-tight leading-snug">{s.t}</h3>
+        </div>
+        <Image src={`/product/how-${s.n}.png`} alt="" width={346} height={600} className="w-11 h-11 object-contain flex-shrink-0 select-none" aria-hidden />
+      </div>
+      <div className="mt-3.5 space-y-2">
+        <p className="text-[14px] text-ink-body leading-relaxed">
+          <span className="font-semibold text-ink">You do:</span> {s.act}
+        </p>
+        <p className="flex items-start gap-2 text-[14px] text-ink-body leading-relaxed">
+          <svg className="w-4 h-4 text-brand-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.3} strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+          <span><span className="font-semibold text-ink">You get:</span> {s.out}</span>
+        </p>
+      </div>
+      <div className="mt-3.5 pt-3.5 border-t border-line-soft flex flex-wrap gap-2">
+        {s.chips.map((c) => (
+          <span key={c} className="text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 rounded-full px-2.5 py-1">{c}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function LatestStrip() {
   const items = topLatest(3);
   return (
@@ -1554,37 +1591,24 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
             export along the way. No setup, no account. Each step shows exactly what you do and what you get back.
           </p>
 
-          <div className="grid md:grid-cols-2 gap-5 mt-10 items-start">
-            {[
-              { n: "1", t: "Describe the client", chips: ["2-minute intake", "On-device", "No login", "Instant gap analysis"], act: "a 2-minute intake, sector, listing category, existing filings and export markets. No login, everything on your device.", out: "an instant, gap-analysed action plan, cited to SEBI & ICAI, nothing uploaded." },
-              { n: "2", t: "Work the action plan", chips: ["108 BRSR fields", "GHG · energy · water", "Scope 3 screening", "Upload last year", "SEBI-cited"], act: "see all 108 BRSR fields sorted into Ready, Verify and Collect, each with plain-English guidance, the SEBI citation and built-in GHG, energy and water calculators. Upload last year's report to auto-tag what's already documented.", out: "a precise list of only what's genuinely new to collect, with the emissions maths already done." },
-              { n: "3", t: "Report across frameworks", chips: ["GRI · TCFD · IFRS · TNFD", "MSCI · DJSI", "Materiality", "CBAM · CCTS", "Request emails"], act: "add the suggested material topics, map every disclosure to GRI, TCFD, IFRS and TNFD (plus MSCI and DJSI), check CBAM and CCTS scope, and copy ready-to-send request emails and templates.", out: "one dataset that feeds every framework and the client's stakeholder process." },
-              { n: "4", t: "Hand it off, or go further with Pro", chips: ["PDF brief", "CSV export", "Shareable link", "Collect (Pro)"], act: "export a client-ready PDF brief and a CSV of every gap, or share a link. When you're ready to chase the data from the client's team, upgrade to Collect (Pro).", out: "a clear path from a blank format to a defensible, filed report." },
-            ].map((s, i) => (
-              <div key={s.n} data-reveal style={{ transitionDelay: `${(i % 2) * 80}ms` }} className="card-lift rounded-2xl bg-white border border-line shadow-elev-1 p-5">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <span className="w-9 h-9 rounded-xl bg-forest text-white flex items-center justify-center font-display font-bold text-[15px] flex-shrink-0">{s.n}</span>
-                    <h3 className="text-[18px] font-semibold text-ink tracking-tight leading-snug">{s.t}</h3>
-                  </div>
-                  <Image src={`/product/how-${s.n}.png`} alt="" width={346} height={600} className="w-11 h-11 object-contain flex-shrink-0 select-none" aria-hidden />
-                </div>
-                <div className="mt-3.5 space-y-2">
-                  <p className="text-[14px] text-ink-body leading-relaxed">
-                    <span className="font-semibold text-ink">You do:</span> {s.act}
-                  </p>
-                  <p className="flex items-start gap-2 text-[14px] text-ink-body leading-relaxed">
-                    <svg className="w-4 h-4 text-brand-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.3} strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
-                    <span><span className="font-semibold text-ink">You get:</span> {s.out}</span>
-                  </p>
-                </div>
-                <div className="mt-3.5 pt-3.5 border-t border-line-soft flex flex-wrap gap-2">
-                  {s.chips.map((c) => (
-                    <span key={c} className="text-[12.5px] font-medium text-brand-700 bg-brand-50 border border-brand-100 rounded-full px-2.5 py-1">{c}</span>
-                  ))}
-                </div>
-              </div>
+          {/* Mobile: single ordered stack (1 → 2 → 3 → 4) */}
+          <div className="mt-10 space-y-5 md:hidden">
+            {HOW_STEPS.map((s, i) => (
+              <StepCard key={s.n} s={s} i={i} />
             ))}
+          </div>
+          {/* Desktop: two content-sized columns so card 3 sits directly under card 1 (no gap) */}
+          <div className="mt-10 hidden md:grid md:grid-cols-2 gap-5 items-start">
+            <div className="flex flex-col gap-5">
+              {[HOW_STEPS[0], HOW_STEPS[2]].map((s, i) => (
+                <StepCard key={s.n} s={s} i={i} />
+              ))}
+            </div>
+            <div className="flex flex-col gap-5">
+              {[HOW_STEPS[1], HOW_STEPS[3]].map((s, i) => (
+                <StepCard key={s.n} s={s} i={i} />
+              ))}
+            </div>
           </div>
 
           <div className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-3">
