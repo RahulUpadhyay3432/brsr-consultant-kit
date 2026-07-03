@@ -26,12 +26,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // Feature pages
     { url: `${BASE}/features/gap-analysis`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${BASE}/features/ghg-calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
+    { url: `${BASE}/features/materiality`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
+    { url: `${BASE}/features/alignment`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${BASE}/features/templates`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/features/collect`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/features/cbam-ccts`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    // Conversion + trust + legal
+    { url: `${BASE}/request-pro`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE}/methodology`, lastModified: now, changeFrequency: "yearly", priority: 0.5 },
+    { url: `${BASE}/security`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
     { url: `${BASE}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${BASE}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${BASE}/dpa`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ];
 
   const blogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
