@@ -8,6 +8,7 @@ import { downloadCsv, exportFilename } from "@/lib/export";
 interface MaterialityMatrixProps {
   topics: MaterialityTopic[];
   clientName?: string;
+  demo?: boolean;
 }
 
 const CATEGORY_META = {
@@ -42,7 +43,7 @@ interface MaterialityPersist {
   showShortlistedOnly: boolean;
 }
 
-export default function MaterialityMatrix({ topics, clientName }: MaterialityMatrixProps) {
+export default function MaterialityMatrix({ topics, clientName, demo = false }: MaterialityMatrixProps) {
   const [selectedCategory, setSelectedCategory] = useState<Category | "all">("all");
 
   // ── Working shortlist, the consultant flags topics to carry into the
@@ -53,16 +54,17 @@ export default function MaterialityMatrix({ topics, clientName }: MaterialityMat
   const [hydrated,            setHydrated]            = useState(false);
 
   useEffect(() => {
+    if (demo) { setHydrated(true); return; } // sample starts clean, reads nothing
     const saved = loadJSON<MaterialityPersist | null>(STORAGE_KEYS.materiality, null);
     if (saved) {
       setShortlisted(new Set(saved.shortlistedIds ?? []));
       setShowShortlistedOnly(!!saved.showShortlistedOnly);
     }
     setHydrated(true);
-  }, []);
+  }, [demo]);
 
   useEffect(() => {
-    if (!hydrated) return;
+    if (!hydrated || demo) return; // demo mode: interactive in-memory, never persisted
     saveJSON(STORAGE_KEYS.materiality, {
       shortlistedIds: Array.from(shortlisted),
       showShortlistedOnly,

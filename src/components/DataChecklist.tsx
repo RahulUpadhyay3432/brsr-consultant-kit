@@ -94,8 +94,8 @@ function ActionPlanGuide() {
 }
 
 // ─── Main component ────────────────────────────────────────────────────────────
-export default function DataChecklist({ items, general, seedQuery, clientName }: { items: ChecklistItem[]; general: GeneralDisclosures; seedQuery?: string; clientName?: string }) {
-  const c = useChecklistState(items, general, seedQuery);
+export default function DataChecklist({ items, general, seedQuery, clientName, demo }: { items: ChecklistItem[]; general: GeneralDisclosures; seedQuery?: string; clientName?: string; demo?: boolean }) {
+  const c = useChecklistState(items, general, seedQuery, demo);
 
   // Export the full BRSR action plan (Sections A, B and all of Section C) as a
   // working CSV the consultant can edit or hand to the client. Exports

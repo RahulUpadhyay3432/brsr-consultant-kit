@@ -32,7 +32,7 @@ interface ChecklistPersist {
 // the Section-C fields.
 type GeneralLike = { sectionA: { id: string }[]; sectionB: { id: string }[] };
 
-export function useChecklistState(items: ChecklistItem[], general: GeneralLike, seedQuery?: string) {
+export function useChecklistState(items: ChecklistItem[], general: GeneralLike, seedQuery?: string, demo = false) {
   const abIds = useMemo(
     () => [...general.sectionA, ...general.sectionB].map(d => d.id),
     [general]
@@ -75,6 +75,7 @@ export function useChecklistState(items: ChecklistItem[], general: GeneralLike, 
   // ── Persistence, hydrate once after mount, then save on change ─────────────
   const [hydrated, setHydrated] = useState(false);
   useEffect(() => {
+    if (demo) { setHydrated(true); return; } // sample starts clean, reads nothing
     const saved = loadJSON<ChecklistPersist | null>(STORAGE_KEYS.checklist, null);
     if (saved) {
       setCollectedIds(new Set(saved.collectedIds ?? []));
@@ -94,7 +95,7 @@ export function useChecklistState(items: ChecklistItem[], general: GeneralLike, 
   }, []);
 
   useEffect(() => {
-    if (!hydrated) return; // don't overwrite stored data before the first hydrate
+    if (!hydrated || demo) return; // demo mode: interactive in-memory, never persisted
     saveJSON(STORAGE_KEYS.checklist, {
       collectedIds: Array.from(collectedIds),
       detection,

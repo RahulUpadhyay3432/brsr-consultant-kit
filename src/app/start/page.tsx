@@ -135,6 +135,10 @@ export default function StartPage() {
                 </Link>
               </>
             )}
+            {" · "}
+            <Link href="/demo" className="text-brand-700 font-medium hover:underline">
+              Just exploring? See a sample →
+            </Link>
           </div>
 
           {/* ── What you get, staggered cascade after form ───────────── */}

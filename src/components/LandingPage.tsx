@@ -1472,12 +1472,12 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                 >
                   Start a free report <IcoArrow />
                 </button>
-                <button
-                  onClick={scrollTo("how")}
+                <Link
+                  href="/demo"
                   className="inline-flex items-center gap-2 bg-white text-ink text-[15.5px] font-medium px-5 py-3 rounded-xl border border-line hover:bg-band transition-colors pressable shadow-elev-1"
                 >
-                  See how it works
-                </button>
+                  See a sample report
+                </Link>
               </div>
 
               {resume && (

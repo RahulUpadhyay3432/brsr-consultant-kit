@@ -30,6 +30,10 @@ interface ReportViewProps {
   onHome: () => void;   // Brand/logo, go to the marketing home
   onBack: () => void;   // New report, clears the session
   onEdit: () => void;   // Back to form, keeps answers pre-filled
+  // Read-only sample mode (the /demo route): the report is fully interactive
+  // in-memory, but nothing is persisted and none of the visitor's real session
+  // or "My clients" data is read or written.
+  demo?: boolean;
 }
 
 const TABS = [
@@ -137,7 +141,7 @@ function TabIcon({ id, className, active = true }: { id: string; className?: str
   return null;
 }
 
-export default function ReportView({ report, onHome, onBack, onEdit }: ReportViewProps) {
+export default function ReportView({ report, onHome, onBack, onEdit, demo = false }: ReportViewProps) {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [seedQuery, setSeedQuery] = useState("");      // global-search → Action Plan
   const industryLabel = INDUSTRY_LABELS[report.industry as IndustryType] || report.industry;
@@ -149,6 +153,7 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
   const [shortlistedTopics, setShortlistedTopics] = useState<typeof report.materialityTopics>([]);
   const [includeMateriality, setIncludeMateriality] = useState(false);
   useEffect(() => {
+    if (demo) return; // the sample never reads the visitor's real shortlist
     const read = () => {
       const saved = loadJSON<{ shortlistedIds?: string[] } | null>(STORAGE_KEYS.materiality, null);
       const ids = new Set(saved?.shortlistedIds ?? []);
@@ -157,7 +162,7 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
     read();
     window.addEventListener("saaksh:materiality-changed", read);
     return () => window.removeEventListener("saaksh:materiality-changed", read);
-  }, [activeTab, report.materialityTopics]);
+  }, [activeTab, report.materialityTopics, demo]);
 
   const goToPlanWithQuery = useCallback((q: string) => {
     setSeedQuery(q);
@@ -185,6 +190,20 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
 
         <main className="flex-1 px-5 sm:px-8 lg:px-10 py-7">
           <div className="max-w-[1180px] mx-auto">
+            {demo && (
+              <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-brand-200 bg-brand-50 px-4 py-3">
+                <p className="text-[13.5px] text-ink-body leading-snug">
+                  <span className="font-semibold text-brand-800">This is a sample report</span> for a made-up steel company, explore every tab freely. Nothing here is saved.
+                </p>
+                <button
+                  onClick={onEdit}
+                  className="pressable inline-flex items-center gap-1.5 rounded-lg bg-forest text-white text-[13px] font-semibold px-3.5 py-2 hover:bg-forest-light transition-colors flex-shrink-0"
+                >
+                  Start your own free report
+                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                </button>
+              </div>
+            )}
             {/* Breadcrumb + per-screen actions */}
             <div className="flex items-center justify-between gap-4 mb-5">
               <p className="text-[13.5px] text-ink-body font-medium tracking-tight">
@@ -234,10 +253,10 @@ export default function ReportView({ report, onHome, onBack, onEdit }: ReportVie
 
             <div key={activeTab} role="tabpanel" id={`${activeTab}-panel`} className="tab-fade">
               {activeTab === "overview" && (
-                <Overview report={report} onGoToPlan={() => setActiveTab("checklist")} onBack={onBack} />
+                <Overview report={report} onGoToPlan={() => setActiveTab("checklist")} onBack={onBack} demo={demo} />
               )}
-              {activeTab === "checklist"   && <DataChecklist items={report.checklist} general={report.generalDisclosures} seedQuery={seedQuery} clientName={report.companyName} />}
-              {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} clientName={report.companyName} />}
+              {activeTab === "checklist"   && <DataChecklist items={report.checklist} general={report.generalDisclosures} seedQuery={seedQuery} clientName={report.companyName} demo={demo} />}
+              {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} clientName={report.companyName} demo={demo} />}
               {activeTab === "alignment"   && <AlignmentWorkspace mappings={report.frameworkMappings} clientName={report.companyName} />}
               {activeTab === "beyond-brsr" && <RegulatoryReadiness regulatory={report.regulatory} />}
               {activeTab === "templates"   && <TemplatesPanel clientName={report.companyName} />}
@@ -494,11 +513,12 @@ function principleBreakdown(report: ReportOutput) {
 }
 
 function Overview({
-  report, onGoToPlan, onBack,
+  report, onGoToPlan, onBack, demo = false,
 }: {
   report: ReportOutput;
   onGoToPlan: () => void;
   onBack: () => void;
+  demo?: boolean;
 }) {
   const { alreadyTracked, partiallyTracked, newDataNeeded, notApplicable, totalDataPoints } = report.summary;
   const applicableFields = totalDataPoints - notApplicable;
@@ -541,6 +561,7 @@ function Overview({
   const abTotal = report.generalDisclosures.sectionA.length + report.generalDisclosures.sectionB.length;
   const [abProgress, setAbProgress] = useState({ collected: 0, detected: 0 });
   useEffect(() => {
+    if (demo) return; // the sample doesn't read the visitor's real progress
     const saved = loadJSON<{ collectedIds?: string[]; detection?: { detectedIds?: string[] } | null } | null>(
       STORAGE_KEYS.checklist, null
     );
@@ -555,8 +576,9 @@ function Overview({
   // First-run "Start here" card, shown until dismissed; persists across reports.
   const [showIntro, setShowIntro] = useState(false);
   useEffect(() => {
+    if (demo) return; // no first-run card (and no persisted flag) in the sample
     setShowIntro(!loadJSON<boolean>(STORAGE_KEYS.walkthroughSeen, false));
-  }, []);
+  }, [demo]);
   const dismissIntro = () => {
     saveJSON(STORAGE_KEYS.walkthroughSeen, true);
     setShowIntro(false);
