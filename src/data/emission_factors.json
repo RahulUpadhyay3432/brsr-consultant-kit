@@ -73,5 +73,12 @@
       "ncv_display": "38.18 MJ/litre",
       "source": "IPCC 2006 Vol.2 Table 1.4, CO₂: 77.4 tCO₂/TJ; NCV Table 1.2, 40.19 MJ/kg × 0.950 kg/L."
     }
+  ],
+  "scope1_fugitive": [
+    { "id": "r134a", "label": "R-134a (HFC-134a)",       "unit": "kg", "co2e_per_unit": 1300,  "co2e_display": "GWP 1,300 (kgCO₂e/kg)",  "source": "IPCC Fifth Assessment Report (AR5), 100-year GWP: HFC-134a = 1,300." },
+    { "id": "r410a", "label": "R-410A (AC refrigerant)",  "unit": "kg", "co2e_per_unit": 1924,  "co2e_display": "GWP 1,924 (kgCO₂e/kg)",  "source": "IPCC AR5 100-year GWP, mass-weighted blend of R-32 (677) and R-125 (3,170), 50/50 = 1,924." },
+    { "id": "r32",   "label": "R-32 (HFC-32)",            "unit": "kg", "co2e_per_unit": 677,   "co2e_display": "GWP 677 (kgCO₂e/kg)",    "source": "IPCC AR5 100-year GWP: HFC-32 = 677." },
+    { "id": "r404a", "label": "R-404A (refrigeration)",   "unit": "kg", "co2e_per_unit": 3943,  "co2e_display": "GWP 3,943 (kgCO₂e/kg)",  "source": "IPCC AR5 100-year GWP, blend of R-125/R-143a/R-134a (44/52/4 by mass) = 3,943." },
+    { "id": "sf6",   "label": "SF₆ (switchgear)",         "unit": "kg", "co2e_per_unit": 23500, "co2e_display": "GWP 23,500 (kgCO₂e/kg)", "source": "IPCC AR5 100-year GWP: SF₆ = 23,500." }
   ]
 }

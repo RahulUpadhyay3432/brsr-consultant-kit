@@ -96,7 +96,9 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
 
   const hasAnyInput = showEnergyInputs
     ? [inputs.grid_kwh, inputs.renewable_kwh, inputs.diesel_l, inputs.petrol_l,
-       inputs.gas_m3, inputs.lpg_kg, inputs.coal_kg, inputs.furnace_oil_l].some(v => parseFloat(v) > 0)
+       inputs.gas_m3, inputs.lpg_kg, inputs.coal_kg, inputs.furnace_oil_l,
+       inputs.refrigerant_r134a_kg, inputs.refrigerant_r410a_kg, inputs.refrigerant_r32_kg,
+       inputs.refrigerant_r404a_kg, inputs.sf6_kg].some(v => parseFloat(v) > 0)
     : [inputs.water_surface_kl, inputs.water_ground_kl,
        inputs.water_third_kl,   inputs.water_others_kl].some(v => parseFloat(v) > 0);
 
@@ -159,6 +161,22 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
               <Field label="LPG"          unit="kg" value={inputs.lpg_kg}        onChange={set("lpg_kg")}        />
               <Field label="Coal"         unit="kg" value={inputs.coal_kg}       onChange={set("coal_kg")}       />
               <Field label="Furnace Oil"  unit="L"  value={inputs.furnace_oil_l} onChange={set("furnace_oil_l")} />
+            </div>
+          </div>
+        )}
+
+        {/* ── Fugitive refrigerants (GHG / Scope 1 only) ──────────────────────── */}
+        {mode === "ghg" && (
+          <div>
+            <SectionLabel>
+              Fugitive emissions <span className="text-ink-faint normal-case tracking-normal font-normal">, refrigerant leaked or topped up this year (leave blank if none)</span>
+            </SectionLabel>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <Field label="R-134a" unit="kg" value={inputs.refrigerant_r134a_kg} onChange={set("refrigerant_r134a_kg")} />
+              <Field label="R-410A" unit="kg" value={inputs.refrigerant_r410a_kg} onChange={set("refrigerant_r410a_kg")} />
+              <Field label="R-32"   unit="kg" value={inputs.refrigerant_r32_kg}   onChange={set("refrigerant_r32_kg")}   />
+              <Field label="R-404A" unit="kg" value={inputs.refrigerant_r404a_kg} onChange={set("refrigerant_r404a_kg")} />
+              <Field label="SF₆"    unit="kg" value={inputs.sf6_kg}               onChange={set("sf6_kg")}               />
             </div>
           </div>
         )}
@@ -252,14 +270,14 @@ export default function EmissionsCalculator({ mode, inputs, onChange }: Props) {
                       {ghg.scope1_breakdown.map((f, i) => (
                         <ResultRow key={i} label={f.label} value={fmtNum(f.tco2e, 2)} unit="tCO₂e" indent muted />
                       ))}
-                      <ResultRow label="Scope 1 (fuel combustion)" value={fmtNum(ghg.scope1_tco2e, 2)} unit="tCO₂e" />
+                      <ResultRow label="Scope 1 (fuel + fugitive)" value={fmtNum(ghg.scope1_tco2e, 2)} unit="tCO₂e" />
                     </>
                   )}
                   {ghg.scope1_breakdown.length === 0 && (
                     <ResultRow label="Scope 1" value="0.00" unit="tCO₂e" muted />
                   )}
                   <p className="text-[10px] text-ink-faint leading-snug">
-                    Fuel combustion only. Refrigerant/fugitive and process emissions are not included, add them to Scope 1 separately if material.
+                    Covers fuel combustion + refrigerant leakage (IPCC AR5 GWPs). Process emissions (e.g. cement calcination, welding gases) are not modelled, add them to Scope 1 separately if material.
                   </p>
                   <div>
                     <ResultRow label="Scope 2 (grid electricity)" value={fmtNum(ghg.scope2_tco2e, 2)} unit="tCO₂e" />

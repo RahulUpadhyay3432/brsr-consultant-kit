@@ -23,7 +23,7 @@ const SCOPES = [
 const MISTAKES = [
   "Counting renewables twice. A rooftop-solar unit consumed on-site is zero Scope 2, but don't also subtract it from your grid-purchase figure.",
   "Mixing units. The grid factor is per kWh; fuels are per litre, kg or m³. Convert to the factor's unit before you multiply.",
-  "Forgetting fugitive and process emissions. Refrigerant leakage, cement calcination and welding gases are Scope 1 but not fuel combustion, add them separately.",
+  "Forgetting process emissions. The calculator now covers refrigerant leakage, but cement calcination, welding gases and other process CO₂ are still Scope 1, add them separately.",
   "Using a stale grid factor. CEA republishes it every year; a two-year-old factor mis-states every Scope 2 number you file.",
 ];
 
@@ -142,7 +142,7 @@ export default function GhgCalculatorPage() {
           <div className="mx-auto w-full max-w-[1120px] px-5 sm:px-8 py-16">
             <h2 className="font-editorial font-semibold text-ink text-[1.8rem] sm:text-[2.1rem] leading-tight tracking-[-0.015em]">How each factor is derived</h2>
             <p className="text-[15.5px] text-ink-body leading-relaxed mt-3 max-w-[720px]">
-              Every number here is a published factor, not an estimate. Scope 2 uses the CEA national grid factor; each fuel&apos;s factor is its IPCC carbon content times its calorific value. Here is the full trail.
+              Every number here is a published factor, not an estimate. Scope 2 uses the CEA national grid factor; each fuel&apos;s factor is its IPCC carbon content times its calorific value; each refrigerant uses its IPCC AR5 100-year global warming potential. Here is the full trail.
             </p>
             <div className="mt-8 rounded-2xl border border-line bg-white shadow-elev-1 overflow-hidden">
               <div className="overflow-x-auto">
@@ -167,6 +167,17 @@ export default function GhgCalculatorPage() {
                         <td className="px-5 py-3.5 text-[14px] font-medium text-ink">{f.label}</td>
                         <td className="px-5 py-3.5 font-mono text-[13px] text-ink-body whitespace-nowrap">{f.co2e_display}</td>
                         <td className="px-5 py-3.5 font-mono text-[13px] text-ink-body whitespace-nowrap">{f.ncv_display}</td>
+                        <td className="px-5 py-3.5 text-[12.5px] text-ink-body leading-relaxed">{f.source}</td>
+                      </tr>
+                    ))}
+                    <tr className="border-t border-line align-top">
+                      <td colSpan={4} className="px-5 pt-4 pb-1 font-mono text-[11px] uppercase tracking-wide text-ink-muted">Fugitive emissions (refrigerant leakage) — Scope 1</td>
+                    </tr>
+                    {factors.scope1_fugitive.map((f) => (
+                      <tr key={f.id} className="border-t border-line-soft align-top">
+                        <td className="px-5 py-3.5 text-[14px] font-medium text-ink">{f.label}</td>
+                        <td className="px-5 py-3.5 font-mono text-[13px] text-ink-body whitespace-nowrap">{f.co2e_display}</td>
+                        <td className="px-5 py-3.5 text-[13px] text-ink-faint">—</td>
                         <td className="px-5 py-3.5 text-[12.5px] text-ink-body leading-relaxed">{f.source}</td>
                       </tr>
                     ))}

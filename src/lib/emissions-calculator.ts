@@ -13,6 +13,12 @@ export interface CalcInputs {
   lpg_kg: string;
   coal_kg: string;
   furnace_oil_l: string;
+  // Fugitive emissions (P6-E7 Scope 1): refrigerant leaked / topped up, in kg
+  refrigerant_r134a_kg: string;
+  refrigerant_r410a_kg: string;
+  refrigerant_r32_kg: string;
+  refrigerant_r404a_kg: string;
+  sf6_kg: string;
   // Shared intensity denominator
   turnover_crore: string;
   // Water sources (P6-E3)
@@ -25,6 +31,7 @@ export interface CalcInputs {
 export const DEFAULT_CALC_INPUTS: CalcInputs = {
   grid_kwh: "", renewable_kwh: "",
   diesel_l: "", petrol_l: "", gas_m3: "", lpg_kg: "", coal_kg: "", furnace_oil_l: "",
+  refrigerant_r134a_kg: "", refrigerant_r410a_kg: "", refrigerant_r32_kg: "", refrigerant_r404a_kg: "", sf6_kg: "",
   turnover_crore: "",
   water_surface_kl: "", water_ground_kl: "", water_third_kl: "", water_others_kl: "",
 };
@@ -37,6 +44,10 @@ function fuel(id: string) {
   return factorsData.scope1_fuels.find(f => f.id === id)!;
 }
 
+function fugitive(id: string) {
+  return factorsData.scope1_fugitive.find(f => f.id === id)!;
+}
+
 // Fuel qty → CalcInputs key mapping (ordered for display)
 const FUEL_MAP: Array<{ id: string; key: keyof CalcInputs }> = [
   { id: "diesel",      key: "diesel_l"      },
@@ -45,6 +56,16 @@ const FUEL_MAP: Array<{ id: string; key: keyof CalcInputs }> = [
   { id: "lpg",         key: "lpg_kg"        },
   { id: "coal",        key: "coal_kg"       },
   { id: "furnace_oil", key: "furnace_oil_l" },
+];
+
+// Fugitive refrigerant → CalcInputs key mapping. Scope 1, but no calorific value,
+// so these are excluded from the energy calculation (calcEnergy uses FUEL_MAP only).
+const FUGITIVE_MAP: Array<{ id: string; key: keyof CalcInputs }> = [
+  { id: "r134a", key: "refrigerant_r134a_kg" },
+  { id: "r410a", key: "refrigerant_r410a_kg" },
+  { id: "r32",   key: "refrigerant_r32_kg"   },
+  { id: "r404a", key: "refrigerant_r404a_kg" },
+  { id: "sf6",   key: "sf6_kg"               },
 ];
 
 export interface EnergyResult {
@@ -85,9 +106,14 @@ export interface GhgResult {
 }
 
 export function calcGhg(inp: CalcInputs): GhgResult {
-  const scope1_breakdown = FUEL_MAP
+  const fuelBreakdown = FUEL_MAP
     .map(({ id, key }) => ({ label: fuel(id).label, tco2e: n(inp[key]) * fuel(id).co2e_per_unit / 1000 }))
     .filter(f => f.tco2e > 0);
+  // Fugitive refrigerant emissions: kg leaked × its GWP (kgCO₂e/kg) → tonnes.
+  const fugitiveBreakdown = FUGITIVE_MAP
+    .map(({ id, key }) => ({ label: fugitive(id).label, tco2e: n(inp[key]) * fugitive(id).co2e_per_unit / 1000 }))
+    .filter(f => f.tco2e > 0);
+  const scope1_breakdown = [...fuelBreakdown, ...fugitiveBreakdown];
   const scope1_tco2e = scope1_breakdown.reduce((s, f) => s + f.tco2e, 0);
 
   const scope2_tco2e = n(inp.grid_kwh) * factorsData.scope2_grid.factor_kg_co2_per_kwh / 1000;
