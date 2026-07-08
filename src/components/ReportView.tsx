@@ -143,6 +143,7 @@ function TabIcon({ id, className, active = true }: { id: string; className?: str
 
 export default function ReportView({ report, onHome, onBack, onEdit, demo = false }: ReportViewProps) {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
+  const [demoGuideOpen, setDemoGuideOpen] = useState(true);
   const [seedQuery, setSeedQuery] = useState("");      // global-search → Action Plan
   const industryLabel = INDUSTRY_LABELS[report.industry as IndustryType] || report.industry;
   const fieldCount = report.checklist.length;
@@ -253,7 +254,12 @@ export default function ReportView({ report, onHome, onBack, onEdit, demo = fals
 
             <div key={activeTab} role="tabpanel" id={`${activeTab}-panel`} className="tab-fade">
               {activeTab === "overview" && (
-                <Overview report={report} onGoToPlan={() => setActiveTab("checklist")} onBack={onBack} demo={demo} />
+                <>
+                  {demo && demoGuideOpen && (
+                    <DemoGuide onNavigate={setActiveTab} onClose={() => setDemoGuideOpen(false)} />
+                  )}
+                  <Overview report={report} onGoToPlan={() => setActiveTab("checklist")} onBack={onBack} demo={demo} />
+                </>
               )}
               {activeTab === "checklist"   && <DataChecklist items={report.checklist} general={report.generalDisclosures} seedQuery={seedQuery} clientName={report.companyName} demo={demo} />}
               {activeTab === "materiality" && <MaterialityMatrix topics={report.materialityTopics} clientName={report.companyName} demo={demo} />}
@@ -489,6 +495,61 @@ function TopBar({ onSearch }: { onSearch: (q: string) => void }) {
       <div className="flex items-center gap-1.5">
       </div>
     </header>
+  );
+}
+
+// ─── Demo-only guided panel: teaches a cold visitor how to explore the sample ─
+// Shown on the Overview of the /demo route. Self-paced; each row jumps to a tab.
+
+const DEMO_STEPS: { id: TabId; label: string; blurb: string }[] = [
+  { id: "overview",    label: "Overview",    blurb: "Your client's readiness at a glance: how many of the 108 fields are ready to pull, need checking, or must be collected fresh." },
+  { id: "checklist",   label: "Action Plan", blurb: "Every BRSR field, grouped by principle. Expand any row for the gap, the exact SEBI wording, and how to collect it. Built-in emissions calculators live here too." },
+  { id: "materiality", label: "Materiality", blurb: "A suggested shortlist of the ESG topics that matter most for this sector, each mapped to the BRSR principles." },
+  { id: "alignment",   label: "Alignment",   blurb: "How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2 and TNFD, ready to export as a crosswalk." },
+  { id: "beyond-brsr", label: "Beyond BRSR", blurb: "A quick CBAM and CCTS in-scope readiness check, based on this client's sector and export markets." },
+];
+
+function DemoGuide({ onNavigate, onClose }: { onNavigate: (t: TabId) => void; onClose: () => void }) {
+  return (
+    <div className="anim-up-sm mb-6 rounded-2xl border border-brand-200 bg-white shadow-elev-1 overflow-hidden">
+      <div className="flex items-start justify-between gap-3 px-5 py-4 bg-brand-50 border-b border-brand-100">
+        <div className="min-w-0">
+          <p className="text-[15px] font-semibold text-ink leading-snug">How to explore this sample report</p>
+          <p className="text-[13px] text-ink-muted mt-0.5 leading-snug">Five views of the same client. Read the line, then jump in, nothing you do here is saved.</p>
+        </div>
+        <button
+          onClick={onClose}
+          aria-label="Hide guide"
+          className="pressable flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-ink-faint hover:text-ink hover:bg-white transition-colors"
+        >
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
+        </button>
+      </div>
+      <ol className="divide-y divide-line-soft">
+        {DEMO_STEPS.map((s, i) => (
+          <li key={s.id} className="flex items-start gap-3.5 px-5 py-3.5">
+            <span className="flex-shrink-0 w-6 h-6 rounded-full bg-brand-600 text-white text-[12px] font-semibold flex items-center justify-center tabular-nums mt-0.5">{i + 1}</span>
+            <div className="flex-1 min-w-0">
+              <p className="text-[14px] font-semibold text-ink leading-snug">{s.label}</p>
+              <p className="text-[13px] text-ink-muted leading-relaxed mt-0.5">{s.blurb}</p>
+            </div>
+            {s.id === "overview" ? (
+              <span className="flex-shrink-0 mt-0.5 inline-flex items-center gap-1.5 text-[11.5px] font-semibold text-brand-700 bg-brand-50 border border-brand-200 rounded-full px-2.5 py-1 whitespace-nowrap">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand-500" /> You&apos;re here
+              </span>
+            ) : (
+              <button
+                onClick={() => onNavigate(s.id)}
+                className="pressable flex-shrink-0 mt-0.5 inline-flex items-center gap-1 text-[13px] font-semibold text-brand-700 hover:text-brand-800 border border-line hover:border-brand-300 rounded-lg px-3 py-1.5 bg-white hover:bg-band transition-colors whitespace-nowrap"
+              >
+                Go
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+              </button>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
   );
 }
 
