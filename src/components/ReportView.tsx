@@ -3,8 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import type { ReportOutput, FrameworkMapping } from "@/lib/types";
-import { INDUSTRY_LABELS, FILING_LABELS, type IndustryType, type ExistingFiling } from "@/lib/types";
-import CompanyAvatar from "./CompanyAvatar";
+import { FILING_LABELS, type ExistingFiling } from "@/lib/types";
 import { SaakshMark } from "./SaakshMark";
 import { BackupWorkButton, ShareLinkButton } from "./SessionBackup";
 import DataChecklist from "./DataChecklist";
@@ -27,6 +26,7 @@ import { ICON_COLOR, TabIcon } from "./report/tab-icons";
 import ViewHeader from "./report/ViewHeader";
 import InfoPopover from "./report/InfoPopover";
 import GuidedTour, { REPORT_TOUR_STEPS } from "./report/GuidedTour";
+import ClientSwitcher from "./report/ClientSwitcher";
 import esgRatingsData from "@/data/esg_ratings_mapping.json";
 
 interface ReportViewProps {
@@ -67,7 +67,6 @@ export default function ReportView({ report, onHome, onBack, onEdit, demo = fals
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [demoGuideOpen, setDemoGuideOpen] = useState(true);
   const [seedQuery, setSeedQuery] = useState("");      // global-search → Action Plan
-  const industryLabel = INDUSTRY_LABELS[report.industry as IndustryType] || report.industry;
   const fieldCount = report.checklist.length;
 
   // URL-addressable tabs: reflect the active tab in ?tab= so browser Back/Forward,
@@ -126,13 +125,13 @@ export default function ReportView({ report, onHome, onBack, onEdit, demo = fals
       {/* ── Sidebar ────────────────────────────────────────────────────────── */}
       <Sidebar
         report={report}
-        industryLabel={industryLabel}
         fieldCount={fieldCount}
         activeTab={activeTab}
         onNavigate={navigate}
         onHome={onHome}
         onBack={onBack}
         onEdit={onEdit}
+        demo={demo}
       />
 
       {/* ── Main column, top bar + scrollable content ─────────────────────── */}
@@ -229,16 +228,16 @@ export default function ReportView({ report, onHome, onBack, onEdit, demo = fals
 
 // ─── Sidebar, brand, workspace switcher, grouped nav, footer ─────────────────
 function Sidebar({
-  report, industryLabel, fieldCount, activeTab, onNavigate, onHome, onBack, onEdit,
+  report, fieldCount, activeTab, onNavigate, onHome, onBack, onEdit, demo = false,
 }: {
   report: ReportOutput;
-  industryLabel: string;
   fieldCount: number;
   activeTab: TabId;
   onNavigate: (id: TabId) => void;
   onHome: () => void;
   onBack: () => void;
   onEdit: () => void;
+  demo?: boolean;
 }) {
   const navItem = (tab: { id: string; label: string }, badge?: React.ReactNode) => {
     const active = activeTab === tab.id;
@@ -280,22 +279,9 @@ function Sidebar({
         </div>
       </button>
 
-      {/* Workspace / client identity — a switcher into the "My clients" list */}
+      {/* Workspace / client identity — a quick-switch dropdown over "My clients" */}
       <div className="px-3 pt-3">
-        <Link
-          href="/clients"
-          title="Switch client"
-          className="group flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg bg-white border border-stone-200/80 shadow-sm hover:border-brand-300 transition-colors"
-        >
-          <CompanyAvatar name={report.companyName || "Your Client"} size={28} />
-          <div className="leading-tight min-w-0 flex-1">
-            <p className="text-[13.5px] font-semibold text-ink truncate">{report.companyName || "Your Client"}</p>
-            <p className="text-[12px] text-ink-muted truncate">{industryLabel}</p>
-          </div>
-          <svg className="w-3.5 h-3.5 text-stone-300 group-hover:text-brand-600 transition-colors flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M8 9l-3 3 3 3M16 9l3 3-3 3" />
-          </svg>
-        </Link>
+        <ClientSwitcher report={report} demo={demo} />
       </div>
 
       {/* Nav groups */}

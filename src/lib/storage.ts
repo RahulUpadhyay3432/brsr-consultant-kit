@@ -234,7 +234,7 @@ export function listClients(): SavedClient[] {
     .sort((a, b) => (b.savedAt || "").localeCompare(a.savedAt || ""));
 }
 
-function activeClientId(): string | null {
+export function activeClientId(): string | null {
   return loadJSON<string | null>(STORAGE_KEYS.activeClient, null);
 }
 
