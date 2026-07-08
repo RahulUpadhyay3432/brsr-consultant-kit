@@ -49,6 +49,8 @@ export const STORAGE_KEYS = {
   // Whether the interactive "Take a tour" walkthrough has been seen/dismissed.
   // One-time, persists across reports; never written in demo mode.
   tourSeen: "tour.seen",
+  // Whether the in-report "Collect with Pro" upsell has been dismissed.
+  proUpsellSeen: "pro-upsell.seen",
   // The on-device "My clients" workspace: a registry of saved clients and the id
   // of the one currently loaded into the session.* keys above. See the clients
   // section at the bottom of this file.

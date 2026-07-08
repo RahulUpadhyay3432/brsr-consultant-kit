@@ -27,6 +27,7 @@ import ViewHeader from "./report/ViewHeader";
 import InfoPopover from "./report/InfoPopover";
 import GuidedTour, { REPORT_TOUR_STEPS } from "./report/GuidedTour";
 import ClientSwitcher from "./report/ClientSwitcher";
+import ProUpsell from "./report/ProUpsell";
 import esgRatingsData from "@/data/esg_ratings_mapping.json";
 
 interface ReportViewProps {
@@ -826,6 +827,9 @@ function Overview({
           )}
         </div>
       </div>
+
+      {/* Contextual Pro upsell, anchored to the collect-fresh count */}
+      <ProUpsell count={newDataNeeded} demo={demo} />
     </div>
   );
 }
