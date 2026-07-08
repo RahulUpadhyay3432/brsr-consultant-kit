@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/data/blog-posts";
+import { INDUSTRY_LABELS, type IndustryType } from "@/lib/types";
 
 const BASE = "https://saaksh.co";
 
@@ -47,5 +48,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
-  return [...staticRoutes, ...blogRoutes];
+  // Programmatic "BRSR for <industry>" pages (one per real industry).
+  const industryRoutes: MetadataRoute.Sitemap = (Object.keys(INDUSTRY_LABELS) as IndustryType[])
+    .filter((k) => k !== "other")
+    .map((k) => ({ url: `${BASE}/brsr-for/${k}`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.7 }));
+
+  return [...staticRoutes, ...blogRoutes, ...industryRoutes];
 }
