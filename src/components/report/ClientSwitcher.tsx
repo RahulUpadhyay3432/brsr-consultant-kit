@@ -12,9 +12,14 @@ import { listClients, switchToClient, startNewClient, activeClientId } from "@/l
 // (isolation: never reads/writes the real registry).
 export default function ClientSwitcher({ report, demo = false }: { report: ReportOutput; demo?: boolean }) {
   const [open, setOpen] = useState(false);
+  const [count, setCount] = useState(0); // saved-client count, for the collapsed hint
   const ref = useRef<HTMLDivElement>(null);
   const name = report.companyName || "Your Client";
   const industryLabel = INDUSTRY_LABELS[report.industry as IndustryType] || report.industry;
+
+  // Read the saved-client count after mount (localStorage), so the tile can show
+  // how many clients are inside the dropdown.
+  useEffect(() => { if (!demo) setCount(listClients().length); }, [demo, open]);
 
   useEffect(() => {
     if (!open) return;
@@ -51,14 +56,21 @@ export default function ClientSwitcher({ report, demo = false }: { report: Repor
       <button
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        title="Switch client"
+        title={count > 1 ? `Switch client (${count} saved)` : "Switch client"}
         className="group flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg bg-white border border-stone-200/80 shadow-sm hover:border-brand-300 transition-colors"
       >
         <CompanyAvatar name={name} size={28} />
         <div className="leading-tight min-w-0 flex-1 text-left">
           <p className="text-[13.5px] font-semibold text-ink truncate">{name}</p>
-          <p className="text-[12px] text-ink-muted truncate">{industryLabel}</p>
+          <p className="text-[12px] text-ink-muted truncate">
+            {count > 1 ? "Switch client" : industryLabel}
+          </p>
         </div>
+        {count > 1 && (
+          <span className="flex-shrink-0 inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-brand-600 text-white text-[10.5px] font-bold tabular-nums leading-none">
+            {count}
+          </span>
+        )}
         <svg className={`w-3.5 h-3.5 text-stone-400 flex-shrink-0 transition-transform ${open ? "rotate-180" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
           <path d="M6 9l6 6 6-6" />
         </svg>
