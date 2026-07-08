@@ -390,6 +390,329 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
     </>
   ),
 
+  "brsr-principle-2-products-guide": (
+    <>
+      <P>Principle 2 asks whether the business makes and delivers its products and services sustainably and safely. It covers cleaner-technology investment, sustainable sourcing, safe end-of-life reclaim and Extended Producer Responsibility. Several of its disclosures are manufacturing-oriented, so the first job on a service-sector client is knowing which fields genuinely do not apply.</P>
+
+      <KeyTakeaways items={[
+        "Principle 2 spans sourcing, product life-cycle, recycled inputs and end-of-life reclaim, owned mostly by Procurement and Product.",
+        "The end-of-life reclaim (P2-E3), EPR (P2-E4) and packaging-reclaim disclosures are manufacturing-oriented; Saaksh marks them Not Applicable for service clients.",
+        "P2-E4 (EPR) can often be answered straight from the EPR plan already filed with the Pollution Control Board.",
+        "Life Cycle Assessment (P2-L1) is voluntary but a strong credibility signal for assurers and investors.",
+      ]} />
+
+      <H2>What Principle 2 asks</H2>
+      <Table headers={["Disclosure", "What it asks", "ICAI page"]} rows={[
+        ["P2-E1", "Share of R&D and capex directed at improving the environmental and social impact of products and processes", "95"],
+        ["P2-E2", "Whether sustainable-sourcing procedures exist, and the percentage of inputs sourced sustainably", "96"],
+        ["P2-E3", "Processes to safely reclaim products at end of life: plastics, e-waste, hazardous and other waste", "97"],
+        ["P2-E4", "Whether Extended Producer Responsibility applies, and whether the plan matches the one filed with the PCB", "97"],
+        ["P2-L1", "Whether Life Cycle Assessments have been conducted for products or services", "99"],
+        ["P2-L3", "Percentage of recycled or reused input material to total material used", "101"],
+      ]} />
+      <P>The remaining Leadership indicators cover the significant concerns surfaced by an LCA (P2-L2) and the tonnage and share of products and packaging reclaimed at end of life (P2-L4, P2-L5).</P>
+
+      <H2>Who owns the data</H2>
+      <Callout title="Principle 2 is a Procurement and Product engagement" color="blue">
+        Sustainable sourcing and recycled-input data sit with Procurement; product life-cycle, EPR and end-of-life reclaim sit with the Product or operations team. Route these disclosures to those functions, and loop in the environment or EHS team for the EPR and hazardous-waste reclaim answers.
+      </Callout>
+
+      <H2>How to answer EPR (P2-E4) from a filing you already have</H2>
+      <P>If your client is a producer, importer or brand-owner of plastic packaging or electronics, they have almost certainly filed an EPR registration and plan with the Pollution Control Board under the Plastic Waste or E-Waste Rules. P2-E4 asks whether EPR applies and whether the waste-collection plan matches that filing. So this is a pull, not a fresh collection: take the answer from the EPR plan and note the registration reference.</P>
+
+      <H2>Best practice for Principle 2</H2>
+      <UL items={[
+        "Conduct Life Cycle Assessments per ISO 14040/14044 for flagship products and pursue BIS Eco-Mark or CII GreenPro certification.",
+        "Align packaging and product take-back with the EPR plan filed with the Pollution Control Board, and set a recycled-content target.",
+        "Apply circular-design principles (Ellen MacArthur Foundation) and pursue Cradle-to-Cradle Certified where relevant.",
+        "Adopt a Sustainable Procurement policy to ISO 20400 with time-bound sustainable-sourcing targets.",
+      ]} />
+
+      <PostFaq slug="brsr-principle-2-products-guide" />
+
+      <Callout title="Map every BRSR principle in one place" color="blue">
+        Saaksh gap-analyses all 108 BRSR fields across the nine principles, cited to SEBI and ICAI, and marks the manufacturing-only fields Not Applicable for service clients. <A href="/demo">See a sample report</A> or <A href="/start">start a free one</A>.
+      </Callout>
+    </>
+  ),
+
+  "brsr-principle-3-employee-wellbeing-guide": (
+    <>
+      <P>Principle 3 is the largest Essential block in BRSR: fifteen disclosures on how the business treats its people. It covers wellbeing measures, retirement benefits, accessibility, parental leave, grievances, unions, training, career development and workplace safety. Almost every field is asked separately for employees and for workers, and often split by gender and by permanent versus non-permanent, so the shape of the data request matters as much as the content.</P>
+
+      <KeyTakeaways items={[
+        "Principle 3 is the biggest Essential principle, fifteen disclosures, owned almost entirely by the People team.",
+        "Nearly every field splits employees from workers, and often permanent from non-permanent and by gender; design the request around that matrix.",
+        "Safety (P3-E11: LTIFR, fatalities, man-hours) is where assurance concentrates; keep the incident register and workings audit-ready.",
+        "The health-and-safety management system (P3-E10) and safety incidents belong to EHS, everything else to HR.",
+      ]} />
+
+      <H2>What Principle 3 asks</H2>
+      <Table headers={["Disclosure", "What it asks", "ICAI page"]} rows={[
+        ["P3-E1", "Measures for the wellbeing of employees and workers (health, insurance, maternity, day-care)", "105"],
+        ["P3-E2", "Retirement benefits (PF, gratuity, ESI) for current and previous year", "106"],
+        ["P3-E6", "Whether a grievance mechanism exists for each category of employees and workers", "109"],
+        ["P3-E8", "Details of training given to employees and workers", "111"],
+        ["P3-E10", "The occupational health and safety management system, coverage and hazard-identification process", "113"],
+        ["P3-E11", "Safety incidents: LTIFR, recordable injuries, fatalities and high-consequence injuries", "114"],
+      ]} />
+      <P>The other Essential indicators cover accessibility and the equal-opportunity policy (P3-E3, P3-E4), parental-leave return and retention (P3-E5), union membership (P3-E7), career reviews (P3-E9), and complaints and assessments on working conditions and safety (P3-E13 to P3-E15). Leadership adds life insurance, value-chain statutory-dues assurance and rehabilitation of injured workers.</P>
+
+      <H2>Who owns the data</H2>
+      <Callout title="Principle 3 is a People-team engagement" color="blue">
+        Payroll owns wages, benefits and retirement cover; HR owns training, grievances, parental leave, union membership and career reviews; and the EHS or safety function owns the health-and-safety management system (P3-E10) and the incident data (P3-E11). Send the whole principle to your People team, with EHS looped in on the two safety disclosures.
+      </Callout>
+
+      <H2>Get the employees-versus-workers split right from the start</H2>
+      <P>The single most common Principle 3 mistake is collecting a company-wide number and then trying to split it later. BRSR defines &apos;employees&apos; as those on the company payroll and &apos;workers&apos; as contract and other non-payroll labour, and it asks for the two separately almost everywhere, usually with a further gender and permanent/non-permanent breakdown. Build your data request as that matrix up front, so the People team returns it already disaggregated.</P>
+
+      <H2>How to answer safety incidents (P3-E11)</H2>
+      <P>P3-E11 asks for the Lost Time Injury Frequency Rate per million person-hours, the number of recordable work-related injuries, fatalities, and high-consequence injuries, for both employees and workers. Report the man-hours worked alongside the incident counts so the rate can be recomputed, and keep the incident register and investigation records ready: for BRSR Core filers this is an assured attribute.</P>
+
+      <H2>Best practice for Principle 3</H2>
+      <UL items={[
+        "Implement an ISO 45001 occupational health and safety management system, and ensure POSH Act Internal Committees are constituted and reported.",
+        "Disclose Lost Time Injury Frequency Rate and safety-training coverage, not just incident counts.",
+        "Commit to the ILO core labour standards and a living-wage benchmark (Fair Wage Network / Anker methodology).",
+        "Run structured engagement and wellbeing programmes and validate them with an external survey such as Great Place to Work.",
+      ]} />
+
+      <PostFaq slug="brsr-principle-3-employee-wellbeing-guide" />
+
+      <Callout title="Turn Principle 3 into a ready-to-send data request" color="blue">
+        Saaksh groups every Principle 3 field by the team that owns it and generates a plain-English request you can forward to your client&apos;s People team. <A href="/demo">See a sample report</A> or <A href="/start">start a free one</A>.
+      </Callout>
+    </>
+  ),
+
+  "brsr-principle-4-stakeholder-guide": (
+    <>
+      <P>Principle 4 is short, only two Essential disclosures, but it is foundational. It asks how you identify your key stakeholder groups and how you engage each of them. Get it right and it anchors your whole materiality assessment; get it thin and the rest of the report loses its evidence base.</P>
+
+      <KeyTakeaways items={[
+        "Principle 4 has just two Essential disclosures, but it underpins the materiality assessment the whole report depends on.",
+        "P4-E1 is the process for identifying stakeholders; P4-E2 is the list of groups and how often you engage each.",
+        "The Leadership indicators cover how stakeholder input reaches the Board and how you engage vulnerable and marginalised groups.",
+        "It is owned by the Sustainability lead, drawn from stakeholder-engagement records.",
+      ]} />
+
+      <H2>What Principle 4 asks</H2>
+      <Table headers={["Disclosure", "What it asks", "ICAI page"]} rows={[
+        ["P4-E1", "The processes for identifying the entity's key stakeholder groups", "120"],
+        ["P4-E2", "The key stakeholder groups and the frequency and channels of engagement with each", "121"],
+        ["P4-L1", "How consultation between stakeholders and the Board on economic, environmental and social topics works", "121"],
+        ["P4-L3", "Instances of engagement with, and actions taken to address concerns of, vulnerable/marginalised groups", "122"],
+      ]} />
+
+      <H2>Who owns the data</H2>
+      <Callout title="Principle 4 is a Sustainability engagement" color="blue">
+        Stakeholder identification and engagement records sit with the Sustainability or ESG lead, drawing on inputs from investor relations, HR, CSR and procurement (each of whom engages a different stakeholder group). Consolidate them into one stakeholder register rather than answering from a single function&apos;s view.
+      </Callout>
+
+      <H2>Why Principle 4 is the backbone of materiality</H2>
+      <P>A BRSR materiality assessment has to be stakeholder-driven to be credible, and Principle 4 is where you document who those stakeholders are and how you consult them. Assurers and readers cross-check your list of material topics against your stated engagement, so if P4-E2 lists five groups engaged annually but your materiality assessment claims deep stakeholder input, the two will not reconcile. Treat Principle 4 as the source that your materiality work has to trace back to.</P>
+
+      <H2>Do not fold vulnerable groups into a generic &apos;community&apos; line</H2>
+      <P>P4-L3 asks specifically how you engage vulnerable and marginalised stakeholders and act on their concerns. These are groups that may be disadvantaged in dealing with the business: local communities near operations, contract labour, small suppliers, persons with disabilities. Identify them explicitly in the stakeholder register so this disclosure has something concrete to point to.</P>
+
+      <H2>Best practice for Principle 4</H2>
+      <UL items={[
+        "Maintain a stakeholder register that explicitly identifies vulnerable and marginalised groups, and document consultations that feed CSR planning.",
+        "Operate a published grievance-redressal mechanism with turnaround-time metrics.",
+        "Use the AA1000 Stakeholder Engagement Standard for structured, inclusive engagement.",
+        "Conduct a double-materiality assessment (impact plus financial) to prioritise topics, in line with GRI 3 and ESRS.",
+      ]} />
+
+      <PostFaq slug="brsr-principle-4-stakeholder-guide" />
+
+      <Callout title="Start with a stakeholder-driven materiality shortlist" color="blue">
+        Saaksh suggests the material topics for your client&apos;s sector, mapped to the BRSR principles, as the starting point for a stakeholder-driven assessment. <A href="/demo">See a sample report</A> or <A href="/start">start a free one</A>.
+      </Callout>
+    </>
+  ),
+
+  "brsr-principle-5-human-rights-guide": (
+    <>
+      <P>Principle 5 is where BRSR gets specific about human rights: minimum wages, human-rights training, grievance mechanisms, and complaints on sexual harassment, discrimination, child labour and forced labour. It is largely tabular, and two tables, the wage disclosure and the POSH format, are where most filers slip.</P>
+
+      <KeyTakeaways items={[
+        "Principle 5 covers wages, human-rights training, grievances, harassment and discrimination, and value-chain due diligence.",
+        "The minimum-wage table (P5-E2) and remuneration-by-gender table (P5-E3) both come from one payroll extract.",
+        "P5-E6 counts all harassment and discrimination complaints; P5-E7 is the specific statutory POSH format, and the two must reconcile.",
+        "It is owned jointly by HR and Legal, and the Leadership indicators reach into the value chain.",
+      ]} />
+
+      <H2>What Principle 5 asks</H2>
+      <Table headers={["Disclosure", "What it asks", "ICAI page"]} rows={[
+        ["P5-E1", "Employees and workers trained on human-rights issues and the entity's policy", "123"],
+        ["P5-E2", "Minimum wages: employees and workers paid at or above minimum wage, by gender", "123"],
+        ["P5-E3", "Median remuneration/salary/wages by gender", "124"],
+        ["P5-E6", "Complaints on sexual harassment, discrimination, child labour, forced labour, wages", "126"],
+        ["P5-E7", "Complaints filed under the POSH Act 2013 (filed, upheld, pending)", "127"],
+        ["P5-E9", "Whether human-rights requirements form part of business agreements and contracts", "127"],
+      ]} />
+      <P>The Leadership indicators cover business-process changes made in response to grievances (P5-L1), the scope of human-rights due diligence (P5-L2), and assessment of value-chain partners (P5-L4).</P>
+
+      <H2>Who owns the data</H2>
+      <Callout title="Principle 5 is an HR and Legal engagement" color="blue">
+        Payroll and HR own the wage tables, training and grievance data; Legal and the compliance function own the human-rights policy, contractual clauses (P5-E9) and due-diligence scope. The POSH data (P5-E7) comes from the Internal Committee&apos;s annual return. Route wages and grievances to HR, and policy and contracts to Legal.
+      </Callout>
+
+      <H2>How to complete the minimum-wage disclosure (P5-E2)</H2>
+      <P>P5-E2 asks, for both employees and workers, how many were paid at or above the applicable minimum wage, split by gender, for the current and previous year. Draw it from payroll checked against the relevant state minimum-wage notification, not a national assumption. The paired P5-E3 then asks for median remuneration by gender, so pull both from the same payroll extract in one pass.</P>
+
+      <H2>POSH: P5-E6 versus P5-E7</H2>
+      <P>These two are related but distinct, and filers often duplicate or contradict them. P5-E6 counts all complaints of sexual harassment made by employees and workers during the year. P5-E7 is the statutory POSH Act format: complaints filed, complaints upheld, complaints pending, and those pending beyond ninety days. They must reconcile with each other, and the source for P5-E7 is the Internal Committee&apos;s annual return, so reconcile the two before filing.</P>
+
+      <H2>Best practice for Principle 5</H2>
+      <UL items={[
+        "Adopt a Human Rights Policy covering child and forced labour, non-discrimination and freedom of association, and cascade it through a Supplier Code of Conduct.",
+        "Ensure documented compliance with POSH, Minimum Wages and Contract Labour regulations, with an accessible grievance channel.",
+        "Run human-rights due diligence per the UN Guiding Principles on Business and Human Rights and the OECD Guidelines.",
+        "Prepare for the EU Corporate Sustainability Due Diligence Directive with supply-chain human-rights audits.",
+      ]} />
+
+      <PostFaq slug="brsr-principle-5-human-rights-guide" />
+
+      <Callout title="Route every Principle 5 field to the right owner" color="blue">
+        Saaksh groups the human-rights disclosures by whether HR or Legal owns them and generates the request you forward to each. <A href="/demo">See a sample report</A> or <A href="/start">start a free one</A>.
+      </Callout>
+    </>
+  ),
+
+  "brsr-principle-7-policy-advocacy-guide": (
+    <>
+      <P>Principle 7 is the shortest principle in BRSR: three disclosures on how the business influences public and regulatory policy. It asks about your trade-association memberships, any corrective action on anti-competitive conduct, and the policy positions you advocate. The bar is transparency, not volume.</P>
+
+      <KeyTakeaways items={[
+        "Principle 7 is the smallest principle, just three disclosures, usually answerable from membership records.",
+        "P7-E1 asks for the number of trade-association affiliations and the top 10 by membership.",
+        "P7-E2 covers corrective action on any adverse order for anti-competitive conduct.",
+        "P7-L1 (public-policy positions) is voluntary but increasingly checked for consistency with climate commitments.",
+      ]} />
+
+      <H2>What Principle 7 asks</H2>
+      <Table headers={["Disclosure", "What it asks", "ICAI page"]} rows={[
+        ["P7-E1", "Number of trade and industry-chamber affiliations, and the top 10 by membership", "143"],
+        ["P7-E2", "Corrective action on any adverse regulatory order for anti-competitive conduct", "144"],
+        ["P7-L1", "The public-policy positions the entity advocates, and by what method", "144"],
+      ]} />
+
+      <H2>Who owns the data</H2>
+      <Callout title="Principle 7 is a Public-affairs engagement" color="blue">
+        Trade-association memberships and policy positions sit with the public affairs, corporate affairs or sustainability function. Because it is a small, record-based principle, it rarely needs a wide collection effort: the membership list and any board-noted advocacy positions usually answer it in full.
+      </Callout>
+
+      <H2>How much to disclose under P7-L1</H2>
+      <P>P7-L1 is a Leadership indicator, so it is voluntary, but leading practice is to disclose the policy positions the company actively advocates, whether it does so directly or through associations, and whether the information is public. Investors increasingly test that a company&apos;s climate advocacy, including the positions taken by the trade bodies it funds, is consistent with its own net-zero commitments, so alignment is worth reviewing annually.</P>
+
+      <H2>Best practice for Principle 7</H2>
+      <UL items={[
+        "Disclose all trade-association and industry-body memberships and the public-policy positions advocated through them.",
+        "Ensure lobbying and advocacy are consistent with the Paris Agreement and any net-zero commitments.",
+        "Adopt a Responsible Climate Policy Engagement framework and review trade-body alignment annually.",
+      ]} />
+
+      <PostFaq slug="brsr-principle-7-policy-advocacy-guide" />
+
+      <Callout title="See where Principle 7 sits in the full report" color="blue">
+        Saaksh gap-analyses all nine principles and shows which fields your client&apos;s records already cover. <A href="/demo">See a sample report</A> or <A href="/start">start a free one</A>.
+      </Callout>
+    </>
+  ),
+
+  "brsr-principle-8-inclusive-growth-guide": (
+    <>
+      <P>Principle 8 is about the business&apos;s impact on communities and inclusive growth. It covers Social Impact Assessments, rehabilitation and resettlement, community grievances, local and MSME sourcing, and CSR. Most of it comes from the CSR function, and the disclosure that separates a strong report from a weak one is whether you report outcomes or just rupees spent.</P>
+
+      <KeyTakeaways items={[
+        "Principle 8 covers Social Impact Assessments, resettlement, community grievances, local sourcing and CSR.",
+        "It is owned mostly by the CSR function, with procurement feeding the local and MSME sourcing questions.",
+        "CSR spend records (Companies Act Section 135) feed the beneficiary and aspirational-district disclosures.",
+        "Leading practice is to report beneficiary outcomes, not just expenditure.",
+      ]} />
+
+      <H2>What Principle 8 asks</H2>
+      <Table headers={["Disclosure", "What it asks", "ICAI page"]} rows={[
+        ["P8-E1", "Social Impact Assessments of projects undertaken under applicable law", "146"],
+        ["P8-E2", "Ongoing rehabilitation and resettlement (R&R) being undertaken", "146"],
+        ["P8-E3", "Mechanisms to receive and redress community grievances", "146"],
+        ["P8-E4", "Percentage of input material sourced from suppliers, including MSMEs", "146"],
+        ["P8-E5", "Wages paid to people employed in smaller towns, as a share of total wage cost", "147"],
+        ["P8-L6", "Number and category of beneficiaries of CSR projects", "149"],
+      ]} />
+      <P>The other Leadership indicators cover CSR in government-designated aspirational districts (P8-L2), preferential procurement from marginalised groups (P8-L3), and benefits from traditional-knowledge intellectual property (P8-L4).</P>
+
+      <H2>Who owns the data</H2>
+      <Callout title="Principle 8 is a CSR engagement" color="blue">
+        CSR spend and project records, mandated under Companies Act 2013 Section 135, are the backbone of this principle: they feed the beneficiary, aspirational-district and Social Impact Assessment disclosures. Procurement owns the local and MSME sourcing questions. Route the principle to your CSR team with procurement looped in on sourcing.
+      </Callout>
+
+      <H2>Report outcomes, not just rupees</H2>
+      <P>The disclosures that carry weight are about impact. P8-L6 asks for the number and category of CSR beneficiaries; P8-L2 asks about projects in aspirational districts; P8-E1 asks for Social Impact Assessments. A report that lists only CSR expenditure misses the point of the principle. Leading practice is to quantify community programmes with a Social Return on Investment or a Social Impact Assessment, so the disclosure shows what changed, not only what was spent.</P>
+
+      <H2>Best practice for Principle 8</H2>
+      <UL items={[
+        "Align CSR spend (Companies Act Section 135) to the SDGs and conduct Social Impact Assessments for major projects.",
+        "Prioritise local procurement and employment, and report beneficiary outcomes, not just rupees spent.",
+        "Quantify community programmes using Social Return on Investment or the B Impact Assessment.",
+        "Adopt Free, Prior and Informed Consent where projects affect local communities.",
+      ]} />
+
+      <PostFaq slug="brsr-principle-8-inclusive-growth-guide" />
+
+      <Callout title="See Principle 8 in a full cited report" color="blue">
+        Saaksh gap-analyses all 108 BRSR fields and groups each by the team that owns it. <A href="/demo">See a sample report</A> or <A href="/start">start a free one</A>.
+      </Callout>
+    </>
+  ),
+
+  "brsr-principle-9-consumer-responsibility-guide": (
+    <>
+      <P>Principle 9 is about the relationship with consumers: complaints, product recalls, cyber-security and data privacy, and product information. With the Digital Personal Data Protection Act 2023 now in force, its data-breach and privacy disclosures have moved from routine to closely watched.</P>
+
+      <KeyTakeaways items={[
+        "Principle 9 covers consumer complaints, product recalls, cyber-security and data-privacy policy, and data breaches.",
+        "It is split between customer service (complaints, recalls) and Legal or IT-security (privacy policy, breaches).",
+        "The data-breach disclosure (P9-E7) is under growing scrutiny under the DPDP Act 2023.",
+        "P9-E2 asks what share of turnover carries environmental, safe-usage and disposal information on the product.",
+      ]} />
+
+      <H2>What Principle 9 asks</H2>
+      <Table headers={["Disclosure", "What it asks", "ICAI page"]} rows={[
+        ["P9-E1", "Mechanisms to receive and respond to consumer complaints and feedback", "150"],
+        ["P9-E2", "Share of turnover carrying environmental, safe-usage and disposal information", "151"],
+        ["P9-E3", "Consumer complaints by type: data privacy, advertising, cyber-security, quality", "151"],
+        ["P9-E4", "Instances of product recalls on account of safety issues", "152"],
+        ["P9-E5", "Whether a cyber-security and data-privacy policy exists, with a web link", "152"],
+        ["P9-E7", "Data breaches: number, share involving personal information, and impact", "153"],
+      ]} />
+      <P>The Leadership indicators cover the channels where product information can be accessed (P9-L1), consumer education on safe usage (P9-L2), and any consumer-satisfaction survey (P9-L4).</P>
+
+      <H2>Who owns the data</H2>
+      <Callout title="Principle 9 is split between Customer service and Legal/IT" color="blue">
+        Customer service owns the complaints (P9-E1, P9-E3) and product-recall data (P9-E4); the legal, IT-security or data-protection function owns the cyber-security and data-privacy policy (P9-E5) and the data-breach figures (P9-E7). Send the complaints questions to customer service and the privacy and security questions to Legal or IT.
+      </Callout>
+
+      <H2>How to answer the data-breach disclosure (P9-E7)</H2>
+      <P>P9-E7 asks for three things: the number of data-breach instances in the year, the percentage that involved personally identifiable customer information, and the impact of those breaches. Draw it from the information-security incident register, and reconcile it with your breach-notification records. Under the Digital Personal Data Protection Act 2023 this disclosure is read closely, so a nil return should be one you can stand behind, not a default.</P>
+
+      <H2>Best practice for Principle 9</H2>
+      <UL items={[
+        "Build data-privacy controls for the Digital Personal Data Protection Act 2023 and comply with the Consumer Protection Act 2019, including transparent labelling.",
+        "Operate a customer grievance-redressal system and disclose resolution rates.",
+        "Certify information security to ISO/IEC 27001 and adopt privacy-by-design.",
+        "Run a product-safety and stewardship management system and track customer-satisfaction metrics.",
+      ]} />
+
+      <PostFaq slug="brsr-principle-9-consumer-responsibility-guide" />
+
+      <Callout title="Map Principle 9 alongside the other eight" color="blue">
+        Saaksh gap-analyses all nine principles, cited to SEBI and ICAI, and shows what your client&apos;s records already cover. <A href="/demo">See a sample report</A> or <A href="/start">start a free one</A>.
+      </Callout>
+    </>
+  ),
+
   /* ── Post 1: What's new in BRSR for FY 2025-26 ────────────────────────── */
   "brsr-fy2526-changes": (
     <>

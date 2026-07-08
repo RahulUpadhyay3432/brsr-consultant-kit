@@ -93,6 +93,200 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
   },
+  {
+    slug: "brsr-principle-2-products-guide",
+    title: "How to fill BRSR Principle 2 (Sustainable & Safe Goods and Services)",
+    excerpt:
+      "Principle 2 covers sustainable sourcing, product life-cycle impacts, recycled inputs and Extended Producer Responsibility. A plain-English guide to what each disclosure asks, which are manufacturing-only, and how EPR ties back to the plan you already filed with the Pollution Control Board.",
+    date: "2026-07-06",
+    category: "How-to",
+    readTime: "7 min read",
+    coverGradient: ["#0F1E33", "#7B6FE0"],
+    coverIcon: "chain",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "What does BRSR Principle 2 cover?",
+        a: "Sustainable and safe products: R&D and capex on cleaner technology (P2-E1), sustainable sourcing procedures and the share of inputs sourced sustainably (P2-E2), safe end-of-life reclaim for plastics, e-waste and hazardous waste (P2-E3), and whether Extended Producer Responsibility applies and matches the plan filed with the Pollution Control Board (P2-E4). Leadership adds life-cycle assessments and recycled-input percentages.",
+      },
+      {
+        q: "Is Principle 2 relevant to service companies?",
+        a: "Partly. The sourcing and R&D disclosures apply to everyone, but the physical end-of-life reclaim (P2-E3), EPR (P2-E4) and product-packaging reclaim (P2-L4, P2-L5) are manufacturing-oriented. Saaksh marks the manufacturing-only Principle 2 fields Not Applicable for service-sector clients so you are not chasing data that does not exist.",
+      },
+      {
+        q: "How does EPR connect to BRSR Principle 2?",
+        a: "P2-E4 asks whether Extended Producer Responsibility applies and, if so, whether your waste-collection plan matches the EPR plan already submitted to the Pollution Control Board. If your client filed an EPR registration under the Plastic Waste or E-Waste Rules, that document is the answer, so this is a field you can pull from an existing filing rather than collect fresh.",
+      },
+      {
+        q: "What is a Life Cycle Assessment for P2-L1?",
+        a: "A Life Cycle Assessment (ISO 14040/14044) traces a product's environmental impact from raw material to disposal. P2-L1 is a Leadership indicator, so it is voluntary, but conducting one for a flagship product and disclosing the significant concerns it surfaces (P2-L2) is a strong signal to assurers and investors.",
+      },
+    ],
+  },
+  {
+    slug: "brsr-principle-3-employee-wellbeing-guide",
+    title: "How to fill BRSR Principle 3 (Employee Wellbeing & Safety)",
+    excerpt:
+      "Principle 3 is the largest Essential block in BRSR, 15 disclosures on wages, benefits, retirement cover, training, grievances and workplace safety, split across employees and workers. A guide to what each asks and why the People team owns almost all of it.",
+    date: "2026-07-05",
+    category: "How-to",
+    readTime: "9 min read",
+    coverGradient: ["#10233A", "#1E9DF2"],
+    coverIcon: "users",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "What does BRSR Principle 3 cover?",
+        a: "Employee and worker wellbeing: measures for wellbeing and retirement benefits, workplace accessibility and equal-opportunity policy, parental-leave return and retention, grievance mechanisms, union membership, training, career-development reviews, the occupational health and safety management system, and safety-incident data (LTIFR, fatalities).",
+      },
+      {
+        q: "Which Principle 3 numbers need reasonable assurance?",
+        a: "Safety is where it concentrates. The Lost Time Injury Frequency Rate and safety-incident figures in P3-E11 are read closely and, for BRSR Core filers, underpin assured attributes. Keep the safety register, incident reports and man-hours-worked workings audit-ready, not just the headline count.",
+      },
+      {
+        q: "Does BRSR distinguish employees from workers?",
+        a: "Yes, and it matters throughout Principle 3. 'Employees' are on the company payroll; 'workers' includes contract and other non-payroll labour. Almost every P3 disclosure asks for both categories separately, and further splits by gender and by permanent versus non-permanent, so build your data request around that matrix from the start.",
+      },
+      {
+        q: "Who owns Principle 3 data?",
+        a: "Almost all of it sits with HR and the People team: payroll for wages and benefits, HR records for training, grievances, parental leave and union membership, and the EHS or safety function for the health-and-safety management system and incident data. Route the whole principle to your People team with EHS looped in on safety.",
+      },
+    ],
+  },
+  {
+    slug: "brsr-principle-4-stakeholder-guide",
+    title: "How to fill BRSR Principle 4 (Stakeholder Engagement)",
+    excerpt:
+      "Principle 4 is short but foundational: how you identify your key stakeholders, how often you engage each group, and how you reach the vulnerable and marginalised. A guide to answering it well, and to why it underpins your whole materiality assessment.",
+    date: "2026-07-04",
+    category: "How-to",
+    readTime: "6 min read",
+    coverGradient: ["#0F1E33", "#10A572"],
+    coverIcon: "globe",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "What does BRSR Principle 4 cover?",
+        a: "Stakeholder engagement: the process for identifying key stakeholder groups (P4-E1), the list of those groups and how often you engage each one (P4-E2), and, in Leadership, how stakeholder input reaches the Board and how you engage vulnerable and marginalised groups (P4-L3).",
+      },
+      {
+        q: "Why is Principle 4 important if it is only two Essential disclosures?",
+        a: "Because it is the evidence base for materiality. A credible BRSR materiality assessment has to be stakeholder-driven, and Principle 4 is where you document who those stakeholders are and how you consult them. Assurers cross-check your material topics against your stated engagement, so a thin Principle 4 undermines the rest of the report.",
+      },
+      {
+        q: "Who counts as a vulnerable or marginalised stakeholder group?",
+        a: "Groups that may be disadvantaged in engaging with the business, for example local communities near operations, contract labour, small suppliers, and persons with disabilities. P4-L3 asks specifically how you engage them and act on their concerns, so identify them explicitly in your stakeholder register rather than folding them into a generic 'community' line.",
+      },
+    ],
+  },
+  {
+    slug: "brsr-principle-5-human-rights-guide",
+    title: "How to fill BRSR Principle 5 (Human Rights)",
+    excerpt:
+      "Principle 5 covers minimum wages, human-rights training, POSH complaints, grievance mechanisms, discrimination and forced/child labour, plus due diligence across your value chain. A field-by-field guide, with the wage and POSH tables that trip most filers.",
+    date: "2026-07-03",
+    category: "How-to",
+    readTime: "8 min read",
+    coverGradient: ["#1A1030", "#7B6FE0"],
+    coverIcon: "shield",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "What does BRSR Principle 5 cover?",
+        a: "Human rights in the workplace and value chain: human-rights training (P5-E1), minimum wages and remuneration by gender (P5-E2, P5-E3), a focal point for human-rights issues, grievance mechanisms, complaints on sexual harassment, discrimination, child labour and forced labour (P5-E6), POSH Act complaints (P5-E7), and human-rights clauses in contracts. Leadership adds due-diligence scope and value-chain assessments.",
+      },
+      {
+        q: "How do I complete the minimum-wage disclosure (P5-E2)?",
+        a: "P5-E2 asks, for both employees and workers, how many were paid at or above the minimum wage, split by gender, for the current and previous year. Draw it from payroll against the applicable state minimum-wage notification. The paired P5-E3 asks for median remuneration by gender, so gather both from the same payroll extract.",
+      },
+      {
+        q: "What is the difference between P5-E7 (POSH) and the P5-E6 harassment line?",
+        a: "P5-E6 counts all complaints of sexual harassment made by employees and workers in the year. P5-E7 is the specific statutory format under the POSH Act 2013: complaints filed, upheld, pending and those pending beyond 90 days. Both must reconcile, and the Internal Committee's annual return is the source for P5-E7.",
+      },
+      {
+        q: "Does Principle 5 require value-chain data?",
+        a: "The Leadership indicators do. P5-L4 asks for assessment of value-chain partners on human-rights parameters like child labour, forced labour, wages and discrimination. It is voluntary, but with the EU CSDDD and BRSR value-chain disclosure approaching, running supplier human-rights due diligence per the UN Guiding Principles is worth starting early.",
+      },
+    ],
+  },
+  {
+    slug: "brsr-principle-7-policy-advocacy-guide",
+    title: "How to fill BRSR Principle 7 (Policy Advocacy)",
+    excerpt:
+      "Principle 7 is the shortest in BRSR: your trade-association memberships, any anti-competitive-conduct corrective actions, and the public-policy positions you advocate. A quick guide to answering it transparently without over- or under-disclosing.",
+    date: "2026-07-02",
+    category: "How-to",
+    readTime: "5 min read",
+    coverGradient: ["#0F1E33", "#0B6FD4"],
+    coverIcon: "bulb",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "What does BRSR Principle 7 cover?",
+        a: "Responsible policy advocacy: the number of trade and industry chambers or associations you are affiliated to and the top 10 by membership (P7-E1), corrective action on any adverse orders for anti-competitive conduct (P7-E2), and, in Leadership, the specific public-policy positions the entity advocates (P7-L1).",
+      },
+      {
+        q: "Who owns Principle 7 data?",
+        a: "The public affairs, corporate affairs or sustainability function, whoever manages the company's trade-association memberships and policy positions. It is a small principle, usually answerable from membership records and any board-noted advocacy positions, so it rarely needs a wide data-collection effort.",
+      },
+      {
+        q: "How much should we disclose under P7-L1 (public-policy positions)?",
+        a: "P7-L1 is a Leadership indicator, so it is voluntary, but leading practice is to disclose the policy positions you actively advocate, the method (direct or via associations), and whether the information is in the public domain. Investors increasingly check that a company's climate advocacy is consistent with its net-zero commitments.",
+      },
+    ],
+  },
+  {
+    slug: "brsr-principle-8-inclusive-growth-guide",
+    title: "How to fill BRSR Principle 8 (Inclusive Growth & Equitable Development)",
+    excerpt:
+      "Principle 8 covers Social Impact Assessments, rehabilitation and resettlement, community grievances, local sourcing and employment, and CSR beneficiaries. A guide to answering it from CSR and procurement records, and to reporting outcomes rather than just rupees spent.",
+    date: "2026-07-01",
+    category: "How-to",
+    readTime: "7 min read",
+    coverGradient: ["#0C2B1E", "#10A572"],
+    coverIcon: "chart",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "What does BRSR Principle 8 cover?",
+        a: "Inclusive growth and community impact: Social Impact Assessments of projects (P8-E1), ongoing rehabilitation and resettlement (P8-E2), mechanisms to redress community grievances (P8-E3), input material sourced from suppliers including MSMEs (P8-E4), and wages paid in smaller towns (P8-E5). Leadership adds CSR in aspirational districts, preferential procurement from marginalised groups, and CSR beneficiaries.",
+      },
+      {
+        q: "Where does Principle 8 data come from?",
+        a: "Mostly the CSR function. CSR spend and project records (mandated under Companies Act 2013 Section 135) feed the beneficiary and aspirational-district disclosures; procurement records feed the local and MSME sourcing questions; and any Social Impact Assessments done under applicable law feed P8-E1 and P8-L1.",
+      },
+      {
+        q: "How should we report CSR under BRSR Principle 8?",
+        a: "Report outcomes, not just rupees. P8-L6 asks for the number and category of CSR beneficiaries, and P8-L2 asks about projects in government-designated aspirational districts. Leading practice is to quantify community programmes with Social Return on Investment or a Social Impact Assessment, so you are disclosing impact rather than only expenditure.",
+      },
+    ],
+  },
+  {
+    slug: "brsr-principle-9-consumer-responsibility-guide",
+    title: "How to fill BRSR Principle 9 (Consumer Responsibility)",
+    excerpt:
+      "Principle 9 covers consumer complaints, product recalls, cyber-security and data-privacy policy, data breaches, and product labelling. A guide to answering it from complaints and product records, and to getting the data-breach and DPDP-Act disclosures right.",
+    date: "2026-06-30",
+    category: "How-to",
+    readTime: "7 min read",
+    coverGradient: ["#10233A", "#1E9DF2"],
+    coverIcon: "check",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "What does BRSR Principle 9 cover?",
+        a: "Responsible engagement with consumers: mechanisms for consumer complaints (P9-E1), the share of turnover carrying environmental, safe-usage and disposal information (P9-E2), consumer complaints by type including data privacy and cyber-security (P9-E3), product recalls on safety grounds (P9-E4), a cyber-security and data-privacy policy (P9-E5), and data-breach disclosures (P9-E7).",
+      },
+      {
+        q: "How do I answer the data-breach disclosure (P9-E7)?",
+        a: "P9-E7 asks for the number of data-breach instances in the year, the percentage involving personally identifiable customer information, and their impact. Draw it from the information-security incident register. With the Digital Personal Data Protection Act 2023 in force, this disclosure is under growing scrutiny, so reconcile it with your breach-notification records.",
+      },
+      {
+        q: "Who owns Principle 9 data?",
+        a: "It is split between customer service, which owns the complaints and recall data, and the legal, IT-security or data-protection function, which owns the cyber-security and data-privacy policy (P9-E5) and the data-breach figures (P9-E7). Route the complaints questions to customer service and the privacy and security questions to legal or IT.",
+      },
+    ],
+  },
 
   /* ── Tier 1, Original 5 posts ─────────────────────────────────────────── */
   {

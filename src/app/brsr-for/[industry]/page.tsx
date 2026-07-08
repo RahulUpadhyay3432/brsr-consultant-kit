@@ -19,7 +19,14 @@ const INDUSTRIES = (Object.keys(INDUSTRY_LABELS) as IndustryType[]).filter((k) =
 // Principle → an in-depth guide, where one exists (internal linking).
 const GUIDE_BY_PRINCIPLE: Record<string, string> = {
   P1: "/blog/brsr-principle-1-ethics-guide",
+  P2: "/blog/brsr-principle-2-products-guide",
+  P3: "/blog/brsr-principle-3-employee-wellbeing-guide",
+  P4: "/blog/brsr-principle-4-stakeholder-guide",
+  P5: "/blog/brsr-principle-5-human-rights-guide",
   P6: "/blog/brsr-principle-6-environment-guide",
+  P7: "/blog/brsr-principle-7-policy-advocacy-guide",
+  P8: "/blog/brsr-principle-8-inclusive-growth-guide",
+  P9: "/blog/brsr-principle-9-consumer-responsibility-guide",
 };
 
 const CATS = [
