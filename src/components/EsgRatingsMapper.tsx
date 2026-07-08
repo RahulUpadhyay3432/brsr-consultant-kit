@@ -25,30 +25,13 @@ export default function EsgRatingsMapper() {
   return (
     <div className="space-y-5">
 
-      {/* ── What is this? ─────────────────────────────────────────────────── */}
-      <div className="bg-brand-50 border border-brand-100 rounded-xl p-4">
-        <div className="flex items-start gap-3">
-          <div className="w-9 h-9 bg-white rounded-lg border border-brand-100 flex items-center justify-center flex-shrink-0">
-            <svg className="w-4 h-4 text-brand-700" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M7.5 1.5l1.6 3.4 3.7.5-2.7 2.6.7 3.7-3.3-1.8-3.3 1.8.7-3.7L2 5.4l3.7-.5z" />
-            </svg>
-          </div>
-          <div>
-            <h3 className="text-[17px] font-bold text-stone-900">What is this?, ESG Ratings Alignment</h3>
-            <p className="text-[13.5px] text-stone-600 mt-1 leading-relaxed">
-              If your client is rated by <strong className="text-stone-800">MSCI</strong> or submits to the{" "}
-              <strong className="text-stone-800">S&P Global CSA / DJSI</strong> (common for large listed companies and
-              global investors), the BRSR data they're already collecting feeds those ratings too. This shows{" "}
-              <strong className="text-stone-800">which BRSR principle supports which rating dimension</strong>, so the
-              same data collection effort strengthens their rating submission.
-            </p>
-            <p className="text-[13px] text-stone-600 mt-2 leading-relaxed">
-              Mapped at the principle level, the granularity at which MSCI and DJSI actually assess companies (by issue
-              and criterion, not by individual disclosure line).
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* Compact ratings note (the Alignment header carries the full explainer). */}
+      <p className="text-[13px] text-ink-muted leading-relaxed max-w-[74ch]">
+        If your client is rated by <strong className="text-ink-body">MSCI</strong> or submits to the{" "}
+        <strong className="text-ink-body">S&amp;P Global CSA / DJSI</strong>, the BRSR data they&apos;re already collecting feeds
+        those ratings too. This maps <strong className="text-ink-body">which BRSR principle supports which rating dimension</strong>,
+        at the principle level MSCI and DJSI actually assess (by issue and criterion, not by disclosure line).
+      </p>
 
       {/* ── Rating definition cards ───────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

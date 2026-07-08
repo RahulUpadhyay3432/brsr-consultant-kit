@@ -1,6 +1,7 @@
 "use client";
 
 import { SEBI_BRSR_FORMAT_URL } from "./checklist/constants";
+import ViewHeader from "./report/ViewHeader";
 
 // ─── Sources & methodology ────────────────────────────────────────────────────
 // A curated, always-current reference: every number and disclosure in the kit
@@ -163,16 +164,11 @@ export default function SourcesPanel() {
     <div className="space-y-5">
 
       {/* Title */}
-      <div>
-        <h1 className="font-display text-[24px] font-normal text-stone-900 leading-tight tracking-tight">
-          Sources &amp; methodology
-        </h1>
-        <p className="text-[13.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
-          Every disclosure, factor and mapping in this kit traces to a primary source. Each links to the
-          live authoritative document, never a hosted copy, so the reference stays current and we never
-          redistribute restricted material.
-        </p>
-      </div>
+      <ViewHeader
+        tabId="sources"
+        title="Sources & methodology"
+        subtitle="Every disclosure, factor and mapping in this kit traces to a primary source. Each links to the live authoritative document, never a hosted copy, so the reference stays current."
+      />
 
       {/* Source groups */}
       {GROUPS.map((g) => (

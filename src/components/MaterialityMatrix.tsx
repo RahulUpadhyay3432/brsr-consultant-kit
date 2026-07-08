@@ -4,6 +4,8 @@ import { useState, useMemo, useEffect } from "react";
 import type { MaterialityTopic } from "@/lib/types";
 import { loadJSON, saveJSON, syncActiveClient, STORAGE_KEYS } from "@/lib/storage";
 import { downloadCsv, exportFilename } from "@/lib/export";
+import ViewHeader from "./report/ViewHeader";
+import InfoPopover from "./report/InfoPopover";
 
 interface MaterialityMatrixProps {
   topics: MaterialityTopic[];
@@ -139,38 +141,19 @@ export default function MaterialityMatrix({ topics, clientName, demo = false }: 
   return (
     <div className="space-y-6">
 
-      {/* ── What is this? ─────────────────────────────────────────────────── */}
-      <div className="bg-brand-50 border border-brand-100 rounded-xl p-4">
-        <div className="flex items-start gap-3">
-          <div className="w-9 h-9 bg-white rounded-lg border border-brand-100 flex items-center justify-center flex-shrink-0">
-            <svg className="w-4 h-4 text-brand-700" viewBox="0 0 15 15" fill="currentColor" aria-hidden="true">
-              <circle cx="4" cy="10" r="1.5" />
-              <circle cx="7.5" cy="6" r="1.5" />
-              <circle cx="11" cy="3.5" r="1.5" />
-              <circle cx="6" cy="12" r="1" />
-              <circle cx="11.5" cy="8.5" r="1" />
-            </svg>
-          </div>
-          <div>
-            <h3 className="text-[17px] font-bold text-stone-900">
-              Suggested Material Topics, a starting point for your client&apos;s industry
-            </h3>
-            <p className="text-[13.5px] text-stone-600 mt-1 leading-relaxed">
-              SEBI&apos;s BRSR requires companies to identify which ESG topics are{" "}
-              <strong className="text-stone-800">material</strong>, topics that significantly
-              affect the company or matter to its stakeholders (investors, employees, communities,
-              regulators). The topics below are a <strong className="text-stone-800">suggested shortlist</strong>{" "}
-              for your client&apos;s industry, a head-start, not a finished assessment.
-            </p>
-            <p className="text-[13.5px] text-stone-600 mt-2 leading-relaxed">
-              <strong className="text-stone-700">How to use this:</strong> Flag the ones that look relevant
-              with <span className="font-medium text-brand-700">Add to shortlist</span>, cross off what
-              doesn&apos;t apply, add what&apos;s missing, then run your shortlist through the client&apos;s actual
-              stakeholder process to arrive at the final materiality disclosure.
-            </p>
-          </div>
-        </div>
-      </div>
+      {/* ── View header ───────────────────────────────────────────────────── */}
+      <ViewHeader
+        className="mb-0"
+        tabId="materiality"
+        title="Materiality"
+        subtitle="A suggested shortlist of the ESG topics most likely to matter for this client's sector, a starting point for their own stakeholder-driven assessment."
+        info={
+          <InfoPopover title="How to use this">
+            <p>SEBI&apos;s BRSR asks companies to identify which ESG topics are <strong className="text-white">material</strong>, those that significantly affect the business or matter to stakeholders (investors, employees, communities, regulators).</p>
+            <p>Flag the ones that look relevant with <strong className="text-white">Add to shortlist</strong>, cross off what doesn&apos;t apply, add what&apos;s missing, then run your shortlist through the client&apos;s actual stakeholder process to reach the final disclosure.</p>
+          </InfoPopover>
+        }
+      />
 
       {/* ── Honest disclaimer, this is suggested, not a completed assessment ── */}
       <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex items-start gap-2.5">

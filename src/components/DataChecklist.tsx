@@ -8,6 +8,8 @@ import { useChecklistState } from "./checklist/useChecklistState";
 import UploadCard from "./checklist/UploadCard";
 import PrincipleSection from "./checklist/PrincipleSection";
 import { downloadCsv, exportFilename } from "@/lib/export";
+import ViewHeader from "./report/ViewHeader";
+import InfoPopover from "./report/InfoPopover";
 
 type GeneralDisclosures = { sectionA: SectionDisclosure[]; sectionB: SectionDisclosure[] };
 
@@ -139,30 +141,36 @@ export default function DataChecklist({ items, general, seedQuery, clientName, d
   return (
     <div className="space-y-4">
 
-      {/* ── Title ───────────────────────────────────────────────────────────── */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="font-display text-[26px] font-bold text-stone-900 leading-tight tracking-tight">
-            Action Plan
-          </h1>
-          <p className="text-[14px] text-stone-600 mt-1 max-w-[72ch] leading-relaxed">
-            The full BRSR, Section A &amp; B entity disclosures, plus the {items.length} principle fields (Section C)
-            with their gap status. Open a row for how to collect it, the SEBI source, and, for emissions, a calculator.
-          </p>
-        </div>
-        <button
-          onClick={exportChecklist}
-          title="Download the full checklist as a CSV (opens in Excel)"
-          className="no-print flex-shrink-0 inline-flex items-center gap-1.5 text-[12.5px] font-medium
-            text-stone-600 bg-white border border-stone-200 hover:border-stone-300 hover:bg-stone-50
-            px-3 py-1.5 rounded-lg pressable transition-colors shadow-sm"
-        >
-          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-          </svg>
-          Export CSV
-        </button>
-      </div>
+      {/* ── View header ─────────────────────────────────────────────────────── */}
+      <ViewHeader
+        tabId="checklist"
+        title="Action Plan"
+        subtitle={<>The full BRSR: Section A &amp; B entity disclosures, plus the {items.length} principle fields (Section C) with their gap status. Open a row for how to collect it, the SEBI source, and, for emissions, a calculator.</>}
+        info={
+          <InfoPopover title="How the Action Plan works">
+            <p>Each Section-C field carries a status:</p>
+            <p><strong className="text-white">Ready to pull</strong>, the data exists in a filing you ticked.</p>
+            <p><strong className="text-white">Verify</strong>, partly covered, one piece missing.</p>
+            <p><strong className="text-white">Collect fresh</strong>, not in any filing, gather it from the client.</p>
+            <p><strong className="text-white">Not applicable</strong>, a manufacturing-only field, hidden for service clients.</p>
+            <p className="text-white/60">The panel below expands the same legend any time.</p>
+          </InfoPopover>
+        }
+        actions={
+          <button
+            onClick={exportChecklist}
+            title="Download the full checklist as a CSV (opens in Excel)"
+            className="no-print inline-flex items-center gap-1.5 text-[12.5px] font-medium
+              text-stone-600 bg-white border border-stone-200 hover:border-stone-300 hover:bg-stone-50
+              px-3 py-1.5 rounded-lg pressable transition-colors shadow-sm"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.6}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            Export CSV
+          </button>
+        }
+      />
 
       {/* ── Persistent "how it works" for this tab ─────────────────────────── */}
       <ActionPlanGuide />

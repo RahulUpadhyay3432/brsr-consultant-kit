@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect, type CSSProperties } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import type { ReportOutput, FrameworkMapping } from "@/lib/types";
 import { INDUSTRY_LABELS, FILING_LABELS, type IndustryType, type ExistingFiling } from "@/lib/types";
@@ -23,6 +23,10 @@ import { downloadTableDocx } from "@/lib/report-docx";
 import { PRINCIPLES } from "./checklist/constants";
 import { loadJSON, saveJSON, STORAGE_KEYS } from "@/lib/storage";
 import { WalkthroughCard } from "./Walkthrough";
+import { ICON_COLOR, TabIcon } from "./report/tab-icons";
+import ViewHeader from "./report/ViewHeader";
+import InfoPopover from "./report/InfoPopover";
+import GuidedTour, { REPORT_TOUR_STEPS } from "./report/GuidedTour";
 import esgRatingsData from "@/data/esg_ratings_mapping.json";
 
 interface ReportViewProps {
@@ -47,99 +51,17 @@ const TABS = [
 // "sources" + "templates" are reference panels, not workspace steps, so they live outside TABS.
 type TabId = (typeof TABS)[number]["id"] | "sources" | "templates";
 
-// Per-tab accent colour, gives the sidebar a calm spread of brand-adjacent hues
-// instead of a flat monochrome stack.
-const ICON_COLOR: Record<string, string> = {
-  overview:     "#0B6FD4", // brand blue
-  checklist:    "#0B5FB0", // deep blue
-  materiality:  "#7B6FE0", // violet
-  framework:    "#0E7A56", // teal-green
-  alignment:    "#0E7A56",
-  "beyond-brsr":"#F2674A", // coral / ember
-  templates:    "#C2871B", // amber
-  sources:      "#5B6573", // slate
-  collect:      "#F2674A", // coral
-  community:    "#1EA362", // green
-};
+const ALL_TAB_IDS: readonly string[] = [...TABS.map((t) => t.id), "templates", "sources"];
 
-// Colourful duotone nav icons: a soft accent-tinted fill behind a crisp accent glyph.
-// Colour comes from each tab's accent (above); active/idle is carried by opacity.
-function TabIcon({ id, className, active = true }: { id: string; className?: string; active?: boolean }) {
-  const color = ICON_COLOR[id] ?? "#5B6573";
-  const p = {
-    className,
-    width: 16, height: 16, viewBox: "0 0 16 16",
-    style: { color, opacity: active ? 1 : 0.78 } as CSSProperties,
-  };
-  const fg = { stroke: "currentColor", strokeWidth: 1.45, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, fill: "none" };
-
-  if (id === "overview") return (
-    <svg {...p}>
-      <rect x="2" y="2" width="5" height="5" rx="1.4" fill="currentColor" fillOpacity="0.95" />
-      <rect x="9" y="2" width="5" height="5" rx="1.4" fill="currentColor" fillOpacity="0.28" />
-      <rect x="2" y="9" width="5" height="5" rx="1.4" fill="currentColor" fillOpacity="0.28" />
-      <rect x="9" y="9" width="5" height="5" rx="1.4" fill="currentColor" fillOpacity="0.95" />
-    </svg>
-  );
-  if (id === "checklist") return (
-    <svg {...p}>
-      <rect x="2.5" y="2" width="11" height="12" rx="2" fill="currentColor" fillOpacity="0.16" />
-      <path d="M5.2 6.2h5.6M5.2 8.6h5.6M5.2 11h3.4" {...fg} />
-    </svg>
-  );
-  if (id === "materiality") return (
-    <svg {...p}>
-      <rect x="2" y="2" width="12" height="12" rx="2.4" fill="currentColor" fillOpacity="0.14" />
-      <circle cx="5" cy="10.8" r="1.35" fill="currentColor" />
-      <circle cx="8.2" cy="7.2" r="1.35" fill="currentColor" />
-      <circle cx="11.2" cy="4.4" r="1.35" fill="currentColor" />
-    </svg>
-  );
-  if (id === "framework" || id === "alignment") return (
-    <svg {...p}>
-      <path d="M4.4 8l6 -3.6M4.4 8l6 3.6" {...fg} />
-      <circle cx="3.6" cy="8" r="1.9" fill="currentColor" fillOpacity="0.95" />
-      <circle cx="12" cy="4" r="1.9" fill="currentColor" fillOpacity="0.4" />
-      <circle cx="12" cy="12" r="1.9" fill="currentColor" fillOpacity="0.4" />
-    </svg>
-  );
-  if (id === "beyond-brsr") return (
-    <svg {...p}>
-      <circle cx="8" cy="8" r="6" fill="currentColor" fillOpacity="0.15" />
-      <circle cx="8" cy="8" r="6" {...fg} />
-      <path d="M2.2 8h11.6M8 2.2c1.7 1.6 1.7 10 0 11.6M8 2.2c-1.7 1.6-1.7 10 0 11.6" stroke="currentColor" strokeWidth="1.1" fill="none" />
-    </svg>
-  );
-  if (id === "templates") return (
-    <svg {...p}>
-      <path d="M4 2.5h4.6l3.4 3.4V13a1 1 0 01-1 1H4a1 1 0 01-1-1V3.5a1 1 0 011-1z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth={1.45} strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M8.4 2.6v3.4h3.4" {...fg} />
-      <path d="M5.6 9.2h4.8M5.6 11.2h3" {...fg} />
-    </svg>
-  );
-  if (id === "sources") return (
-    <svg {...p}>
-      <path d="M2.6 3.2A1.4 1.4 0 014 2h3.4v11H4a1.4 1.4 0 00-1.4 1.4z" fill="currentColor" fillOpacity="0.2" />
-      <path d="M13.4 3.2A1.4 1.4 0 0012 2H8.6v11H12a1.4 1.4 0 011.4 1.4z" fill="currentColor" fillOpacity="0.1" />
-      <path d="M2.6 3.2A1.4 1.4 0 014 2h3.4v11H4a1.4 1.4 0 00-1.4 1.4zM13.4 3.2A1.4 1.4 0 0012 2H8.6v11H12a1.4 1.4 0 011.4 1.4z" {...fg} />
-    </svg>
-  );
-  if (id === "collect") return (
-    <svg {...p}>
-      <path d="M14 2.2L9 14l-2.4-5.2L1.5 6.4 14 2.2z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth={1.45} strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M14 2.2L6.6 8.8" {...fg} />
-    </svg>
-  );
-  if (id === "community") return (
-    <svg {...p}>
-      <path d="M2.5 4a1.5 1.5 0 011.5-1.5h8A1.5 1.5 0 0113.5 4v4.6A1.5 1.5 0 0112 10h-5l-3 2.6V10a1.5 1.5 0 01-1.5-1.4V4z" fill="currentColor" fillOpacity="0.16" stroke="currentColor" strokeWidth={1.45} strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="5.6" cy="6.2" r="0.8" fill="currentColor" />
-      <circle cx="8" cy="6.2" r="0.8" fill="currentColor" />
-      <circle cx="10.4" cy="6.2" r="0.8" fill="currentColor" />
-    </svg>
-  );
-  return null;
+// Read + validate the active tab from the URL (?tab=). Falls back to "overview".
+function tabFromUrl(): TabId {
+  if (typeof window === "undefined") return "overview";
+  const t = new URLSearchParams(window.location.search).get("tab") ?? "";
+  return ALL_TAB_IDS.includes(t) ? (t as TabId) : "overview";
 }
+
+// Per-tab accent colour + duotone nav icons now live in ./report/tab-icons so the
+// per-view headers can share them. ICON_COLOR + TabIcon are imported at the top.
 
 export default function ReportView({ report, onHome, onBack, onEdit, demo = false }: ReportViewProps) {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
@@ -147,6 +69,34 @@ export default function ReportView({ report, onHome, onBack, onEdit, demo = fals
   const [seedQuery, setSeedQuery] = useState("");      // global-search → Action Plan
   const industryLabel = INDUSTRY_LABELS[report.industry as IndustryType] || report.industry;
   const fieldCount = report.checklist.length;
+
+  // URL-addressable tabs: reflect the active tab in ?tab= so browser Back/Forward,
+  // deep-links and bookmarks work. Hook-free (window.history + popstate) so no
+  // Suspense/force-dynamic requirement is introduced on the /report and /demo pages.
+  const navigate = useCallback((tab: TabId) => {
+    setActiveTab(tab);
+    if (typeof window === "undefined") return;
+    const path = window.location.pathname;
+    window.history.pushState(null, "", tab === "overview" ? path : `${path}?tab=${tab}`);
+  }, []);
+  useEffect(() => {
+    setActiveTab(tabFromUrl());   // seed from the URL on mount (deep-link support)
+    const onPop = () => setActiveTab(tabFromUrl());
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  // Interactive "Take a tour" walkthrough, always available from the top bar.
+  // A subtle nudge dot shows until it's been taken once (real report only; demo
+  // persists nothing).
+  const [tourOpen, setTourOpen] = useState(false);
+  const [tourNudge, setTourNudge] = useState(false);
+  useEffect(() => { if (!demo) setTourNudge(!loadJSON<boolean>(STORAGE_KEYS.tourSeen, false)); }, [demo]);
+  const closeTour = useCallback(() => {
+    setTourOpen(false);
+    setTourNudge(false);
+    if (!demo) saveJSON(STORAGE_KEYS.tourSeen, true);
+  }, [demo]);
 
   // Materiality → PDF opt-in. Read the shortlist the Materiality tab persists so
   // the consultant can choose to append it to the downloadable brief. Refreshed
@@ -167,8 +117,8 @@ export default function ReportView({ report, onHome, onBack, onEdit, demo = fals
 
   const goToPlanWithQuery = useCallback((q: string) => {
     setSeedQuery(q);
-    setActiveTab("checklist");
-  }, []);
+    navigate("checklist");
+  }, [navigate]);
 
   return (
     <div className="anim-up-sm flex min-h-screen bg-page">
@@ -179,7 +129,7 @@ export default function ReportView({ report, onHome, onBack, onEdit, demo = fals
         industryLabel={industryLabel}
         fieldCount={fieldCount}
         activeTab={activeTab}
-        onNavigate={setActiveTab}
+        onNavigate={navigate}
         onHome={onHome}
         onBack={onBack}
         onEdit={onEdit}
@@ -187,7 +137,7 @@ export default function ReportView({ report, onHome, onBack, onEdit, demo = fals
 
       {/* ── Main column, top bar + scrollable content ─────────────────────── */}
       <div className="flex-1 min-w-0 flex flex-col">
-        <TopBar onSearch={goToPlanWithQuery} />
+        <TopBar onSearch={goToPlanWithQuery} onTour={() => setTourOpen(true)} tourNudge={tourNudge} />
 
         <main className="flex-1 px-5 sm:px-8 lg:px-10 py-7">
           <div className="max-w-[1180px] mx-auto">
@@ -256,9 +206,9 @@ export default function ReportView({ report, onHome, onBack, onEdit, demo = fals
               {activeTab === "overview" && (
                 <>
                   {demo && demoGuideOpen && (
-                    <DemoGuide onNavigate={setActiveTab} onClose={() => setDemoGuideOpen(false)} />
+                    <DemoGuide onNavigate={navigate} onClose={() => setDemoGuideOpen(false)} onTour={() => setTourOpen(true)} />
                   )}
-                  <Overview report={report} onGoToPlan={() => setActiveTab("checklist")} onBack={onBack} demo={demo} />
+                  <Overview report={report} onGoToPlan={() => navigate("checklist")} onBack={onBack} demo={demo} />
                 </>
               )}
               {activeTab === "checklist"   && <DataChecklist items={report.checklist} general={report.generalDisclosures} seedQuery={seedQuery} clientName={report.companyName} demo={demo} />}
@@ -271,6 +221,8 @@ export default function ReportView({ report, onHome, onBack, onEdit, demo = fals
           </div>
         </main>
       </div>
+
+      {tourOpen && <GuidedTour steps={REPORT_TOUR_STEPS} onNavigate={(t) => navigate(t as TabId)} onClose={closeTour} />}
     </div>
   );
 }
@@ -443,7 +395,7 @@ function Sidebar({
 }
 
 // ─── Top bar, global search + utility actions ───────────────────────────────
-function TopBar({ onSearch }: { onSearch: (q: string) => void }) {
+function TopBar({ onSearch, onTour, tourNudge = false }: { onSearch: (q: string) => void; onTour: () => void; tourNudge?: boolean }) {
   const [draft, setDraft] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -493,6 +445,17 @@ function TopBar({ onSearch }: { onSearch: (q: string) => void }) {
 
       {/* Utility actions */}
       <div className="flex items-center gap-1.5">
+        <button
+          onClick={onTour}
+          className="pressable relative inline-flex items-center gap-1.5 rounded-lg border border-line bg-white
+            px-3 py-1.5 text-[13px] font-medium text-ink-body hover:border-brand-300 hover:bg-band transition-colors shadow-sm"
+        >
+          <svg className="w-3.5 h-3.5 text-brand-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="9" /><path d="M12 8h.01M11 12h1v4" />
+          </svg>
+          Take a tour
+          {tourNudge && <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-brand-500 ring-2 ring-page" />}
+        </button>
       </div>
     </header>
   );
@@ -509,21 +472,30 @@ const DEMO_STEPS: { id: TabId; label: string; blurb: string }[] = [
   { id: "beyond-brsr", label: "Beyond BRSR", blurb: "A quick CBAM and CCTS in-scope readiness check, based on this client's sector and export markets." },
 ];
 
-function DemoGuide({ onNavigate, onClose }: { onNavigate: (t: TabId) => void; onClose: () => void }) {
+function DemoGuide({ onNavigate, onClose, onTour }: { onNavigate: (t: TabId) => void; onClose: () => void; onTour: () => void }) {
   return (
     <div className="anim-up-sm mb-6 rounded-2xl border border-brand-200 bg-white shadow-elev-1 overflow-hidden">
       <div className="flex items-start justify-between gap-3 px-5 py-4 bg-brand-50 border-b border-brand-100">
         <div className="min-w-0">
           <p className="text-[15px] font-semibold text-ink leading-snug">How to explore this sample report</p>
-          <p className="text-[13px] text-ink-muted mt-0.5 leading-snug">Five views of the same client. Read the line, then jump in, nothing you do here is saved.</p>
+          <p className="text-[13px] text-ink-muted mt-0.5 leading-snug">Five views of the same client. Jump in below, or take a quick guided tour, nothing you do here is saved.</p>
         </div>
-        <button
-          onClick={onClose}
-          aria-label="Hide guide"
-          className="pressable flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-ink-faint hover:text-ink hover:bg-white transition-colors"
-        >
-          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
-        </button>
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          <button
+            onClick={onTour}
+            className="pressable inline-flex items-center gap-1.5 rounded-lg bg-forest text-white text-[12.5px] font-semibold px-3 py-1.5 hover:bg-forest-light transition-colors whitespace-nowrap"
+          >
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8h.01M11 12h1v4" /></svg>
+            Take a tour
+          </button>
+          <button
+            onClick={onClose}
+            aria-label="Hide guide"
+            className="pressable w-7 h-7 rounded-lg flex items-center justify-center text-ink-faint hover:text-ink hover:bg-white transition-colors"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6L6 18M6 6l12 12" /></svg>
+          </button>
+        </div>
       </div>
       <ol className="divide-y divide-line-soft">
         {DEMO_STEPS.map((s, i) => (
@@ -649,30 +621,35 @@ function Overview({
     <div className="space-y-4">
 
       {/* Title + filing source */}
-      <div className="flex items-start justify-between gap-3 flex-wrap">
-        <div>
-          <h1 className="font-display text-[26px] font-bold text-ink leading-tight tracking-tight">
-            Overview
-          </h1>
-          <p className="text-[14.5px] text-ink-body mt-1 max-w-[68ch] leading-relaxed">
+      <ViewHeader
+        tabId="overview"
+        title="Overview"
+        subtitle={
+          <>
             A live readiness picture for{" "}
-            <strong className="font-semibold text-stone-700">{report.companyName || "this company"}</strong>{" "}
-            across the {applicableFields} principle-wise BRSR fields (Section C), what&apos;s already covered, what to verify, and what to collect
-            {notApplicable > 0 && <> ({notApplicable} manufacturing-only marked <span className="font-medium text-slate-500">Not applicable</span>)</>}.
-          </p>
-        </div>
-        {!noFilings && (
-          <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-[12px] text-stone-500">Based on:</span>
-            {filings.map(f => (
-              <span key={f} className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium
-                bg-white text-stone-600 border border-stone-200">
-                {FILING_LABELS[f as ExistingFiling]}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
+            <strong className="font-semibold text-ink-body">{report.companyName || "this company"}</strong>{" "}
+            across the {applicableFields} principle-wise BRSR fields (Section C): what&apos;s covered, what to verify, and what to collect
+            {notApplicable > 0 && <> ({notApplicable} manufacturing-only marked Not applicable)</>}.
+          </>
+        }
+        info={
+          <InfoPopover title="What the readiness score means">
+            <p>The gauge is a weighted score: a field counts fully when it&apos;s <strong className="text-white">Ready to pull</strong> from an existing filing, and half when it&apos;s partially covered (<strong className="text-white">Verify</strong>). Fields with no existing source (<strong className="text-white">Collect fresh</strong>) don&apos;t count yet, so the score rises as you gather data.</p>
+          </InfoPopover>
+        }
+        actions={
+          !noFilings ? (
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-[12px] text-ink-muted">Based on:</span>
+              {filings.map((f) => (
+                <span key={f} className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-white text-ink-body border border-line">
+                  {FILING_LABELS[f as ExistingFiling]}
+                </span>
+              ))}
+            </div>
+          ) : undefined
+        }
+      />
 
       {showIntro && <WalkthroughCard onDismiss={dismissIntro} />}
 
@@ -954,75 +931,44 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
   return (
     <div className="space-y-4">
 
-      {/* Title */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="font-display text-[26px] font-bold text-ink leading-tight tracking-tight">
-            Alignment
-          </h1>
-          <p className="text-[14.5px] text-ink-body mt-1 max-w-[72ch] leading-relaxed">
-            How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2 and TNFD (nature), and to the MSCI &amp; DJSI
-            rating frameworks. Collect once, report across all.
-          </p>
-        </div>
-        <div className="flex-shrink-0 flex items-center gap-2">
-          <button
-            onClick={exportActive}
-            className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-brand-700 bg-brand-50
-              border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors pressable whitespace-nowrap"
-            title={sub === "frameworks" ? "Download the full BRSR↔GRI↔TCFD↔IFRS↔TNFD mapping as a spreadsheet" : "Download the MSCI & DJSI ratings alignment as a spreadsheet"}
-          >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
-            </svg>
-            CSV
-          </button>
-          <button
-            onClick={exportActiveDocx}
-            className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-ink-body bg-white
-              border border-line hover:border-brand-300 hover:bg-band px-2.5 py-1.5 rounded-lg transition-colors pressable whitespace-nowrap"
-            title={sub === "frameworks" ? "Download the framework mapping as an editable Word document" : "Download the ratings alignment as an editable Word document"}
-          >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 12h6M9 16h6M9 8h2M5 3h9l5 5v11a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
-            </svg>
-            Word
-          </button>
-        </div>
-      </div>
-
-      {/* How this works, always-visible explainer (mirrors the Materiality tab) */}
-      <div className="rounded-xl border border-line bg-white shadow-elev-1 p-4 sm:p-5">
-        <div className="flex items-start gap-3">
-          <div className="w-8 h-8 rounded-lg bg-brand-50 border border-brand-100 flex items-center justify-center flex-shrink-0">
-            <svg className="w-4 h-4 text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M9 17H7A5 5 0 017 7h2M15 7h2a5 5 0 010 10h-2M8 12h8" />
-            </svg>
-          </div>
-          <div className="min-w-0">
-            <h3 className="text-[15px] font-semibold text-ink">
-              How this mapping works, collect once and report across frameworks
-            </h3>
-            <p className="text-[13.5px] text-ink-body mt-1.5 leading-relaxed">
-              BRSR overlaps heavily with the global frameworks. This crosswalk maps every BRSR disclosure to its
-              counterpart in <strong className="font-semibold text-ink">GRI, TCFD, IFRS S1/S2 and TNFD</strong> (nature),
-              and to the <strong className="font-semibold text-ink">MSCI</strong> and <strong className="font-semibold text-ink">S&amp;P/DJSI</strong> rating
-              criteria, so one round of BRSR data collection can feed your client&apos;s other reports and rating submissions.
-            </p>
-            <p className="text-[13.5px] text-ink-body mt-2 leading-relaxed">
-              <strong className="font-semibold text-ink">How to use this:</strong> switch between{" "}
-              <span className="font-medium text-brand-700">Reporting frameworks</span> and{" "}
-              <span className="font-medium text-brand-700">ESG ratings</span>, search or filter to a disclosure, and
-              expand any row to see the exact standard reference (e.g. GRI 305, TCFD Governance, IFRS S2). Export the
-              whole crosswalk to CSV or Word to hand to the team.
-            </p>
-            <p className="text-[12.5px] text-ink-muted mt-2.5 leading-relaxed">
-              An indicative mapping to orient the work, not a certified equivalence. Standards evolve, so confirm the
-              exact clause against each framework&apos;s current version before relying on it for a filing.
-            </p>
-          </div>
-        </div>
-      </div>
+      <ViewHeader
+        tabId="alignment"
+        title="Alignment"
+        subtitle="How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2 and TNFD (nature), and to the MSCI & DJSI rating frameworks. Collect once, report across all."
+        info={
+          <InfoPopover title="Collect once, report across frameworks">
+            <p>BRSR overlaps heavily with the global frameworks. This crosswalk maps every disclosure to its counterpart in GRI, TCFD, IFRS S1/S2 and TNFD, and to the MSCI and S&amp;P/DJSI rating criteria, so one round of BRSR data can feed the client&apos;s other reports and rating submissions.</p>
+            <p><strong className="text-white">How to use it:</strong> switch between Reporting frameworks and ESG ratings, expand any row for the exact reference (e.g. GRI 305, IFRS S2), and export the crosswalk to CSV or Word.</p>
+            <p className="text-white/55">Indicative, not a certified equivalence, confirm the exact clause against each framework&apos;s current version before a filing.</p>
+          </InfoPopover>
+        }
+        actions={
+          <>
+            <button
+              onClick={exportActive}
+              className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-brand-700 bg-brand-50
+                border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors pressable whitespace-nowrap"
+              title={sub === "frameworks" ? "Download the full BRSR↔GRI↔TCFD↔IFRS↔TNFD mapping as a spreadsheet" : "Download the MSCI & DJSI ratings alignment as a spreadsheet"}
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" />
+              </svg>
+              CSV
+            </button>
+            <button
+              onClick={exportActiveDocx}
+              className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-ink-body bg-white
+                border border-line hover:border-brand-300 hover:bg-band px-2.5 py-1.5 rounded-lg transition-colors pressable whitespace-nowrap"
+              title={sub === "frameworks" ? "Download the framework mapping as an editable Word document" : "Download the ratings alignment as an editable Word document"}
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 12h6M9 16h6M9 8h2M5 3h9l5 5v11a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" />
+              </svg>
+              Word
+            </button>
+          </>
+        }
+      />
 
       {/* Sub-tabs */}
       <div className="inline-flex items-center gap-0.5 p-0.5 bg-stone-100/80 rounded-lg border border-stone-200/60">

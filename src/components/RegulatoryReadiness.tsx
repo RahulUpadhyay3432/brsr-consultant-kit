@@ -3,6 +3,8 @@
 // derived from the client's industry + export markets. On-device, no AI. Shows who
 // is in scope and what to prepare; not a liability calculator.
 import type { RegulatoryReadiness, RegAssessment, RegVerdict } from "@/lib/regulatory-readiness";
+import ViewHeader from "./report/ViewHeader";
+import InfoPopover from "./report/InfoPopover";
 
 const VERDICT: Record<RegVerdict, { label: string; cls: string; dot: string }> = {
   applies:    { label: "Likely applies",   cls: "text-[#C2432A] bg-[#FDEBE7] border-[#F8CFC5]", dot: "bg-[#F2674A]" },
@@ -79,14 +81,17 @@ function RegCard({ a }: { a: RegAssessment }) {
 export default function RegulatoryReadiness({ regulatory }: { regulatory: RegulatoryReadiness }) {
   return (
     <div className="space-y-4">
-      <div>
-        <h1 className="font-display text-[26px] font-normal text-stone-900 leading-tight tracking-tight">Beyond BRSR</h1>
-        <p className="text-[14.5px] text-stone-600 mt-1 max-w-[74ch] leading-relaxed">
-          The other climate regulations on the horizon for Indian companies. A readiness check, whether each one is
-          in scope for this client (from their industry and export markets) and what to prepare. These are cited
-          guides, not liability calculations; the quantification step comes later.
-        </p>
-      </div>
+      <ViewHeader
+        tabId="beyond-brsr"
+        title="Beyond BRSR"
+        subtitle="The other climate regulations on the horizon for Indian companies, checked for scope against this client's industry and export markets, with what to prepare."
+        info={
+          <InfoPopover title="A readiness check, not a calculator">
+            <p>These are cited readiness guides for the EU&apos;s <strong className="text-white">CBAM</strong> and India&apos;s <strong className="text-white">CCTS</strong>: whether each applies to this client, the timeline, and what to get ready.</p>
+            <p>Scope is inferred from the client&apos;s industry and export markets you entered. The liability/quantification step comes later, this orients the work, it isn&apos;t a liability calculation.</p>
+          </InfoPopover>
+        }
+      />
       <RegCard a={regulatory.cbam} />
       <RegCard a={regulatory.ccts} />
     </div>

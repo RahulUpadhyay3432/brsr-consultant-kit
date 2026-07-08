@@ -10,6 +10,7 @@ import { TEAM_EMAILS, buildTeamEmail, type TeamEmail } from "@/lib/request-email
 import { computeTimeline, timelineCsvRows, defaultDeadline } from "@/lib/engagement-timeline";
 import { SEBI_BRSR_FORMAT_URL } from "./checklist/constants";
 import brsrData from "@/data/brsr_data_points.json";
+import ViewHeader from "./report/ViewHeader";
 import qualityData from "@/data/brsr_quality_examples.json";
 import explainersData from "@/data/brsr_field_explainers.json";
 
@@ -159,13 +160,11 @@ export default function TemplatesPanel({ clientName }: { clientName?: string }) 
   const fy = reportingFy(new Date());
   return (
     <div className="space-y-5">
-      <div>
-        <h1 className="font-display text-[26px] font-normal text-stone-900 leading-tight tracking-tight">Templates, emails &amp; guides</h1>
-        <p className="text-[14.5px] text-ink-body mt-1 max-w-[74ch] leading-relaxed">
-          The formats, the internal data-request emails, the engagement timeline and the how-to guidance you&apos;d otherwise hunt for, ready
-          to use and built from the same cited BRSR knowledge base. Generated in your browser; nothing is uploaded.
-        </p>
-      </div>
+      <ViewHeader
+        tabId="templates"
+        title="Templates, emails & guides"
+        subtitle="The formats, internal data-request emails, engagement timeline and how-to guidance you'd otherwise hunt for, built from the same cited BRSR knowledge base and generated in your browser."
+      />
 
       {/* Downloadable templates, first section, no border-t */}
       <section className="space-y-3">

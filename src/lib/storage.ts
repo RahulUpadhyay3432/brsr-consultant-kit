@@ -46,6 +46,9 @@ export const STORAGE_KEYS = {
   // Whether the first-run "Start here" walkthrough has been dismissed. Persists
   // across reports (it's a one-time intro), so it is NOT cleared on "New report".
   walkthroughSeen: "walkthrough.seen",
+  // Whether the interactive "Take a tour" walkthrough has been seen/dismissed.
+  // One-time, persists across reports; never written in demo mode.
+  tourSeen: "tour.seen",
   // The on-device "My clients" workspace: a registry of saved clients and the id
   // of the one currently loaded into the session.* keys above. See the clients
   // section at the bottom of this file.
