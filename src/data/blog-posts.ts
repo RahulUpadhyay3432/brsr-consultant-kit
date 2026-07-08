@@ -288,6 +288,68 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
   },
 
+  /* ── Framework comparison guides (cited crosswalk) ─────────────────────── */
+  {
+    slug: "brsr-vs-gri",
+    title: "BRSR vs GRI: how India's BRSR maps to the GRI Standards",
+    excerpt:
+      "BRSR and GRI overlap heavily but aren't identical. What each covers, where they line up, and how one round of data collection can feed both, with a cited BRSR-to-GRI crosswalk.",
+    date: "2026-07-09",
+    category: "Regulation",
+    readTime: "7 min read",
+    coverGradient: ["#0C2B1E", "#10A572"],
+    coverIcon: "scales",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "Is BRSR based on GRI?",
+        a: "Not directly. BRSR is SEBI's own format, structured around the nine NGRBC principles, but it overlaps substantially with the GRI Standards, so most BRSR disclosures can be mapped to a GRI equivalent. They share concepts and much of the underlying data, but the structure and granularity differ.",
+      },
+      {
+        q: "Can a company report both BRSR and GRI?",
+        a: "Yes, and many large Indian listed companies do. Because the two frameworks draw on largely the same underlying data (emissions, energy, water, workforce, governance), one round of data collection can feed both a BRSR filing and a GRI report. The main work is re-mapping the same figures into each framework's structure.",
+      },
+      {
+        q: "What is the main difference between BRSR and GRI?",
+        a: "BRSR is mandatory for the top 1000 listed Indian companies, prescriptive, and organised around nine principles. GRI is voluntary, global, modular (a set of universal, sector and topic standards) and impact/materiality-driven. BRSR asks specific fixed questions; GRI lets you report the topics your materiality assessment surfaces.",
+      },
+      {
+        q: "Does BRSR require GRI?",
+        a: "No. GRI is not required to file BRSR. But GRI is one of the internationally recognised frameworks BRSR is designed to be interoperable with, which is why a BRSR-to-GRI crosswalk is straightforward for most disclosures.",
+      },
+    ],
+  },
+  {
+    slug: "brsr-vs-ifrs-issb",
+    title: "BRSR vs IFRS S1 & S2 (ISSB): what maps and what doesn't",
+    excerpt:
+      "The ISSB's IFRS S1 and S2 are becoming the global baseline for sustainability and climate disclosure. How BRSR lines up with them, where the gaps are, and how BRSR data can feed an IFRS S2 climate disclosure, with a cited crosswalk.",
+    date: "2026-07-09",
+    category: "Regulation",
+    readTime: "7 min read",
+    coverGradient: ["#0F1E33", "#0B6FD4"],
+    coverIcon: "globe",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "Does BRSR align with IFRS S1 and S2?",
+        a: "Partly. BRSR's governance, risk-management and climate disclosures map to IFRS S1 and S2, and the two share the Scope 1 & 2 emissions data. But IFRS S2 goes much deeper on climate specifically (scenario analysis, transition plans, financed emissions), while BRSR is broader and shallower, covering all nine NGRBC principles.",
+      },
+      {
+        q: "Is ISSB / IFRS S1 & S2 mandatory in India?",
+        a: "Not as of now. BRSR is the mandatory sustainability disclosure for the top 1000 listed Indian companies. IFRS S1/S2 (from the ISSB) are being adopted by many jurisdictions as the global baseline, and Indian companies with global investors or listings increasingly prepare them voluntarily.",
+      },
+      {
+        q: "Can BRSR data feed an IFRS S2 climate disclosure?",
+        a: "Yes, as a strong starting point. The Scope 1 & 2 emissions, board-oversight and risk-management data you collect for BRSR Principle 6 and Principle 1 map onto IFRS S2's governance, risk and metrics pillars. IFRS S2 then asks for more, notably climate scenario analysis and a transition plan, which BRSR does not require.",
+      },
+      {
+        q: "What is the difference between BRSR and TCFD or IFRS S2?",
+        a: "TCFD (now consolidated into IFRS S2) is climate-only and organised around four pillars: governance, strategy, risk management, and metrics & targets. BRSR is broader, covering environment plus eight other principles, but its climate depth is lighter. BRSR tells you where a company stands across all of ESG; IFRS S2 goes deep on climate for investors.",
+      },
+    ],
+  },
+
   /* ── Tier 1, Original 5 posts ─────────────────────────────────────────── */
   {
     slug: "brsr-fy2526-changes",

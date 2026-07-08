@@ -1,5 +1,26 @@
 import React from "react";
 import { getPost } from "@/data/blog-posts";
+import fwData from "@/data/framework_mappings.json";
+
+// Representative BRSR-to-framework rows for the comparison guides: one disclosure
+// per principle where a real mapping exists. Values come straight from the cited
+// crosswalk (framework_mappings.json), so nothing is fabricated.
+type FwMap = { brsr_id: string; brsr_label: string; gri_standard: string; gri_label: string; ifrs_reference: string };
+function repRows(pick: (m: FwMap) => string | null): string[][] {
+  const seen = new Set<string>();
+  const rows: string[][] = [];
+  for (const m of fwData.mappings as FwMap[]) {
+    const pr = m.brsr_id.slice(0, 2);
+    if (seen.has(pr)) continue;
+    const val = pick(m);
+    if (!val || val === "—") continue;
+    seen.add(pr);
+    rows.push([m.brsr_label, val]);
+  }
+  return rows;
+}
+const GRI_ROWS = repRows((m) => (m.gri_standard && m.gri_standard !== "—") ? `${m.gri_standard}${m.gri_label ? " — " + m.gri_label : ""}` : null);
+const IFRS_ROWS = repRows((m) => (m.ifrs_reference && m.ifrs_reference !== "—") ? m.ifrs_reference : null);
 
 // Inline text link inside a guide body (internal links help SEO + conversion).
 function A({ href, children }: { href: string; children: React.ReactNode }) {
@@ -709,6 +730,100 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
       <Callout title="Map Principle 9 alongside the other eight" color="blue">
         Saaksh gap-analyses all nine principles, cited to SEBI and ICAI, and shows what your client&apos;s records already cover. <A href="/demo">See a sample report</A> or <A href="/start">start a free one</A>.
+      </Callout>
+    </>
+  ),
+
+  "brsr-vs-gri": (
+    <>
+      <P>BRSR and the GRI Standards are the two frameworks most Indian sustainability teams end up juggling. They cover much of the same ground, so treating them as interchangeable is tempting, but they are built differently. This guide sets out what each one is, where they line up, where they diverge, and how one round of data collection can serve both.</P>
+
+      <KeyTakeaways items={[
+        "BRSR is SEBI-mandated for the top 1000 listed Indian companies; GRI is a voluntary global standard.",
+        "They overlap heavily on the underlying data (emissions, energy, water, workforce, governance), so most BRSR disclosures map to a GRI standard.",
+        "BRSR is prescriptive and principle-structured (nine NGRBC principles); GRI is modular and materiality-driven.",
+        "Collect the data once and you can report to both; the work is re-mapping the same figures into each framework's shape.",
+      ]} />
+
+      <H2>What each framework is</H2>
+      <P><strong>BRSR (Business Responsibility and Sustainability Report)</strong> is India&apos;s mandatory disclosure, notified by SEBI, for the top 1000 listed companies by market capitalisation. It is a fixed format organised around the nine principles of the National Guidelines on Responsible Business Conduct (NGRBC), split into Section A (general disclosures), Section B (management and process) and Section C (principle-wise performance).</P>
+      <P><strong>GRI (Global Reporting Initiative)</strong> is the most widely used voluntary sustainability-reporting standard in the world. It is modular: universal standards (GRI 1, 2 and 3), plus topic standards such as GRI 305 (Emissions) and GRI 403 (Occupational Health and Safety) that a company reports against based on its material topics.</P>
+
+      <H2>Where BRSR and GRI line up</H2>
+      <P>Because both frameworks ask for the same core sustainability data, most BRSR disclosures have a close GRI counterpart. Here is a representative crosswalk, one disclosure per principle, drawn from Saaksh&apos;s cited BRSR-to-GRI mapping:</P>
+      <Table headers={["BRSR disclosure", "Closest GRI standard"]} rows={GRI_ROWS} />
+      <P>The full report maps all 108 BRSR fields to their GRI, TCFD, IFRS S1/S2 and TNFD equivalents in the Alignment tab.</P>
+
+      <H2>Where they differ</H2>
+      <UL items={[
+        "Mandate: BRSR is compulsory for in-scope Indian companies; GRI is voluntary everywhere.",
+        "Structure: BRSR is a fixed questionnaire across nine principles; GRI is a set of standards you select from based on materiality.",
+        "Granularity: GRI often asks for more disaggregation on a given topic; BRSR standardises the questions so filings are comparable across companies.",
+        "Assurance: BRSR Core attributes carry a reasonable-assurance requirement on a defined glide path; GRI assurance is at the company's discretion.",
+      ]} />
+
+      <H2>Collect once, report to both</H2>
+      <Callout title="One dataset, many frameworks" color="blue">
+        The emissions, energy, water, workforce and governance data behind a BRSR filing is the same data GRI wants, just arranged differently. Saaksh gap-analyses all 108 BRSR fields and shows the GRI (and TCFD, IFRS, TNFD) equivalent for each, so one collection effort feeds every report. <A href="/demo">See a sample report</A> or <A href="/start">run one for a client</A>.
+      </Callout>
+
+      <H2>Best practice</H2>
+      <UL items={[
+        "Build data collection around BRSR's 108 fields, then use the crosswalk to populate GRI, rather than collecting twice.",
+        "Anchor both reports in one materiality assessment so the story is consistent.",
+        "Keep the source documents and calculation workings for the BRSR Core numbers audit-ready; they support both frameworks under assurance.",
+      ]} />
+
+      <PostFaq slug="brsr-vs-gri" />
+
+      <Callout title="Map BRSR to GRI, TCFD, IFRS and TNFD in one place" color="blue">
+        Saaksh&apos;s Alignment tab shows every BRSR disclosure&apos;s counterpart across the global frameworks, exportable as a crosswalk. <A href="/demo">Explore a sample report</A> or <A href="/start">start a free one</A>.
+      </Callout>
+    </>
+  ),
+
+  "brsr-vs-ifrs-issb": (
+    <>
+      <P>As the ISSB&apos;s IFRS S1 and S2 become the global baseline for sustainability and climate disclosure, Indian teams increasingly ask how their mandatory BRSR filing relates to them. The short answer: they share a spine, but IFRS S2 goes far deeper on climate while BRSR spreads across all of ESG. This guide maps the two and shows how BRSR data can jump-start an IFRS S2 disclosure.</P>
+
+      <KeyTakeaways items={[
+        "IFRS S1 (general sustainability) and S2 (climate) are the ISSB's global baseline; TCFD is now consolidated into S2.",
+        "BRSR is mandatory in India; IFRS S1/S2 are not (yet), but global investors increasingly expect them.",
+        "BRSR's governance, risk and Scope 1 & 2 data map onto IFRS S1/S2; the frameworks share that spine.",
+        "IFRS S2 asks for more on climate: scenario analysis, transition plans and financed emissions, which BRSR does not require.",
+      ]} />
+
+      <H2>What IFRS S1 and S2 are</H2>
+      <P>The International Sustainability Standards Board (ISSB) issued <strong>IFRS S1</strong> (general requirements for sustainability-related financial disclosure) and <strong>IFRS S2</strong> (climate-related disclosures) as an investor-focused global baseline. IFRS S2 absorbed the TCFD&apos;s four-pillar structure: governance, strategy, risk management, and metrics and targets. Many jurisdictions are adopting or referencing them; India has not mandated them, but the direction of travel is clear.</P>
+
+      <H2>Where BRSR maps to IFRS S1 and S2</H2>
+      <P>BRSR&apos;s governance, risk-management and environmental disclosures line up with the IFRS S1/S2 pillars. Here is a representative crosswalk, one disclosure per principle where a mapping exists, from Saaksh&apos;s cited alignment data:</P>
+      <Table headers={["BRSR disclosure", "IFRS S1 / S2 reference"]} rows={IFRS_ROWS} />
+
+      <H2>Where the gaps are</H2>
+      <UL items={[
+        "Climate depth: IFRS S2 requires climate scenario analysis and a transition plan; BRSR asks for emissions and targets but not scenarios.",
+        "Financial connection: IFRS S1/S2 tie sustainability to financial effects and enterprise value; BRSR is a standalone responsibility report.",
+        "Breadth: BRSR covers all nine NGRBC principles (human rights, communities, consumers and more); IFRS S1/S2 focus on what is financially material to investors, with S2 zeroed in on climate.",
+        "Scope 3: IFRS S2 expects Scope 3 disclosure (including financed emissions for financial firms); under BRSR it is a voluntary leadership indicator.",
+      ]} />
+
+      <H2>Using BRSR data for IFRS S2</H2>
+      <Callout title="A running start on IFRS S2" color="blue">
+        The board-oversight, risk-management and Scope 1 &amp; 2 emissions data you collect for BRSR Principle 1 and Principle 6 populate IFRS S2&apos;s governance, risk and metrics pillars directly. You then layer on the climate-specific pieces: scenario analysis and a transition plan. Saaksh shows the IFRS S1/S2 counterpart for every BRSR field in the Alignment tab. <A href="/demo">See a sample report</A> or <A href="/start">start a free one</A>.
+      </Callout>
+
+      <H2>Best practice</H2>
+      <UL items={[
+        "Get Scope 1 & 2 right first (assured under BRSR Core); they anchor both BRSR and IFRS S2.",
+        "Document board oversight and the climate risk-management process once, in a form both frameworks accept.",
+        "If you have global investors, start scenario analysis early, it is the piece BRSR won't have prepared you for.",
+      ]} />
+
+      <PostFaq slug="brsr-vs-ifrs-issb" />
+
+      <Callout title="See BRSR mapped to IFRS, TCFD, GRI and TNFD" color="blue">
+        Saaksh&apos;s Alignment tab maps all 108 BRSR fields to their global-framework counterparts, exportable as a crosswalk. <A href="/demo">Explore a sample report</A> or <A href="/start">start a free one</A>.
       </Callout>
     </>
   ),
