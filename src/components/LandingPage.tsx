@@ -603,9 +603,9 @@ function Header({
             </div>
           </div>
 
-          <a href="#how" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">How it works</a>
-          <Link href="/pricing" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Pricing</Link>
-          <Link href="/community" className="text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Community</Link>
+          <a href="#how" className="whitespace-nowrap text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">How it works</a>
+          <Link href="/pricing" className="whitespace-nowrap text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Pricing</Link>
+          <Link href="/community" className="whitespace-nowrap text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Community</Link>
 
           {/* Resources dropdown (Latest + Blog + Methodology + About) */}
           <div
@@ -638,16 +638,17 @@ function Header({
           {resume && (
             <button
               onClick={resume.onResume}
-              className="hidden sm:inline-flex items-center gap-2 bg-brand-50 border border-brand-200 text-brand-700 text-[13px] font-semibold px-3.5 py-2 rounded-lg hover:bg-brand-100 transition-colors pressable"
+              title={resume.companyName ? `Continue where you left off · ${resume.companyName}` : "Continue where you left off"}
+              className="hidden lg:inline-flex items-center gap-2 bg-brand-50 border border-brand-200 text-brand-700 text-[13px] font-semibold px-3.5 py-2 rounded-lg hover:bg-brand-100 transition-colors pressable whitespace-nowrap max-w-[300px]"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0" />
-              Continue from where you left off
-              {resume.companyName && <span className="text-brand-400 font-normal">· {resume.companyName}</span>}
+              <span className="flex-shrink-0">Continue where you left off</span>
+              {resume.companyName && <span className="text-brand-400 font-normal truncate min-w-0">· {resume.companyName}</span>}
             </button>
           )}
           <Link
             href="/demo"
-            className="hidden sm:inline-flex items-center text-[13.5px] font-medium text-ink-body hover:text-forest px-2.5 py-2 transition-colors"
+            className="hidden sm:inline-flex items-center whitespace-nowrap text-[13.5px] font-medium text-ink-body hover:text-forest px-2.5 py-2 transition-colors"
           >
             See a sample
           </Link>
