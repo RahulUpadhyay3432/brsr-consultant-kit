@@ -302,15 +302,22 @@ function Sidebar({
         </div>
       </button>
 
-      {/* Workspace / client identity */}
+      {/* Workspace / client identity — a switcher into the "My clients" list */}
       <div className="px-3 pt-3">
-        <div className="flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg bg-white border border-stone-200/80 shadow-sm">
+        <Link
+          href="/clients"
+          title="Switch client"
+          className="group flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg bg-white border border-stone-200/80 shadow-sm hover:border-brand-300 transition-colors"
+        >
           <CompanyAvatar name={report.companyName || "Your Client"} size={28} />
-          <div className="leading-tight min-w-0">
+          <div className="leading-tight min-w-0 flex-1">
             <p className="text-[13.5px] font-semibold text-ink truncate">{report.companyName || "Your Client"}</p>
             <p className="text-[12px] text-ink-muted truncate">{industryLabel}</p>
           </div>
-        </div>
+          <svg className="w-3.5 h-3.5 text-stone-300 group-hover:text-brand-600 transition-colors flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M8 9l-3 3 3 3M16 9l3 3-3 3" />
+          </svg>
+        </Link>
       </div>
 
       {/* Nav groups */}
@@ -390,7 +397,7 @@ function Sidebar({
           <svg className="w-4 h-4 text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
-          New report
+          New client
         </button>
         <ShareLinkButton />
         <BackupWorkButton />

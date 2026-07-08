@@ -18,7 +18,7 @@ import { track } from "@/lib/mixpanel";
 
 interface LandingPageProps {
   onStart: () => void;
-  resume?: { companyName: string; onResume: () => void } | null;
+  resume?: { companyName: string; onResume: () => void; clientsCount?: number; onClients?: () => void } | null;
 }
 
 const BODY = "text-ink-body";
@@ -462,7 +462,7 @@ function Header({
   resume,
 }: {
   onStart: () => void;
-  resume?: { companyName: string; onResume: () => void } | null;
+  resume?: { companyName: string; onResume: () => void; clientsCount?: number; onClients?: () => void } | null;
 }) {
   const [openMenu, setOpenMenu] = useState<"tools" | "pro" | "resources" | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -1492,6 +1492,16 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                     <span className="text-brand-500 font-normal">· {resume.companyName}</span>
                   )}
                   <span className="ml-0.5">→</span>
+                </button>
+              )}
+
+              {resume?.onClients && (resume.clientsCount ?? 0) >= 1 && (
+                <button
+                  onClick={resume.onClients}
+                  className="anim-up-md mt-2 ml-1 inline-flex items-center gap-1.5 text-[13px] font-medium text-ink-muted hover:text-brand-700 transition-colors"
+                  style={{ animationDelay: "320ms" }}
+                >
+                  My clients ({resume.clientsCount}) →
                 </button>
               )}
 

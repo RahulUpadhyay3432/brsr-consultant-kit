@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react";
 import type { MaterialityTopic } from "@/lib/types";
-import { loadJSON, saveJSON, STORAGE_KEYS } from "@/lib/storage";
+import { loadJSON, saveJSON, syncActiveClient, STORAGE_KEYS } from "@/lib/storage";
 import { downloadCsv, exportFilename } from "@/lib/export";
 
 interface MaterialityMatrixProps {
@@ -69,6 +69,8 @@ export default function MaterialityMatrix({ topics, clientName }: MaterialityMat
     } satisfies MaterialityPersist);
     // Let the report's Download-PDF opt-in refresh its shortlist count live.
     if (typeof window !== "undefined") window.dispatchEvent(new Event("saaksh:materiality-changed"));
+    // Mirror the shortlist into the active "My clients" record (on-device).
+    syncActiveClient();
   }, [hydrated, shortlisted, showShortlistedOnly]);
 
   function toggleShortlist(id: string) {

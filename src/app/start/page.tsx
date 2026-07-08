@@ -7,10 +7,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import type { IntakeFormData } from "@/lib/types";
 import { generateReport } from "@/lib/report-generator";
-import { loadSavedForm, saveForm } from "@/lib/storage";
+import { loadSavedForm, saveForm, syncActiveClient, listClients } from "@/lib/storage";
 import IntakeForm from "@/components/IntakeForm";
 import { SaakshMark } from "@/components/SaakshMark";
 import { RestoreWorkButton } from "@/components/SessionBackup";
+import Link from "next/link";
 
 export default function StartPage() {
   const router = useRouter();
@@ -27,6 +28,7 @@ export default function StartPage() {
       try {
         generateReport(formData); // validate it builds before we navigate
         saveForm(formData);
+        syncActiveClient(); // save/update this client in the on-device "My clients" list
         router.push("/report");
       } catch (err) {
         console.error("Report generation failed:", err);
@@ -125,6 +127,14 @@ export default function StartPage() {
           <div className="mt-3 text-[12.5px] text-stone-500">
             Already started this on another device?{" "}
             <RestoreWorkButton onRestored={() => router.push("/report")} />
+            {mounted && listClients().length > 0 && (
+              <>
+                {" · "}
+                <Link href="/clients" className="text-brand-700 font-medium hover:underline">
+                  Open a saved client →
+                </Link>
+              </>
+            )}
           </div>
 
           {/* ── What you get, staggered cascade after form ───────────── */}

@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { ReportOutput } from "@/lib/types";
 import { generateReport } from "@/lib/report-generator";
-import { loadSavedForm, clearReportSession, decodeReportParam, adoptSharedForm } from "@/lib/storage";
+import { loadSavedForm, clearReportSession, decodeReportParam, adoptSharedForm, syncActiveClient, startNewClient } from "@/lib/storage";
 import { track } from "@/lib/mixpanel";
 import ReportView from "@/components/ReportView";
 import Skeleton from "@/components/Skeleton";
@@ -48,6 +48,9 @@ export default function ReportPage() {
     try {
       const r = generateReport(saved);
       setReport(r);
+      // Ensure this client exists in the on-device "My clients" list (also adopts
+      // a pre-feature session, or a just-adopted shared form, as a new record).
+      syncActiveClient();
       track("report_generated", {
         industry: saved.industry,
         sector: saved.sector,
@@ -95,7 +98,7 @@ export default function ReportPage() {
       report={report}
       onHome={() => router.push("/")}
       onEdit={() => router.push("/start")}
-      onBack={() => { clearReportSession(); router.push("/start"); }}
+      onBack={() => { startNewClient(); router.push("/start"); }}
     />
   );
 }

@@ -8,21 +8,30 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LandingPage from "@/components/LandingPage";
-import { loadSavedForm } from "@/lib/storage";
+import { loadSavedForm, listClients } from "@/lib/storage";
 
 export default function Home() {
   const router = useRouter();
-  const [resume, setResume] = useState<{ companyName: string } | null>(null);
+  const [resume, setResume] = useState<{ companyName: string; clientsCount: number } | null>(null);
 
   useEffect(() => {
     const saved = loadSavedForm();
-    if (saved) setResume({ companyName: saved.companyName || "" });
+    if (saved) setResume({ companyName: saved.companyName || "", clientsCount: listClients().length });
   }, []);
 
   return (
     <LandingPage
       onStart={() => router.push("/start")}
-      resume={resume ? { companyName: resume.companyName, onResume: () => router.push("/report") } : null}
+      resume={
+        resume
+          ? {
+              companyName: resume.companyName,
+              onResume: () => router.push("/report"),
+              clientsCount: resume.clientsCount,
+              onClients: () => router.push("/clients"),
+            }
+          : null
+      }
     />
   );
 }

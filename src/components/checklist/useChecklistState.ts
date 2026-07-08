@@ -5,7 +5,7 @@ import { useState, useMemo, useRef, useEffect } from "react";
 import type { ChecklistItem } from "@/lib/types";
 import { extractPdfText } from "@/lib/pdf-extract";
 import { detectDisclosures, type DetectionResult } from "@/lib/report-extractor";
-import { loadJSON, saveJSON, STORAGE_KEYS } from "@/lib/storage";
+import { loadJSON, saveJSON, syncActiveClient, STORAGE_KEYS } from "@/lib/storage";
 import { PRINCIPLES, type StatusKey, type TypeKey } from "./constants";
 import type { UploadStatus } from "./UploadCard";
 import { type CalcInputs, DEFAULT_CALC_INPUTS } from "@/lib/emissions-calculator";
@@ -108,6 +108,8 @@ export function useChecklistState(items: ChecklistItem[], general: GeneralLike, 
       search,
       collapsedSections: Array.from(collapsedSections),
     } satisfies ChecklistPersist);
+    // Mirror this progress into the active "My clients" record (on-device).
+    syncActiveClient();
   }, [hydrated, collectedIds, detection, uploadInfo, showOnlyDetected, calcInputs, scope3Inputs,
       statusFilter, principleFilter, typeFilter, search, collapsedSections]);
 
