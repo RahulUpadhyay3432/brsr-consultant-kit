@@ -4,6 +4,11 @@ export type CoverIcon =
   | "clipboard" | "chart" | "scales" | "bulb" | "globe"
   | "shield" | "users" | "check" | "drop" | "chain" | "leaf" | "code";
 
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -16,11 +21,79 @@ export interface BlogPost {
   author: { name: string; role: string };
   /** Optional real photo at /blog/<slug>.jpg (16:9). When set, replaces the generated cover art. */
   coverImage?: string;
+  /** Q&A pairs. Rendered as an on-page FAQ section AND emitted as FAQPage JSON-LD. */
+  faqs?: FaqItem[];
 }
 
 const AUTHOR = { name: "Rahul Upadhyay", role: "Founder, Saaksh" };
 
 export const BLOG_POSTS: BlogPost[] = [
+  /* ── Principle-by-principle guide series (P1–P9) ──────────────────────── */
+  {
+    slug: "brsr-principle-6-environment-guide",
+    title: "How to fill BRSR Principle 6 (Environment): the complete guide",
+    excerpt:
+      "Principle 6 is the heaviest part of BRSR, and where reasonable assurance concentrates. A field-by-field guide to energy, water, GHG, waste and biodiversity disclosures, what each asks, how to answer it, and which filings you can pull from.",
+    date: "2026-07-08",
+    category: "How-to",
+    readTime: "10 min read",
+    coverGradient: ["#0C2B1E", "#10A572"],
+    coverIcon: "leaf",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "Which BRSR Principle 6 disclosures need reasonable assurance?",
+        a: "The BRSR Core assurance attributes concentrate in Principle 6: greenhouse-gas (Scope 1 & 2) intensity, energy intensity, water consumption and intensity, and waste intensity. For companies in the BRSR Core assurance net, these figures must be independently assured, so the underlying meter readings, invoices and calculation workings need to be audit-ready.",
+      },
+      {
+        q: "How do I calculate Scope 1 and Scope 2 emissions for P6-E7?",
+        a: "Scope 1 is the fuel burnt on site or in owned vehicles multiplied by each fuel's IPCC emission factor; Scope 2 is grid electricity purchased multiplied by the CEA national grid factor (0.710 kgCO₂/kWh for FY 2024-25). Report absolute tonnes of CO₂e plus intensity per rupee of turnover, and state the standard and GWP rates used. Saaksh's free GHG calculator does this with every factor cited.",
+      },
+      {
+        q: "What is the difference between water withdrawal, consumption and discharge in P6?",
+        a: "Withdrawal (P6-E3) is all the water drawn, broken down by source (surface, ground, third-party, seawater). Consumption is what is used and not returned. Discharge (P6-E4) is what is released, by destination and level of treatment. Principle 6 asks for all three, plus water intensity per rupee of turnover.",
+      },
+      {
+        q: "Is Scope 3 mandatory under BRSR Principle 6?",
+        a: "No. Scope 3 emissions (P6-L2) sit in the Leadership indicators, which are voluntary. Scope 1 and Scope 2 (P6-E7) are Essential and expected of every filer in scope. Many companies still screen Scope 3 because investors and value-chain partners increasingly ask for it.",
+      },
+      {
+        q: "Which existing filings already cover Principle 6 data?",
+        a: "A lot of it. Your PAT scheme returns cover energy; your State Pollution Control Board consent-to-operate and water-cess returns cover water and air; and hazardous-waste manifests (Form 3/Form 10) cover waste. Much of Principle 6 can be pulled from filings your client already submits, rather than collected fresh.",
+      },
+    ],
+  },
+  {
+    slug: "brsr-principle-1-ethics-guide",
+    title: "How to fill BRSR Principle 1 (Ethics, Transparency & Accountability)",
+    excerpt:
+      "Principle 1 covers governance and business ethics, anti-corruption, fines and penalties, conflicts of interest, related-party transactions and more. A plain-English guide to what each disclosure asks and who in the company actually owns the data.",
+    date: "2026-07-07",
+    category: "How-to",
+    readTime: "8 min read",
+    coverGradient: ["#0F1E33", "#0B6FD4"],
+    coverIcon: "scales",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "What does BRSR Principle 1 cover?",
+        a: "Governance and business ethics: the anti-corruption/anti-bribery policy, fines and penalties paid to regulators, disciplinary actions for bribery or corruption, conflict-of-interest complaints, concentration of related-party transactions, number of days of accounts payable, and training on the NGRBC principles.",
+      },
+      {
+        q: "Who owns Principle 1 data in a company?",
+        a: "Mostly the Company Secretary and the legal/compliance function (policies, fines and penalties, conflict-of-interest records, disciplinary actions), with the finance team for accounts-payable days and the concentration of purchases, sales and related-party transactions.",
+      },
+      {
+        q: "Does BRSR Principle 1 need reasonable assurance?",
+        a: "Principle 1 is largely narrative and disclosure-based and is not among the numeric BRSR Core attributes that require reasonable assurance. That said, the fines/penalties and anti-corruption disclosures are read closely by assurers and investors, so keep the underlying board minutes, policy documents and legal records ready.",
+      },
+      {
+        q: "How should we answer the anti-corruption disclosure (P1-E4)?",
+        a: "Don't answer with a bare 'Yes'. Describe the policy itself, the risk-assessment procedures and internal controls, the mechanism for handling bribery/corruption complaints, and the coverage of anti-corruption training by employee category, and provide a web link to the published policy.",
+      },
+    ],
+  },
+
   /* ── Tier 1, Original 5 posts ─────────────────────────────────────────── */
   {
     slug: "brsr-fy2526-changes",

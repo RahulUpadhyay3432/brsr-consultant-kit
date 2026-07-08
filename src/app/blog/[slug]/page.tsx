@@ -119,9 +119,24 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     ...(post.coverImage && { image: `https://saaksh.co${post.coverImage}` }),
   };
 
+  // FAQPage structured data for posts that carry a Q&A block, so Google can read
+  // the questions (and, where eligible, surface them).
+  const faqLd = post.faqs?.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: post.faqs.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      }
+    : null;
+
   return (
     <div className="min-h-screen bg-[#FBFCFE] flex flex-col">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }} />
+      {faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(faqLd) }} />}
       <BlogHeader />
 
       <main className="flex-1">
