@@ -645,6 +645,12 @@ function Header({
               {resume.companyName && <span className="text-brand-400 font-normal">· {resume.companyName}</span>}
             </button>
           )}
+          <Link
+            href="/demo"
+            className="hidden sm:inline-flex items-center text-[13.5px] font-medium text-ink-body hover:text-forest px-2.5 py-2 transition-colors"
+          >
+            See a sample
+          </Link>
           <button
             onClick={onStart}
             className="inline-flex items-center gap-1.5 bg-forest text-white text-[13.5px] font-semibold px-4 py-2 rounded-lg hover:bg-forest-light transition-colors pressable"
@@ -1625,6 +1631,9 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
             <button onClick={onStart} className="inline-flex items-center gap-2 bg-forest text-white text-[15px] font-semibold px-5 py-3 rounded-xl hover:bg-forest-light transition-colors pressable shadow-sm">
               Start a free report <IcoArrow />
             </button>
+            <Link href="/demo" className="inline-flex items-center gap-2 bg-white text-ink text-[15px] font-medium px-5 py-3 rounded-xl border border-line hover:bg-band transition-colors pressable shadow-elev-1">
+              See a sample report
+            </Link>
             <span className="text-[13.5px] text-ink-muted">Free, on your device, cited to SEBI &amp; ICAI.</span>
           </div>
         </div>
@@ -1890,9 +1899,14 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
           <h2 className="font-editorial font-semibold text-[2.6rem] sm:text-[3.4rem] leading-[1.05] tracking-[-0.02em]" style={{ textWrap: "balance" }}>
             Take the work out of your next BRSR report.
           </h2>
-          <button onClick={onStart} className="group cta-glow inline-flex items-center gap-2 bg-white text-forest text-[16px] font-semibold px-6 py-3.5 rounded-xl hover:bg-white mt-9">
-            Start a free report <span className="arrow-nudge inline-flex"><IcoArrow /></span>
-          </button>
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+            <button onClick={onStart} className="group cta-glow inline-flex items-center gap-2 bg-white text-forest text-[16px] font-semibold px-6 py-3.5 rounded-xl hover:bg-white">
+              Start a free report <span className="arrow-nudge inline-flex"><IcoArrow /></span>
+            </button>
+            <Link href="/demo" className="inline-flex items-center gap-2 border border-white/30 text-white text-[16px] font-medium px-6 py-3.5 rounded-xl hover:bg-white/10 transition-colors">
+              See a sample report
+            </Link>
+          </div>
           <p className="font-mono text-[12px] text-ondark-faint mt-5">No login · Client data never leaves your browser · Cited to SEBI &amp; ICAI</p>
         </div>
       </section>
