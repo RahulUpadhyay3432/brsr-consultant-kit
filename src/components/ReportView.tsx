@@ -246,6 +246,7 @@ function Sidebar({
       <button
         key={tab.id}
         role="tab"
+        data-tour={`tab-${tab.id}`}
         aria-selected={active}
         aria-controls={`${tab.id}-panel`}
         onClick={() => onNavigate(tab.id as TabId)}
