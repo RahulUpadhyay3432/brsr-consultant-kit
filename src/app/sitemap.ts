@@ -24,6 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/tools/ghg-calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/tools/materiality`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/tools/brsr-applicability`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE}/tools/brsr-framework-mapping`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     // Feature pages
     { url: `${BASE}/features/gap-analysis`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${BASE}/features/ghg-calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },

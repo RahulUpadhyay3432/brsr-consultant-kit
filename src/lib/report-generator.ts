@@ -412,7 +412,9 @@ function getGenericMaterialityTopics(): MaterialityTopic[] {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function generateFrameworkMappings(_formData: IntakeFormData): FrameworkMapping[] {
+// Exported so the standalone /tools/brsr-framework-mapping page can reuse the same
+// merged crosswalk (the mapping is the same for every company, so the form is ignored).
+export function generateFrameworkMappings(_formData?: IntakeFormData): FrameworkMapping[] {
   const mappings = (frameworkData as any).mappings as FrameworkMapping[];
   const tnfd = (tnfdData as any).mappings as Record<string, { pillar: string; detail: string }>;
 

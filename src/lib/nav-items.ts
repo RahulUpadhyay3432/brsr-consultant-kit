@@ -15,7 +15,7 @@ export const FREE_NAV_ITEMS: { label: string; sub: string; href: string; badge?:
   { label: "Scope 3 screening",         sub: "Activity-based Cat 4–9, GHG Protocol + DEFRA", href: "/tools/scope3-calculator" },
   { label: "Materiality matrix builder", sub: "Impact × stakeholder grid, CSV export",        href: "/tools/materiality" },
   { label: "Templates & workbooks",     sub: "BRSR workbook, materiality grid, stakeholder plan", href: "/features/templates" },
-  { label: "Cross-framework mapping",   sub: "BRSR ↔ GRI, TCFD, IFRS, TNFD, MSCI/DJSI",    href: "/features/alignment" },
+  { label: "Cross-framework mapping",   sub: "BRSR ↔ GRI, TCFD, IFRS, TNFD, searchable + export", href: "/tools/brsr-framework-mapping" },
   { label: "CBAM & CCTS checker",       sub: "Are you in scope for new regulations?",         href: "/features/cbam-ccts" },
   { label: "Materiality topics",        sub: "Suggested material topics by industry",           href: "/features/materiality" },
   { label: "Methodology & sources",     sub: "How we calculate, every figure cited",            href: "/methodology" },
