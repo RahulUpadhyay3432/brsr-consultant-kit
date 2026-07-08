@@ -21,6 +21,13 @@ const GROUPS: Record<Scope3GroupKey, FactorGroup> = {
 // Every factor id across all groups is an input key (the activity quantity).
 export type Scope3Inputs = Record<string, string>;
 
+// Category 1 (purchased goods & services) is a supplier-data pass-through: the
+// consultant enters emissions already reported by suppliers, in tCO₂e, and it is
+// added to the total unchanged (no factor applied). There is no authoritative India
+// spend-based factor set, so this records real primary data rather than estimating it.
+export const PURCHASED_GOODS_KEY = "cat1_supplier_tco2e";
+const PURCHASED_GOODS_CATEGORY = "purchased_goods";
+
 // Group metadata for the UI to render inputs from the same source of truth.
 export interface Scope3FactorMeta { id: string; label: string; unit: string; display: string }
 export interface Scope3GroupMeta { key: Scope3GroupKey; category: string; unit: string; note?: string; factors: Scope3FactorMeta[] }
@@ -35,6 +42,7 @@ export const SCOPE3_GROUPS: Scope3GroupMeta[] = GROUP_KEYS.map((key) => ({
 export const DEFAULT_SCOPE3_INPUTS: Scope3Inputs = (() => {
   const out: Scope3Inputs = {};
   for (const key of GROUP_KEYS) for (const f of GROUPS[key].factors) out[f.id] = "";
+  out[PURCHASED_GOODS_KEY] = "";
   return out;
 })();
 
@@ -50,7 +58,7 @@ export interface Scope3Line {
   tco2e: number;
 }
 export interface Scope3CategoryResult {
-  key: Scope3GroupKey;
+  key: string;
   category: string;
   lines: Scope3Line[];   // only inputs the user actually entered (> 0)
   subtotal_tco2e: number;
@@ -83,6 +91,25 @@ export function calcScope3(inputs: Scope3Inputs, turnoverCrore?: string): Scope3
     }
     total += subtotal;
     categories.push({ key, category: g.category, lines, subtotal_tco2e: subtotal });
+  }
+
+  // Category 1 pass-through: supplier-reported tCO₂e added directly, no factor.
+  const cat1 = n(inputs[PURCHASED_GOODS_KEY]);
+  if (cat1 > 0) {
+    anyInput = true;
+    total += cat1;
+    categories.push({
+      key: PURCHASED_GOODS_CATEGORY,
+      category: "Purchased goods & services (Cat 1)",
+      lines: [{
+        label: "Supplier-reported emissions",
+        qty: cat1,
+        activityUnit: "tCO₂e",
+        factorDisplay: "Supplier-provided primary data, entered directly (no factor applied)",
+        tco2e: cat1,
+      }],
+      subtotal_tco2e: cat1,
+    });
   }
 
   const t = n(turnoverCrore);

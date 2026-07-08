@@ -17,7 +17,7 @@ const COVERED = [
 
 const APPROACHES = [
   { title: "Activity-based, what this tool does", body: "Multiply a physical quantity, passenger-km flown, tonnes freighted, tonnes to landfill, by a published per-unit factor. More accurate, and every number traces back to a DEFRA line." },
-  { title: "Spend-based (EEIO)", body: "Multiply money spent in a category by an emissions-per-rupee factor. Useful when all you have is invoices, but no authoritative India factor set exists, so we leave Category 1 to real supplier data rather than guess." },
+  { title: "Supplier data, for Category 1", body: "For purchased goods, no authoritative India spend-per-rupee factor exists, so instead of guessing we let you enter your suppliers' own reported emissions directly. Real primary data, added to the total unchanged." },
 ];
 
 const FACTOR_GROUPS = [factors.business_travel, factors.commuting, factors.freight, factors.waste];
@@ -38,7 +38,7 @@ function ValueChainRibbon() {
       <text x="237" y="52" textAnchor="middle" fontSize="10.5" fontWeight="600" fill="#C24428">Downstream</text>
       <text x="237" y="66" textAnchor="middle" fontFamily="var(--font-hanken), sans-serif" fontSize="8" fill="#5B6573">Cat 9</text>
       <text x="140" y="108" textAnchor="middle" fontSize="10" fill="#5B6573">Screened here: Cat 4, 5, 6, 7 & 9</text>
-      <text x="140" y="122" textAnchor="middle" fontSize="9.5" fill="#8A938D">Cat 1 (purchased goods) needs supplier data</text>
+      <text x="140" y="122" textAnchor="middle" fontSize="9.5" fill="#8A938D">Cat 1 (purchased goods): enter supplier-reported data</text>
       <defs>
         <marker id="s3ar" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
           <path d="M0 0l6 3-6 3z" fill="#94A3B8" />
@@ -60,11 +60,11 @@ export default function Scope3CalculatorPage() {
           active="tools"
           eyebrow="Free tool · on-device"
           title="Scope 3 screening calculator"
-          subtitle="An activity-based Scope 3 estimate across business travel, commuting, freight and waste. GHG Protocol Scope 3 Standard, DEFRA/DESNZ 2024 factors cited per line. Runs entirely in your browser."
+          subtitle="An activity-based Scope 3 estimate across business travel, commuting, freight and waste, plus a place to record supplier-reported purchased goods. GHG Protocol Scope 3 Standard, DEFRA/DESNZ 2024 factors cited per line. Runs entirely in your browser."
           benefits={[
             "Categories 4, 5, 6, 7 & 9 from physical activity data",
+            "Category 1 from real supplier-reported figures, no invented factor",
             "Every factor traced to a DEFRA 2024 line",
-            "Screening estimate, honest about what it can't cover",
           ]}
           maxWidth={1120}
         />
@@ -134,7 +134,7 @@ export default function Scope3CalculatorPage() {
             <div className="mt-6 flex items-start gap-3 rounded-2xl border border-line bg-white p-5 shadow-elev-1">
               <svg className="w-5 h-5 text-ink-faint shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8h.01M11 12h1v4h1" /></svg>
               <p className="text-[13.5px] text-ink-body leading-relaxed">
-                <span className="font-semibold text-ink">Category 1, purchased goods &amp; services, is not screened here.</span> It needs supplier-specific or spend-based (EEIO) data, and no authoritative India spend-factor set exists. Add it from real supplier data for a complete inventory.
+                <span className="font-semibold text-ink">Category 1, purchased goods &amp; services, is not estimated with a factor.</span> No authoritative India spend-per-rupee factor set exists, so rather than guess, the calculator lets you enter your suppliers&apos; own reported emissions directly, real primary data, added to the total unchanged.
               </p>
             </div>
           </div>

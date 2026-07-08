@@ -2,8 +2,9 @@
 // Scope 3 screening calculator for the BRSR P6-L2 row. Activity/distance-based per
 // the GHG Protocol Scope 3 Standard; DEFRA 2024 v1.1 factors (cited per line). On
 // device, nothing leaves the browser. Screening-level: Scope 3 is a BRSR Leadership
-// (voluntary) indicator; Category 1 (purchased goods) is intentionally not included.
-import { calcScope3, SCOPE3_GROUPS, type Scope3Inputs } from "@/lib/scope3-calculator";
+// (voluntary) indicator. Category 1 (purchased goods) is a supplier-data pass-through
+// (enter supplier-reported tCO₂e directly, no factor) since no India spend-factor exists.
+import { calcScope3, SCOPE3_GROUPS, PURCHASED_GOODS_KEY, type Scope3Inputs } from "@/lib/scope3-calculator";
 import { fmtNum, fmtIntensity, perInrStr } from "@/lib/emissions-calculator";
 
 interface Props {
@@ -97,11 +98,21 @@ export default function Scope3Calculator({ inputs, turnoverCrore, onChange }: Pr
           </div>
         ))}
 
-        {/* Cat 1 deferred note */}
-        <div className="rounded-xl border border-[#CDE2F6] bg-[#F8FBFE] px-4 py-3">
-          <p className="text-[12px] text-ink-muted leading-relaxed">
-            <span className="font-semibold text-ink-body">Cat 1, purchased goods & services</span>{" "}
-            is not included. It needs supplier-specific emission intensities or spend-based EEIO factors; add from supplier data for a complete inventory.
+        {/* Category 1: supplier-data pass-through (primary data, no factor applied) */}
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.10em] text-brand-700 pb-2 mb-3 border-b border-[#CDE2F6]">
+            Purchased goods &amp; services · Category 1
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <Field
+              label="Supplier-reported"
+              unit="tCO₂e"
+              value={inputs[PURCHASED_GOODS_KEY] ?? ""}
+              onChange={(v) => onChange(PURCHASED_GOODS_KEY, v)}
+            />
+          </div>
+          <p className="text-[12px] text-ink-muted leading-relaxed mt-2.5">
+            Enter Category 1 emissions <span className="font-semibold text-ink-body">as reported by your suppliers</span>, already in tonnes CO₂e. This is added to the total unchanged, with no emission factor applied: there is no authoritative India spend-based factor set, so this records real supplier data rather than estimating it.
           </p>
         </div>
 
@@ -160,7 +171,7 @@ export default function Scope3Calculator({ inputs, turnoverCrore, onChange }: Pr
           </p>
           <p>
             <span className="font-medium text-ink-muted">Covers:</span>{" "}
-            business travel (Cat 6), commuting (Cat 7), transport & distribution (Cat 4/9) and waste (Cat 5).
+            business travel (Cat 6), commuting (Cat 7), transport & distribution (Cat 4/9) and waste (Cat 5), computed from activity data, plus supplier-reported purchased goods (Cat 1) entered directly.
           </p>
           <p className="italic">
             Scope 3 is a BRSR P6 Leadership indicator, voluntary and not under reasonable assurance. This is a screening estimate; a certified GHG auditor should sign off on final disclosures.
