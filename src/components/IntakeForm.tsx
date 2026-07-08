@@ -25,6 +25,8 @@ interface IntakeFormProps {
   // When returning from a generated report to edit, the prior answers are
   // passed back in so the consultant doesn't have to re-enter everything.
   initialData?: IntakeFormData;
+  // Submit-button label (the demo uses "See the sample report").
+  submitLabel?: string;
 }
 
 const EXPORT_MARKETS: ExportMarket[] = ["EU", "USA", "UK", "Middle East", "Southeast Asia", "None"];
@@ -37,7 +39,7 @@ const SIZE_OPTIONS: { key: CompanySize; title: string; sub: string }[] = [
   { key: "unlisted_not_in_value_chain", title: "Unlisted",                  sub: "Not in a listed value chain" },
 ];
 
-export default function IntakeForm({ onSubmit, isLoading, initialData }: IntakeFormProps) {
+export default function IntakeForm({ onSubmit, isLoading, initialData, submitLabel = "Generate BRSR Readiness Report" }: IntakeFormProps) {
   const [formData, setFormData] = useState<IntakeFormData>(initialData ?? {
     companyName: "",
     industry: "textile_and_apparel",
@@ -313,7 +315,7 @@ export default function IntakeForm({ onSubmit, isLoading, initialData }: IntakeF
           </>
         ) : (
           <>
-            Generate BRSR Readiness Report
+            {submitLabel}
             <svg aria-hidden="true" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>

@@ -98,7 +98,7 @@ export default function ReportPage() {
       report={report}
       onHome={() => router.push("/")}
       onEdit={() => router.push("/start")}
-      onBack={() => { startNewClient(); router.push("/start"); }}
+      onBack={() => { syncActiveClient(); startNewClient(); router.push("/start"); }}
     />
   );
 }

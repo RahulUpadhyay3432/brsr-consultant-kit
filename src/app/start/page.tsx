@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import type { IntakeFormData } from "@/lib/types";
 import { generateReport } from "@/lib/report-generator";
-import { loadSavedForm, saveForm, syncActiveClient, listClients } from "@/lib/storage";
+import { loadSavedForm, saveForm, syncActiveClient, startNewClient, listClients } from "@/lib/storage";
 import IntakeForm from "@/components/IntakeForm";
 import { SaakshMark } from "@/components/SaakshMark";
 import { RestoreWorkButton } from "@/components/SessionBackup";
@@ -27,6 +27,12 @@ export default function StartPage() {
     setTimeout(() => {
       try {
         generateReport(formData); // validate it builds before we navigate
+        // If the submitted company differs from the one currently in session,
+        // this is a NEW client, so clear the active id first. Otherwise
+        // syncActiveClient would overwrite the previous client's saved record.
+        const prev = loadSavedForm();
+        const sameClient = prev && prev.companyName.trim().toLowerCase() === formData.companyName.trim().toLowerCase();
+        if (prev && !sameClient) startNewClient();
         saveForm(formData);
         syncActiveClient(); // save/update this client in the on-device "My clients" list
         router.push("/report");
