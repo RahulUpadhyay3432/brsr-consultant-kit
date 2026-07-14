@@ -623,6 +623,7 @@ function Overview({
         info={
           <InfoPopover title="What the readiness score means">
             <p>The gauge is a weighted score: a field counts fully when it&apos;s <strong className="text-white">Ready to pull</strong> from an existing filing, and half when it&apos;s partially covered (<strong className="text-white">Verify</strong>). Fields with no existing source (<strong className="text-white">Collect fresh</strong>) don&apos;t count yet, so the score rises as you gather data.</p>
+            <p>It&apos;s <strong className="text-white">predicted from the filings you entered</strong>, not read from the client&apos;s published report. Upload last year&apos;s report (in the Action Plan) to reflect what&apos;s actually disclosed.</p>
           </InfoPopover>
         }
         actions={
@@ -706,6 +707,21 @@ function Overview({
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Readiness is predicted from the filings entered; uploading the report gives the real read */}
+      <div className="rounded-xl border border-brand-100 bg-brand-50/70 px-4 py-3 flex items-start gap-3 flex-wrap sm:flex-nowrap">
+        <svg className="w-4 h-4 text-brand-600 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8h.01M11 12h1v4" /></svg>
+        <p className="min-w-0 flex-1 text-[13px] text-ink-body leading-relaxed">
+          <span className="font-semibold text-ink">This readiness is predicted</span> from the filings you selected, not read from the client&apos;s published report. If the client already discloses BRSR, upload last year&apos;s report, the tool scans it on your device and marks what&apos;s actually covered, so the score reflects reality.
+        </p>
+        <button
+          onClick={onGoToPlan}
+          className="no-print pressable flex-shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-white text-brand-700 border border-brand-200 hover:bg-brand-100 text-[13px] font-semibold px-3 py-2 transition-colors"
+        >
+          Upload the report
+          <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+        </button>
       </div>
 
       {/* General disclosures (Sections A & B), collection progress, not gap-analysed */}
