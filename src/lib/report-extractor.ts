@@ -21,6 +21,7 @@ export interface DetectionResult {
 const SIGNALS: Record<string, string[]> = {
   // ── P1 Ethics ──────────────────────────────────────────────────────────
   "P1-E1": ["training and awareness programme", "awareness programmes on"],
+  "P1-E2": ["compounding fee", "penalty/ fine", "penalty / fine", "fines, penalties"],
   "P1-E4": ["anti-corruption", "anti-bribery", "anti corruption", "anti bribery"],
   "P1-E6": ["conflict of interest"],
   "P1-L2": ["conflict of interests involving members of the board"],
@@ -37,6 +38,7 @@ const SIGNALS: Record<string, string[]> = {
   "P3-E4": ["equal opportunity policy", "persons with disabilities act"],
   "P3-E6": ["grievance redressal", "receive and redress grievances"],
   "P3-E7": ["recognised by the listed entity", "association(s) or unions", "trade union"],
+  "P3-E8": ["training given to employees", "skill upgradation", "skill up-gradation"],
   "P3-E10": ["occupational health and safety management system", "health and safety management system", "iso 45001"],
   "P3-E11": ["lost time injury", "ltifr", "safety related incidents", "high consequence work-related injury"],
 

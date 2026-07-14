@@ -111,6 +111,8 @@ export function useChecklistState(items: ChecklistItem[], general: GeneralLike, 
     } satisfies ChecklistPersist);
     // Mirror this progress into the active "My clients" record (on-device).
     syncActiveClient();
+    // Let the Overview recompute its readiness (it folds detected/collected in).
+    if (typeof window !== "undefined") window.dispatchEvent(new Event("saaksh:checklist-changed"));
   }, [hydrated, collectedIds, detection, uploadInfo, showOnlyDetected, calcInputs, scope3Inputs,
       statusFilter, principleFilter, typeFilter, search, collapsedSections]);
 

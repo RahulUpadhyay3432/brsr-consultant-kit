@@ -516,15 +516,16 @@ function DemoGuide({ onNavigate, onClose, onTour }: { onNavigate: (t: TabId) => 
 // ─── Overview, the report's dashboard, mapped to our data (no dummy data) ────
 
 // Per-principle status breakdown, derived from the live checklist.
-function principleBreakdown(report: ReportOutput) {
+function principleBreakdown(report: ReportOutput, docSet: Set<string> = new Set()) {
   const order = Object.keys(PRINCIPLES); // P1…P9
   const map = new Map<string, { ready: number; verify: number; collect: number; na: number; total: number }>();
   for (const item of report.checklist) {
     const row = map.get(item.principle) ?? { ready: 0, verify: 0, collect: 0, na: 0, total: 0 };
-    if (item.status === "already_tracked") row.ready++;
+    const documented = item.status === "already_tracked" || docSet.has(item.id);
+    if (item.status === "not_applicable") row.na++;
+    else if (documented) row.ready++;
     else if (item.status === "partially_tracked") row.verify++;
-    else if (item.status === "new_data_needed") row.collect++;
-    else row.na++;
+    else row.collect++;
     row.total++;
     map.set(item.principle, row);
   }
@@ -541,16 +542,36 @@ function Overview({
   onBack: () => void;
   demo?: boolean;
 }) {
-  const { alreadyTracked, partiallyTracked, newDataNeeded, notApplicable, totalDataPoints } = report.summary;
-  const applicableFields = totalDataPoints - notApplicable;
-  const sourced = alreadyTracked + partiallyTracked;       // fields with an existing source
-  const noFilings = sourced === 0;
+  const { notApplicable } = report.summary;
   const filings = report.selectedFilings.filter(f => f !== "none");
+  const noFilings = filings.length === 0;
 
-  // Weighted readiness: full credit for "Ready", half credit for "Verify".
-  const readyPct = applicableFields > 0
-    ? Math.round(((alreadyTracked + partiallyTracked * 0.5) / applicableFields) * 100)
-    : 0;
+  // Fields the consultant already has: detected in an uploaded report OR manually
+  // marked collected. Read from the persisted checklist state (real report only,
+  // the demo never reads the visitor's data). Populated in the effect below;
+  // Overview remounts on every tab switch, so it re-reads after an upload.
+  const [docSet, setDocSet] = useState<Set<string>>(new Set());
+
+  // Live status counts, folding the documented set into "ready": a documented
+  // field counts as ready even if the filings prediction had it as verify/collect.
+  // With an empty docSet this reproduces the filings-only summary exactly.
+  const live = (() => {
+    let ready = 0, verify = 0, collect = 0;
+    for (const it of report.checklist) {
+      if (it.status === "not_applicable") continue;
+      const documented = it.status === "already_tracked" || docSet.has(it.id);
+      if (documented) ready++;
+      else if (it.status === "partially_tracked") verify++;
+      else collect++;
+    }
+    const applicable = ready + verify + collect;
+    const pct = applicable > 0 ? Math.round(((ready + verify * 0.5) / applicable) * 100) : 0;
+    return { ready, verify, collect, applicable, pct };
+  })();
+  const applicableFields = live.applicable;
+  const readyPct = live.pct;
+  const sourced = live.ready + live.verify;   // fields with something (ready or partial)
+  const docCount = docSet.size;
 
   // Donut geometry.
   const R = 52, C = 2 * Math.PI * R;
@@ -566,13 +587,13 @@ function Overview({
     return () => cancelAnimationFrame(id);
   }, [readyPct]);
 
-  const breakdown = principleBreakdown(report);
+  const breakdown = principleBreakdown(report, docSet);
   const biggestGap = [...breakdown].sort((a, b) => b.collect - a.collect)[0];
 
   const stats = [
-    { n: alreadyTracked,   label: "Pull from filing", sub: "already in compliance docs", dot: "bg-emerald-500", num: alreadyTracked > 0 ? "text-emerald-600" : "text-stone-300" },
-    { n: partiallyTracked, label: "Verify & complete", sub: "partial data exists",        dot: "bg-amber-400",   num: partiallyTracked > 0 ? "text-amber-600"  : "text-stone-300" },
-    { n: newDataNeeded,    label: "Collect fresh",     sub: "no existing source",         dot: "bg-orange-500",  num: newDataNeeded > 0 ? "text-orange-600" : "text-stone-300" },
+    { n: live.ready,   label: "Ready to pull",    sub: docCount > 0 ? "from filings or your report" : "already in compliance docs", dot: "bg-emerald-500", num: live.ready   > 0 ? "text-emerald-600" : "text-stone-300" },
+    { n: live.verify,  label: "Verify & complete", sub: "partial data exists",       dot: "bg-amber-400",   num: live.verify  > 0 ? "text-amber-600"  : "text-stone-300" },
+    { n: live.collect, label: "Collect fresh",     sub: "no existing source",        dot: "bg-orange-500",  num: live.collect > 0 ? "text-orange-600" : "text-stone-300" },
   ];
 
   // Sections A & B aren't gap-analysed, but they're still collected work. Read
@@ -583,16 +604,27 @@ function Overview({
   const [abProgress, setAbProgress] = useState({ collected: 0, detected: 0 });
   useEffect(() => {
     if (demo) return; // the sample doesn't read the visitor's real progress
-    const saved = loadJSON<{ collectedIds?: string[]; detection?: { detectedIds?: string[] } | null } | null>(
-      STORAGE_KEYS.checklist, null
-    );
-    const abIds = new Set(
-      [...report.generalDisclosures.sectionA, ...report.generalDisclosures.sectionB].map(d => d.id)
-    );
-    const collected = (saved?.collectedIds ?? []).filter(id => abIds.has(id)).length;
-    const detected  = (saved?.detection?.detectedIds ?? []).filter(id => abIds.has(id)).length;
-    setAbProgress({ collected, detected });
-  }, [report]);
+    const read = () => {
+      const saved = loadJSON<{ collectedIds?: string[]; detection?: { detectedIds?: string[] } | null } | null>(
+        STORAGE_KEYS.checklist, null
+      );
+      const abIds = new Set(
+        [...report.generalDisclosures.sectionA, ...report.generalDisclosures.sectionB].map(d => d.id)
+      );
+      const collected = (saved?.collectedIds ?? []).filter(id => abIds.has(id)).length;
+      const detected  = (saved?.detection?.detectedIds ?? []).filter(id => abIds.has(id)).length;
+      setAbProgress({ collected, detected });
+      // Section-C documented set: detected in the upload OR marked collected.
+      const cIds = new Set(report.checklist.map(i => i.id));
+      const doc = new Set<string>();
+      for (const id of saved?.collectedIds ?? []) if (cIds.has(id)) doc.add(id);
+      for (const id of saved?.detection?.detectedIds ?? []) if (cIds.has(id)) doc.add(id);
+      setDocSet(doc);
+    };
+    read();
+    window.addEventListener("saaksh:checklist-changed", read);
+    return () => window.removeEventListener("saaksh:checklist-changed", read);
+  }, [report, demo]);
 
   // First-run "Start here" card, shown until dismissed; persists across reports.
   const [showIntro, setShowIntro] = useState(false);
@@ -622,8 +654,8 @@ function Overview({
         }
         info={
           <InfoPopover title="What the readiness score means">
-            <p>The gauge is a weighted score: a field counts fully when it&apos;s <strong className="text-white">Ready to pull</strong> from an existing filing, and half when it&apos;s partially covered (<strong className="text-white">Verify</strong>). Fields with no existing source (<strong className="text-white">Collect fresh</strong>) don&apos;t count yet, so the score rises as you gather data.</p>
-            <p>It&apos;s <strong className="text-white">predicted from the filings you entered</strong>, not read from the client&apos;s published report. Upload last year&apos;s report (in the Action Plan) to reflect what&apos;s actually disclosed.</p>
+            <p>The gauge is a weighted score: a field counts fully when it&apos;s <strong className="text-white">Ready to pull</strong> from a filing or already <strong className="text-white">documented</strong> in a report you upload, and half when it&apos;s partially covered (<strong className="text-white">Verify</strong>). Fields still to <strong className="text-white">collect fresh</strong> don&apos;t count yet.</p>
+            <p>It starts as a <strong className="text-white">prediction from the filings you entered</strong>. Upload last year&apos;s report (in the Action Plan) or mark fields collected, and the score rises to reflect what you actually have.</p>
           </InfoPopover>
         }
         actions={
@@ -670,25 +702,25 @@ function Overview({
           <div className="flex-1 min-w-0 w-full">
             <p className="text-[13.5px] text-stone-600 leading-relaxed mb-3">
               <strong className="font-semibold text-stone-900"><AnimatedNumber value={sourced} /></strong> of{" "}
-              <strong className="font-semibold text-stone-900"><AnimatedNumber value={applicableFields} /></strong> fields have an existing source ·{" "}
-              <strong className="font-semibold text-stone-900"><AnimatedNumber value={newDataNeeded} /></strong> need fresh collection
+              <strong className="font-semibold text-stone-900"><AnimatedNumber value={applicableFields} /></strong> fields covered {docCount > 0 && <>(incl. {docCount} from your report) </>}·{" "}
+              <strong className="font-semibold text-stone-900"><AnimatedNumber value={live.collect} /></strong> to collect fresh
             </p>
 
             <div className="flex items-stretch gap-1 h-3 mb-3">
-              {alreadyTracked > 0 &&
-                <div className="bg-emerald-500 rounded-full min-w-[10px]" style={{ flexGrow: alreadyTracked }} title={`Pull from filing: ${alreadyTracked}`} />}
-              {partiallyTracked > 0 &&
-                <div className="bg-amber-400 rounded-full min-w-[10px]" style={{ flexGrow: partiallyTracked }} title={`Verify & complete: ${partiallyTracked}`} />}
-              {newDataNeeded > 0 &&
-                <div className="bg-orange-500 rounded-full min-w-[10px]" style={{ flexGrow: newDataNeeded }} title={`Collect fresh: ${newDataNeeded}`} />}
+              {live.ready > 0 &&
+                <div className="bg-emerald-500 rounded-full min-w-[10px]" style={{ flexGrow: live.ready }} title={`Pull from filing: ${live.ready}`} />}
+              {live.verify > 0 &&
+                <div className="bg-amber-400 rounded-full min-w-[10px]" style={{ flexGrow: live.verify }} title={`Verify & complete: ${live.verify}`} />}
+              {live.collect > 0 &&
+                <div className="bg-orange-500 rounded-full min-w-[10px]" style={{ flexGrow: live.collect }} title={`Collect fresh: ${live.collect}`} />}
               {notApplicable > 0 &&
                 <div className="bg-slate-200 rounded-full min-w-[10px]" style={{ flexGrow: notApplicable }} title={`Not applicable: ${notApplicable}`} />}
             </div>
 
             <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-[12px]">
-              <Legend dot="bg-emerald-500" label="Ready"   n={alreadyTracked} />
-              <Legend dot="bg-amber-400"   label="Verify"  n={partiallyTracked} />
-              <Legend dot="bg-orange-500"  label="Collect" n={newDataNeeded} />
+              <Legend dot="bg-emerald-500" label="Ready"   n={live.ready} />
+              <Legend dot="bg-amber-400"   label="Verify"  n={live.verify} />
+              <Legend dot="bg-orange-500"  label="Collect" n={live.collect} />
               {notApplicable > 0 && <Legend dot="bg-slate-200" label="N/A" n={notApplicable} />}
             </div>
           </div>
@@ -809,7 +841,7 @@ function Overview({
           {noFilings ? (
             <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3">
               <p className="text-[13px] text-amber-800 leading-relaxed">
-                No compliance filings selected, all {newDataNeeded} fields show as &quot;Collect fresh.&quot; Most companies
+                No compliance filings selected, all {live.collect} fields show as &quot;Collect fresh.&quot; Most companies
                 already cover 15–25 of these in PCB consents, EPR registrations, or PAT certificates.
               </p>
               <button onClick={onBack}
@@ -822,9 +854,9 @@ function Overview({
             </div>
           ) : (
             <ul className="space-y-3.5">
-              {alreadyTracked > 0 && (
+              {live.ready > 0 && (
                 <StartStep dot="bg-emerald-500" onClick={onGoToPlan}>
-                  <strong className="font-semibold text-stone-800">Pull {alreadyTracked} ready field{alreadyTracked > 1 ? "s" : ""}</strong>{" "}
+                  <strong className="font-semibold text-stone-800">Pull {live.ready} ready field{live.ready > 1 ? "s" : ""}</strong>{" "}
                   straight from existing filings, cite the source and move on.
                 </StartStep>
               )}
@@ -833,9 +865,9 @@ function Overview({
                   <strong className="font-semibold text-stone-800">Close the {biggestGap.id} gap</strong>{" "}, {biggestGap.collect} fields to collect in {biggestGap.name}, the largest gap.
                 </StartStep>
               )}
-              {partiallyTracked > 0 && (
+              {live.verify > 0 && (
                 <StartStep dot="bg-amber-400" onClick={onGoToPlan}>
-                  <strong className="font-semibold text-stone-800">Verify {partiallyTracked} partial field{partiallyTracked > 1 ? "s" : ""}</strong>{" "}
+                  <strong className="font-semibold text-stone-800">Verify {live.verify} partial field{live.verify > 1 ? "s" : ""}</strong>{" "}
                   where a filing covers most of the disclosure but one piece is missing.
                 </StartStep>
               )}
@@ -845,7 +877,7 @@ function Overview({
       </div>
 
       {/* Contextual Pro upsell, anchored to the collect-fresh count */}
-      <ProUpsell count={newDataNeeded} demo={demo} />
+      <ProUpsell count={live.collect} demo={demo} />
     </div>
   );
 }
