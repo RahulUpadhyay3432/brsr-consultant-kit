@@ -10,7 +10,9 @@ function dash(v: string | null | undefined): string {
   return !v || v === ", " ? "" : v;
 }
 
-// BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD, one row per mapping, every framework column.
+// BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD ↔ ESRS, one row per mapping, every framework
+// column. TNFD and ESRS come from sparse overlays, so those cells are blank on
+// rows where no counterpart is claimed.
 export function buildFrameworkExportRows(mappings: FrameworkMapping[]): string[][] {
   const header = [
     "BRSR ID", "BRSR disclosure", "BRSR section",
@@ -18,6 +20,7 @@ export function buildFrameworkExportRows(mappings: FrameworkMapping[]): string[]
     "TCFD pillar", "TCFD detail",
     "IFRS S1/S2",
     "TNFD pillar", "TNFD detail",
+    "ESRS standard", "ESRS detail",
     "How the frameworks compare",
   ];
   const rows = mappings.map((m) => [
@@ -31,13 +34,17 @@ export function buildFrameworkExportRows(mappings: FrameworkMapping[]): string[]
     dash(m.ifrs_reference),
     dash(m.tnfd_pillar),
     dash(m.tnfd_detail),
+    dash(m.esrs_standard),
+    dash(m.esrs_detail),
     dash(m.notes),
   ]);
   return [header, ...rows];
 }
 
-// Principle-level MSCI / S&P CSA (DJSI) ratings crosswalk. Mirrors the shape
-// EsgRatingsMapper renders; list fields are semicolon-joined for the spreadsheet.
+// Principle-level MSCI / S&P CSA (DJSI) / CDP / EcoVadis assessment crosswalk.
+// Mirrors the shape EsgRatingsMapper renders; list fields are semicolon-joined for
+// the spreadsheet. CDP is environmental only, so cdp_areas is empty on the
+// workforce/human-rights/community/consumer principles, exported as blank.
 export interface RatingMappingRow {
   brsr_principle: string;
   principle_name: string;
@@ -45,6 +52,9 @@ export interface RatingMappingRow {
   msci_key_issues: string[];
   djsi_dimension: string;
   djsi_criteria: string[];
+  cdp_areas: string[];
+  ecovadis_theme: string;
+  ecovadis_criteria: string[];
   note: string;
 }
 
@@ -53,6 +63,8 @@ export function buildRatingsExportRows(ratings: RatingMappingRow[]): string[][] 
     "BRSR principle", "Principle name",
     "MSCI pillar", "MSCI Key Issues",
     "DJSI dimension", "DJSI / CSA criteria",
+    "CDP disclosure areas",
+    "EcoVadis theme", "EcoVadis criteria",
     "Note",
   ];
   const rows = ratings.map((r) => [
@@ -62,6 +74,9 @@ export function buildRatingsExportRows(ratings: RatingMappingRow[]): string[][] 
     r.msci_key_issues.join("; "),
     r.djsi_dimension,
     r.djsi_criteria.join("; "),
+    (r.cdp_areas ?? []).join("; "),
+    dash(r.ecovadis_theme),
+    (r.ecovadis_criteria ?? []).join("; "),
     r.note,
   ]);
   return [header, ...rows];

@@ -4,9 +4,9 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 
 export const metadata: Metadata = {
-  title: "Cross-framework mapping, BRSR to GRI, TCFD, IFRS, TNFD | Saaksh",
+  title: "Cross-framework mapping, BRSR to GRI, TCFD, IFRS, TNFD, ESRS | Saaksh",
   description:
-    "Map your client's BRSR data across GRI, TCFD, IFRS S1/S2, TNFD and the MSCI / DJSI rating criteria, collect once, report to many frameworks. Free and on-device.",
+    "Map your client's BRSR data across GRI, TCFD, IFRS S1/S2, TNFD, ESRS (CSRD) and the MSCI, DJSI, CDP and EcoVadis assessments, collect once, report to many frameworks. Free and on-device.",
 };
 
 const FRAMEWORKS = [
@@ -14,6 +14,7 @@ const FRAMEWORKS = [
   { name: "TCFD", full: "Climate-related financial disclosures", tone: "#7B6FE0" },
   { name: "IFRS S1 / S2", full: "ISSB sustainability & climate standards", tone: "#0E7A56" },
   { name: "TNFD", full: "Nature-related disclosures", tone: "#0E7A56" },
+  { name: "ESRS", full: "EU CSRD reporting standards", tone: "#5B5BD6" },
   { name: "MSCI", full: "ESG rating key issues", tone: "#7B6FE0" },
   { name: "S&P / DJSI", full: "Corporate Sustainability Assessment", tone: "#C2871B" },
 ];
@@ -41,7 +42,7 @@ export default function AlignmentFeaturePage() {
             Collect once, report to every framework
           </h1>
           <p className="text-lg text-white/70 max-w-[640px] leading-relaxed">
-            Your client&apos;s BRSR answers already contain most of what GRI, TCFD, IFRS S1/S2 and TNFD ask for. Saaksh maps each BRSR disclosure to its equivalent across the major frameworks, so one data-collection effort feeds many reports.
+            Your client&apos;s BRSR answers already contain most of what GRI, TCFD, IFRS S1/S2, TNFD and the EU&apos;s ESRS ask for. Saaksh maps each BRSR disclosure to its equivalent across the major frameworks, so one data-collection effort feeds many reports.
           </p>
         </div>
       </section>
@@ -100,7 +101,7 @@ export default function AlignmentFeaturePage() {
           <section className="rounded-2xl bg-tint border border-line p-8">
             <h2 className="font-display text-2xl text-ink mb-3">Export the whole crosswalk</h2>
             <p className="text-ink-muted text-[15px] max-w-[620px] leading-relaxed">
-              In the readiness report&apos;s Alignment tab, download the full BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD mapping (and the MSCI / DJSI ratings alignment) as a CSV, on-device, nothing uploaded. Hand it to a client who reports under more than one framework.
+              In the readiness report&apos;s Alignment tab, download the full BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD ↔ ESRS mapping (and the MSCI, DJSI, CDP and EcoVadis ratings alignment) as a CSV, on-device, nothing uploaded. Hand it to a client who reports under more than one framework.
             </p>
           </section>
 

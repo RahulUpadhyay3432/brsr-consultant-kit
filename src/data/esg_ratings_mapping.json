@@ -1,5 +1,11 @@
 {
-  "source": "Crosswalk authored by Saaksh from the MSCI ESG Ratings Key Issue Framework (10 themes / 35 Key Issues across 3 pillars) and the S&P Global Corporate Sustainability Assessment (CSA), which underpins the Dow Jones Sustainability Indices (DJSI). Mapped at the BRSR principle level, the granularity at which these ratings actually assess companies.",
+  "source": "Crosswalk authored by Saaksh from the MSCI ESG Ratings Key Issue Framework (10 themes / 35 Key Issues across 3 pillars), the S&P Global Corporate Sustainability Assessment (CSA) which underpins the Dow Jones Sustainability Indices (DJSI), CDP's full corporate questionnaire, and the EcoVadis ratings methodology. Mapped at the BRSR principle level, the granularity at which these assessments actually score companies.",
+  "note": "Indicative, a consultant aid to show which BRSR data feeds which assessment. It is not an official MSCI / S&P / CDP / EcoVadis mapping, and each scheme revises its questionnaire and criteria periodically (CDP restructures annually). Confirm against the current questionnaire before relying on it for a submission.",
+  "primary_sources": [
+    { "label": "CDP, Full Corporate Questionnaire Overview (v1.0, released 20 April 2026)", "url": "https://cdn.cdp.net/cdp-production/cms/guidance_docs/pdfs/000/005/685/original/CDP_Full_Corporate_Questionnaire_Overview_2025.pdf" },
+    { "label": "CDP, Question Bank", "url": "https://www.cdp.net/en/disclose/question-bank" },
+    { "label": "EcoVadis, Ratings Methodology Overview and Principles", "url": "https://resources.ecovadis.com/whitepapers/ecovadis-ratings-methodology-overview-and-principles-2022-neutral" }
+  ],
   "ratings": {
     "msci": {
       "name": "MSCI ESG Ratings",
@@ -8,6 +14,14 @@
     "djsi": {
       "name": "S&P Global CSA / DJSI",
       "what": "A best-in-class score from the annual Corporate Sustainability Assessment (CSA); the top performers per industry enter the Dow Jones Sustainability Indices."
+    },
+    "cdp": {
+      "name": "CDP",
+      "what": "An annual environmental disclosure, scored A to D-. Climate change, forests and water security run through one integrated corporate questionnaire and are the scored issues; biodiversity, plastics and ocean are disclosed but unscored. CDP is environmental only, so it never reaches BRSR's workforce, human-rights, community or consumer principles."
+    },
+    "ecovadis": {
+      "name": "EcoVadis",
+      "what": "A supplier sustainability rating scored out of 100 (with medals), across four themes and 21 criteria. Every theme is scored on Policies (25%), Actions (40%) and Results (35%)."
     }
   },
   "mappings": [
@@ -18,7 +32,10 @@
       "msci_key_issues": ["Business Ethics", "Corporate Governance", "Tax Transparency"],
       "djsi_dimension": "Governance & Economic",
       "djsi_criteria": ["Corporate Governance", "Codes of Business Conduct", "Risk & Crisis Management", "Tax Strategy"],
-      "note": "BRSR P1 anti-bribery, board oversight and penalty disclosures feed the Governance pillar that MSCI scores for every company."
+      "cdp_areas": ["Governance"],
+      "ecovadis_theme": "Ethics",
+      "ecovadis_criteria": ["Corruption", "Anticompetitive practices", "Responsible information management"],
+      "note": "BRSR P1 anti-bribery, board oversight and penalty disclosures feed the Governance pillar that MSCI scores for every company. The board-oversight answer also feeds CDP's Governance module, and the anti-corruption policy is the whole of the EcoVadis Ethics theme."
     },
     {
       "brsr_principle": "P2",
@@ -27,7 +44,10 @@
       "msci_key_issues": ["Product Carbon Footprint", "Opportunities in Clean Tech", "Packaging Material & Waste", "Raw Material Sourcing"],
       "djsi_dimension": "Environmental",
       "djsi_criteria": ["Product Stewardship", "Operational Eco-Efficiency", "Supply Chain Management"],
-      "note": "LCA, recycled-input and EPR data support MSCI product-impact issues and the CSA Product Stewardship criterion."
+      "cdp_areas": ["Business strategy", "Environmental performance – Plastics"],
+      "ecovadis_theme": "Environment / Sustainable Procurement",
+      "ecovadis_criteria": ["Product use", "Product end-of-life", "Materials, chemicals & waste", "Supplier environmental practices"],
+      "note": "LCA, recycled-input and EPR data support MSCI product-impact issues and the CSA Product Stewardship criterion. Packaging and EPR feed CDP's plastics disclosure; sustainable sourcing (P2-E2) is the EcoVadis Sustainable Procurement theme."
     },
     {
       "brsr_principle": "P3",
@@ -36,7 +56,10 @@
       "msci_key_issues": ["Labor Management", "Health & Safety", "Human Capital Development"],
       "djsi_dimension": "Social",
       "djsi_criteria": ["Occupational Health & Safety", "Human Capital Development", "Talent Attraction & Retention", "Labor Practice Indicators"],
-      "note": "BRSR P3 safety, benefits and training metrics map almost one-to-one to the CSA Human Capital criteria."
+      "cdp_areas": [],
+      "ecovadis_theme": "Labour & Human Rights",
+      "ecovadis_criteria": ["Employee health & safety", "Working conditions", "Social dialogue", "Career management & training"],
+      "note": "BRSR P3 safety, benefits and training metrics map almost one-to-one to the CSA Human Capital criteria and to four EcoVadis Labour criteria. CDP does not cover workforce topics."
     },
     {
       "brsr_principle": "P4",
@@ -45,7 +68,10 @@
       "msci_key_issues": ["Community Relations"],
       "djsi_dimension": "Governance & Economic",
       "djsi_criteria": ["Materiality", "Stakeholder Engagement", "Customer Relationship Management"],
-      "note": "Structured stakeholder identification and materiality underpin the CSA Materiality criterion that gates much of the assessment."
+      "cdp_areas": ["Business strategy"],
+      "ecovadis_theme": "Labour & Human Rights",
+      "ecovadis_criteria": ["External stakeholders human rights"],
+      "note": "Structured stakeholder identification and materiality underpin the CSA Materiality criterion that gates much of the assessment. CDP picks this up only where you engage the value chain on environmental issues; the EcoVadis overlap is narrow."
     },
     {
       "brsr_principle": "P5",
@@ -54,7 +80,10 @@
       "msci_key_issues": ["Supply Chain Labor Standards", "Controversial Sourcing", "Labor Management"],
       "djsi_dimension": "Social",
       "djsi_criteria": ["Human Rights", "Labor Practice Indicators", "Supply Chain Management"],
-      "note": "BRSR P5 human-rights due diligence and supplier audits feed MSCI supply-chain issues and the CSA Human Rights criterion."
+      "cdp_areas": [],
+      "ecovadis_theme": "Labour & Human Rights / Sustainable Procurement",
+      "ecovadis_criteria": ["Child labour, forced labour & human trafficking", "Diversity, discrimination & harassment", "External stakeholders human rights", "Supplier social practices"],
+      "note": "BRSR P5 human-rights due diligence and supplier audits feed MSCI supply-chain issues, the CSA Human Rights criterion, and both the Labour and Sustainable Procurement themes in EcoVadis. CDP does not cover human rights."
     },
     {
       "brsr_principle": "P6",
@@ -63,7 +92,17 @@
       "msci_key_issues": ["Carbon Emissions", "Water Stress", "Toxic Emissions & Waste", "Electronic Waste", "Biodiversity & Land Use", "Opportunities in Renewable Energy"],
       "djsi_dimension": "Environmental",
       "djsi_criteria": ["Climate Strategy", "Operational Eco-Efficiency", "Water Related Risks", "Biodiversity", "Environmental Policy & Management System"],
-      "note": "The richest overlap: BRSR P6 energy, GHG, water and waste data directly drive both MSCI's Climate/Natural-Capital themes and the CSA Environmental dimension."
+      "cdp_areas": [
+        "Identification, assessment & management of dependencies, impacts, risks & opportunities",
+        "Disclosure of dependencies, impacts, risks & opportunities",
+        "Environmental performance – Climate change",
+        "Environmental performance – Water security",
+        "Environmental performance – Forests",
+        "Environmental performance – Biodiversity"
+      ],
+      "ecovadis_theme": "Environment",
+      "ecovadis_criteria": ["Energy consumption & GHGs", "Water", "Biodiversity", "Local & accidental pollution", "Materials, chemicals & waste"],
+      "note": "The richest overlap by far: BRSR P6 energy, GHG, water and waste data drive MSCI's Climate/Natural-Capital themes, the CSA Environmental dimension, almost every scored CDP module, and the EcoVadis Environment theme. Collect P6 once and it feeds all four."
     },
     {
       "brsr_principle": "P7",
@@ -72,7 +111,10 @@
       "msci_key_issues": ["Business Ethics (Corporate Behavior)"],
       "djsi_dimension": "Governance & Economic",
       "djsi_criteria": ["Policy Influence"],
-      "note": "BRSR P7 trade-association and advocacy disclosures map to the CSA Policy Influence criterion, increasingly scrutinised for climate-policy alignment."
+      "cdp_areas": ["Business strategy"],
+      "ecovadis_theme": "Environment",
+      "ecovadis_criteria": ["Environmental services & advocacy"],
+      "note": "BRSR P7 trade-association and advocacy disclosures map to the CSA Policy Influence criterion, increasingly scrutinised for climate-policy alignment. CDP asks whether your policy engagement is consistent with your climate commitments."
     },
     {
       "brsr_principle": "P8",
@@ -81,7 +123,10 @@
       "msci_key_issues": ["Community Relations", "Access to Finance / Health Care / Communications"],
       "djsi_dimension": "Social",
       "djsi_criteria": ["Social Impacts on Communities", "Corporate Citizenship & Philanthropy"],
-      "note": "CSR, local employment and community-impact data support MSCI social-opportunity issues and the CSA community criteria."
+      "cdp_areas": [],
+      "ecovadis_theme": "Sustainable Procurement",
+      "ecovadis_criteria": ["Supplier social practices"],
+      "note": "CSR, local employment and community-impact data support MSCI social-opportunity issues and the CSA community criteria. Neither CDP nor EcoVadis scores community investment directly; only the local/MSME sourcing part reaches EcoVadis."
     },
     {
       "brsr_principle": "P9",
@@ -90,7 +135,10 @@
       "msci_key_issues": ["Privacy & Data Security", "Product Safety & Quality", "Chemical Safety"],
       "djsi_dimension": "Governance & Economic",
       "djsi_criteria": ["Information Security / Cybersecurity", "Customer Relationship Management", "Product Stewardship"],
-      "note": "BRSR P9 data-privacy, product-safety and grievance disclosures feed MSCI Product-Liability issues and the CSA cyber & customer criteria."
+      "cdp_areas": [],
+      "ecovadis_theme": "Environment / Ethics",
+      "ecovadis_criteria": ["Customer health & safety", "Responsible information management"],
+      "note": "BRSR P9 data-privacy, product-safety and grievance disclosures feed MSCI Product-Liability issues and the CSA cyber & customer criteria. In EcoVadis, product safety sits under Environment and data privacy under Ethics. CDP does not cover consumer topics."
     }
   ]
 }

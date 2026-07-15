@@ -34,16 +34,25 @@ interface CctsMap { obligated: boolean; partial?: boolean; sectors: string[]; no
 
 const CBAM = cbamData as unknown as {
   _meta: { name: string; what: string; status_note: string; primary_sources: RegSource[] };
+  covered_goods: string[];
   industry_map: Partial<Record<string, CbamMap>>;
   timeline: RegTimelineItem[];
   checklist: RegChecklistItem[];
 };
 const CCTS = cctsData as unknown as {
   _meta: { name: string; what: string; status_note: string; primary_sources: RegSource[] };
+  obligated_sectors: string[];
   industry_map: Partial<Record<string, CctsMap>>;
   timeline: RegTimelineItem[];
   checklist: RegChecklistItem[];
 };
+
+// The scope lists are read from the JSON, never restated inline, so the reason
+// strings can't drift out of sync with the data that decides the verdict.
+const CBAM_GOODS = CBAM.covered_goods.join(", ").toLowerCase();
+const CCTS_SECTORS = CCTS.obligated_sectors.join(", ").toLowerCase();
+const CBAM_GOODS_COUNT = CBAM.covered_goods.length;
+const CCTS_SECTORS_COUNT = CCTS.obligated_sectors.length;
 
 // CBAM bites only when a covered-good producer actually exports to the EU.
 export function assessCbam(industry: IndustryType, exportMarkets: ExportMarket[]): RegAssessment {
@@ -60,10 +69,10 @@ export function assessCbam(industry: IndustryType, exportMarkets: ExportMarket[]
     reason = `Your sector produces CBAM-covered goods (${map.goods.join(", ")}), but no EU export market is selected. CBAM bites only on goods entering the EU, watch this if you begin (or already do) export to the EU.`;
   } else if (!map?.covered && exportsToEU) {
     verdict = "may_apply";
-    reason = "You export to the EU, but your sector isn't among the six CBAM-covered goods (cement, iron & steel, aluminium, fertilisers, electricity, hydrogen). Confirm none of your specific products fall under a covered category.";
+    reason = `You export to the EU, but your sector isn't among the ${CBAM_GOODS_COUNT} CBAM-covered goods (${CBAM_GOODS}). Confirm none of your specific products fall under a covered category.`;
   } else {
     verdict = "unlikely";
-    reason = "Your sector isn't among the six CBAM-covered goods and no EU export is selected, so CBAM is unlikely to apply. Re-check if your product mix or export markets change.";
+    reason = `Your sector isn't among the ${CBAM_GOODS_COUNT} CBAM-covered goods (${CBAM_GOODS}) and no EU export is selected, so CBAM is unlikely to apply. Re-check if your product mix or export markets change.`;
   }
 
   return {
@@ -93,7 +102,7 @@ export function assessCcts(industry: IndustryType): RegAssessment {
     reason = `Parts of your sector are notified under CCTS (${map.sectors.join(", ")})${map.note ? `, ${map.note}` : ""}. Confirm whether the specific plant is an obligated entity.`;
   } else {
     verdict = "unlikely";
-    reason = "Your sector isn't among the nine notified CCTS GEI-target sectors (aluminium, cement, chlor-alkali, pulp & paper, iron & steel, fertiliser, petrochemicals, petroleum refinery, textile), so CCTS obligation is unlikely.";
+    reason = `Your sector isn't among the ${CCTS_SECTORS_COUNT} notified CCTS GEI-target sectors (${CCTS_SECTORS}), so CCTS obligation is unlikely.`;
   }
 
   return {

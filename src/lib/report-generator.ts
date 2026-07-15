@@ -13,6 +13,7 @@ import brsrData from "@/data/brsr_data_points.json";
 import complianceData from "@/data/compliance_overlaps.json";
 import frameworkData from "@/data/framework_mappings.json";
 import tnfdData from "@/data/tnfd_mappings.json";
+import esrsData from "@/data/esrs_mappings.json";
 import industryData from "@/data/industry_material_topics.json";
 
 // Normalize compliance overlaps (JSON has inconsistent nesting)
@@ -417,9 +418,12 @@ function getGenericMaterialityTopics(): MaterialityTopic[] {
 export function generateFrameworkMappings(_formData?: IntakeFormData): FrameworkMapping[] {
   const mappings = (frameworkData as any).mappings as FrameworkMapping[];
   const tnfd = (tnfdData as any).mappings as Record<string, { pillar: string; detail: string }>;
+  const esrs = (esrsData as any).mappings as Record<string, { standard: string; detail: string }>;
 
   // Return all mappings, the UI will handle filtering. Attach the indicative
-  // TNFD crosswalk where the disclosure is nature-related.
+  // TNFD crosswalk where the disclosure is nature-related, and the indicative
+  // ESRS/CSRD crosswalk where there's a clean counterpart. Both overlays are
+  // sparse, so the object is built field-by-field rather than spread.
   return mappings.map((m) => ({
     brsr_id: m.brsr_id,
     brsr_label: m.brsr_label,
@@ -431,6 +435,8 @@ export function generateFrameworkMappings(_formData?: IntakeFormData): Framework
     ifrs_reference: m.ifrs_reference,
     tnfd_pillar: tnfd[m.brsr_id]?.pillar,
     tnfd_detail: tnfd[m.brsr_id]?.detail,
+    esrs_standard: esrs[m.brsr_id]?.standard,
+    esrs_detail: esrs[m.brsr_id]?.detail,
     notes: m.notes,
   }));
 }

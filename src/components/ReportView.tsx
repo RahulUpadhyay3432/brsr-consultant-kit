@@ -927,7 +927,7 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
     return {
       rows: buildRatingsExportRows(ratings),
       file: "brsr-ratings-alignment",
-      title: "BRSR ESG-ratings alignment (MSCI & DJSI)",
+      title: "BRSR ESG-ratings alignment (MSCI, DJSI, CDP & EcoVadis)",
     };
   }
 
@@ -952,6 +952,7 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
   const withTCFD = mappings.filter(m => m.tcfd_pillar    && m.tcfd_pillar    !== ", ").length;
   const withIFRS = mappings.filter(m => m.ifrs_reference && m.ifrs_reference !== ", ").length;
   const withTNFD = mappings.filter(m => m.tnfd_pillar    && m.tnfd_pillar    !== ", ").length;
+  const withESRS = mappings.filter(m => m.esrs_standard  && m.esrs_standard  !== ", ").length;
   const ratingsCount = (esgRatingsData as { mappings?: unknown[] }).mappings?.length ?? 9;
 
   const subTabs = [
@@ -965,6 +966,7 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
     { n: withTCFD, label: "TCFD aligned",   tone: "text-violet-600"  },
     { n: withIFRS, label: "IFRS S1/S2",     tone: "text-emerald-600" },
     { n: withTNFD, label: "TNFD (nature)",  tone: "text-teal-600"    },
+    { n: withESRS, label: "ESRS (CSRD)",    tone: "text-indigo-600"  },
   ];
 
   return (
@@ -973,11 +975,11 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
       <ViewHeader
         tabId="alignment"
         title="Alignment"
-        subtitle="How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2 and TNFD (nature), and to the MSCI & DJSI rating frameworks. Collect once, report across all."
+        subtitle="How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2, TNFD (nature) and ESRS (CSRD), and how each principle feeds the MSCI, DJSI, CDP and EcoVadis assessments. Collect once, report across all."
         info={
           <InfoPopover title="Collect once, report across frameworks">
-            <p>BRSR overlaps heavily with the global frameworks. This crosswalk maps every disclosure to its counterpart in GRI, TCFD, IFRS S1/S2 and TNFD, and to the MSCI and S&amp;P/DJSI rating criteria, so one round of BRSR data can feed the client&apos;s other reports and rating submissions.</p>
-            <p><strong className="text-white">How to use it:</strong> switch between Reporting frameworks and ESG ratings, expand any row for the exact reference (e.g. GRI 305, IFRS S2), and export the crosswalk to CSV or Word.</p>
+            <p>BRSR overlaps heavily with the global frameworks. This crosswalk maps every disclosure to its counterpart in GRI, TCFD, IFRS S1/S2, TNFD and ESRS (the standards behind the EU's CSRD), and shows how each principle feeds the MSCI, S&amp;P/DJSI, CDP and EcoVadis assessments, so one round of BRSR data can feed the client&apos;s other reports, disclosures and rating submissions.</p>
+            <p><strong className="text-white">How to use it:</strong> switch between Reporting frameworks and ESG ratings, pick the one framework you're reporting to for a focused crosswalk, expand any row for the exact reference (e.g. GRI 305, IFRS S2, ESRS E1), and export to CSV or Word.</p>
             <p className="text-white/55">Indicative, not a certified equivalence, confirm the exact clause against each framework&apos;s current version before a filing.</p>
           </InfoPopover>
         }
@@ -987,7 +989,7 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
               onClick={exportActive}
               className="inline-flex items-center gap-1.5 text-[13.5px] font-medium text-brand-700 bg-brand-50
                 border border-brand-100 hover:bg-brand-100 px-2.5 py-1.5 rounded-lg transition-colors pressable whitespace-nowrap"
-              title={sub === "frameworks" ? "Download the full BRSR↔GRI↔TCFD↔IFRS↔TNFD mapping as a spreadsheet" : "Download the MSCI & DJSI ratings alignment as a spreadsheet"}
+              title={sub === "frameworks" ? "Download the full BRSR↔GRI↔TCFD↔IFRS↔TNFD↔ESRS mapping as a spreadsheet" : "Download the MSCI, DJSI, CDP & EcoVadis alignment as a spreadsheet"}
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2" />

@@ -114,6 +114,12 @@ export interface FrameworkMapping {
   // indicative tnfd_mappings.json overlay. Undefined where there's no mapping.
   tnfd_pillar?: string;
   tnfd_detail?: string;
+  // ESRS (the reporting standards behind the EU's CSRD); from the indicative
+  // esrs_mappings.json overlay. Sparse: undefined where we don't claim a clean
+  // counterpart. This is a crosswalk only, CSRD applicability depends on EU
+  // turnover/headcount thresholds the intake doesn't collect.
+  esrs_standard?: string;
+  esrs_detail?: string;
   notes: string;
 }
 

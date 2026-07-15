@@ -1,34 +1,49 @@
 {
   "_meta": {
     "name": "Carbon Credit Trading Scheme (CCTS)",
-    "what": "India's compliance carbon market. Obligated entities in notified energy-intensive sectors are given a greenhouse-gas emission-intensity (GEI) target; those that beat it earn tradable Carbon Credit Certificates, while those that miss it must buy certificates or pay a penalty.",
-    "status_note": "This is a readiness check, whether your client's sector is obligated and what to prepare. It is not a CCTS compliance calculation; the GEI baseline, target gap and credit valuation are a separate step.",
+    "what": "India's compliance carbon market, notified 28 June 2023 under the Energy Conservation Act, 2001 (as amended in 2022). The Ministry of Power oversees it and the Bureau of Energy Efficiency (BEE) is the designated administrator. Obligated entities in notified energy-intensive sectors are given a greenhouse-gas emission-intensity (GEI) target; those that beat it earn tradable Carbon Credit Certificates (CCCs), while those that miss it must buy and surrender certificates to comply.",
+    "status_note": "This is a readiness check, whether your client's sector is obligated and what to prepare. It is not a CCTS compliance calculation; the GEI baseline, target gap and certificate valuation are a separate step that needs the entity's verified energy and production data.",
     "primary_sources": [
+      { "label": "ICAP, India adopts regulations for its planned compliance carbon market", "url": "https://icapcarbonaction.com/en/news/india-adopts-regulations-planned-compliance-carbon-market" },
       { "label": "ICAP, Compliance obligations under India's CCTS enter force for seven sectors", "url": "https://icapcarbonaction.com/en/news/compliance-obligations-under-indias-carbon-credit-trading-scheme-enter-force-seven-sectors" },
-      { "label": "ICAP, India notifies emission-intensity targets for nine sectors under the CCTS", "url": "https://icapcarbonaction.com/en/news/india-notifies-emission-intensity-targets-nine-sectors-under-carbon-credit-trading-scheme" }
+      { "label": "ICAP, India notifies emission-intensity targets for nine sectors under the CCTS", "url": "https://icapcarbonaction.com/en/news/india-notifies-emission-intensity-targets-nine-sectors-under-carbon-credit-trading-scheme" },
+      { "label": "AZB & Partners, Detailed Procedures issued under the Carbon Credit Trading Scheme (BEE, July 2024)", "url": "https://www.azbpartners.com/bank/detailed-procedures-issued-under-the-carbon-credit-trading-scheme/" }
     ]
   },
   "obligated_sectors": ["Aluminium", "Cement", "Chlor-Alkali", "Pulp & Paper", "Iron & Steel", "Fertiliser", "Petrochemicals", "Petroleum refinery", "Textile"],
+  "sector_detail": [
+    { "sector": "Aluminium", "scope": "Refinery and smelter units" },
+    { "sector": "Cement", "scope": "Cement manufacturing units" },
+    { "sector": "Chlor-Alkali", "scope": "Chlor-alkali plants" },
+    { "sector": "Fertiliser", "scope": "Fertiliser manufacturing units" },
+    { "sector": "Iron & Steel", "scope": "Integrated steel and sponge-iron units" },
+    { "sector": "Pulp & Paper", "scope": "Pulp and paper mills" },
+    { "sector": "Petrochemicals", "scope": "Petrochemical units" },
+    { "sector": "Petroleum refinery", "scope": "Refineries" },
+    { "sector": "Textile", "scope": "Composite, fibre, spinning and processing units" }
+  ],
   "industry_map": {
-    "aluminium": { "obligated": true, "sectors": ["Aluminium"] },
-    "steel_and_metals": { "obligated": true, "sectors": ["Iron & Steel", "Aluminium"] },
+    "steel_and_metals": { "obligated": true, "sectors": ["Iron & Steel", "Aluminium"], "note": "Covers integrated steel and sponge-iron units, and aluminium refineries and smelters." },
     "cement": { "obligated": true, "sectors": ["Cement"] },
     "chemicals": { "obligated": true, "partial": true, "sectors": ["Chlor-Alkali", "Petrochemicals", "Fertiliser"], "note": "Obligated only if the plant is in one of these notified sub-sectors." },
     "power_and_energy": { "obligated": true, "partial": true, "sectors": ["Petroleum refinery"], "note": "Petroleum refineries are obligated; pure power generators are covered under the PAT/energy regime, not CCTS GEI targets." },
-    "textile_and_apparel": { "obligated": true, "sectors": ["Textile"], "note": "Textile is one of the nine notified GEI-target sectors." }
+    "textile_and_apparel": { "obligated": true, "sectors": ["Textile"], "note": "Textile is one of the nine notified GEI-target sectors, covering composite, fibre, spinning and processing units." }
   },
-  "mechanism": "Each obligated entity gets an annual GEI target (tCO2e per unit of output) against an FY2023-24 baseline. Beat the target → earn Carbon Credit Certificates to sell; miss it → buy certificates or pay a penalty. Compliance is verified via an accredited carbon-verification (MRV) process.",
+  "mechanism": "An intensity-based 'baseline-and-credit' scheme. Each obligated entity gets an annual GEI target (tCO2e per unit of output) against an FY2023-24 baseline. An Accredited Carbon Verification (ACV) agency verifies the entity's emissions and output; BEE then reports to the National Steering Committee for the Indian Carbon Market (NSC-ICM), which oversees issuance. The number of certificates equals the difference between achieved and targeted GEI, multiplied by the production quantity for the compliance period. Beat the target and you earn CCCs to sell or bank; miss it and you must buy and surrender an equivalent number. Certificates trade on power exchanges registered with the CERC, and over-the-counter trading is not permitted at the outset.",
   "timeline": [
-    { "date": "FY 2023-24", "event": "Baseline year for GEI targets.", "source": "ICAP" },
-    { "date": "Oct 2025 & Jan 2026", "event": "GEI targets notified for the first 7 sectors (~490 obligated entities); Iron & Steel and Fertiliser targets to follow (~740 entities once all nine are notified).", "source": "ICAP" },
-    { "date": "FY 2025-26 & FY 2026-27", "event": "First two compliance years, entities must meet their notified GEI targets.", "source": "ICAP" },
-    { "date": "2026 (expected)", "event": "Action plans to BEE, verified MRV data submission, and the first Carbon Credit Certificate trading.", "source": "ICAP (indicative admin dates)" }
+    { "date": "28 Jun 2023", "event": "The Carbon Credit Trading Scheme is notified under the Energy Conservation Act, with the Ministry of Power as regulator and BEE as the designated administrator.", "source": "ICAP" },
+    { "date": "Jul 2024", "event": "BEE issues the Detailed Procedure for the Compliance Mechanism: registry registration, ACV verification, CCC issuance and trading rules.", "source": "AZB & Partners on the BEE Detailed Procedure" },
+    { "date": "FY 2023-24", "event": "Baseline year against which every obligated entity's GEI target is set.", "source": "ICAP" },
+    { "date": "Oct 2025 & Jan 2026", "event": "GEI targets notified for the first 7 sectors (~490 obligated entities); Iron & Steel and Fertiliser targets follow, taking it to ~740 entities across all nine sectors.", "source": "ICAP" },
+    { "date": "FY 2025-26 & FY 2026-27", "event": "The first two compliance years. Entities must meet their notified GEI targets, with legally binding targets across the cycle.", "source": "ICAP" },
+    { "date": "2026 (expected)", "event": "Verified MRV data submission, first Carbon Credit Certificate issuance, and trading on CERC-registered power exchanges. India aims for the compliance market to be fully operational by 2026.", "source": "ICAP (indicative administrative dates)" }
   ],
   "checklist": [
-    { "task": "Confirm the entity is a notified obligated unit", "detail": "Obligation is at the installation level within a notified sector and above the energy/output threshold, confirm your specific plant appears on the obligated-entity list, not just that the sector is covered." },
-    { "task": "Establish the FY2023-24 GEI baseline", "detail": "Compute greenhouse-gas emission intensity (tCO2e per unit of product) for the baseline year using verified energy + production data." },
-    { "task": "Read the notified GEI target", "detail": "Find the entity's annual target for FY2025-26 and FY2026-27 and the gap to the current GEI, that gap is the surplus (sellable) or shortfall (to be bought/penalised)." },
-    { "task": "Set up MRV", "detail": "Put monitoring, reporting and verification in place so emissions + output data can be third-party verified for the compliance submission." },
-    { "task": "Plan the certificate position", "detail": "Decide whether the entity will likely generate or need to buy Carbon Credit Certificates, and factor that into the engagement, this is where the quantification step follows." }
+    { "task": "Confirm the entity is a notified obligated unit", "detail": "Obligation is at the installation level within a notified sector and above the energy/output threshold. Confirm your specific plant appears on the obligated-entity list, not just that the sector is covered, and check which sub-sector scope it falls in (for example integrated steel vs sponge iron, or spinning vs processing in textiles)." },
+    { "task": "Establish the FY2023-24 GEI baseline", "detail": "Compute greenhouse-gas emission intensity (tCO2e per unit of product) for the baseline year using verified energy and production data. This is the number every subsequent target is measured against, so it is worth reconciling against what was filed under PAT and in the BRSR." },
+    { "task": "Read the notified GEI target and size the gap", "detail": "Find the entity's annual target for FY2025-26 and FY2026-27 and the gap to current GEI. Certificates are issued on the difference between achieved and targeted intensity, multiplied by production for the period, so the gap and the output volume both drive the position." },
+    { "task": "Register on the ICM registry", "detail": "Obligated entities must register on the Indian Carbon Market registry. Non-obligated entities may register voluntarily if they want to trade certificates." },
+    { "task": "Set up MRV and line up an ACV agency", "detail": "Put monitoring, reporting and verification in place so emissions and output data can be third-party verified. Verification is done by an Accredited Carbon Verification agency accredited by BEE for a five-year term; its report drives whether certificates are issued or must be surrendered." },
+    { "task": "Plan the certificate position", "detail": "Decide whether the entity will likely generate or need to buy CCCs. Surplus certificates can be banked to meet a later compliance year rather than sold immediately, so the position is a decision, not just an outcome. Trading is on CERC-registered power exchanges; OTC trades are not permitted at the outset." }
   ]
 }

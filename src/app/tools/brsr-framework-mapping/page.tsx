@@ -24,6 +24,14 @@ const FAQS = [
     a: "Partly. BRSR's governance, risk-management and climate disclosures map to IFRS S1/S2, and the two share the Scope 1 & 2 emissions data. IFRS S2 goes deeper on climate (scenario analysis, transition plans) than BRSR requires. The crosswalk shows the IFRS reference for each BRSR field.",
   },
   {
+    q: "Does BRSR map to CSRD / ESRS?",
+    a: "At topic level, yes. Most BRSR disclosures have a counterpart in one of the twelve ESRS standards: P6 energy and emissions feed ESRS E1, water feeds E3, waste feeds E5, the whole of P3 feeds S1 Own workforce, and P1 ethics feeds G1 Business conduct. ESRS goes further in two places, it requires a double-materiality assessment and mandatory Scope 3 where material, while BRSR treats Scope 3 as a Leadership indicator. A few BRSR disclosures are India-specific (the PAT scheme, statutory CSR spend under Companies Act s.135) and have no ESRS equivalent. This crosswalk maps the topics; it is not an applicability test.",
+  },
+  {
+    q: "Does CSRD apply to my client?",
+    a: "This tool does not answer that, and no crosswalk can. Since Omnibus I entered into force on 18 March 2026, CSRD scope turns on EU turnover and headcount thresholds (broadly, more than 1,000 employees and turnover above EUR 450 million), which are facts about the company that this tool does not collect. Use the crosswalk to see what BRSR data would transfer if CSRD does apply, and confirm applicability separately.",
+  },
+  {
     q: "Is this an official SEBI crosswalk?",
     a: "No. It is an indicative, consultant-facing mapping to orient the work, not a certified equivalence. Standards evolve, so confirm the exact clause against each framework's current version before relying on it for a filing.",
   },
@@ -45,7 +53,7 @@ export default function FrameworkMappingToolPage() {
     void downloadTableDocx({
       filename: exportFilename("brsr-framework-mapping").replace(/\.csv$/, ""),
       title: "BRSR cross-framework mapping",
-      subtitle: "BRSR to GRI, TCFD, IFRS S1/S2 and TNFD. Collect once, report across frameworks.",
+      subtitle: "BRSR to GRI, TCFD, IFRS S1/S2, TNFD and ESRS (CSRD). Collect once, report across frameworks.",
       rows: buildFrameworkExportRows(MAPPINGS),
       footnote: "An indicative crosswalk, confirm the exact clause against each framework's current standard before filing.",
     });
@@ -57,11 +65,11 @@ export default function FrameworkMappingToolPage() {
         <ToolHero
           active="tools"
           eyebrow="Free tool · on-device"
-          title="BRSR to GRI, TCFD, IFRS & TNFD, one crosswalk"
-          subtitle="Search the mapping between every BRSR disclosure and its GRI, TCFD, IFRS S1/S2 and TNFD counterpart. Cited, exportable, and free, so one round of BRSR data can feed your other reports."
+          title="BRSR to GRI, TCFD, IFRS, TNFD & ESRS, one crosswalk"
+          subtitle="Pick the framework you report to and read the mapping from every BRSR disclosure to its GRI, TCFD, IFRS S1/S2, TNFD or ESRS (CSRD) counterpart. Cited, exportable, and free, so one round of BRSR data can feed your other reports."
           benefits={[
-            "Every BRSR disclosure mapped to GRI, TCFD, IFRS & TNFD",
-            "Search and filter by framework or TCFD pillar",
+            "Every BRSR disclosure mapped to GRI, TCFD, IFRS, TNFD & ESRS (CSRD)",
+            "Pick one target framework for a focused BRSR-to-that crosswalk",
             "Export the whole crosswalk to CSV or Word",
           ]}
           maxWidth={1120}
