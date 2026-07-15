@@ -48,12 +48,18 @@ function SchemeBlock({
   );
 }
 
+// The chips read "N MSCI Key Issues", a count of issues, so they must count
+// DISTINCT entries. A plain sum double-counts anything mapped to two principles
+// (Business Ethics sits under both P1 and P7), which would overstate the crosswalk.
+const distinct = (rows: RatingMapping[], key: keyof RatingMapping): number =>
+  new Set(rows.flatMap((m) => m[key] as string[])).size;
+
 export default function EsgRatingsMapper() {
   const { mappings, ratings } = DATA;
-  const msciIssues = mappings.reduce((n, m) => n + m.msci_key_issues.length, 0);
-  const djsiCriteria = mappings.reduce((n, m) => n + m.djsi_criteria.length, 0);
-  const cdpAreas = new Set(mappings.flatMap((m) => m.cdp_areas)).size;
-  const ecovadisCriteria = new Set(mappings.flatMap((m) => m.ecovadis_criteria)).size;
+  const msciIssues = distinct(mappings, "msci_key_issues");
+  const djsiCriteria = distinct(mappings, "djsi_criteria");
+  const cdpAreas = distinct(mappings, "cdp_areas");
+  const ecovadisCriteria = distinct(mappings, "ecovadis_criteria");
 
   return (
     <div className="space-y-5">
