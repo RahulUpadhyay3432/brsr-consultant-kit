@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import type { FrameworkMapping } from "@/lib/types";
+import { isMapped } from "@/lib/types";
 
 interface FrameworkMapperProps {
   mappings: FrameworkMapping[];
@@ -9,10 +10,9 @@ interface FrameworkMapperProps {
 
 const TCFD_PILLARS = ["Governance", "Strategy", "Risk Management", "Metrics and Targets"];
 
-// A cell is "unmapped" when it's absent or carries the base file's em-dash placeholder.
-function has(v: string | undefined): boolean {
-  return !!v && v !== ", ";
-}
+// A cell is "unmapped" when it's absent or carries the em-dash placeholder.
+// isMapped is the single shared guard, see the note beside it in lib/types.
+const has = isMapped;
 
 // The frameworks a consultant can target. In practice they're doing BRSR→GRI *or*
 // BRSR→ESRS, rarely all five at once, so this is a primary selector rather than a
@@ -30,9 +30,11 @@ const FRAMEWORKS: {
   ref: (m: FrameworkMapping) => string | undefined;
   detail: (m: FrameworkMapping) => string | undefined;
 }[] = [
+  // gri_standard already reads "GRI 2-12", so it is rendered as-is. Prepending
+  // "GRI " here is what produced the "GRI GRI 2-12" badges.
   { key: "gri",  label: "GRI",         short: "GRI",
     chip: "bg-blue-50 text-blue-700 border-blue-100",       label_cls: "text-blue-600",
-    ref: (m) => (has(m.gri_standard) ? `GRI ${m.gri_standard}` : undefined), detail: (m) => m.gri_label },
+    ref: (m) => (has(m.gri_standard) ? m.gri_standard : undefined), detail: (m) => m.gri_label },
   { key: "tcfd", label: "TCFD",        short: "TCFD",
     chip: "bg-violet-50 text-violet-700 border-violet-100", label_cls: "text-violet-600",
     ref: (m) => (has(m.tcfd_pillar) ? `TCFD: ${m.tcfd_pillar}` : undefined), detail: (m) => m.tcfd_detail },
@@ -222,35 +224,28 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
               >
               <div className="min-h-0">
                 <div className="px-4 pb-4 border-t border-stone-100 pt-3 space-y-3">
+                  {/* Driven off the same FRAMEWORKS array as the badges, so a
+                      framework can never render one way collapsed and another
+                      way expanded. An unmapped framework says so in words
+                      rather than showing a bare em-dash that reads as a glitch. */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <span className="text-xs font-medium text-blue-600 uppercase tracking-wider">GRI</span>
-                      <p className="text-sm text-stone-700 mt-0.5">{mapping.gri_standard || ", "}</p>
-                      <p className="text-[12.5px] text-stone-600 mt-0.5">{mapping.gri_label}</p>
-                    </div>
-                    <div>
-                      <span className="text-xs font-medium text-violet-600 uppercase tracking-wider">TCFD</span>
-                      <p className="text-sm text-stone-700 mt-0.5">{mapping.tcfd_pillar || ", "}</p>
-                      <p className="text-[12.5px] text-stone-600 mt-0.5">{mapping.tcfd_detail}</p>
-                    </div>
-                    <div>
-                      <span className="text-xs font-medium text-emerald-600 uppercase tracking-wider">IFRS S1/S2</span>
-                      <p className="text-sm text-stone-700 mt-0.5">{mapping.ifrs_reference || ", "}</p>
-                    </div>
-                    {mapping.tnfd_pillar && (
-                      <div>
-                        <span className="text-xs font-medium text-teal-600 uppercase tracking-wider">TNFD (nature)</span>
-                        <p className="text-sm text-stone-700 mt-0.5">{mapping.tnfd_pillar}</p>
-                        <p className="text-[12.5px] text-stone-600 mt-0.5">{mapping.tnfd_detail}</p>
-                      </div>
-                    )}
-                    {mapping.esrs_standard && (
-                      <div>
-                        <span className="text-xs font-medium text-indigo-600 uppercase tracking-wider">ESRS (CSRD)</span>
-                        <p className="text-sm text-stone-700 mt-0.5">{mapping.esrs_standard}</p>
-                        <p className="text-[12.5px] text-stone-600 mt-0.5">{mapping.esrs_detail}</p>
-                      </div>
-                    )}
+                    {FRAMEWORKS.map((f) => {
+                      const ref = f.ref(mapping);
+                      const detail = ref ? f.detail(mapping) : undefined;
+                      return (
+                        <div key={f.key}>
+                          <span className={`text-xs font-medium uppercase tracking-wider ${f.label_cls}`}>{f.label}</span>
+                          {ref ? (
+                            <>
+                              <p className="text-sm text-stone-700 mt-0.5">{ref}</p>
+                              {isMapped(detail) && <p className="text-[12.5px] text-stone-600 mt-0.5">{detail}</p>}
+                            </>
+                          ) : (
+                            <p className="text-sm text-stone-400 mt-0.5 italic">No counterpart in {f.short}.</p>
+                          )}
+                        </div>
+                      );
+                    })}
                     <div>
                       <span className="text-xs font-medium text-stone-600 uppercase tracking-wider">BRSR Section (where it appears)</span>
                       <p className="text-sm text-stone-700 mt-0.5">{mapping.brsr_section}</p>

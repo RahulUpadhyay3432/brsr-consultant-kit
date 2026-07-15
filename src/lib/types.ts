@@ -123,6 +123,23 @@ export interface FrameworkMapping {
   notes: string;
 }
 
+// framework_mappings.json uses a literal em-dash to mean "this disclosure has no
+// counterpart in that framework". Note gri_standard already carries its own "GRI "
+// prefix (e.g. "GRI 2-12"), so never prepend one.
+//
+// Guard with isMapped(), never an inline literal. The product-wide em-dash copy
+// scrub (c0b089a) rewrote every `=== "—"` comparison into `=== ", "`, which
+// silently disabled all of these checks: the crosswalk then counted unmapped rows
+// as mapped and claimed 77 TCFD mappings when only 37 exist. Keeping the sentinel
+// in one place means a future copy pass can't quietly break the data contract.
+export const NO_MAPPING = "—";
+
+export function isMapped(value: string | null | undefined): boolean {
+  if (!value) return false;
+  const v = value.trim();
+  return v !== "" && v !== NO_MAPPING && v !== ",";
+}
+
 // Full report output
 import type { RegulatoryReadiness } from "./regulatory-readiness";
 

@@ -3,7 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import Link from "next/link";
 import type { ReportOutput, FrameworkMapping } from "@/lib/types";
-import { FILING_LABELS, type ExistingFiling } from "@/lib/types";
+import { FILING_LABELS, isMapped, type ExistingFiling } from "@/lib/types";
 import { SaakshMark } from "./SaakshMark";
 import { BackupWorkButton, ShareLinkButton } from "./SessionBackup";
 import DataChecklist from "./DataChecklist";
@@ -947,12 +947,14 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
     });
   }
 
+  // isMapped is the shared guard, see lib/types. These counts are claims about
+  // coverage, so an em-dash placeholder must never be counted as a mapping.
   const total    = mappings.length;
-  const withGRI  = mappings.filter(m => m.gri_standard   && m.gri_standard   !== ", ").length;
-  const withTCFD = mappings.filter(m => m.tcfd_pillar    && m.tcfd_pillar    !== ", ").length;
-  const withIFRS = mappings.filter(m => m.ifrs_reference && m.ifrs_reference !== ", ").length;
-  const withTNFD = mappings.filter(m => m.tnfd_pillar    && m.tnfd_pillar    !== ", ").length;
-  const withESRS = mappings.filter(m => m.esrs_standard  && m.esrs_standard  !== ", ").length;
+  const withGRI  = mappings.filter(m => isMapped(m.gri_standard)).length;
+  const withTCFD = mappings.filter(m => isMapped(m.tcfd_pillar)).length;
+  const withIFRS = mappings.filter(m => isMapped(m.ifrs_reference)).length;
+  const withTNFD = mappings.filter(m => isMapped(m.tnfd_pillar)).length;
+  const withESRS = mappings.filter(m => isMapped(m.esrs_standard)).length;
   const ratingsCount = (esgRatingsData as { mappings?: unknown[] }).mappings?.length ?? 9;
 
   const subTabs = [

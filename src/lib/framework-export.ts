@@ -4,10 +4,13 @@
 // leaves the browser. Consistent with the free tool's 100% on-device model.
 
 import type { FrameworkMapping } from "./types";
+import { isMapped } from "./types";
 
-// Crosswalk cells use an em-dash placeholder for "no mapping"; blank it for export.
+// Crosswalk cells use an em-dash placeholder for "no mapping"; blank it for export
+// so a spreadsheet shows an empty cell rather than a stray "—". Guarded by the
+// shared isMapped(), which is the only place the sentinel is written down.
 function dash(v: string | null | undefined): string {
-  return !v || v === ", " ? "" : v;
+  return isMapped(v) ? (v as string) : "";
 }
 
 // BRSR ↔ GRI ↔ TCFD ↔ IFRS ↔ TNFD ↔ ESRS, one row per mapping, every framework
