@@ -1469,7 +1469,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
                 className={`anim-up-md text-[17.5px] sm:text-[19px] ${BODY} leading-[1.6] mt-6 max-w-[545px]`}
                 style={{ animationDelay: "160ms" }}
               >
-                Saaksh turns the scramble of regulatory reporting, scattered data, emission maths, frameworks to reconcile, a narrative to draft, into one cited workflow. Starts with BRSR.
+                Saaksh turns the scramble of regulatory reporting, scattered data, frameworks to reconcile, a narrative to draft, into one cited workflow: built-in GHG calculators, cross-framework mapping, and a drafted narrative, all traceable to source. Starts with BRSR.
               </p>
 
               <div className="anim-up-md flex flex-wrap items-center gap-3 mt-8" style={{ animationDelay: "240ms" }}>
@@ -1513,7 +1513,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
               )}
 
               <p className="anim-up-md text-[13.5px] text-ink-muted mt-5" style={{ animationDelay: "300ms" }}>
-                Used by <span className="font-semibold text-ink">75+ consultants</span> preparing BRSR reports across India.
+                Used by <span className="font-semibold text-ink">75+ ESG consultants</span> across India.
               </p>
 
               <p
