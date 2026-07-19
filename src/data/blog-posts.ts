@@ -31,6 +31,7 @@ export const BLOG_POSTS: BlogPost[] = [
   /* ── Trending crosswalk + sector batch (July 2026) ─────────────────────── */
   {
     slug: "brsr-vs-csrd-esrs",
+    coverImage: "/blog/brsr-vs-csrd-esrs.jpg",
     title: "BRSR vs CSRD / ESRS: how India's BRSR maps to European sustainability reporting",
     excerpt:
       "BRSR maps topic-for-topic onto the twelve ESRS standards behind the EU's CSRD, and after the 2026 Omnibus reset the live question for every Indian subsidiary and exporter is whether BRSR data can feed an ESRS report. A cited BRSR-to-ESRS crosswalk, and where the two diverge.",
@@ -61,6 +62,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "scope-3-brsr-value-chain",
+    coverImage: "/blog/scope-3-brsr-value-chain.jpg",
     title: "Scope 3 for BRSR: how to screen and collect value-chain emissions in India",
     excerpt:
       "Scope 3 disclosures across the NSE top 200 are up nearly 59%, and BRSR value-chain reporting is now live for FY 2025-26. Where Scope 3 sits in BRSR, the 15 categories, why the data is so hard to collect in India, and how to screen it honestly without inventing factors.",
@@ -91,6 +93,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "brsr-cdp-ecovadis",
+    coverImage: "/blog/brsr-cdp-ecovadis.jpg",
     title: "Report once, score everywhere: mapping BRSR to CDP and EcoVadis",
     excerpt:
       "CDP's 2026 disclosure window and EcoVadis scorecards are what every ESG consultant is fielding right now. The useful news: a filed BRSR already carries most of the data. How BRSR Section B and C map onto CDP's modules and EcoVadis's Policies-Actions-Results scoring.",
@@ -121,6 +124,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "brsr-steel-metals-sector-guide",
+    coverImage: "/blog/brsr-steel-metals-sector-guide.jpg",
     title: "BRSR for steel & metals: BRSR Core, CBAM and CCTS in one place",
     excerpt:
       "Steel and metals is the one sector caught by BRSR Core assurance, the EU CBAM and India's CCTS all at once, with a CCTS Form A deadline of 31 July 2026. One practical guide to all three regimes, and the single emissions dataset that feeds them.",
@@ -187,6 +191,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "brsr-principle-1-ethics-guide",
+    coverImage: "/blog/brsr-principle-1-ethics-guide.jpg",
     title: "How to fill BRSR Principle 1 (Ethics, Transparency & Accountability)",
     excerpt:
       "Principle 1 covers governance and business ethics, anti-corruption, fines and penalties, conflicts of interest, related-party transactions and more. A plain-English guide to what each disclosure asks and who in the company actually owns the data.",
@@ -217,6 +222,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "brsr-principle-2-products-guide",
+    coverImage: "/blog/brsr-principle-2-products-guide.jpg",
     title: "How to fill BRSR Principle 2 (Sustainable & Safe Goods and Services)",
     excerpt:
       "Principle 2 covers sustainable sourcing, product life-cycle impacts, recycled inputs and Extended Producer Responsibility. A plain-English guide to what each disclosure asks, which are manufacturing-only, and how EPR ties back to the plan you already filed with the Pollution Control Board.",
@@ -247,6 +253,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "brsr-principle-3-employee-wellbeing-guide",
+    coverImage: "/blog/brsr-principle-3-employee-wellbeing-guide.jpg",
     title: "How to fill BRSR Principle 3 (Employee Wellbeing & Safety)",
     excerpt:
       "Principle 3 is the largest Essential block in BRSR, 15 disclosures on wages, benefits, retirement cover, training, grievances and workplace safety, split across employees and workers. A guide to what each asks and why the People team owns almost all of it.",
@@ -277,6 +284,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "brsr-principle-4-stakeholder-guide",
+    coverImage: "/blog/brsr-principle-4-stakeholder-guide.jpg",
     title: "How to fill BRSR Principle 4 (Stakeholder Engagement)",
     excerpt:
       "Principle 4 is short but foundational: how you identify your key stakeholders, how often you engage each group, and how you reach the vulnerable and marginalised. A guide to answering it well, and to why it underpins your whole materiality assessment.",
