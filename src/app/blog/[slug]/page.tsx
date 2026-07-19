@@ -153,18 +153,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             Blog
           </Link>
 
-          {/* Cover, full width */}
-          <BlogCoverArt post={post} className="w-full aspect-[16/9] rounded-2xl mb-10" />
-
-          {/* Two-column: TOC left + Article right */}
-          <div className="lg:grid lg:grid-cols-[216px_1fr] lg:gap-14">
-
-            <aside className="hidden lg:block">
-              <BlogToc />
-            </aside>
-
-            <article id="article-body" className="min-w-0">
-
+          {/* Article header: text left, contained cover right (stacks on mobile) */}
+          <header className="mb-11 lg:mb-14 lg:grid lg:grid-cols-[1fr_minmax(0,400px)] lg:gap-12 lg:items-center">
+            <div className="min-w-0">
               {/* Meta */}
               <div className="flex flex-wrap items-center gap-2.5 mb-5">
                 <CategoryPill category={post.category} />
@@ -177,11 +168,37 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
               {/* Title */}
               <h1
-                className="text-[#0F172A] leading-[1.12] tracking-[-0.018em] mb-8"
-                style={{ ...SERIF, fontWeight: 600, fontSize: "clamp(2rem, 3.5vw, 2.9rem)", textWrap: "balance" }}
+                className="text-[#0F172A] leading-[1.12] tracking-[-0.018em]"
+                style={{ ...SERIF, fontWeight: 600, fontSize: "clamp(1.9rem, 3.1vw, 2.6rem)", textWrap: "balance" }}
               >
                 {post.title}
               </h1>
+
+              {/* Dek */}
+              <p className="mt-5 text-[#48515F]" style={{ ...SERIF, fontSize: "1.1rem", lineHeight: 1.62 }}>
+                {post.excerpt}
+              </p>
+            </div>
+
+            {/* Cover, contained rectangle */}
+            <BlogCoverArt
+              post={post}
+              className="w-full aspect-[3/2] rounded-2xl mt-8 lg:mt-0"
+              style={{ boxShadow: "0 1px 3px rgba(15,30,51,0.06), 0 14px 34px rgba(15,30,51,0.10)" }}
+            />
+          </header>
+
+          {/* Divider */}
+          <div className="border-t border-[#E9EDF3] mb-11 lg:mb-12" />
+
+          {/* Two-column: TOC left + Article right */}
+          <div className="lg:grid lg:grid-cols-[216px_1fr] lg:gap-14">
+
+            <aside className="hidden lg:block">
+              <BlogToc />
+            </aside>
+
+            <article id="article-body" className="min-w-0">
 
               {/* Content */}
               <div className="pb-14">

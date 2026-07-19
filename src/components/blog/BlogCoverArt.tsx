@@ -358,10 +358,17 @@ function MaterialityCover() {
 }
 
 function DefaultCover({ post }: { post: BlogPost }) {
+  // The title now sits beside the cover in the article header, so the cover art
+  // stays graphic: a category label + the Saaksh wordmark over a soft sheen,
+  // never a repeat of the headline.
   return (
-    <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px", gap: "12px" }}>
-      <div style={{ color: W + "0.7)", fontSize: "13px", fontWeight: 600, textAlign: "center" as const }}>{post.category}</div>
-      <div style={{ color: "white", fontSize: "15px", fontWeight: 700, textAlign: "center" as const, lineHeight: 1.4 }}>{post.title}</div>
+    <div style={{ position: "relative" as const, width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "22px 24px", overflow: "hidden" }}>
+      <div style={{ position: "absolute" as const, inset: 0, background: "radial-gradient(120% 85% at 12% 0%, rgba(255,255,255,0.20), rgba(255,255,255,0) 60%)" }} />
+      <div style={{ position: "relative" as const, color: W + "0.72)", fontSize: "12px", fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const }}>{post.category}</div>
+      <div style={{ position: "relative" as const, display: "flex", alignItems: "center", gap: "9px" }}>
+        <span style={{ width: "22px", height: "22px", borderRadius: "6px", background: "rgba(255,255,255,0.16)", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontSize: "13px", fontWeight: 800 }}>S</span>
+        <span style={{ color: "white", fontSize: "16px", fontWeight: 700, letterSpacing: "-0.01em" }}>Saaksh</span>
+      </div>
     </div>
   );
 }

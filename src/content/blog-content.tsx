@@ -322,6 +322,43 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       ]} />
       <P>You can generate this crosswalk for your own client, alongside GRI, TCFD, IFRS S1/S2 and TNFD, in the free <A href="/tools/brsr-framework-mapping">BRSR framework-mapping tool</A>, or inside the Alignment tab of a Saaksh report.</P>
 
+      <H2>Why this matters for Indian companies</H2>
+      <P>BRSR is an Indian obligation, so why should an Indian consultant follow a European standard? Three reasons, and they are getting louder.</P>
+      <UL items={[
+        "The subsidiary route. An Indian group with a large EU subsidiary can be pulled into CSRD through that subsidiary, and the group's Indian operations have to feed the ESRS report.",
+        "Customers ask. European buyers increasingly want ESRS-aligned data from their suppliers, so an Indian exporter may be asked for E1 emissions or S1 workforce figures whether or not it files CSRD itself.",
+        "The NESRS route. EFRAG is developing Non-EU Sustainability Reporting Standards for large non-EU parents with significant EU turnover, expected to be advised on by early 2027, the mechanism most likely to reach large Indian groups directly.",
+        "Investors. Global investors read ESRS as the baseline, and a company that can show its BRSR data already maps to ESRS signals maturity.",
+      ]} />
+      <P>In every one of these, the underlying work is identical: take the data you already collect for BRSR and re-express it in the ESRS structure. The rest of this guide is that map, standard by standard.</P>
+
+      <H2>Environment: how Principle 6 maps to E1–E5</H2>
+      <P>This is the densest overlap, and the reason a BRSR filing is such a strong ESRS head start. BRSR Principle 6 feeds four of the five environmental standards almost directly.</P>
+      <UL items={[
+        "E1 Climate change. Your P6 energy consumption and mix, Scope 1 and Scope 2 emissions and GHG intensity map straight to ESRS E1-5 (energy) and E1-6 (gross emissions). ESRS then adds a transition plan (E1-1) and quantified targets (E1-4) that BRSR does not ask for.",
+        "E3 Water and marine resources. P6 water withdrawal, consumption and discharge map to ESRS E3-4, with ESRS additionally flagging withdrawals in water-stressed areas.",
+        "E5 Resource use and circular economy. P6 waste generation and recovery, plus P2 recycled inputs and end-of-life, map to ESRS E5-4 and E5-5.",
+        "E2 Pollution. P6 air emissions other than GHG (NOx, SOx, particulate matter) map to ESRS E2-4.",
+        "E4 Biodiversity and ecosystems. P6 operations in or near ecologically sensitive areas map to ESRS E4-5.",
+      ]} />
+      <Callout title="The one environmental gap: mandatory Scope 3" color="amber">
+        ESRS E1 requires Scope 3 emissions where material. In BRSR, Scope 3 (P6-L2) is a voluntary Leadership indicator. So if your client is heading for an ESRS report, start the Scope 3 screening now rather than treating it as optional. See our <A href="/blog/scope-3-brsr-value-chain">guide to Scope 3 for BRSR</A>.
+      </Callout>
+
+      <H2>Social: Principles 3, 5, 8 and 9</H2>
+      <P>BRSR&apos;s social principles line up cleanly with the four ESRS social standards, which is where a lot of the workforce and community data transfers wholesale.</P>
+      <Table headers={["BRSR principle", "ESRS standard", "What carries across"]} rows={[
+        ["P3 Employee wellbeing", "S1 Own workforce", "Headcount, diversity, health & safety, training, wages, collective bargaining"],
+        ["P5 Human rights (own ops)", "S1 Own workforce", "Human-rights policy, incidents, grievances, non-discrimination"],
+        ["P5 Human rights (value chain)", "S2 Value-chain workers", "Supplier human-rights due diligence and assessments"],
+        ["P8 Inclusive growth", "S3 Affected communities", "Community impacts, rehabilitation, local development"],
+        ["P9 Consumer responsibility", "S4 Consumers & end-users", "Product safety, data privacy, responsible marketing, grievances"],
+      ]} />
+      <P>The gaps to watch on the social side are double materiality (below) and the depth of value-chain worker data that ESRS S2 expects, which is heavier than BRSR&apos;s P5 Leadership indicators.</P>
+
+      <H2>Governance: Principles 1 and 7</H2>
+      <P>ESRS has a single governance standard, G1 Business conduct, plus the general disclosures in ESRS 2. BRSR Principle 1 (anti-corruption policy, board oversight, whistleblowing, conflicts of interest) maps to G1-1 and G1-3, and the board-oversight elements to ESRS 2 GOV-1 and GOV-2. Principle 7 (trade-association memberships and policy advocacy) maps to G1-5 on lobbying and political influence, an area European investors increasingly test for consistency with a company&apos;s stated climate position.</P>
+
       <H2>What ESRS asks for that BRSR does not</H2>
       <P>The crosswalk saves you the data-collection work, not the extra analysis. Three ESRS requirements have no BRSR equivalent, and this is where the real effort sits:</P>
       <OL items={[
@@ -367,6 +404,53 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
         ["11. Use of sold products", "Downstream", "Dominant for energy-using products; complex to model"],
       ]} />
       <P>The full standard also covers capital goods, fuel- and energy-related activities, upstream and downstream leased assets, processing and end-of-life of sold products, franchises and investments. Screen for materiality first, then estimate only what matters.</P>
+
+      <H2>Scope 1, 2 and 3 in one minute</H2>
+      <P>Before the categories, a quick refresher, because the boundary is where most confusion starts.</P>
+      <UL items={[
+        "Scope 1 is direct: fuel burnt in your own boilers, furnaces and owned vehicles.",
+        "Scope 2 is indirect from purchased energy: the grid electricity you buy, converted with the CEA grid factor.",
+        "Scope 3 is everything else in the value chain, upstream and downstream: the emissions you cause but do not directly control.",
+      ]} />
+      <P>Scope 3 is almost always the largest of the three, often several times the size of Scope 1 and 2 combined, which is exactly why it is worth screening even though BRSR keeps it voluntary.</P>
+
+      <H2>All 15 categories at a glance</H2>
+      <P>The GHG Protocol&apos;s fifteen categories, split upstream and downstream. You are not expected to report all fifteen; you are expected to identify which are material and account for those.</P>
+      <Table headers={["#", "Category", "Type"]} rows={[
+        ["1", "Purchased goods & services", "Upstream"],
+        ["2", "Capital goods", "Upstream"],
+        ["3", "Fuel- & energy-related activities", "Upstream"],
+        ["4", "Upstream transport & distribution", "Upstream"],
+        ["5", "Waste generated in operations", "Upstream"],
+        ["6", "Business travel", "Upstream"],
+        ["7", "Employee commuting", "Upstream"],
+        ["8", "Upstream leased assets", "Upstream"],
+        ["9", "Downstream transport & distribution", "Downstream"],
+        ["10", "Processing of sold products", "Downstream"],
+        ["11", "Use of sold products", "Downstream"],
+        ["12", "End-of-life treatment of sold products", "Downstream"],
+        ["13", "Downstream leased assets", "Downstream"],
+        ["14", "Franchises", "Downstream"],
+        ["15", "Investments", "Downstream"],
+      ]} />
+
+      <H2>How to run a Scope 3 screening, step by step</H2>
+      <OL items={[
+        "Screen for materiality. Map your client's value chain and judge which categories are likely to dominate. For a manufacturer that is usually Category 1; for a services firm, business travel and commuting.",
+        "Gather activity data. For each material category, collect a real activity quantity: passenger-kilometres flown, tonne-kilometres freighted, tonnes of waste by disposal route, headcount and commute mode.",
+        "Apply cited factors. Multiply each activity by a published emission factor (DEFRA/DESNZ 2024 for travel, freight and waste), keeping the factor, its source and vintage next to the number.",
+        "Total and convert. Sum the category results and convert kilograms to tonnes of CO2e.",
+        "Document the boundary. State what you included, what you excluded, and why, so the estimate is transparent and repeatable next year.",
+      ]} />
+
+      <H2>A worked example</H2>
+      <P>Say a mid-size manufacturer wants a first screen of three categories. The method, not any invented total, is the point:</P>
+      <UL items={[
+        "Business travel (Cat 6): sum passenger-kilometres by air, rail and road, apply the DEFRA factor for each mode (air includes radiative forcing), and add them.",
+        "Upstream freight (Cat 4): sum tonne-kilometres by road, rail and sea, apply the freight factor for each, and add the well-to-tank component.",
+        "Waste (Cat 5): sum tonnes by disposal route (landfill, incineration, recycling) and apply the route-specific factor.",
+      ]} />
+      <P>The free <A href="/tools/scope3-calculator">Scope 3 screening calculator</A> runs exactly this, with every factor cited, so you enter activity data and read out a category-by-category total in tonnes of CO2e.</P>
 
       <H2>Why the data is the hard part</H2>
       <P>Scope 3 accounting is not mathematically difficult. The obstacle is that the data belongs to other people. Three problems recur in India:</P>
@@ -431,6 +515,33 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       ]} />
       <P>Notice the honest blanks: CDP is environmental only, so the workforce, human-rights, community and consumer principles have no CDP counterpart. You can generate this alongside the MSCI and DJSI crosswalk in the <A href="/features/alignment">Alignment view</A> of a Saaksh report.</P>
 
+      <H2>BRSR to CDP, module by module</H2>
+      <P>CDP&apos;s corporate questionnaire runs everything through one integrated set of modules. The BRSR data that feeds them is almost entirely in Principle 6.</P>
+      <UL items={[
+        "Climate change. P6 Scope 1, 2 and 3 emissions, energy consumption and any targets feed CDP's scored climate module directly.",
+        "Water security. P6 water withdrawal, consumption and discharge feed CDP's scored water module.",
+        "Forests. Relevant mainly to companies with agricultural or forest-risk commodities in the value chain; BRSR touches this only lightly.",
+        "Governance and business strategy. P1 board oversight and P4 stakeholder engagement feed CDP's governance and strategy questions.",
+      ]} />
+      <P>Because CDP is environmental only, BRSR&apos;s workforce, human-rights, community and consumer principles have no CDP home. That is the honest blank you will see in the crosswalk table.</P>
+
+      <H2>BRSR to EcoVadis, theme by theme</H2>
+      <P>EcoVadis&apos;s four themes reach across more of BRSR than CDP does, because EcoVadis covers social and ethics as well as environment.</P>
+      <Table headers={["EcoVadis theme", "Fed mainly by", "BRSR source"]} rows={[
+        ["Environment", "Energy, GHG, water, waste, product impacts", "P6, P2"],
+        ["Labour & Human Rights", "Health & safety, working conditions, training, human rights", "P3, P5"],
+        ["Ethics", "Anti-corruption, anti-competitive conduct, data management", "P1, P9"],
+        ["Sustainable Procurement", "Supplier social & environmental practices", "P2, P5, P8"],
+      ]} />
+
+      <H2>A practical sequence: file once, reuse twice</H2>
+      <OL items={[
+        "File the BRSR. It forces you to collect the policies (Section B) and performance (Section C) that both other schemes want.",
+        "Map Section B to Policies. Your BRSR policy disclosures are the evidence for the EcoVadis Policies dimension and CDP's governance questions.",
+        "Map Section C to Results. Your BRSR quantitative performance is the evidence for the EcoVadis Results dimension and CDP's environmental-performance modules.",
+        "Fill the deltas. Add only what BRSR does not ask for: CDP's scenario analysis and targets, and EcoVadis's Actions evidence and supplier-audit records.",
+      ]} />
+
       <H2>What BRSR does not give you</H2>
       <P>BRSR is a strong starting point, not a finished submission. CDP&apos;s scored questionnaire goes deeper on climate scenario analysis, targets and forests/water specifics than BRSR asks. EcoVadis weights Actions heavily and looks for management-system evidence and, in Sustainable Procurement, supplier-audit records that BRSR does not require. Reuse the data; expect to add depth.</P>
       <Callout title="Indicative, so confirm before you submit" color="amber">
@@ -471,6 +582,34 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
       <H2>CCTS: the GEI target and Form A</H2>
       <P>India&apos;s Carbon Credit Trading Scheme sets a greenhouse-gas emission-intensity (GEI) target per tonne of product for obligated sectors. Iron &amp; Steel is one of the nine notified sectors, alongside aluminium, cement, chlor-alkali, pulp and paper, fertiliser, petrochemicals, petroleum refining and textiles. Obligated entities submit verified GEI data to the Bureau of Energy Efficiency via Form A by 31 July 2026. Targets tighten by roughly 1-3% in FY 2025-26 and 2-8% in FY 2026-27. Beat your target and you earn Carbon Credit Certificates you can trade; miss it and you must buy certificates to comply. Our <A href="/features/cbam-ccts">CBAM &amp; CCTS readiness modules</A> lay out the timeline and checklist, and the <A href="/blog/ccts-india-2025-26">CCTS India guide</A> covers who is in scope.</P>
+
+      <H2>Why steel and metals sits in the crosshairs</H2>
+      <P>Three things make steel the most heavily regulated sector for emissions in India right now. It is carbon-intensive: blast-furnace, basic-oxygen-furnace (BF-BOF) production with coal-based power has a high emission intensity per tonne. It is export-exposed: a large share of Indian steel and aluminium goes to the EU, squarely into CBAM. And it is energy-intensive: it sits among the notified CCTS sectors with a hard GHG emission-intensity target. Any one of these would demand serious carbon accounting; together they make it unavoidable.</P>
+
+      <H2>The overlap, data point by data point</H2>
+      <P>The reassuring part is how much the three regimes share. The same measured inputs answer all three, just expressed differently.</P>
+      <Table headers={["Data point", "BRSR", "CBAM", "CCTS"]} rows={[
+        ["Fuel & electricity consumption", "P6 energy intensity", "Direct + indirect embedded emissions", "GEI numerator"],
+        ["Scope 1 & 2 emissions", "P6-E7 (assured)", "Installation embedded emissions", "GHG for intensity"],
+        ["Production tonnage", "Intensity denominator", "Per-tonne embedded emissions", "GEI denominator"],
+        ["Precursor / input materials", "P2 sourcing", "Precursor embedded emissions", "Process boundary"],
+      ]} />
+
+      <H2>A consultant&apos;s sequence for a steel client</H2>
+      <OL items={[
+        "Build the installation-level energy and emissions inventory first: every fuel and electricity meter mapped to its installation and production line.",
+        "Compute Scope 1 and 2 with cited factors, and keep the invoices, meter reads and lab reports as evidence for both the assurer and the CBAM verifier.",
+        "Express the result three ways: BRSR intensity per rupee of turnover, CCTS intensity per tonne of product, and CBAM embedded emissions per tonne of steel.",
+        "File to each timeline: CCTS Form A by 31 July 2026, BRSR with the annual report, and CBAM data to EU importers for the 30 September 2027 declaration.",
+      ]} />
+
+      <H2>Common pitfalls</H2>
+      <UL items={[
+        "Reporting company averages when CBAM needs installation-level data. Aggregate too early and you cannot disaggregate for CBAM later.",
+        "Forgetting precursor emissions. For steel, embedded emissions from pig iron or other inputs count under CBAM by default.",
+        "Treating the three deadlines as one project. They share data but have different boundaries and verifiers; plan the evidence trail to satisfy the strictest, which is reasonable assurance and CBAM verification.",
+        "Leaving Scope 3 untouched. Value-chain disclosure is arriving, and steel's upstream (iron ore, coke, alloys) is material.",
+      ]} />
 
       <H2>One dataset, three regimes</H2>
       <P>The reason this is manageable rather than three separate scrambles is that the regimes share a core. Steel&apos;s metered fuel and electricity consumption, production tonnage, and Scope 1 and 2 emissions feed the BRSR Principle 6 intensities, the CCTS GEI calculation, and the CBAM embedded-emissions figure. The consultant&apos;s job is to collect that core once, at installation level, with an audit trail, then present it three ways.</P>
