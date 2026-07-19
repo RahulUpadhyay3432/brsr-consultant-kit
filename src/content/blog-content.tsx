@@ -280,6 +280,213 @@ function ImagePlaceholder({ alt, prompt }: { alt: string; prompt: string }) {
 
 export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
+  /* ── BRSR vs CSRD / ESRS ──────────────────────────────────────────────── */
+  "brsr-vs-csrd-esrs": (
+    <>
+      <P>If you have filed a BRSR, you have already done most of the work an ESRS report needs, you just have not arranged it in the European shape yet. BRSR is SEBI&apos;s Indian format; the ESRS are the twelve reporting standards behind the EU&apos;s Corporate Sustainability Reporting Directive (CSRD). They overlap heavily on the underlying data, which is why a growing number of Indian companies, EU subsidiaries and exporters ask the same question: can our BRSR data feed an ESRS report? This guide answers it with a cited, topic-level crosswalk, and is honest about where the two frameworks genuinely diverge.</P>
+
+      <KeyTakeaways items={[
+        "BRSR maps topic-for-topic onto the ESRS environmental (E1–E5), social (S1–S4) and governance (G1) standards, so most BRSR data carries across.",
+        "The 2026 Omnibus reset narrowed CSRD scope and cut ESRS datapoints by roughly 60–70%, but left the twelve standards and their topics intact, so a topic-level crosswalk still holds.",
+        "ESRS adds three things BRSR does not require: a double-materiality assessment, mandatory Scope 3 where material, and quantified targets with a transition plan.",
+        "This is a crosswalk, not a CSRD applicability test: whether a company must report under CSRD depends on EU turnover and headcount thresholds.",
+      ]} />
+
+      <H2>What the ESRS and CSRD are</H2>
+      <P>The CSRD is the EU law that mandates sustainability reporting; the ESRS are the standards that say what to disclose. There are twelve: two cross-cutting standards (ESRS 1 and ESRS 2, on general requirements and general disclosures), five environmental (E1 Climate change, E2 Pollution, E3 Water and marine resources, E4 Biodiversity and ecosystems, E5 Resource use and circular economy), four social (S1 Own workforce, S2 Workers in the value chain, S3 Affected communities, S4 Consumers and end-users), and one governance (G1 Business conduct). If that structure feels familiar, it is because BRSR&apos;s nine principles cover much the same ground, organised differently.</P>
+
+      <H2>What the 2026 Omnibus reset changed</H2>
+      <P>The EU&apos;s Omnibus I directive, in force from 18 March 2026, was a significant simplification. It matters for Indian companies because it changes both who reports and how much.</P>
+      <UL items={[
+        "Scope narrowed. CSRD now applies to EU undertakings with more than 1,000 employees AND turnover above EUR 450 million, so many smaller entities dropped out of scope.",
+        "Datapoints cut. The revised ESRS reduce mandatory datapoints by roughly 60–70% and delete the voluntary ones, with first application from FY2027 (FY2026 voluntary).",
+        "Value-chain cap. Large reporters cannot demand more from smaller value-chain partners than a lighter voluntary standard (VSME) asks, which limits what Indian suppliers can be pushed to provide.",
+        "Non-EU parents. EFRAG is due to advise on Non-EU Sustainability Reporting Standards (NESRS) by early 2027, the route by which large Indian parent groups may eventually report.",
+      ]} />
+      <Callout title="The topics did not change, the volume did" color="blue">
+        The Omnibus shrank the number of datapoints, not the list of standards. The twelve ESRS topics are unchanged, so a topic-level BRSR-to-ESRS map like the one below still holds. Specific datapoint references (for example within ESRS E1) may have moved, so confirm exact paragraph numbers against the revised standards before a filing.
+      </Callout>
+
+      <H2>The BRSR-to-ESRS crosswalk</H2>
+      <P>Mapped at the principle level, the granularity at which the data actually transfers. This is an indicative consultant aid drawn from the ESRS Delegated Regulation, not an official SEBI or EFRAG crosswalk.</P>
+      <Table headers={["BRSR principle", "Maps mainly to", "What transfers"]} rows={[
+        ["P1 Ethics", "ESRS G1 + ESRS 2", "Anti-corruption and anti-bribery policy, board oversight, whistleblowing, conflicts of interest"],
+        ["P2 Products", "ESRS E5", "Sustainable sourcing, recycled inputs, product end-of-life and circularity data (EPR is the Indian instrument)"],
+        ["P3 Employee wellbeing", "ESRS S1", "Workforce headcount, diversity, health and safety, training, wages, collective bargaining"],
+        ["P4 Stakeholder engagement", "ESRS 2", "Stakeholder identification and the materiality process (ESRS asks for double materiality)"],
+        ["P5 Human rights", "ESRS S1 + S2", "Human-rights policy, incidents and grievances; value-chain due diligence feeds S2"],
+        ["P6 Environment", "ESRS E1, E2, E3, E5", "Energy, Scope 1/2/3 GHG, water, pollutants, waste and circularity, the richest overlap by far"],
+        ["P7 Policy advocacy", "ESRS G1", "Trade-association memberships and lobbying positions (G1-5)"],
+        ["P8 Inclusive growth", "ESRS S3 + S2", "Community impacts and supplier practices (statutory CSR spend is India-specific)"],
+        ["P9 Consumer responsibility", "ESRS S4", "Consumer grievances, product safety, data privacy and responsible marketing"],
+      ]} />
+      <P>You can generate this crosswalk for your own client, alongside GRI, TCFD, IFRS S1/S2 and TNFD, in the free <A href="/tools/brsr-framework-mapping">BRSR framework-mapping tool</A>, or inside the Alignment tab of a Saaksh report.</P>
+
+      <H2>What ESRS asks for that BRSR does not</H2>
+      <P>The crosswalk saves you the data-collection work, not the extra analysis. Three ESRS requirements have no BRSR equivalent, and this is where the real effort sits:</P>
+      <OL items={[
+        "Double materiality. ESRS 2 requires you to assess both how sustainability issues affect the company (financial materiality) and how the company affects people and planet (impact materiality). BRSR&apos;s materiality is lighter and single-lens.",
+        "Mandatory Scope 3. ESRS E1 requires Scope 3 emissions where material; BRSR keeps Scope 3 (P6-L2) a voluntary Leadership indicator.",
+        "Targets and transition plan. ESRS E1 expects quantified climate targets and a transition plan aligned to 1.5°C; BRSR asks what you do, not where you are headed.",
+      ]} />
+
+      <H2>Collect once, report to both</H2>
+      <P>The practical takeaway is the one Saaksh is built around: collect the underlying data once, then map it into each framework&apos;s structure. A BRSR filing is a strong ESRS starting point, but treat the crosswalk as a map of where your data goes, not a promise that the ESRS report is done.</P>
+      <Callout title="A crosswalk, not an applicability test" color="amber">
+        This maps BRSR disclosures to the ESRS standard that asks for the same information. It does not tell you whether a company must report under CSRD, that depends on EU turnover and headcount thresholds a readiness tool cannot see. Use it to reuse data, and check the revised ESRS for exact datapoint references. See also our guides on <A href="/blog/brsr-vs-gri">BRSR vs GRI</A> and <A href="/blog/brsr-vs-ifrs-issb">BRSR vs IFRS S1 &amp; S2</A>.
+      </Callout>
+
+      <PostFaq slug="brsr-vs-csrd-esrs" />
+    </>
+  ),
+
+  /* ── Scope 3 for BRSR ─────────────────────────────────────────────────── */
+  "scope-3-brsr-value-chain": (
+    <>
+      <P>Scope 3 is the part of a carbon footprint that lives outside the company&apos;s own gates, in its suppliers, its logistics, its products in use, and it is where the numbers get large and the data gets hard. In BRSR it is still voluntary, but it is rising fast: ICRA&apos;s analysis of the NSE top 200 found the number of companies disclosing Scope 3 up nearly 59% over four years. With BRSR value-chain disclosure now live for FY 2025-26, more consultants are being asked to screen it. This guide covers where Scope 3 sits in BRSR, the fifteen categories, why the data is the real obstacle in India, and how to estimate it honestly.</P>
+
+      <KeyTakeaways items={[
+        "Scope 3 (P6-L2) is a voluntary Leadership indicator in BRSR; Scope 1 and 2 (P6-E7) are the Essential, assured figures.",
+        "The GHG Protocol defines 15 Scope 3 categories, 8 upstream and 7 downstream; most Indian filers start with the few that dominate their footprint.",
+        "The hard part is not the maths, it is the data: it sits with SME suppliers who rarely measure it, and boundary definition is genuinely difficult.",
+        "A defensible first pass is an activity-based screening estimate, with purchased goods (Category 1) flagged as needing supplier or spend data rather than guessed.",
+      ]} />
+
+      <H2>Where Scope 3 sits in BRSR</H2>
+      <P>BRSR Principle 6 asks every in-scope filer for Scope 1 (direct, from fuel burnt on site and in owned vehicles) and Scope 2 (indirect, from purchased electricity) under the Essential indicator P6-E7. For BRSR Core filers, those two are independently assured. Scope 3, everything else in the value chain, is P6-L2, a Leadership indicator, so it is voluntary. Companies still screen it because CDP, investors and large customers increasingly ask, and because the FY 2026-27 value-chain assurance timeline is approaching.</P>
+
+      <H2>The 15 categories, and which matter in India</H2>
+      <P>The GHG Protocol Corporate Value Chain (Scope 3) Standard splits Scope 3 into fifteen categories. You rarely report all of them; the discipline is finding the few that are material to your client and screening those well.</P>
+      <Table headers={["Category", "Type", "Where it usually matters"]} rows={[
+        ["1. Purchased goods & services", "Upstream", "Often the largest category for manufacturers; needs supplier or spend data"],
+        ["4. Upstream transport & distribution", "Upstream", "Inbound freight, road/rail/air/sea"],
+        ["5. Waste generated in operations", "Upstream", "Landfill, incineration, recycling of operational waste"],
+        ["6. Business travel", "Upstream", "Air, rail and road travel by employees"],
+        ["7. Employee commuting", "Upstream", "Daily commute, estimated from headcount and mode"],
+        ["9. Downstream transport & distribution", "Downstream", "Outbound freight to customers"],
+        ["11. Use of sold products", "Downstream", "Dominant for energy-using products; complex to model"],
+      ]} />
+      <P>The full standard also covers capital goods, fuel- and energy-related activities, upstream and downstream leased assets, processing and end-of-life of sold products, franchises and investments. Screen for materiality first, then estimate only what matters.</P>
+
+      <H2>Why the data is the hard part</H2>
+      <P>Scope 3 accounting is not mathematically difficult. The obstacle is that the data belongs to other people. Three problems recur in India:</P>
+      <UL items={[
+        "Boundary definition. Deciding which suppliers to include, and how to treat joint ventures, contract manufacturing and outsourced activity, is a judgement call that changes the total.",
+        "SME capacity. Most value-chain partners are small firms that do not measure their emissions and do not have the resources or literacy to start on request.",
+        "Engagement at scale. A large company may have thousands of suppliers; collecting consistent, comparable data from each one individually is resource-intensive and slow.",
+      ]} />
+
+      <H2>How to screen it honestly</H2>
+      <P>The right first pass is an activity-based screening estimate: multiply a real activity quantity (passenger-kilometres flown, tonne-kilometres freighted, tonnes of waste to landfill) by a published emission factor. Saaksh&apos;s free <A href="/tools/scope3-calculator">Scope 3 screening calculator</A> does exactly this, using the GHG Protocol Scope 3 Standard with cited DEFRA/DESNZ 2024 factors, for business travel, employee commuting, transport and distribution, and waste.</P>
+      <Callout title="Why Category 1 is deliberately left out" color="amber">
+        Purchased goods (Category 1) is often the biggest number, and the honest thing is not to fabricate it. There is no authoritative free India spend-factor set, and a foreign-currency spend-based proxy would undercut the credibility of every other figure. Saaksh flags Category 1 as needing supplier or spend data rather than inventing a factor. A screening estimate labelled as such is defensible; a made-up precise number is not.
+      </Callout>
+
+      <H2>From screening to supplier data</H2>
+      <P>A screening estimate tells you where the footprint concentrates, which then tells you which suppliers are worth engaging directly. That is the point at which value-chain data collection begins, and where <A href="/features/collect">Saaksh Collect</A> helps: chasing figures from named owners, attaching evidence, and computing emissions with cited factors so the trail is assurance-ready. Keep the framing straight throughout: Scope 1 and 2 are the assured numbers, Scope 3 is a screening estimate until supplier-specific data replaces it.</P>
+      <P>For the assured figures underneath, see our guide on <A href="/blog/scope-1-2-ghg-brsr-guide">calculating Scope 1 &amp; 2 for BRSR</A>, and for the disclosure timeline, <A href="/blog/brsr-value-chain-disclosure">BRSR value chain disclosure</A>.</P>
+
+      <PostFaq slug="scope-3-brsr-value-chain" />
+    </>
+  ),
+
+  /* ── BRSR to CDP & EcoVadis ───────────────────────────────────────────── */
+  "brsr-cdp-ecovadis": (
+    <>
+      <P>Two requests land on Indian ESG consultants&apos; desks every year that feel like extra work on top of BRSR: a CDP questionnaire, and an EcoVadis scorecard a customer has asked for. The useful truth is that a filed BRSR already carries most of the data both need. BRSR, CDP and EcoVadis draw on the same underlying facts, arranged differently. This guide shows what CDP and EcoVadis actually score, and how BRSR&apos;s two sections map cleanly onto them, so one round of data collection feeds all three.</P>
+
+      <KeyTakeaways items={[
+        "CDP is an annual environmental disclosure (climate, forests, water), scored A to D-. EcoVadis is a supplier rating out of 100 across Environment, Labour & Human Rights, Ethics and Sustainable Procurement.",
+        "BRSR Principle 6 data feeds CDP's scored climate and water modules and the EcoVadis Environment theme, the richest overlap.",
+        "EcoVadis scores Policies (25%), Actions (40%) and Results (35%). BRSR Section B is your Policies evidence; Section C is your Results evidence.",
+        "CDP is environmental only, so it never reaches BRSR's workforce, human-rights, community or consumer principles.",
+      ]} />
+
+      <H2>What CDP is (and what changed for 2026)</H2>
+      <P>CDP runs one integrated corporate questionnaire covering climate change, forests and water security, the three scored issues; biodiversity, plastics and ocean are disclosed but unscored. A company is scored from A (leadership) down to D- (disclosure). For 2026, CDP made the process simpler and widened access: SMEs became eligible for an A score for the first time, and the SME questionnaire added new forests and water-security modules. The 2026 scored window closes around 14 September.</P>
+
+      <H2>What EcoVadis is</H2>
+      <P>EcoVadis is a supplier sustainability rating, usually requested by a customer as a condition of doing business. It scores a company out of 100, with bronze/silver/gold/platinum medals, across four themes: Environment, Labour &amp; Human Rights, Ethics, and Sustainable Procurement, spanning 21 criteria. Crucially, every theme is scored on three dimensions, and that structure is where BRSR fits.</P>
+
+      <H2>The insight: Section B is Policies, Section C is Results</H2>
+      <P>EcoVadis scores each theme on Policies (25%), Actions (40%) and Results (35%). BRSR is built the same way without saying so:</P>
+      <UL items={[
+        "BRSR Section B (Management and process) documents your policies and governance, which is exactly the EcoVadis Policies dimension.",
+        "BRSR Section C (Principle-wise performance) reports your quantitative outcomes, which is the EcoVadis Results dimension.",
+        "The Actions dimension is the initiatives and programmes you describe within each principle.",
+      ]} />
+      <P>So a filed BRSR already covers two of EcoVadis&apos;s three scored dimensions for the themes it touches. That is what the &quot;improve your score&quot; masterclasses teach, and it falls straight out of the two structures.</P>
+
+      <H2>The principle-level crosswalk</H2>
+      <P>Mapped at the BRSR principle level, the granularity at which these assessments score companies. Indicative, a consultant aid, not an official CDP or EcoVadis mapping.</P>
+      <Table headers={["BRSR principle", "CDP module", "EcoVadis theme"]} rows={[
+        ["P1 Ethics", "Governance", "Ethics"],
+        ["P2 Products", "Business strategy; Plastics", "Environment / Sustainable Procurement"],
+        ["P3 Employee wellbeing", "Not covered (environmental only)", "Labour & Human Rights"],
+        ["P5 Human rights", "Not covered", "Labour & Human Rights / Sustainable Procurement"],
+        ["P6 Environment", "Climate change; Water security; Forests", "Environment"],
+        ["P7 Policy advocacy", "Business strategy", "Environment (advocacy)"],
+        ["P8 Inclusive growth", "Not covered", "Sustainable Procurement"],
+        ["P9 Consumer responsibility", "Not covered", "Environment / Ethics"],
+      ]} />
+      <P>Notice the honest blanks: CDP is environmental only, so the workforce, human-rights, community and consumer principles have no CDP counterpart. You can generate this alongside the MSCI and DJSI crosswalk in the <A href="/features/alignment">Alignment view</A> of a Saaksh report.</P>
+
+      <H2>What BRSR does not give you</H2>
+      <P>BRSR is a strong starting point, not a finished submission. CDP&apos;s scored questionnaire goes deeper on climate scenario analysis, targets and forests/water specifics than BRSR asks. EcoVadis weights Actions heavily and looks for management-system evidence and, in Sustainable Procurement, supplier-audit records that BRSR does not require. Reuse the data; expect to add depth.</P>
+      <Callout title="Indicative, so confirm before you submit" color="amber">
+        This is a consultant aid to show which BRSR data feeds which assessment. It is not an official CDP or EcoVadis mapping, and each scheme revises its questionnaire and criteria regularly (CDP restructures annually). Confirm against the current questionnaire before relying on it for a submission. See also <A href="/blog/brsr-vs-gri">BRSR vs GRI</A>.
+      </Callout>
+
+      <PostFaq slug="brsr-cdp-ecovadis" />
+    </>
+  ),
+
+  /* ── BRSR for steel & metals ──────────────────────────────────────────── */
+  "brsr-steel-metals-sector-guide": (
+    <>
+      <P>No sector is squeezed by more sustainability regulation at once than steel and metals. In FY 2025-26 a mid-to-large Indian steelmaker can be facing BRSR Core reasonable assurance, the EU&apos;s Carbon Border Adjustment Mechanism on its exports, and India&apos;s Carbon Credit Trading Scheme, all in the same year, all asking for versions of the same emissions data. This guide puts the three regimes in one place, explains what each wants and when, and shows why a single well-built emissions dataset is what makes them tractable.</P>
+
+      <KeyTakeaways items={[
+        "Steel & metals is caught by three regimes at once: BRSR Core assurance, EU CBAM, and India's CCTS.",
+        "The CCTS Form A deadline for verified GHG emission-intensity data is 31 July 2026; Iron & Steel is one of the nine notified sectors.",
+        "CBAM's definitive period is live: EU importers need installation-level embedded emissions with third-party verification, or a punitive default value applies.",
+        "All three run off the same core: metered energy and Scope 1 & 2 emissions. Collect it once, with an audit trail, and it feeds every regime.",
+      ]} />
+
+      <H2>Three regimes, one sector</H2>
+      <Table headers={["Regime", "What it wants", "Key date", "Where Saaksh helps"]} rows={[
+        ["BRSR Core (SEBI)", "Assured P6 intensities: GHG, energy, water, waste", "Top 500 assured for FY 2025-26", "Audit-readiness + GHG calculators"],
+        ["CBAM (EU)", "Installation-level embedded emissions, verified", "First declaration 30 Sep 2027", "Beyond-BRSR CBAM readiness"],
+        ["CCTS (India)", "Verified GHG emission-intensity vs sector target", "Form A due 31 Jul 2026", "Beyond-BRSR CCTS readiness"],
+      ]} />
+
+      <H2>BRSR Core: the assured environmental numbers</H2>
+      <P>For a steel company, BRSR Principle 6 is where reasonable assurance concentrates: greenhouse-gas (Scope 1 and 2) intensity, energy intensity, water consumption and intensity, and waste intensity. Reasonable assurance is the higher bar, so every one of those figures must trace back to a meter reading, invoice or production record an ICAI assurer can inspect. Build that evidence trail as you collect. Our <A href="/tools/audit-readiness">audit-readiness checklist</A> lists the source documents an assurer expects for each KPI, and the guide on <A href="/blog/brsr-core-assurance-fy2526">BRSR Core assurance</A> covers the process end to end.</P>
+
+      <H2>CBAM: what exporters must produce</H2>
+      <P>The EU CBAM entered its definitive period in January 2026. For Indian steel exporters, the shift that matters is verification: EU importers now need installation-level embedded-emissions data, not corporate averages or sector benchmarks, and that data must be independently verified. Where verified data is missing, the EU applies a high default value that assumes a carbon-intensive production route, which erodes price competitiveness. The first quarterly CBAM certificate price was set at EUR 75.36 per tonne of CO2e, and the first annual declaration for 2026 imports is due 30 September 2027.</P>
+      <Callout title="Installation-level, not company-average" color="blue">
+        The single biggest CBAM adjustment for Indian steel is granularity. BRSR and CCTS work at entity or facility level; CBAM wants embedded emissions per installation and per product, including precursor materials such as pig iron. Set your data collection up at installation level from the start and all three regimes are satisfied; aggregate too early and CBAM forces a rework.
+      </Callout>
+
+      <H2>CCTS: the GEI target and Form A</H2>
+      <P>India&apos;s Carbon Credit Trading Scheme sets a greenhouse-gas emission-intensity (GEI) target per tonne of product for obligated sectors. Iron &amp; Steel is one of the nine notified sectors, alongside aluminium, cement, chlor-alkali, pulp and paper, fertiliser, petrochemicals, petroleum refining and textiles. Obligated entities submit verified GEI data to the Bureau of Energy Efficiency via Form A by 31 July 2026. Targets tighten by roughly 1-3% in FY 2025-26 and 2-8% in FY 2026-27. Beat your target and you earn Carbon Credit Certificates you can trade; miss it and you must buy certificates to comply. Our <A href="/features/cbam-ccts">CBAM &amp; CCTS readiness modules</A> lay out the timeline and checklist, and the <A href="/blog/ccts-india-2025-26">CCTS India guide</A> covers who is in scope.</P>
+
+      <H2>One dataset, three regimes</H2>
+      <P>The reason this is manageable rather than three separate scrambles is that the regimes share a core. Steel&apos;s metered fuel and electricity consumption, production tonnage, and Scope 1 and 2 emissions feed the BRSR Principle 6 intensities, the CCTS GEI calculation, and the CBAM embedded-emissions figure. The consultant&apos;s job is to collect that core once, at installation level, with an audit trail, then present it three ways.</P>
+      <OL items={[
+        "Map every fuel and electricity meter to its installation and production line.",
+        "Compute Scope 1 and 2 with cited factors, and keep the invoices and meter reads as evidence.",
+        "Express the result three ways: BRSR intensity per rupee of turnover, CCTS intensity per tonne of product, and CBAM embedded emissions per tonne of steel.",
+      ]} />
+      <Callout title="Start with the emissions core" color="green">
+        Build the installation-level Scope 1 and 2 dataset first; it is the input to all three regimes. The free <A href="/tools/ghg-calculator">GHG calculator</A> and <A href="/tools/ppp-intensity">intensity tools</A> compute the BRSR figures with every factor cited, and the same underlying data carries into your CBAM and CCTS submissions.
+      </Callout>
+
+      <PostFaq slug="brsr-steel-metals-sector-guide" />
+    </>
+  ),
+
   /* ── Guide: BRSR Principle 6 (Environment) ────────────────────────────── */
   "brsr-principle-6-environment-guide": (
     <>
