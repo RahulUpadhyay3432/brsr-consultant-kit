@@ -157,6 +157,7 @@ export const BLOG_POSTS: BlogPost[] = [
   /* ── Principle-by-principle guide series (P1–P9) ──────────────────────── */
   {
     slug: "brsr-principle-6-environment-guide",
+    coverImage: "/blog/brsr-principle-6-environment-guide.jpg",
     title: "How to fill BRSR Principle 6 (Environment): the complete guide",
     excerpt:
       "Principle 6 is the heaviest part of BRSR, and where reasonable assurance concentrates. A field-by-field guide to energy, water, GHG, waste and biodiversity disclosures, what each asks, how to answer it, and which filings you can pull from.",
@@ -311,6 +312,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "brsr-principle-5-human-rights-guide",
+    coverImage: "/blog/brsr-principle-5-human-rights-guide.jpg",
     title: "How to fill BRSR Principle 5 (Human Rights)",
     excerpt:
       "Principle 5 covers minimum wages, human-rights training, POSH complaints, grievance mechanisms, discrimination and forced/child labour, plus due diligence across your value chain. A field-by-field guide, with the wage and POSH tables that trip most filers.",
@@ -341,6 +343,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "brsr-principle-7-policy-advocacy-guide",
+    coverImage: "/blog/brsr-principle-7-policy-advocacy-guide.jpg",
     title: "How to fill BRSR Principle 7 (Policy Advocacy)",
     excerpt:
       "Principle 7 is the shortest in BRSR: your trade-association memberships, any anti-competitive-conduct corrective actions, and the public-policy positions you advocate. A quick guide to answering it transparently without over- or under-disclosing.",
@@ -367,6 +370,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "brsr-principle-8-inclusive-growth-guide",
+    coverImage: "/blog/brsr-principle-8-inclusive-growth-guide.jpg",
     title: "How to fill BRSR Principle 8 (Inclusive Growth & Equitable Development)",
     excerpt:
       "Principle 8 covers Social Impact Assessments, rehabilitation and resettlement, community grievances, local sourcing and employment, and CSR beneficiaries. A guide to answering it from CSR and procurement records, and to reporting outcomes rather than just rupees spent.",
@@ -393,6 +397,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "brsr-principle-9-consumer-responsibility-guide",
+    coverImage: "/blog/brsr-principle-9-consumer-responsibility-guide.jpg",
     title: "How to fill BRSR Principle 9 (Consumer Responsibility)",
     excerpt:
       "Principle 9 covers consumer complaints, product recalls, cyber-security and data-privacy policy, data breaches, and product labelling. A guide to answering it from complaints and product records, and to getting the data-breach and DPDP-Act disclosures right.",
@@ -421,6 +426,7 @@ export const BLOG_POSTS: BlogPost[] = [
   /* ── Framework comparison guides (cited crosswalk) ─────────────────────── */
   {
     slug: "brsr-vs-gri",
+    coverImage: "/blog/brsr-vs-gri.jpg",
     title: "BRSR vs GRI: how India's BRSR maps to the GRI Standards",
     excerpt:
       "BRSR and GRI overlap heavily but aren't identical. What each covers, where they line up, and how one round of data collection can feed both, with a cited BRSR-to-GRI crosswalk.",
@@ -451,6 +457,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "brsr-vs-ifrs-issb",
+    coverImage: "/blog/brsr-vs-ifrs-issb.jpg",
     title: "BRSR vs IFRS S1 & S2 (ISSB): what maps and what doesn't",
     excerpt:
       "The ISSB's IFRS S1 and S2 are becoming the global baseline for sustainability and climate disclosure. How BRSR lines up with them, where the gaps are, and how BRSR data can feed an IFRS S2 climate disclosure, with a cited crosswalk.",
