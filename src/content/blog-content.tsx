@@ -283,7 +283,8 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
   /* ── BRSR vs CSRD / ESRS ──────────────────────────────────────────────── */
   "brsr-vs-csrd-esrs": (
     <>
-      <P>If you have filed a BRSR, you have already done most of the work an ESRS report needs, you just have not arranged it in the European shape yet. BRSR is SEBI&apos;s Indian format; the ESRS are the twelve reporting standards behind the EU&apos;s Corporate Sustainability Reporting Directive (CSRD). They overlap heavily on the underlying data, which is why a growing number of Indian companies, EU subsidiaries and exporters ask the same question: can our BRSR data feed an ESRS report? This guide answers it with a cited, topic-level crosswalk, and is honest about where the two frameworks genuinely diverge.</P>
+      <P>If you have filed a BRSR, you have already collected most of the data an ESRS report needs. The mistake is assuming that means the job is mostly done. Mapping BRSR data onto the European standards is the easy part, call it 20% of the effort; the three things ESRS demands that BRSR never asks for, a double-materiality assessment, mandatory Scope 3 where material, and quantified targets with a transition plan, are the other 80%. Treat the crosswalk as a map of where your data goes, not a shortcut to a finished report, and it becomes genuinely useful.</P>
+      <P>BRSR is SEBI&apos;s Indian format; the ESRS are the twelve reporting standards behind the EU&apos;s Corporate Sustainability Reporting Directive (CSRD). They overlap heavily on the underlying data, which is why more Indian companies, EU subsidiaries and exporters are asking the same question: can our BRSR data feed an ESRS report? This guide answers it with a cited, topic-level crosswalk, and is honest about where the two diverge.</P>
 
       <KeyTakeaways items={[
         "BRSR maps topic-for-topic onto the ESRS environmental (E1–E5), social (S1–S4) and governance (G1) standards, so most BRSR data carries across.",
@@ -380,7 +381,8 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
   /* ── Scope 3 for BRSR ─────────────────────────────────────────────────── */
   "scope-3-brsr-value-chain": (
     <>
-      <P>Scope 3 is the part of a carbon footprint that lives outside the company&apos;s own gates, in its suppliers, its logistics, its products in use, and it is where the numbers get large and the data gets hard. In BRSR it is still voluntary, but it is rising fast: ICRA&apos;s analysis of the NSE top 200 found the number of companies disclosing Scope 3 up nearly 59% over four years. With BRSR value-chain disclosure now live for FY 2025-26, more consultants are being asked to screen it. This guide covers where Scope 3 sits in BRSR, the fifteen categories, why the data is the real obstacle in India, and how to estimate it honestly.</P>
+      <P>The instinct with Scope 3 is to produce one big, precise-looking number. That instinct is exactly what gets consultants into trouble. For most Indian manufacturers, Category 1 (purchased goods and services) is 60 to 80% of the value-chain footprint, and it is also the one category with no credible free India emission factors. So a confident Category 1 figure built from a foreign, spend-based proxy is not an achievement; it is a liability the moment an assurer asks how you derived it. The defensible move is the opposite of the instinct: screen the categories you can measure honestly, and flag the one you cannot.</P>
+      <P>Scope 3 is the part of the footprint outside your own gates, in suppliers, logistics and products in use, and it is rising fast on Indian reports: ICRA&apos;s analysis of the NSE top 200 found companies disclosing Scope 3 up nearly 59% over four years. It is still a voluntary Leadership indicator in BRSR, but with value-chain disclosure now live for FY 2025-26, more consultants are being asked to screen it. This guide covers where it sits, the fifteen categories, why the data is the real obstacle, and how to estimate it without inventing anything.</P>
 
       <KeyTakeaways items={[
         "Scope 3 (P6-L2) is a voluntary Leadership indicator in BRSR; Scope 1 and 2 (P6-E7) are the Essential, assured figures.",
@@ -477,7 +479,8 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
   /* ── BRSR to CDP & EcoVadis ───────────────────────────────────────────── */
   "brsr-cdp-ecovadis": (
     <>
-      <P>Two requests land on Indian ESG consultants&apos; desks every year that feel like extra work on top of BRSR: a CDP questionnaire, and an EcoVadis scorecard a customer has asked for. The useful truth is that a filed BRSR already carries most of the data both need. BRSR, CDP and EcoVadis draw on the same underlying facts, arranged differently. This guide shows what CDP and EcoVadis actually score, and how BRSR&apos;s two sections map cleanly onto them, so one round of data collection feeds all three.</P>
+      <P>Here is the part most people miss when a CDP questionnaire or an EcoVadis scorecard lands on their desk: a filed BRSR has already done most of the work. EcoVadis scores every theme on three things, Policies, Actions and Results, and your BRSR Section B is the Policies evidence while Section C is the Results evidence. That is two of the three scored dimensions, effectively for free. The gap, and where most EcoVadis scores are actually lost, is Actions: the initiatives and management-system evidence BRSR never asks for. CDP is a different shape entirely, environmental-only, so the other half of working smart is knowing what not to bother mapping to it.</P>
+      <P>BRSR, CDP and EcoVadis draw on the same underlying facts, arranged differently. This guide shows what CDP and EcoVadis actually score, and how BRSR&apos;s two sections map onto them, so one round of data collection feeds all three.</P>
 
       <KeyTakeaways items={[
         "CDP is an annual environmental disclosure (climate, forests, water), scored A to D-. EcoVadis is a supplier rating out of 100 across Environment, Labour & Human Rights, Ethics and Sustainable Procurement.",
@@ -555,7 +558,8 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
   /* ── BRSR for steel & metals ──────────────────────────────────────────── */
   "brsr-steel-metals-sector-guide": (
     <>
-      <P>No sector is squeezed by more sustainability regulation at once than steel and metals. In FY 2025-26 a mid-to-large Indian steelmaker can be facing BRSR Core reasonable assurance, the EU&apos;s Carbon Border Adjustment Mechanism on its exports, and India&apos;s Carbon Credit Trading Scheme, all in the same year, all asking for versions of the same emissions data. This guide puts the three regimes in one place, explains what each wants and when, and shows why a single well-built emissions dataset is what makes them tractable.</P>
+      <P>Steel and metals is the one sector caught by three emissions regimes at once, BRSR Core, the EU CBAM, and India&apos;s CCTS, and the reassuring part is that they all run off the same energy and emissions data. The trap is granularity. BRSR and CCTS work at entity or facility level; CBAM wants embedded emissions per installation and per product, including precursors like pig iron. Collect at facility level to save time now and you will rebuild the entire inventory the moment CBAM asks for installation detail. Build installation-level from day one and one dataset satisfies all three. That single decision is what separates a manageable FY 2025-26 from three separate scrambles.</P>
+      <P>This guide puts the three regimes in one place: what each wants, when, and how the same measured data feeds all of them.</P>
 
       <KeyTakeaways items={[
         "Steel & metals is caught by three regimes at once: BRSR Core assurance, EU CBAM, and India's CCTS.",
