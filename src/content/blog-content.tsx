@@ -633,7 +633,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
   /* ── Guide: BRSR Principle 6 (Environment) ────────────────────────────── */
   "brsr-principle-6-environment-guide": (
     <>
-      <P>Principle 6 is the environmental heart of BRSR, and for most consultants it is the heaviest principle to answer and the one auditors examine most closely. It spans energy, water, greenhouse-gas emissions, waste, air pollutants, biodiversity and legal compliance: thirteen Essential indicators and four Leadership ones. It is also where BRSR Core reasonable assurance concentrates. This guide covers what each disclosure asks, how to answer the numeric ones, and which filings you can pull the data from.</P>
+      <P>Principle 6 is the environmental heart of BRSR, and for most consultants it is <strong>the heaviest principle to answer and the one auditors examine most closely</strong>. It spans energy, water, greenhouse-gas emissions, waste, air pollutants, biodiversity and legal compliance: thirteen Essential indicators and four Leadership ones. It is also <strong>where BRSR Core reasonable assurance concentrates</strong>. This guide covers what each disclosure asks, how to answer the numeric ones, and which filings you can pull the data from.</P>
 
       <KeyTakeaways items={[
         "Principle 6 carries the numbers auditors care about most: the GHG, energy, water and waste intensities that fall under BRSR Core reasonable assurance.",
@@ -694,7 +694,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       ]} />
 
       <H2>Where the data already lives</H2>
-      <P>A great deal of Principle 6 can be pulled from filings your client already submits, rather than collected fresh. Energy comes from PAT returns; water and air come from the State Pollution Control Board consent-to-operate and water-cess returns; waste comes from hazardous-waste manifests (Form 3 and Form 10). Saaksh&apos;s gap analysis flags exactly which fields the existing filings already cover.</P>
+      <P><strong>A great deal of Principle 6 can be pulled from filings your client already submits, rather than collected fresh.</strong> Energy comes from PAT returns; water and air come from the State Pollution Control Board consent-to-operate and water-cess returns; waste comes from hazardous-waste manifests (Form 3 and Form 10). Saaksh&apos;s gap analysis flags exactly which fields the existing filings already cover.</P>
 
       <PostFaq slug="brsr-principle-6-environment-guide" />
 
@@ -707,7 +707,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
   /* ── Guide: BRSR Principle 1 (Ethics, Transparency & Accountability) ───── */
   "brsr-principle-1-ethics-guide": (
     <>
-      <P>Principle 1 is the governance backbone of BRSR: it asks how the business conducts itself with integrity. It covers the anti-corruption policy, fines and penalties, disciplinary actions for bribery, conflicts of interest, related-party transactions, payment discipline and training on the NGRBC principles. It is mostly narrative and record-based rather than numeric, which makes it deceptively easy to under-answer.</P>
+      <P>Principle 1 is the governance backbone of BRSR: it asks how the business conducts itself with integrity. It covers the anti-corruption policy, fines and penalties, disciplinary actions for bribery, conflicts of interest, related-party transactions, payment discipline and training on the NGRBC principles. It is mostly narrative and record-based rather than numeric, <strong>which makes it deceptively easy to under-answer</strong>.</P>
 
       <KeyTakeaways items={[
         "Principle 1 is about ethics and governance, so most of its data sits with the Company Secretary and legal team, not the plant.",
@@ -734,7 +734,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       </Callout>
 
       <H2>How to answer the anti-corruption disclosure (P1-E4)</H2>
-      <P>This is the disclosure most companies under-answer. A bare Yes tells the reader nothing. A credible answer describes four things:</P>
+      <P>This is the disclosure most companies under-answer. <strong>A bare Yes tells the reader nothing.</strong> A credible answer describes four things:</P>
       <OL items={[
         "The policy itself: board-approved, with a web link to the published version.",
         "The risk-assessment procedures and internal controls that back it up.",
@@ -763,7 +763,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
   "brsr-principle-2-products-guide": (
     <>
-      <P>Principle 2 asks whether the business makes and delivers its products and services sustainably and safely. It covers cleaner-technology investment, sustainable sourcing, safe end-of-life reclaim and Extended Producer Responsibility. Several of its disclosures are manufacturing-oriented, so the first job on a service-sector client is knowing which fields genuinely do not apply.</P>
+      <P>Principle 2 asks whether the business makes and delivers its products and services sustainably and safely. It covers cleaner-technology investment, sustainable sourcing, safe end-of-life reclaim and Extended Producer Responsibility. Several of its disclosures are manufacturing-oriented, so <strong>the first job on a service-sector client is knowing which fields genuinely do not apply</strong>.</P>
 
       <KeyTakeaways items={[
         "Principle 2 spans sourcing, product life-cycle, recycled inputs and end-of-life reclaim, owned mostly by Procurement and Product.",
@@ -789,7 +789,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       </Callout>
 
       <H2>How to answer EPR (P2-E4) from a filing you already have</H2>
-      <P>If your client is a producer, importer or brand-owner of plastic packaging or electronics, they have almost certainly filed an EPR registration and plan with the Pollution Control Board under the Plastic Waste or E-Waste Rules. P2-E4 asks whether EPR applies and whether the waste-collection plan matches that filing. So this is a pull, not a fresh collection: take the answer from the EPR plan and note the registration reference.</P>
+      <P>If your client is a producer, importer or brand-owner of plastic packaging or electronics, they have almost certainly filed an EPR registration and plan with the Pollution Control Board under the Plastic Waste or E-Waste Rules. P2-E4 asks whether EPR applies and whether the waste-collection plan matches that filing. So this is <strong>a pull, not a fresh collection</strong>: take the answer from the EPR plan and note the registration reference.</P>
 
       <H2>Best practice for Principle 2</H2>
       <UL items={[
@@ -809,7 +809,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
   "brsr-principle-3-employee-wellbeing-guide": (
     <>
-      <P>Principle 3 is the largest Essential block in BRSR: fifteen disclosures on how the business treats its people. It covers wellbeing measures, retirement benefits, accessibility, parental leave, grievances, unions, training, career development and workplace safety. Almost every field is asked separately for employees and for workers, and often split by gender and by permanent versus non-permanent, so the shape of the data request matters as much as the content.</P>
+      <P>Principle 3 is <strong>the largest Essential block in BRSR</strong>: fifteen disclosures on how the business treats its people. It covers wellbeing measures, retirement benefits, accessibility, parental leave, grievances, unions, training, career development and workplace safety. Almost every field is asked separately for employees and for workers, and often split by gender and by permanent versus non-permanent, so <strong>the shape of the data request matters as much as the content</strong>.</P>
 
       <KeyTakeaways items={[
         "Principle 3 is the biggest Essential principle, fifteen disclosures, owned almost entirely by the People team.",
@@ -858,7 +858,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
   "brsr-principle-4-stakeholder-guide": (
     <>
-      <P>Principle 4 is short, only two Essential disclosures, but it is foundational. It asks how you identify your key stakeholder groups and how you engage each of them. Get it right and it anchors your whole materiality assessment; get it thin and the rest of the report loses its evidence base.</P>
+      <P>Principle 4 is short, only two Essential disclosures, but it is foundational. It asks how you identify your key stakeholder groups and how you engage each of them. <strong>Get it right and it anchors your whole materiality assessment; get it thin and the rest of the report loses its evidence base.</strong></P>
 
       <KeyTakeaways items={[
         "Principle 4 has just two Essential disclosures, but it underpins the materiality assessment the whole report depends on.",
@@ -881,7 +881,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       </Callout>
 
       <H2>Why Principle 4 is the backbone of materiality</H2>
-      <P>A BRSR materiality assessment has to be stakeholder-driven to be credible, and Principle 4 is where you document who those stakeholders are and how you consult them. Assurers and readers cross-check your list of material topics against your stated engagement, so if P4-E2 lists five groups engaged annually but your materiality assessment claims deep stakeholder input, the two will not reconcile. Treat Principle 4 as the source that your materiality work has to trace back to.</P>
+      <P><strong>A BRSR materiality assessment has to be stakeholder-driven to be credible</strong>, and Principle 4 is where you document who those stakeholders are and how you consult them. Assurers and readers cross-check your list of material topics against your stated engagement, so if P4-E2 lists five groups engaged annually but your materiality assessment claims deep stakeholder input, the two will not reconcile. Treat Principle 4 as the source that your materiality work has to trace back to.</P>
 
       <H2>Do not fold vulnerable groups into a generic &apos;community&apos; line</H2>
       <P>P4-L3 asks specifically how you engage vulnerable and marginalised stakeholders and act on their concerns. These are groups that may be disadvantaged in dealing with the business: local communities near operations, contract labour, small suppliers, persons with disabilities. Identify them explicitly in the stakeholder register so this disclosure has something concrete to point to.</P>
@@ -904,7 +904,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
   "brsr-principle-5-human-rights-guide": (
     <>
-      <P>Principle 5 is where BRSR gets specific about human rights: minimum wages, human-rights training, grievance mechanisms, and complaints on sexual harassment, discrimination, child labour and forced labour. It is largely tabular, and two tables, the wage disclosure and the POSH format, are where most filers slip.</P>
+      <P>Principle 5 is where BRSR gets specific about human rights: minimum wages, human-rights training, grievance mechanisms, and complaints on sexual harassment, discrimination, child labour and forced labour. It is largely tabular, and two tables, the wage disclosure and the POSH format, <strong>are where most filers slip</strong>.</P>
 
       <KeyTakeaways items={[
         "Principle 5 covers wages, human-rights training, grievances, harassment and discrimination, and value-chain due diligence.",
@@ -933,7 +933,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       <P>P5-E2 asks, for both employees and workers, how many were paid at or above the applicable minimum wage, split by gender, for the current and previous year. Draw it from payroll checked against the relevant state minimum-wage notification, not a national assumption. The paired P5-E3 then asks for median remuneration by gender, so pull both from the same payroll extract in one pass.</P>
 
       <H2>POSH: P5-E6 versus P5-E7</H2>
-      <P>These two are related but distinct, and filers often duplicate or contradict them. P5-E6 counts all complaints of sexual harassment made by employees and workers during the year. P5-E7 is the statutory POSH Act format: complaints filed, complaints upheld, complaints pending, and those pending beyond ninety days. They must reconcile with each other, and the source for P5-E7 is the Internal Committee&apos;s annual return, so reconcile the two before filing.</P>
+      <P>These two are related but distinct, and <strong>filers often duplicate or contradict them</strong>. P5-E6 counts all complaints of sexual harassment made by employees and workers during the year. P5-E7 is the statutory POSH Act format: complaints filed, complaints upheld, complaints pending, and those pending beyond ninety days. They must reconcile with each other, and the source for P5-E7 is the Internal Committee&apos;s annual return, so reconcile the two before filing.</P>
 
       <H2>Best practice for Principle 5</H2>
       <UL items={[
@@ -953,7 +953,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
   "brsr-principle-7-policy-advocacy-guide": (
     <>
-      <P>Principle 7 is the shortest principle in BRSR: three disclosures on how the business influences public and regulatory policy. It asks about your trade-association memberships, any corrective action on anti-competitive conduct, and the policy positions you advocate. The bar is transparency, not volume.</P>
+      <P>Principle 7 is the shortest principle in BRSR: three disclosures on how the business influences public and regulatory policy. It asks about your trade-association memberships, any corrective action on anti-competitive conduct, and the policy positions you advocate. <strong>The bar is transparency, not volume.</strong></P>
 
       <KeyTakeaways items={[
         "Principle 7 is the smallest principle, just three disclosures, usually answerable from membership records.",
@@ -994,7 +994,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
   "brsr-principle-8-inclusive-growth-guide": (
     <>
-      <P>Principle 8 is about the business&apos;s impact on communities and inclusive growth. It covers Social Impact Assessments, rehabilitation and resettlement, community grievances, local and MSME sourcing, and CSR. Most of it comes from the CSR function, and the disclosure that separates a strong report from a weak one is whether you report outcomes or just rupees spent.</P>
+      <P>Principle 8 is about the business&apos;s impact on communities and inclusive growth. It covers Social Impact Assessments, rehabilitation and resettlement, community grievances, local and MSME sourcing, and CSR. Most of it comes from the CSR function, and the disclosure that separates a strong report from a weak one is <strong>whether you report outcomes or just rupees spent</strong>.</P>
 
       <KeyTakeaways items={[
         "Principle 8 covers Social Impact Assessments, resettlement, community grievances, local sourcing and CSR.",
@@ -1020,7 +1020,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       </Callout>
 
       <H2>Report outcomes, not just rupees</H2>
-      <P>The disclosures that carry weight are about impact. P8-L6 asks for the number and category of CSR beneficiaries; P8-L2 asks about projects in aspirational districts; P8-E1 asks for Social Impact Assessments. A report that lists only CSR expenditure misses the point of the principle. Leading practice is to quantify community programmes with a Social Return on Investment or a Social Impact Assessment, so the disclosure shows what changed, not only what was spent.</P>
+      <P>The disclosures that carry weight are about impact. P8-L6 asks for the number and category of CSR beneficiaries; P8-L2 asks about projects in aspirational districts; P8-E1 asks for Social Impact Assessments. <strong>A report that lists only CSR expenditure misses the point of the principle.</strong> Leading practice is to quantify community programmes with a Social Return on Investment or a Social Impact Assessment, so the disclosure shows what changed, not only what was spent.</P>
 
       <H2>Best practice for Principle 8</H2>
       <UL items={[
@@ -1040,7 +1040,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
   "brsr-principle-9-consumer-responsibility-guide": (
     <>
-      <P>Principle 9 is about the relationship with consumers: complaints, product recalls, cyber-security and data privacy, and product information. With the Digital Personal Data Protection Act 2023 now in force, its data-breach and privacy disclosures have moved from routine to closely watched.</P>
+      <P>Principle 9 is about the relationship with consumers: complaints, product recalls, cyber-security and data privacy, and product information. With the Digital Personal Data Protection Act 2023 now in force, its data-breach and privacy disclosures <strong>have moved from routine to closely watched</strong>.</P>
 
       <KeyTakeaways items={[
         "Principle 9 covers consumer complaints, product recalls, cyber-security and data-privacy policy, and data breaches.",
@@ -1066,7 +1066,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
       </Callout>
 
       <H2>How to answer the data-breach disclosure (P9-E7)</H2>
-      <P>P9-E7 asks for three things: the number of data-breach instances in the year, the percentage that involved personally identifiable customer information, and the impact of those breaches. Draw it from the information-security incident register, and reconcile it with your breach-notification records. Under the Digital Personal Data Protection Act 2023 this disclosure is read closely, so a nil return should be one you can stand behind, not a default.</P>
+      <P>P9-E7 asks for three things: the number of data-breach instances in the year, the percentage that involved personally identifiable customer information, and the impact of those breaches. Draw it from the information-security incident register, and reconcile it with your breach-notification records. Under the Digital Personal Data Protection Act 2023 this disclosure is read closely, so <strong>a nil return should be one you can stand behind, not a default</strong>.</P>
 
       <H2>Best practice for Principle 9</H2>
       <UL items={[
@@ -1086,7 +1086,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
   "brsr-vs-gri": (
     <>
-      <P>BRSR and the GRI Standards are the two frameworks most Indian sustainability teams end up juggling. They cover much of the same ground, so treating them as interchangeable is tempting, but they are built differently. This guide sets out what each one is, where they line up, where they diverge, and how one round of data collection can serve both.</P>
+      <P>BRSR and the GRI Standards are the two frameworks most Indian sustainability teams end up juggling. They cover much of the same ground, so treating them as interchangeable is tempting, <strong>but they are built differently</strong>. This guide sets out what each one is, where they line up, where they diverge, and how one round of data collection can serve both.</P>
 
       <KeyTakeaways items={[
         "BRSR is SEBI-mandated for the top 1000 listed Indian companies; GRI is a voluntary global standard.",
@@ -1134,7 +1134,7 @@ export const BLOG_CONTENT: Record<string, React.ReactNode> = {
 
   "brsr-vs-ifrs-issb": (
     <>
-      <P>As the ISSB&apos;s IFRS S1 and S2 become the global baseline for sustainability and climate disclosure, Indian teams increasingly ask how their mandatory BRSR filing relates to them. The short answer: they share a spine, but IFRS S2 goes far deeper on climate while BRSR spreads across all of ESG. This guide maps the two and shows how BRSR data can jump-start an IFRS S2 disclosure.</P>
+      <P>As the ISSB&apos;s IFRS S1 and S2 become the global baseline for sustainability and climate disclosure, Indian teams increasingly ask how their mandatory BRSR filing relates to them. The short answer: <strong>they share a spine, but IFRS S2 goes far deeper on climate while BRSR spreads across all of ESG</strong>. This guide maps the two and shows how BRSR data can jump-start an IFRS S2 disclosure.</P>
 
       <KeyTakeaways items={[
         "IFRS S1 (general sustainability) and S2 (climate) are the ISSB's global baseline; TCFD is now consolidated into S2.",
