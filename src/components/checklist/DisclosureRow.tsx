@@ -33,6 +33,18 @@ const STATUS_PILL_BORDER: Record<StatusKey, string> = {
   not_applicable:    "border-slate-200",
 };
 
+// The one-line "why" shown under each collapsed row, so a consultant can trust the
+// status at a glance without expanding. Ready/Verify draw their reason from the item
+// (source_filing / gap_note, already resolved in report-generator); Collect/N/A have
+// no per-item reason, so they get a static fallback. Literal class strings (Tailwind
+// JIT can't see constructed ones).
+const REASON_NOTE: Record<StatusKey, { prefix: string; cls: string; fallback?: string }> = {
+  already_tracked:   { prefix: "Pull from:",     cls: "text-emerald-700 bg-emerald-50 border-emerald-200/70" },
+  partially_tracked: { prefix: "Missing:",       cls: "text-amber-700 bg-amber-50 border-amber-200/70" },
+  new_data_needed:   { prefix: "Collect fresh:", cls: "text-orange-700 bg-orange-50 border-orange-200/70", fallback: "not covered by any filing you selected." },
+  not_applicable:    { prefix: "Why N/A:",       cls: "text-slate-500 bg-slate-50 border-slate-200/70",  fallback: "manufacturing-only disclosure, service firms skip this." },
+};
+
 export default function DisclosureRow({
   item, isOdd, expanded, onToggle, isCollected, onToggleCollected, detectedMatch,
   calcInputs, onCalcChange, scope3Inputs, onScope3Change,
@@ -90,12 +102,21 @@ export default function DisclosureRow({
                 </span>
               )}
             </div>
-            {/* Gap callout, below the code pill so label and pill stay coupled */}
-            {item.status === "partially_tracked" && item.gap_note && !isCollected && (
-              <p className="text-[11px] text-amber-700 bg-amber-50 border border-amber-200/70 rounded-md px-2 py-1 mt-1.5 line-clamp-2 leading-snug">
-                <span className="font-semibold">Missing:</span> {item.gap_note}
-              </p>
-            )}
+            {/* Why this status? A one-line reason under the code pill so a consultant can
+                trust the label at a glance without expanding. */}
+            {!isCollected && (() => {
+              const r = REASON_NOTE[item.status as StatusKey];
+              const body =
+                item.status === "already_tracked" ? item.source_filing :
+                item.status === "partially_tracked" ? item.gap_note :
+                r.fallback;
+              if (!body) return null;
+              return (
+                <p className={`text-[11px] border rounded-md px-2 py-1 mt-1.5 line-clamp-2 leading-snug ${r.cls}`}>
+                  <span className="font-semibold">{r.prefix}</span> {body}
+                </p>
+              );
+            })()}
           </div>
         </div>
 
