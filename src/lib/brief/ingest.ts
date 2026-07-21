@@ -7,6 +7,8 @@ import { groqComplete, groqConfigured } from "@/lib/datarequest/groq";
 import type { BriefCategory } from "./types";
 import { CATEGORY_DEFINITIONS } from "./types";
 import { existingUrls, insertNews, pruneOldNews, newsConfigured, type NewsInsert } from "./news";
+import { fetchPageMeta } from "./page-meta";
+import { isBadSummary } from "./quality";
 
 const VALID: BriefCategory[] = ["brsr", "assurance", "cbam", "carbon-markets", "global", "guides"];
 const MAX_PER_RUN = 20; // bound Groq calls + article fetches to stay under the function timeout
@@ -64,37 +66,6 @@ async function collectCandidates(): Promise<Candidate[]> {
   return out.sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
 }
 
-// Best-effort fetch of the real article page (Google News links redirect to it) to
-// pull a richer description + an OG image for better grounding and a nicer card.
-async function fetchArticleMeta(url: string): Promise<{ description?: string; image?: string }> {
-  try {
-    const ctrl = new AbortController();
-    const t = setTimeout(() => ctrl.abort(), 6000);
-    const res = await fetch(url, {
-      signal: ctrl.signal,
-      redirect: "follow",
-      headers: { "User-Agent": "Mozilla/5.0 (compatible; SaakshBriefBot/1.0)" },
-      cache: "no-store",
-    });
-    clearTimeout(t);
-    if (!res.ok) return {};
-    const html = (await res.text()).slice(0, 250000);
-    const meta = (prop: string) => {
-      const re = new RegExp(`<meta[^>]+(?:property|name)=["']${prop}["'][^>]+content=["']([^"']+)["']`, "i");
-      const re2 = new RegExp(`<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["']${prop}["']`, "i");
-      return (html.match(re)?.[1] || html.match(re2)?.[1] || "").trim();
-    };
-    const description = meta("og:description") || meta("description");
-    const image = meta("og:image");
-    return {
-      description: description ? stripHtml(description).slice(0, 600) : undefined,
-      image: image && /^https?:\/\//.test(image) ? image : undefined,
-    };
-  } catch {
-    return {};
-  }
-}
-
 const SYSTEM = `You classify and summarise a single ESG/sustainability news item for a digest read by Indian ESG and BRSR consultants.
 STRICT RULES:
 - Use ONLY the provided title and text. Never invent, infer, estimate, or add any fact, number, name, date, or company not present in the input.
@@ -118,25 +89,39 @@ function parseResult(raw: string | null): Classified | null {
     const obj = JSON.parse(m[0]) as { category_slug?: string; summary?: string };
     const cat = (obj.category_slug || "").toLowerCase() as BriefCategory;
     const summary = (obj.summary || "").trim();
-    if (!summary || summary.length < 20) return null;
-    if (/(here is|as an ai|i cannot|system prompt|instruction)/i.test(summary)) return null; // prompt-leak guard
+    if (!summary || isBadSummary(summary)) return null;
     return { category_slug: VALID.includes(cat) ? cat : "global", summary: summary.slice(0, 500) };
   } catch {
     return null;
   }
 }
 
+// Retry a transient all-keys-rate-limited miss once (groqComplete already rotates
+// keys and returns null rather than throwing).
+async function groqWithRetry(
+  system: string,
+  user: string,
+  opts: { maxTokens?: number; temperature?: number; salt?: number }
+): Promise<string | null> {
+  for (let i = 0; i < 2; i++) {
+    const r = await groqComplete(system, user, { ...opts, salt: (opts.salt ?? 0) + i });
+    if (r) return r;
+    if (i === 0) await new Promise((res) => setTimeout(res, 500));
+  }
+  return null;
+}
+
 async function classify(c: Candidate, salt: number): Promise<Classified | null> {
-  const meta = await fetchArticleMeta(c.link);
+  const meta = await fetchPageMeta(c.link);
   const text = [meta.description, c.snippet].filter(Boolean).join(" ").slice(0, 700) || "(no description available)";
-  const raw = await groqComplete(SYSTEM, `Title: ${c.title}\n\nText: ${text}`, {
+  const raw = await groqWithRetry(SYSTEM, `Title: ${c.title}\n\nText: ${text}`, {
     maxTokens: 260,
     temperature: 0.2,
     salt,
   });
   const parsed = parseResult(raw);
   if (!parsed) return null;
-  (parsed as Classified & { image?: string }).image = meta.image;
+  (parsed as Classified & { image?: string }).image = meta.imageUrl ?? undefined;
   return parsed;
 }
 

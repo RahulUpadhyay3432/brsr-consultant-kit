@@ -66,10 +66,25 @@ function interleave(items: BriefItem[]): BriefItem[] {
   return out;
 }
 
+// Keep at most N of the most-recent news items from any one publisher, so a
+// prolific outlet can't flood the feed. Applied to news only, regs have unique
+// source labels and every guide shares one author. (news is already date-desc.)
+const MAX_PER_SOURCE = 3;
+function capNewsBySource(news: BriefItem[]): BriefItem[] {
+  const counts = new Map<string, number>();
+  return news.filter((it) => {
+    const key = it.sourceName || "unknown";
+    const n = counts.get(key) ?? 0;
+    if (n >= MAX_PER_SOURCE) return false;
+    counts.set(key, n + 1);
+    return true;
+  });
+}
+
 // The full feed, newest first, gently interleaved. News leads because it's the
 // freshest; curated items and guides fold in by date.
 export async function getBriefFeed(): Promise<BriefItem[]> {
-  const news = await fetchBriefNews();
+  const news = capNewsBySource(await fetchBriefNews());
   const merged = [...news, ...REG_ITEMS, ...GUIDE_ITEMS].sort((a, b) =>
     b.date.localeCompare(a.date)
   );
