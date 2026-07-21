@@ -25,6 +25,7 @@ export const FREE_NAV_ITEMS: { label: string; sub: string; href: string; badge?:
 // every ESG/B2B peer uses: one dropdown for blog/guides/latest/about).
 export const RESOURCES_NAV_ITEMS: { label: string; sub: string; href: string }[] = [
   { label: "Brief",                 sub: "30-second swipeable ESG digest for your phone", href: "/brief" },
+  { label: "ESG jobs",              sub: "Curated sustainability roles across India",  href: "/jobs" },
   { label: "Latest updates",        sub: "SEBI, BRSR, CBAM & CCTS moves that matter", href: "/latest" },
   { label: "Blog",                  sub: "Practical, cited BRSR & ESG guides",        href: "/blog" },
   { label: "Methodology & sources", sub: "How we calculate, every figure cited",      href: "/methodology" },

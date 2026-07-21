@@ -17,12 +17,14 @@ const icon = {
   blog: <><path d="M5 3h9l5 5v13H5z" /><path d="M8 12h8M8 16h6M8 8h4" /></>,
   pricing: <><path d="M20 12l-8 8-9-9V4h7z" /><circle cx="7.5" cy="7.5" r="1.3" /></>,
   about: <><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 7.5v.5" /></>,
+  jobs: <><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></>,
 };
 
 const NAV: { label: string; href: string; k: keyof typeof icon }[] = [
   { label: "Home", href: "/", k: "home" },
   { label: "Free tools", href: "/start", k: "tools" },
   { label: "Latest updates", href: "/latest", k: "latest" },
+  { label: "ESG jobs", href: "/jobs", k: "jobs" },
   { label: "Blog", href: "/blog", k: "blog" },
   { label: "Pricing", href: "/pricing", k: "pricing" },
   { label: "About", href: "/about", k: "about" },
