@@ -8,10 +8,11 @@ import CompanyAvatar from "@/components/CompanyAvatar";
 import { SubscribeForm } from "@/components/SubscribeForm";
 import { track } from "@/lib/mixpanel";
 import {
-  getJobs, usedCategories, jobAge, jobChips, similarJobs, matchesQuery,
+  usedCategories, jobAge, jobChips, similarJobs, matchesQuery,
   getSavedJobIds, toggleSavedJob, workModeLabel, jobTypeLabel, CATEGORY_LABEL,
   type Job, type JobCategory,
 } from "@/lib/jobs";
+import { useMergedJobs } from "@/lib/jobs/useMergedJobs";
 
 /* ── small pieces ─────────────────────────────────────────────────────────── */
 function ArrowUpRight({ cls = "w-4 h-4" }: { cls?: string }) {
@@ -184,7 +185,7 @@ function DetailPane({ job, all, saved, onSave, onSelect }: { job: Job; all: Job[
 /* ── page ─────────────────────────────────────────────────────────────────── */
 type DateFilter = "all" | "24h" | "week" | "month";
 export default function JobsPage() {
-  const all = useMemo(() => getJobs(), []);
+  const all = useMergedJobs();
   const cats = useMemo(() => usedCategories(all), [all]);
   const modes = useMemo(() => Array.from(new Set(all.map((j) => j.workMode).filter(Boolean))) as string[], [all]);
   const types = useMemo(() => Array.from(new Set(all.map((j) => j.type).filter(Boolean))) as string[], [all]);

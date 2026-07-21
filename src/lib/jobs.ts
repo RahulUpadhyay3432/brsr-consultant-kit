@@ -1,6 +1,9 @@
-// Curated ESG / sustainability jobs board. Hand-picked (never scraped), each row
-// links to the original posting at its source. Same cited, above-board posture as
-// regulatory_updates.json: a job is added by editing src/data/jobs.json.
+// Curated ESG / sustainability jobs board. Roles come from two places: hand-picked
+// entries in src/data/jobs.json (always shown), plus link-verified listings ingested
+// by the scraping pipeline (src/lib/jobs/*) and served from /api/jobs. Both link to
+// the original posting; nothing is fabricated.
+// NOTE: this module is imported by server routes (via src/lib/jobs/db.ts), so it must
+// stay hook-free. The client `useMergedJobs` hook lives in src/lib/jobs/useMergedJobs.ts.
 import jobsData from "@/data/jobs.json";
 
 export type JobCategory =
@@ -94,6 +97,18 @@ export function matchesQuery(j: Job, q: string): boolean {
   const query = q.trim().toLowerCase();
   if (!query) return true;
   return `${j.title} ${j.company} ${(j.tags || []).join(" ")}`.toLowerCase().includes(query);
+}
+
+// Merge curated jobs.json with ingested jobs (from /api/jobs), de-duping on apply
+// URL (curated wins), featured-first then newest. Used by the client hook.
+export function mergeJobs(curated: Job[], stored: Job[]): Job[] {
+  const urls = new Set(curated.map((j) => j.applyUrl));
+  const extra = stored.filter((j) => j.applyUrl && !urls.has(j.applyUrl));
+  return [...curated, ...extra].sort(
+    (a, b) =>
+      (b.featured ? 1 : 0) - (a.featured ? 1 : 0) ||
+      (b.postedDate || "").localeCompare(a.postedDate || "")
+  );
 }
 
 // ── Saved jobs (localStorage, SSR-safe; shared by /jobs and the Brief tab) ────

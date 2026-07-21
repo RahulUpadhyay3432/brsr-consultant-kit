@@ -1,0 +1,26 @@
+# Refreshes the curated ESG jobs board by scraping the configured sources
+# (src/lib/jobs/sources.ts), extracting + verifying listings, and storing them.
+# Runs twice a day. To enable, add two repo secrets (Settings → Secrets → Actions):
+#   APP_URL      e.g. https://saaksh.co
+#   CRON_SECRET  the same value set in Vercel env
+# The endpoint also no-ops unless FIRECRAWL_API_KEY + the brsr_jobs table exist.
+name: Refresh ESG jobs board
+
+on:
+  schedule:
+    - cron: "0 3,15 * * *" # twice daily (UTC)
+  workflow_dispatch: {}
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger jobs ingestion
+        run: |
+          if [ -z "${{ secrets.APP_URL }}" ] || [ -z "${{ secrets.CRON_SECRET }}" ]; then
+            echo "APP_URL / CRON_SECRET not set; skipping."
+            exit 0
+          fi
+          curl -fsS -X GET "${{ secrets.APP_URL }}/api/cron/jobs" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --max-time 300 | head -c 800
