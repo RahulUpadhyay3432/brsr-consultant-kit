@@ -16,8 +16,9 @@ const MAX_PER_RUN = 20; // bound Groq calls + article fetches to stay under the 
 const gnews = (q: string) =>
   `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=en-IN&gl=IN&ceid=IN:en`;
 
-// Curated source queries. Google News RSS is free, India-scoped, and reliable.
-export const BRIEF_SOURCES: string[] = [
+// Curated source queries. Google News RSS is free, India-scoped, and reliable for
+// COVERAGE (but its links are redirects, so its items carry no image).
+const GNEWS_SOURCES: string[] = [
   gnews('BRSR OR "business responsibility and sustainability report" SEBI'),
   gnews("CBAM India exporter carbon border adjustment"),
   gnews('CCTS OR "carbon credit trading scheme" India carbon market'),
@@ -26,7 +27,39 @@ export const BRIEF_SOURCES: string[] = [
   gnews("BRSR Core assurance India"),
 ];
 
+// Dedicated publisher feeds. These are direct-link WordPress-style feeds that
+// carry a real article URL AND a media image, so their cards get actual photos.
+// (The relevance gate still drops anything off-topic for an Indian ESG reader.)
+const PUBLISHER_SOURCES: string[] = [
+  "https://india.mongabay.com/feed/",   // India environment/climate, media:content
+  "https://www.esgtoday.com/feed/",     // global ESG/frameworks, featured images
+];
+
+export const BRIEF_SOURCES: string[] = [...GNEWS_SOURCES, ...PUBLISHER_SOURCES];
+
 const stripHtml = (s: string) => s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+// rss-parser drops non-standard tags unless declared; capture the common image
+// carriers so publisher feeds hand us a photo directly.
+type FeedItem = {
+  title?: string; link?: string; isoDate?: string; pubDate?: string;
+  content?: string; contentSnippet?: string;
+  enclosure?: { url?: string };
+  "media:content"?: { $?: { url?: string } } | { $?: { url?: string } }[];
+  "media:thumbnail"?: { $?: { url?: string } };
+};
+
+function imageFromItem(it: FeedItem): string | null {
+  const mc = it["media:content"];
+  const fromMedia = Array.isArray(mc) ? mc[0]?.$?.url : mc?.$?.url;
+  const url =
+    fromMedia ||
+    it["media:thumbnail"]?.$?.url ||
+    it.enclosure?.url ||
+    it.content?.match(/<img[^>]+src=["']([^"']+)["']/i)?.[1] ||
+    null;
+  return url && /^https?:\/\//.test(url) ? url : null;
+}
 
 interface Candidate {
   title: string;
@@ -34,23 +67,29 @@ interface Candidate {
   sourceName: string | null;
   publishedAt: string;
   snippet: string;
+  image: string | null; // from the feed item, when the publisher provides one
 }
 
 // Parse all feeds into a deduped candidate list, newest first.
 async function collectCandidates(): Promise<Candidate[]> {
-  const parser = new Parser({ timeout: 12000 });
+  const parser = new Parser({
+    timeout: 12000,
+    customFields: { item: [["media:content", "media:content"], ["media:thumbnail", "media:thumbnail"]] },
+  });
   const seen = new Set<string>();
   const out: Candidate[] = [];
   const feeds = await Promise.allSettled(BRIEF_SOURCES.map((u) => parser.parseURL(u)));
   for (const f of feeds) {
     if (f.status !== "fulfilled") continue;
-    for (const it of f.value.items || []) {
+    const feedTitle = (f.value.title || "").trim() || null;
+    for (const it of (f.value.items || []) as FeedItem[]) {
       const link = (it.link || "").trim();
       if (!link || seen.has(link)) continue;
       seen.add(link);
       // Google News titles are "Headline - Publisher"; split the source off.
+      // Publisher feeds already have a clean title + a known outlet name.
       let title = (it.title || "").trim();
-      let sourceName: string | null = null;
+      let sourceName: string | null = feedTitle;
       const m = title.match(/^(.+?)\s+-\s+([^-]{2,60})$/);
       if (m) { title = m[1].trim(); sourceName = m[2].trim(); }
       if (!title) continue;
@@ -60,6 +99,7 @@ async function collectCandidates(): Promise<Candidate[]> {
         sourceName,
         publishedAt: it.isoDate || (it.pubDate ? new Date(it.pubDate).toISOString() : new Date().toISOString()),
         snippet: stripHtml(it.contentSnippet || it.content || "").slice(0, 600),
+        image: imageFromItem(it),
       });
     }
   }
@@ -112,7 +152,10 @@ async function groqWithRetry(
 }
 
 async function classify(c: Candidate, salt: number): Promise<Classified | null> {
-  const meta = await fetchPageMeta(c.link);
+  // Skip the page fetch when the feed already gave us an image + snippet (the
+  // publisher feeds do); only scrape when we need the image or more text.
+  const needsScrape = !c.image || c.snippet.length < 60;
+  const meta = needsScrape ? await fetchPageMeta(c.link) : { imageUrl: null, description: null, title: null };
   const text = [meta.description, c.snippet].filter(Boolean).join(" ").slice(0, 700) || "(no description available)";
   const raw = await groqWithRetry(SYSTEM, `Title: ${c.title}\n\nText: ${text}`, {
     maxTokens: 260,
@@ -121,7 +164,7 @@ async function classify(c: Candidate, salt: number): Promise<Classified | null> 
   });
   const parsed = parseResult(raw);
   if (!parsed) return null;
-  (parsed as Classified & { image?: string }).image = meta.imageUrl ?? undefined;
+  (parsed as Classified & { image?: string }).image = c.image ?? meta.imageUrl ?? undefined;
   return parsed;
 }
 

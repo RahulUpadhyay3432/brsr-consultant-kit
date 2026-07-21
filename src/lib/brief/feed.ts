@@ -81,18 +81,32 @@ function capNewsBySource(news: BriefItem[]): BriefItem[] {
   });
 }
 
-// The full feed, newest first, gently interleaved. News leads because it's the
-// freshest; curated items and guides fold in by date.
+// A sort key that keeps future-dated items (curated regulatory *deadlines*, e.g.
+// a CBAM surrender due Sep 2027) from masquerading as the freshest news. Past
+// items sort by their real time; a future item is mirrored below "now" in
+// proportion to how far off it is, so an imminent deadline stays near the top
+// while a distant one sinks, and neither ever outranks genuinely fresh news.
+function sortTime(iso: string, now: number): number {
+  const t = Date.parse(iso);
+  if (Number.isNaN(t)) return 0;
+  return t > now ? now - (t - now) : t;
+}
+
+// The full feed, newest first, gently interleaved. Fresh news leads; curated
+// items and guides fold in by date, upcoming deadlines by how soon they are.
 export async function getBriefFeed(): Promise<BriefItem[]> {
+  const now = Date.now();
   const news = capNewsBySource(await fetchBriefNews());
-  const merged = [...news, ...REG_ITEMS, ...GUIDE_ITEMS].sort((a, b) =>
-    b.date.localeCompare(a.date)
+  const merged = [...news, ...REG_ITEMS, ...GUIDE_ITEMS].sort(
+    (a, b) => sortTime(b.date, now) - sortTime(a.date, now)
   );
   return interleave(merged);
 }
 
 // Curated-only fallback (used if the news table isn't available), so /brief is
-// never empty.
+// never empty. (Uses a fixed reference time; this list is module-level/static.)
 export const CURATED_FEED: BriefItem[] = interleave(
-  [...REG_ITEMS, ...GUIDE_ITEMS].sort((a, b) => b.date.localeCompare(a.date))
+  [...REG_ITEMS, ...GUIDE_ITEMS].sort(
+    (a, b) => b.date.localeCompare(a.date)
+  )
 );

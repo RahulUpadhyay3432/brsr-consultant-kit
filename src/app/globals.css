@@ -118,6 +118,9 @@ body::before {
   z-index: 200;
   pointer-events: none;
 }
+/* The Brief is a self-contained phone app; the site-wide top hairline reads as
+   a stray line inside it, so hide it on that route. */
+body:has(.brief-root)::before { display: none; }
 
 /* Status badges — Ready (green) · Verify (amber) · Collect (ember) */
 .badge-tracked {

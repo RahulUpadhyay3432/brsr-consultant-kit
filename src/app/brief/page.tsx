@@ -14,7 +14,7 @@ export default async function BriefPage() {
   });
 
   return (
-    <div className="min-h-[100dvh] bg-band text-ink lg:flex lg:items-center lg:justify-center lg:gap-8 lg:px-8 lg:py-10">
+    <div className="brief-root min-h-[100dvh] bg-band text-ink lg:flex lg:items-center lg:justify-center lg:gap-8 lg:px-8 lg:py-10">
       {/* Desktop: context panel */}
       <aside className="hidden lg:flex flex-col w-[300px] gap-5">
         <div className="flex items-center gap-2.5">
