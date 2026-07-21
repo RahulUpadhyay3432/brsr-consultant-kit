@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { getConsent, setConsent, CONSENT_OPEN_EVENT } from "@/lib/consent";
 
 // DPDP opt-in banner. Shows on first visit (no stored choice) and whenever the
@@ -9,6 +10,7 @@ import { getConsent, setConsent, CONSENT_OPEN_EVENT } from "@/lib/consent";
 // client data is processed on-device and never uploaded.
 export default function ConsentBanner() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     if (getConsent() === null) setOpen(true);
@@ -17,7 +19,9 @@ export default function ConsentBanner() {
     return () => window.removeEventListener(CONSENT_OPEN_EVENT, reopen);
   }, []);
 
-  if (!open) return null;
+  // The Brief is a full-screen app surface; its own bottom nav would clash with the
+  // banner. Consent is captured on the rest of the site instead.
+  if (!open || pathname?.startsWith("/brief")) return null;
 
   function choose(analytics: boolean) {
     setConsent(analytics);

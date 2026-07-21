@@ -142,7 +142,7 @@ export default function HelpWidget() {
   }, []);
 
   // No help affordance on the bare auth screen.
-  if (pathname === "/login") return null;
+  if (pathname === "/login" || pathname?.startsWith("/brief")) return null;
 
   return (
     <div className="no-print">

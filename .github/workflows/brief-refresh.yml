@@ -1,0 +1,26 @@
+# Refreshes the Saaksh Brief news feed every 3 hours. Vercel Hobby crons run only
+# once a day, so this GitHub Action drives freshness by hitting the same secured
+# endpoint. To enable it, add two repo secrets (Settings → Secrets → Actions):
+#   APP_URL      e.g. https://saaksh.co
+#   CRON_SECRET  the same value set in Vercel env
+# Without the secrets the workflow is a no-op; the daily Vercel cron still runs.
+name: Refresh Saaksh Brief
+
+on:
+  schedule:
+    - cron: "0 */3 * * *" # every 3 hours (UTC)
+  workflow_dispatch: {}
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger news ingestion
+        run: |
+          if [ -z "${{ secrets.APP_URL }}" ] || [ -z "${{ secrets.CRON_SECRET }}" ]; then
+            echo "APP_URL / CRON_SECRET not set; skipping."
+            exit 0
+          fi
+          curl -fsS -X GET "${{ secrets.APP_URL }}/api/cron/news" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --max-time 120 | head -c 500
