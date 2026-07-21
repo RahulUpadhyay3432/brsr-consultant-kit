@@ -1,3 +1,77 @@
 {
-  "jobs": []
+  "jobs": [
+    {
+      "id": "infosys-sustainability-consultant",
+      "title": "Sustainability Consultant",
+      "company": "Infosys",
+      "location": "Bengaluru, Karnataka",
+      "category": "esg-strategy",
+      "applyUrl": "https://in.linkedin.com/jobs/view/sustainability-consultant-at-infosys-4441175410",
+      "postedDate": "2026-07-18",
+      "type": "full-time",
+      "workMode": "hybrid",
+      "seniority": "Mid–Senior",
+      "summary": "Support client ESG strategy, sustainability reporting, decarbonisation, and data management.",
+      "aboutRole": "Engage clients on their sustainability objectives, conduct research and analysis, and support ESG reporting with frameworks like GRI, BRSR, and TCFD. Develop solutions and track sustainability KPIs across engagements.",
+      "aboutCompany": "Infosys is a global leader in next-generation digital services and consulting.",
+      "tags": ["ESG Reporting", "BRSR", "Decarbonisation"],
+      "sourceName": "LinkedIn",
+      "featured": true,
+      "activelyHiring": true
+    },
+    {
+      "id": "kpmg-consultant-climate-risk",
+      "title": "Consultant – Climate Risk",
+      "company": "KPMG India",
+      "location": "Mumbai, Maharashtra",
+      "category": "esg-finance",
+      "applyUrl": "https://in.linkedin.com/jobs/view/consultant-climate-risk-at-kpmg-india-4438590363",
+      "postedDate": "2026-07-15",
+      "type": "full-time",
+      "workMode": "hybrid",
+      "seniority": "Associate",
+      "summary": "Advise banks and financial institutions on climate risk models, scenario analysis, and ESG integration.",
+      "aboutRole": "Consult on risk processes including ESG and climate risk models, scenario and stress-testing frameworks. Develop transition plans aligned with sustainability targets, and run data analyses for risk assessments and ESG topics such as emissions calculations.",
+      "aboutCompany": "KPMG India is a leading professional services firm providing audit, tax, and advisory services.",
+      "tags": ["Climate Risk", "ESG", "Risk Modelling"],
+      "sourceName": "LinkedIn",
+      "activelyHiring": true
+    },
+    {
+      "id": "kpmg-consultant-climate-esg-govt",
+      "title": "Consultant – Climate Change & ESG (Government Advisory)",
+      "company": "KPMG India",
+      "location": "Gandhinagar, Gujarat",
+      "category": "esg-strategy",
+      "applyUrl": "https://in.linkedin.com/jobs/view/consultant-%E2%80%93-climate-change-esg-government-advisory-at-kpmg-india-4436315601",
+      "postedDate": "2026-07-08",
+      "type": "contract",
+      "workMode": "hybrid",
+      "seniority": "Associate",
+      "experience": "5–10 years",
+      "summary": "Support climate change, ESG, and sustainability advisory projects with government stakeholders.",
+      "aboutRole": "Support climate resilience projects, conduct research on climate change and ESG, and develop reports and presentations. Engage stakeholders and support climate finance initiatives across government advisory engagements.",
+      "aboutCompany": "KPMG India is a leading professional services firm providing audit, tax, and advisory services.",
+      "tags": ["Climate Change", "ESG", "Government Advisory"],
+      "sourceName": "LinkedIn"
+    },
+    {
+      "id": "tata-electronics-ehs-sustainability-reporting",
+      "title": "EHS – Sustainability Reporting",
+      "company": "Tata Electronics",
+      "location": "Bengaluru, Karnataka",
+      "category": "brsr-reporting",
+      "applyUrl": "https://in.linkedin.com/jobs/view/environmental-health-safety-sustainibility-reporting-at-tata-electronics-4433052084",
+      "postedDate": "2026-07-01",
+      "type": "full-time",
+      "workMode": "onsite",
+      "seniority": "Mid–Senior",
+      "experience": "12–17 years",
+      "summary": "Lead sustainability reporting, GHG inventory, and decarbonisation aligned with global standards.",
+      "aboutRole": "Design and maintain sustainability reporting systems per GRI, SASB, and TCFD, and prepare annual sustainability reports and ESG disclosures. Develop the GHG emissions inventory per the GHG Protocol and monitor decarbonisation measures.",
+      "aboutCompany": "Tata Electronics is part of the Tata Group, focused on electronics manufacturing.",
+      "tags": ["Sustainability Reporting", "GRI", "GHG Protocol", "BRSR"],
+      "sourceName": "LinkedIn"
+    }
+  ]
 }
