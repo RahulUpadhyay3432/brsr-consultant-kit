@@ -4,12 +4,12 @@ export const metadata: Metadata = {
   title: "Saaksh Brief — the 30-second ESG & BRSR digest",
   description:
     "A swipeable, install-to-home-screen brief of Indian ESG and BRSR: SEBI, BRSR Core, CBAM, CCTS and global frameworks. Fresh news, cited regulation, plain guides.",
-  appleWebApp: { capable: true, title: "Brief", statusBarStyle: "black-translucent" },
+  appleWebApp: { capable: true, title: "Brief", statusBarStyle: "default" },
   icons: { apple: "/icons/apple-touch-icon.png" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0F1E33",
+  themeColor: "#FBFCFE",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,

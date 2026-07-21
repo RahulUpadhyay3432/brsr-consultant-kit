@@ -2,8 +2,8 @@
 
 // The whole Saaksh Brief experience: a swipeable (CSS scroll-snap) vertical card
 // feed inside a phone column, with category pills, a grounded "Why it matters"
-// sheet, Saved + Profile views, a daily streak, and PWA install. Dark, calm, and
-// dep-free (no framer-motion).
+// sheet, Saved + Profile views, a daily streak, and PWA install. Light theme, to
+// match the rest of Saaksh; dep-free (no framer-motion).
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { track } from "@/lib/mixpanel";
@@ -48,12 +48,12 @@ function Hero({ item }: { item: BriefItem }) {
         <img src={item.imageUrl} alt="" loading="lazy" className="w-full h-full object-cover" />
       ) : (
         <div className="w-full h-full flex items-end p-4" style={{ background: `linear-gradient(145deg, ${cat.gradient[0]}, ${cat.gradient[1]})` }}>
-          <span className="font-display text-[2.6rem] font-bold text-white/12 leading-none">{cat.label}</span>
+          <span className="font-display text-[2.6rem] font-bold text-white/15 leading-none">{cat.label}</span>
         </div>
       )}
       <div className="absolute inset-x-0 top-0 p-3.5 flex items-center gap-2">
-        <span className="text-[10.5px] font-bold uppercase tracking-[0.08em] px-2 py-1 rounded-md text-white" style={{ background: cat.accent + "E6" }}>{item.tagLabel}</span>
-        <span className="text-[11.5px] font-medium text-white/85 drop-shadow">{item.displayDate}</span>
+        <span className="text-[10.5px] font-bold uppercase tracking-[0.08em] px-2 py-1 rounded-md text-white shadow-sm" style={{ background: cat.accent }}>{item.tagLabel}</span>
+        <span className="text-[11.5px] font-semibold text-white/95 drop-shadow">{item.displayDate}</span>
       </div>
     </div>
   );
@@ -82,11 +82,11 @@ function Card({ item, onWhy }: { item: BriefItem; onWhy: (i: BriefItem) => void 
     : item.kind === "regulation" ? `Source · ${item.sourceName || "primary source"}`
     : `Guide${item.sourceName ? ` · ${item.sourceName}` : ""}`;
 
-  const titleCls = "font-display text-[1.35rem] leading-[1.2] font-bold text-ondark tracking-[-0.01em] hover:text-white";
+  const titleCls = "font-display text-[1.35rem] leading-[1.2] font-bold text-ink tracking-[-0.01em] hover:text-brand-700";
   const onOpen = () => track("brief_source_opened", { kind: item.kind });
 
   return (
-    <div className="snap-start h-full flex flex-col">
+    <div className="snap-start h-full flex flex-col bg-page">
       <Hero item={item} />
       <div className="flex-1 flex flex-col px-5 pt-4 pb-2 min-h-0">
         {item.external ? (
@@ -94,20 +94,20 @@ function Card({ item, onWhy }: { item: BriefItem; onWhy: (i: BriefItem) => void 
         ) : (
           <Link href={item.href} onClick={onOpen} className={titleCls}>{item.title}</Link>
         )}
-        <p className="mt-2.5 text-[15px] leading-[1.55] text-ondark-muted line-clamp-5 flex-1">{item.summary}</p>
+        <p className="mt-2.5 text-[15px] leading-[1.55] text-ink-body line-clamp-5 flex-1">{item.summary}</p>
 
-        <div className="mt-3 flex items-center gap-1.5 text-[11.5px] text-ondark-faint">
-          {item.aiSummary && <span className="text-brand-400">{I.spark}</span>}
+        <div className="mt-3 flex items-center gap-1.5 text-[11.5px] text-ink-faint">
+          {item.aiSummary && <span className="text-brand-600">{I.spark}</span>}
           <span className="truncate">{sourceLine}</span>
-          {item.external && <span className="ml-auto inline-flex items-center gap-1 text-ondark-muted">open {I.ext}</span>}
+          {item.external && <span className="ml-auto inline-flex items-center gap-1 text-ink-muted">open {I.ext}</span>}
         </div>
 
         <div className="mt-3 flex items-center gap-2">
-          <button onClick={() => onWhy(item)} className="pressable flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 py-2.5 text-[13.5px] font-semibold text-ondark">
-            <span className="text-brand-400">{I.spark}</span> Why it matters
+          <button onClick={() => onWhy(item)} className="pressable flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-white border border-line shadow-elev-1 hover:shadow-elev-2 py-2.5 text-[13.5px] font-semibold text-ink">
+            <span className="text-brand-600">{I.spark}</span> Why it matters
           </button>
-          <button onClick={bookmark} aria-label="Save" className={`pressable grid place-items-center h-11 w-11 rounded-xl border border-white/10 ${saved ? "bg-brand-600 text-white" : "bg-white/10 text-ondark hover:bg-white/15"}`}>{I.bookmark(saved)}</button>
-          <button onClick={share} aria-label="Share" className="pressable grid place-items-center h-11 w-11 rounded-xl bg-white/10 border border-white/10 text-ondark hover:bg-white/15">{I.share}</button>
+          <button onClick={bookmark} aria-label="Save" className={`pressable grid place-items-center h-11 w-11 rounded-xl border ${saved ? "bg-brand-600 text-white border-brand-600" : "bg-white border-line text-ink-muted hover:bg-band"}`}>{I.bookmark(saved)}</button>
+          <button onClick={share} aria-label="Share" className="pressable grid place-items-center h-11 w-11 rounded-xl bg-white border border-line text-ink-muted hover:bg-band">{I.share}</button>
         </div>
       </div>
     </div>
@@ -116,14 +116,14 @@ function Card({ item, onWhy }: { item: BriefItem; onWhy: (i: BriefItem) => void 
 
 function CaughtUp({ streak, onTop }: { streak: number; onTop: () => void }) {
   return (
-    <div className="snap-start h-full flex flex-col items-center justify-center text-center px-8 gap-4">
-      <div className="grid place-items-center h-16 w-16 rounded-2xl bg-brand-600/20 text-brand-400">
+    <div className="snap-start h-full flex flex-col items-center justify-center text-center px-8 gap-4 bg-page">
+      <div className="grid place-items-center h-16 w-16 rounded-2xl bg-brand-50 text-brand-600">
         <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
       </div>
-      <h3 className="font-display text-[1.5rem] font-bold text-ondark">You&apos;re all caught up</h3>
-      <p className="text-[14px] text-ondark-muted max-w-[280px] leading-relaxed">That&apos;s the ESG and BRSR world for now. New items land through the day.</p>
-      {streak > 0 && <p className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-ember"><span className="text-ember">{I.fire}</span> {streak}-day streak</p>}
-      <button onClick={onTop} className="pressable mt-1 inline-flex items-center gap-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/10 px-4 py-2.5 text-[13.5px] font-semibold text-ondark">{I.arrowUp} Back to top</button>
+      <h3 className="font-display text-[1.5rem] font-bold text-ink">You&apos;re all caught up</h3>
+      <p className="text-[14px] text-ink-muted max-w-[280px] leading-relaxed">That&apos;s the ESG and BRSR world for now. New items land through the day.</p>
+      {streak > 0 && <p className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-ember"><span>{I.fire}</span> {streak}-day streak</p>}
+      <button onClick={onTop} className="pressable mt-1 inline-flex items-center gap-2 rounded-xl bg-white border border-line px-4 py-2.5 text-[13.5px] font-semibold text-ink shadow-elev-1">{I.arrowUp} Back to top</button>
     </div>
   );
 }
@@ -155,7 +155,6 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
     return BRIEF_CATEGORIES.filter((c) => present.has(c.slug));
   }, [items]);
 
-  // Track the active card + fire one view event per card.
   useEffect(() => {
     const root = scrollRef.current;
     if (!root || view !== "feed") return;
@@ -192,13 +191,13 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
   };
 
   return (
-    <div className="relative w-full max-w-[440px] h-[100dvh] lg:h-[880px] lg:max-h-[92vh] lg:rounded-[2.2rem] lg:border lg:border-white/10 lg:shadow-2xl bg-forest text-ondark overflow-hidden flex flex-col">
+    <div className="relative w-full max-w-[440px] h-[100dvh] lg:h-[880px] lg:max-h-[92vh] lg:rounded-[2.2rem] lg:border lg:border-line lg:shadow-elev-3 bg-page text-ink overflow-hidden flex flex-col">
       {/* Top bar */}
-      <header className="flex-shrink-0 px-4 pt-3 pb-2 bg-forest/95 backdrop-blur z-20 border-b border-white/5">
+      <header className="flex-shrink-0 px-4 pt-3 pb-2 bg-page/95 backdrop-blur z-20 border-b border-line">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="grid place-items-center h-6 w-6 rounded-md bg-brand-600 text-white text-[13px] font-bold">S</span>
-            <span className="font-display font-bold text-[16px] text-ondark">Saaksh Brief</span>
+            <span className="font-display font-bold text-[16px] text-ink">Saaksh Brief</span>
           </div>
           {streak > 0 && <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-ember"><span>{I.fire}</span>{streak}</span>}
         </div>
@@ -226,7 +225,7 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
       {view === "profile" && <ProfileView streak={streak} canInstall={!!installEvt} onInstall={install} />}
 
       {/* Bottom nav */}
-      <nav className="flex-shrink-0 grid grid-cols-3 border-t border-white/8 bg-forest/95 backdrop-blur z-20">
+      <nav className="flex-shrink-0 grid grid-cols-3 border-t border-line bg-page/95 backdrop-blur z-20">
         <NavBtn active={view === "feed"} onClick={() => setView("feed")} icon={I.feed} label="Feed" />
         <NavBtn active={view === "saved"} onClick={() => setView("saved")} icon={I.saved(view === "saved")} label="Saved" />
         <NavBtn active={view === "profile"} onClick={() => setView("profile")} icon={I.profile} label="Profile" />
@@ -239,40 +238,40 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
 
 function Pill({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
-    <button onClick={onClick} className={`chip-spring flex-shrink-0 text-[12.5px] font-semibold px-3 py-1.5 rounded-full border transition-colors ${active ? "bg-brand-600 text-white border-brand-600" : "bg-white/8 text-ondark-muted border-white/10 hover:text-ondark"}`}>{children}</button>
+    <button onClick={onClick} className={`chip-spring flex-shrink-0 text-[12.5px] font-semibold px-3 py-1.5 rounded-full border transition-colors ${active ? "bg-brand-600 text-white border-brand-600" : "bg-white text-ink-body border-line hover:border-brand-300"}`}>{children}</button>
   );
 }
 function NavBtn({ active, onClick, icon, label }: { active: boolean; onClick: () => void; icon: React.ReactNode; label: string }) {
   return (
-    <button onClick={onClick} className={`flex flex-col items-center gap-0.5 py-2.5 text-[10.5px] font-semibold transition-colors ${active ? "text-brand-400" : "text-ondark-faint hover:text-ondark-muted"}`}>{icon}{label}</button>
+    <button onClick={onClick} className={`flex flex-col items-center gap-0.5 py-2.5 text-[10.5px] font-semibold transition-colors ${active ? "text-brand-700" : "text-ink-faint hover:text-ink-muted"}`}>{icon}{label}</button>
   );
 }
 
 function SavedView({ items, onWhy, onChange, onBrowse }: { items: BriefItem[]; onWhy: (i: BriefItem) => void; onChange: () => void; onBrowse: () => void }) {
   if (!items.length) return (
-    <div className="flex-1 flex flex-col items-center justify-center text-center px-8 gap-3">
-      <span className="text-ondark-faint">{I.saved(false)}</span>
-      <p className="text-[14px] text-ondark-muted">Nothing saved yet. Tap the bookmark on any card to keep it here.</p>
+    <div className="flex-1 flex flex-col items-center justify-center text-center px-8 gap-3 bg-page">
+      <span className="text-ink-faint">{I.saved(false)}</span>
+      <p className="text-[14px] text-ink-muted">Nothing saved yet. Tap the bookmark on any card to keep it here.</p>
       <button onClick={onBrowse} className="pressable rounded-xl bg-brand-600 px-4 py-2 text-[13px] font-semibold text-white">Browse the feed</button>
     </div>
   );
   return (
-    <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      <h2 className="font-display text-[1.1rem] font-bold text-ondark px-1">Saved</h2>
+    <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-3 bg-page [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <h2 className="font-display text-[1.1rem] font-bold text-ink px-1">Saved</h2>
       {items.map((item) => {
         const cat = CATEGORY_BY_SLUG[item.category];
         return (
-          <div key={item.id} className="rounded-2xl bg-white/6 border border-white/8 p-3.5">
+          <div key={item.id} className="rounded-2xl bg-white border border-line shadow-elev-1 p-3.5">
             <div className="flex items-center gap-2 mb-1.5">
               <span className="text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded text-white" style={{ background: cat.accent }}>{item.tagLabel}</span>
-              <span className="text-[11px] text-ondark-faint">{item.displayDate}</span>
-              <button onClick={() => { toggleSaved(item); onChange(); }} className="ml-auto text-ondark-faint hover:text-ember text-[11px] font-semibold">Remove</button>
+              <span className="text-[11px] text-ink-faint">{item.displayDate}</span>
+              <button onClick={() => { toggleSaved(item); onChange(); }} className="ml-auto text-ink-faint hover:text-ember text-[11px] font-semibold">Remove</button>
             </div>
             {item.external
-              ? <a href={item.href} target="_blank" rel="noreferrer" className="font-display text-[15px] font-bold text-ondark leading-snug block">{item.title}</a>
-              : <Link href={item.href} className="font-display text-[15px] font-bold text-ondark leading-snug block">{item.title}</Link>}
-            <p className="text-[12.5px] text-ondark-muted mt-1 line-clamp-2">{item.summary}</p>
-            <button onClick={() => onWhy(item)} className="mt-2 text-[12px] font-semibold text-brand-400">Why it matters →</button>
+              ? <a href={item.href} target="_blank" rel="noreferrer" className="font-display text-[15px] font-bold text-ink leading-snug block">{item.title}</a>
+              : <Link href={item.href} className="font-display text-[15px] font-bold text-ink leading-snug block">{item.title}</Link>}
+            <p className="text-[12.5px] text-ink-muted mt-1 line-clamp-2">{item.summary}</p>
+            <button onClick={() => onWhy(item)} className="mt-2 text-[12px] font-semibold text-brand-700">Why it matters →</button>
           </div>
         );
       })}
@@ -282,22 +281,22 @@ function SavedView({ items, onWhy, onChange, onBrowse }: { items: BriefItem[]; o
 
 function ProfileView({ streak, canInstall, onInstall }: { streak: number; canInstall: boolean; onInstall: () => void }) {
   return (
-    <div className="flex-1 min-h-0 overflow-y-auto px-5 py-5 space-y-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      <div className="rounded-2xl bg-white/6 border border-white/8 p-5 text-center">
+    <div className="flex-1 min-h-0 overflow-y-auto px-5 py-5 space-y-5 bg-page [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="rounded-2xl bg-white border border-line shadow-elev-1 p-5 text-center">
         <p className="inline-flex items-center gap-2 text-[2rem] font-bold text-ember"><span>{I.fire}</span>{streak}</p>
-        <p className="text-[12.5px] text-ondark-muted mt-1">day streak{streak === 1 ? "" : "s"} · come back tomorrow to keep it going</p>
+        <p className="text-[12.5px] text-ink-muted mt-1">day streak{streak === 1 ? "" : "s"} · come back tomorrow to keep it going</p>
       </div>
       {canInstall && (
         <button onClick={onInstall} className="pressable w-full rounded-2xl bg-brand-600 hover:bg-brand-700 py-3.5 text-[14px] font-semibold text-white">Add Brief to home screen</button>
       )}
-      <div className="rounded-2xl bg-white/6 border border-white/8 p-4">
-        <p className="text-[13px] font-semibold text-ondark mb-1.5">About the Brief</p>
-        <p className="text-[13px] text-ondark-muted leading-relaxed">A 30-second read on Indian ESG and BRSR: SEBI, BRSR Core, CBAM, CCTS and global frameworks. Fresh news is AI-summarised and always links the source; regulatory items and guides are hand-cited.</p>
+      <div className="rounded-2xl bg-white border border-line shadow-elev-1 p-4">
+        <p className="text-[13px] font-semibold text-ink mb-1.5">About the Brief</p>
+        <p className="text-[13px] text-ink-muted leading-relaxed">A 30-second read on Indian ESG and BRSR: SEBI, BRSR Core, CBAM, CCTS and global frameworks. Fresh news is AI-summarised and always links the source; regulatory items and guides are hand-cited.</p>
       </div>
       <div className="text-center">
-        <Link href="/" className="text-[13px] font-semibold text-brand-400">Explore the full Saaksh toolkit →</Link>
+        <Link href="/" className="text-[13px] font-semibold text-brand-700">Explore the full Saaksh toolkit →</Link>
       </div>
-      <p className="text-[11px] text-ondark-faint text-center leading-relaxed">Not legal advice. Verify the current position before advising a client. Saved items stay on this device.</p>
+      <p className="text-[11px] text-ink-faint text-center leading-relaxed">Not legal advice. Verify the current position before advising a client. Saved items stay on this device.</p>
     </div>
   );
 }
@@ -310,7 +309,7 @@ function WhySheet({ item, onClose }: { item: BriefItem; onClose: () => void }) {
     let live = true;
     whyItMattersAction({ id: item.id, title: item.title, summary: item.summary }).then((r) => {
       if (!live) return;
-      const t = r.text || item.summary; // fall back to the (already cited) summary
+      const t = r.text || item.summary;
       setText(t);
       setLoading(false);
       if (r.text) cacheWhy(item.id, r.text);
@@ -320,21 +319,21 @@ function WhySheet({ item, onClose }: { item: BriefItem; onClose: () => void }) {
 
   return (
     <div className="absolute inset-0 z-30 flex flex-col justify-end" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/50" />
-      <div onClick={(e) => e.stopPropagation()} className="dropdown-in relative rounded-t-3xl bg-[#152740] border-t border-white/10 px-5 pt-4 pb-7 max-h-[70%] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="mx-auto h-1 w-10 rounded-full bg-white/20 mb-4" />
-        <p className="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wide text-brand-400 mb-2"><span>{I.spark}</span> Why it matters</p>
+      <div className="absolute inset-0 bg-ink/40" />
+      <div onClick={(e) => e.stopPropagation()} className="dropdown-in relative rounded-t-3xl bg-white border-t border-line shadow-elev-3 px-5 pt-4 pb-7 max-h-[70%] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="mx-auto h-1 w-10 rounded-full bg-line mb-4" />
+        <p className="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wide text-brand-700 mb-2"><span>{I.spark}</span> Why it matters</p>
         {loading ? (
           <div className="space-y-2">
             <div className="skeleton h-4 w-full rounded" /><div className="skeleton h-4 w-11/12 rounded" /><div className="skeleton h-4 w-4/6 rounded" />
           </div>
         ) : (
-          <p className="text-[15px] leading-[1.6] text-ondark">{text}</p>
+          <p className="text-[15px] leading-[1.6] text-ink-body">{text}</p>
         )}
         <div className="mt-4 flex items-center gap-2">
           {item.external
-            ? <a href={item.href} target="_blank" rel="noreferrer" className="flex-1 text-center rounded-xl bg-white/10 border border-white/10 py-2.5 text-[13px] font-semibold text-ondark">Read the source</a>
-            : <Link href={item.href} className="flex-1 text-center rounded-xl bg-white/10 border border-white/10 py-2.5 text-[13px] font-semibold text-ondark">Read the guide</Link>}
+            ? <a href={item.href} target="_blank" rel="noreferrer" className="flex-1 text-center rounded-xl bg-band border border-line py-2.5 text-[13px] font-semibold text-ink">Read the source</a>
+            : <Link href={item.href} className="flex-1 text-center rounded-xl bg-band border border-line py-2.5 text-[13px] font-semibold text-ink">Read the guide</Link>}
           <button onClick={onClose} className="rounded-xl bg-brand-600 px-4 py-2.5 text-[13px] font-semibold text-white">Done</button>
         </div>
       </div>
