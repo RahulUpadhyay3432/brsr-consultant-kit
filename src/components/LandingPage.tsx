@@ -865,6 +865,35 @@ function LatestStrip() {
   );
 }
 
+function BriefNudge() {
+  return (
+    <section data-reveal className="bg-forest text-ondark">
+      <div className="max-w-[1280px] mx-auto px-5 sm:px-8 py-14 sm:py-16 flex flex-col md:flex-row md:items-center gap-8">
+        <div className="flex-1">
+          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-400 mb-2.5">New · Saaksh Brief</p>
+          <h2 className="font-editorial font-semibold text-[1.7rem] sm:text-[2.1rem] leading-[1.1] tracking-[-0.02em] text-ondark" style={{ textWrap: "balance" }}>
+            The 30-second ESG brief, on your phone
+          </h2>
+          <p className="text-[14.5px] text-ondark-muted leading-relaxed mt-3 max-w-[520px]">
+            Swipe through what changed across BRSR, CBAM, CCTS and the global frameworks. Fresh news, summarised and cited, with a &quot;why it matters&quot; for consultants. Add it to your home screen and open it in seconds.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <Link href="/brief" onClick={() => track("brief_nudge_clicked", { from: "home" })} className="pressable inline-flex items-center gap-2 rounded-xl bg-brand-600 hover:bg-brand-700 px-5 py-3 text-[14px] font-semibold text-white">
+              Open the Brief <IcoArrow />
+            </Link>
+            <span className="text-[12.5px] text-ondark-faint">No signup · nothing stored</span>
+          </div>
+        </div>
+        <div className="hidden md:flex flex-shrink-0 w-[230px] h-[150px] rounded-2xl border border-white/10 bg-white/[0.03] items-center justify-center text-center px-6">
+          <p className="text-[12.5px] text-ondark-muted leading-relaxed">
+            Open <span className="text-ondark font-semibold">saaksh.co/brief</span> on mobile, then Add to Home Screen.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FilingAuditBand() {
   const secondary = [
     { label: "Audit-readiness checklist", sub: "The evidence a BRSR Core assurer asks for, per KPI, ready to download as a CSV.", href: "/tools/audit-readiness" },
@@ -1823,6 +1852,7 @@ export default function LandingPage({ onStart, resume }: LandingPageProps) {
 
       {/* ── Latest (regulation + guidance) ───────────────────────────────── */}
       <LatestStrip />
+      <BriefNudge />
 
       {/* ── Trust cards ──────────────────────────────────────────────────── */}
       <section className="bg-white border-t border-line">
