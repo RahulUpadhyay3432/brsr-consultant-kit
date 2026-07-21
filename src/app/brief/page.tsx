@@ -39,9 +39,12 @@ export default async function BriefPage() {
         </ul>
       </aside>
 
-      {/* The phone (full-screen on mobile; a real device bezel on desktop) */}
-      <div className="lg:flex-shrink-0 lg:p-[11px] lg:rounded-[2.7rem] lg:bg-gradient-to-b lg:from-[#2a2a2f] lg:to-[#141416] lg:border lg:border-black/60 lg:shadow-[0_36px_100px_rgba(15,30,51,0.30),inset_0_1px_0_rgba(255,255,255,0.06)]">
-        <BriefFeed items={items} />
+      {/* The phone (full-screen on mobile; a real two-layer device bezel on
+          desktop, at Kapyn's exact dimensions: 330px screen, 11px + 4px bezel). */}
+      <div className="lg:flex-shrink-0 lg:p-[11px] lg:rounded-[52px] lg:bg-gradient-to-b lg:from-[#2a2a2f] lg:to-[#141416] lg:border lg:border-black/60 lg:shadow-[0_40px_110px_rgba(15,30,51,0.30),inset_0_1px_0_rgba(255,255,255,0.06)]">
+        <div className="lg:p-[4px] lg:rounded-[42px] lg:bg-[#0a0a0a]">
+          <BriefFeed items={items} />
+        </div>
       </div>
 
       {/* Desktop: open-on-phone panel with a scannable QR */}

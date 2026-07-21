@@ -294,7 +294,7 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
   };
 
   return (
-    <div className="relative w-full max-w-[430px] h-[100dvh] lg:h-[820px] lg:max-h-[86vh] lg:rounded-[2.1rem] bg-page text-ink overflow-hidden flex flex-col">
+    <div className="relative w-full max-w-[430px] h-[100dvh] lg:w-[330px] lg:max-w-[330px] lg:h-[min(830px,calc(100dvh-88px))] lg:rounded-[38px] bg-page text-ink overflow-hidden flex flex-col">
       {/* Top bar */}
       <header className="flex-shrink-0 px-4 pt-3 pb-2 bg-page/95 backdrop-blur z-20 border-b border-line">
         <div className="flex items-center justify-between">
