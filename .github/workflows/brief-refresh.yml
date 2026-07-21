@@ -8,7 +8,7 @@ name: Refresh Saaksh Brief
 
 on:
   schedule:
-    - cron: "0 */3 * * *" # every 3 hours (UTC)
+    - cron: "0 * * * *" # hourly (UTC) — freshest without paying for Vercel Pro crons
   workflow_dispatch: {}
 
 jobs:
