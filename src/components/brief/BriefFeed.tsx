@@ -16,7 +16,8 @@ import { whyItMattersAction } from "@/lib/brief/actions";
 import { SaakshMark } from "@/components/SaakshMark";
 import CompanyAvatar from "@/components/CompanyAvatar";
 import {
-  getJobs, usedCategories, jobAge, workModeLabel, jobTypeLabel,
+  getJobs, usedCategories, jobAge, jobChips, similarJobs, matchesQuery,
+  getSavedJobIds, toggleSavedJob, workModeLabel,
   type Job, type JobCategory,
 } from "@/lib/jobs";
 import {
@@ -472,42 +473,117 @@ function NotifyCard() {
   );
 }
 
-function JobChip({ children, highlight }: { children: React.ReactNode; highlight?: boolean }) {
+function JobPill({ children, highlight }: { children: React.ReactNode; highlight?: boolean }) {
   return (
-    <span className={`inline-flex items-center text-[11px] font-semibold rounded-md px-1.5 py-0.5 ${highlight ? "text-brand-700 bg-brand-50 border border-[#CDE2F6]" : "text-ink-body bg-band border border-line"}`}>{children}</span>
+    <span className={`inline-flex items-center text-[11px] font-semibold rounded-full px-2 py-0.5 leading-none ${highlight ? "text-brand-700 bg-brand-50 border border-[#CDE2F6]" : "text-ink-body bg-band border border-line"}`}>{children}</span>
   );
 }
+const jobSave = (f: boolean) => (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill={f ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" /></svg>
+);
 
-function JobRow({ job }: { job: Job }) {
-  const meta = [jobTypeLabel(job.type), workModeLabel(job.workMode), job.seniority].filter(Boolean) as string[];
+function JobRow({ job, saved, onOpen, onSave }: { job: Job; saved: boolean; onOpen: () => void; onSave: () => void }) {
   return (
-    <a
-      href={job.applyUrl} target="_blank" rel="noreferrer"
-      onClick={() => track("job_clicked", { category: job.category, company: job.company, from: "brief" })}
-      className="pressable block rounded-2xl bg-white border border-line shadow-elev-1 hover:shadow-elev-2 transition-shadow p-3.5"
-    >
+    <div role="button" tabIndex={0} onClick={onOpen} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
+      className={`pressable rounded-2xl bg-white border border-line shadow-elev-1 p-3.5 flex flex-col gap-2 cursor-pointer ${job.closed ? "opacity-70" : ""}`}>
       <div className="flex items-start gap-3">
-        <CompanyAvatar name={job.company} size={38} />
+        <CompanyAvatar name={job.company} size={40} />
         <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
+            {job.featured && <span className="px-1.5 py-0.5 rounded bg-forest text-white text-[9.5px] font-bold tracking-wide">Featured</span>}
+            {job.closed && <span className="px-1.5 py-0.5 rounded bg-band text-ink-faint text-[9.5px] font-bold border border-line">Closed</span>}
+          </div>
           <p className="font-display text-[14.5px] font-bold text-ink leading-snug line-clamp-2">{job.title}</p>
           <p className="text-[12px] text-ink-muted mt-0.5 truncate">{job.company} · {job.location}</p>
         </div>
-        <span className="text-[10.5px] text-ink-faint whitespace-nowrap">{jobAge(job.postedDate)}</span>
+        <button onClick={(e) => { e.stopPropagation(); onSave(); }} aria-label={saved ? "Saved" : "Save"} className={`p-0.5 flex-shrink-0 ${saved ? "text-brand-600" : "text-ink-faint"}`}>{jobSave(saved)}</button>
       </div>
-      {job.summary && <p className="text-[12.5px] text-ink-body leading-relaxed mt-2 line-clamp-2">{job.summary}</p>}
-      <div className="flex flex-wrap items-center gap-1.5 mt-2.5">
-        {job.salary && <JobChip highlight>{job.salary}</JobChip>}
-        {meta.map((m) => <JobChip key={m}>{m}</JobChip>)}
-        <span className="ml-auto inline-flex items-center gap-1 text-[12px] font-semibold text-brand-700">Apply {I.ext}</span>
+      {job.salary && <div className="text-[14.5px] font-bold text-ink tracking-[-0.01em]">{job.salary}</div>}
+      <div className="flex flex-wrap items-center gap-1.5">
+        {jobChips(job).slice(0, 3).map((m) => <JobPill key={m}>{m}</JobPill>)}
       </div>
-    </a>
+      <div className="text-[11.5px] text-ink-faint">{jobAge(job.postedDate)}{job.sourceName ? ` · via ${job.sourceName}` : ""}</div>
+    </div>
+  );
+}
+
+function JobSheet({ job, all, saved, onSave, onOpen, onClose }: { job: Job; all: Job[]; saved: boolean; onSave: () => void; onOpen: (id: string) => void; onClose: () => void }) {
+  const [tab, setTab] = useState<"job" | "company" | "similar">("job");
+  useEffect(() => setTab("job"), [job.id]);
+  const chips = jobChips(job);
+  const sim = similarJobs(all, job, 3);
+  const companyMeta = [job.location, job.companySize].filter(Boolean).join(" · ");
+  const TabBtn = ({ k, label }: { k: typeof tab; label: string }) => (
+    <button onClick={() => setTab(k)} className={`pb-2.5 -mb-px text-[13.5px] border-b-2 ${tab === k ? "text-ink font-semibold border-brand-600" : "text-ink-muted font-medium border-transparent"}`}>{label}</button>
+  );
+  return (
+    <div className="absolute inset-0 z-30 flex flex-col justify-end" onClick={onClose}>
+      <div className="absolute inset-0 bg-ink/40" />
+      <div onClick={(e) => e.stopPropagation()} className="dropdown-in relative rounded-t-3xl bg-white border-t border-line shadow-elev-3 flex flex-col max-h-[94%]">
+        <div className="flex-shrink-0 pt-3 pb-1"><div className="mx-auto h-1 w-10 rounded-full bg-line" /></div>
+        <div className="flex-1 overflow-y-auto px-5 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {job.closed && <div className="px-3 py-2 rounded-xl bg-[#F6F2ED] border border-[#EADFD1] text-[#946B41] text-[12.5px] font-medium mb-3.5">No longer accepting applications.</div>}
+          <div className="flex gap-3 items-start">
+            <CompanyAvatar name={job.company} size={50} />
+            <div className="min-w-0 flex-1">
+              {job.featured && <span className="inline-block px-2 py-0.5 rounded bg-forest text-white text-[10px] font-semibold mb-1.5">Featured</span>}
+              <h2 className="m-0 font-editorial text-[1.35rem] font-semibold tracking-[-0.01em] leading-tight text-ink">{job.title}</h2>
+              <div className="text-[13.5px] text-ink-muted mt-1">{job.company} · {job.location}</div>
+            </div>
+          </div>
+          {job.salary && <div className="mt-3.5 px-3.5 py-3 bg-brand-50 border border-[#CDE2F6] rounded-xl"><div className="text-[10.5px] font-semibold uppercase tracking-wide text-ink-faint mb-0.5">Compensation</div><div className="text-[19px] font-bold text-ink">{job.salary}</div></div>}
+          {chips.length > 0 && <div className="flex flex-wrap gap-1.5 mt-3.5">{chips.map((c) => <span key={c} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full border border-line bg-band text-ink-body text-[12px] font-medium leading-none"><span className="text-emerald-600 font-bold">✓</span>{c}</span>)}</div>}
+          <div className="flex gap-5 mt-4 border-b border-line">
+            <TabBtn k="job" label="The job" /><TabBtn k="company" label="Company" /><TabBtn k="similar" label="Similar" />
+          </div>
+          <div className="pt-3.5">
+            {tab === "job" && (
+              <div>
+                <p className="m-0 mb-3 text-[14px] leading-relaxed text-ink-body">{job.aboutRole || job.summary || "See the original posting for the full description."}</p>
+                {job.tags && job.tags.length > 0 && <div className="flex flex-wrap gap-1.5">{job.tags.map((t) => <span key={t} className="px-2.5 py-1 rounded-lg bg-[#EEF3F8] text-[#55617A] text-[12px] font-medium">{t}</span>)}</div>}
+              </div>
+            )}
+            {tab === "company" && (
+              <div>
+                <div className="flex gap-3 items-center mb-3"><CompanyAvatar name={job.company} size={40} /><div><div className="text-[14.5px] font-semibold text-ink">{job.company}</div>{companyMeta && <div className="text-[12.5px] text-ink-muted">{companyMeta}</div>}</div></div>
+                <p className="m-0 text-[14px] leading-relaxed text-ink-body">{job.aboutCompany || `${job.company} is hiring for this role — see the posting for more.`}</p>
+              </div>
+            )}
+            {tab === "similar" && (
+              <div className="flex flex-col gap-2.5">
+                {sim.map((j) => (
+                  <div key={j.id} role="button" tabIndex={0} onClick={() => onOpen(j.id)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(j.id); } }} className="flex gap-3 items-center p-3 border border-line rounded-xl cursor-pointer">
+                    <CompanyAvatar name={j.company} size={34} />
+                    <div className="min-w-0 flex-1"><div className="text-[13.5px] font-semibold text-ink truncate">{j.title}</div><div className="text-[12px] text-ink-muted truncate">{j.company} · {workModeLabel(j.workMode) || jobAge(j.postedDate)}</div></div>
+                  </div>
+                ))}
+                {sim.length === 0 && <div className="p-5 text-center text-[13px] text-ink-faint bg-band rounded-xl">No similar roles right now.</div>}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="flex-shrink-0 border-t border-line px-4 py-3 flex gap-2.5 items-center bg-white">
+          <button onClick={onSave} aria-label={saved ? "Saved" : "Save"} className={`grid place-items-center h-11 w-11 rounded-xl border ${saved ? "bg-brand-600 text-white border-brand-600" : "bg-white border-line text-ink-muted"}`}>{jobSave(saved)}</button>
+          {job.closed
+            ? <span className="flex-1 text-center py-3 rounded-xl bg-band text-ink-faint font-semibold text-[14px]">Applications closed</span>
+            : <a href={job.applyUrl} target="_blank" rel="noreferrer" onClick={() => track("job_clicked", { category: job.category, company: job.company, from: "brief-sheet" })} className="flex-1 text-center inline-flex items-center justify-center gap-1.5 py-3 rounded-xl bg-brand-600 text-white font-semibold text-[14px]">View &amp; apply {I.ext}</a>}
+        </div>
+      </div>
+    </div>
   );
 }
 
 function JobsView({ jobs }: { jobs: Job[] }) {
   const cats = useMemo(() => usedCategories(jobs), [jobs]);
   const [cat, setCat] = useState<JobCategory | "all">("all");
-  const shown = cat === "all" ? jobs : jobs.filter((j) => j.category === cat);
+  const [query, setQuery] = useState("");
+  const [sheet, setSheet] = useState<string | null>(null);
+  const [savedIds, setSavedIds] = useState<string[]>([]);
+  useEffect(() => setSavedIds(getSavedJobIds()), []);
+  const save = (id: string) => { toggleSavedJob(id); setSavedIds(getSavedJobIds()); };
+
+  const shown = jobs.filter((j) => (cat === "all" || j.category === cat) && matchesQuery(j, query));
+  const sheetJob = jobs.find((j) => j.id === sheet) || null;
 
   if (!jobs.length) {
     return (
@@ -521,20 +597,27 @@ function JobsView({ jobs }: { jobs: Job[] }) {
 
   return (
     <div className="flex-1 min-h-0 flex flex-col bg-page">
+      <div className="flex-shrink-0 px-4 pt-2 pb-2.5 flex items-center gap-2.5">
+        <span className="font-display text-[1.15rem] font-bold text-ink">Jobs</span>
+        <label className="flex-1 flex items-center gap-2 bg-band border border-line rounded-xl px-3 py-2 text-ink-faint">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" className="flex-shrink-0"><circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" /><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search" aria-label="Search roles" className="border-none outline-none bg-transparent text-[13.5px] text-ink w-full placeholder:text-ink-faint" />
+        </label>
+      </div>
       {cats.length > 1 && (
-        <div className="flex-shrink-0 px-4 py-2 flex gap-2 overflow-x-auto border-b border-line [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex-shrink-0 px-4 pb-2 flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <Pill active={cat === "all"} onClick={() => setCat("all")}>All</Pill>
           {cats.map((c) => <Pill key={c.slug} active={cat === c.slug} onClick={() => setCat(c.slug)}>{c.label}</Pill>)}
         </div>
       )}
-      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <div className="flex items-baseline justify-between px-1">
-          <h2 className="font-display text-[1.1rem] font-bold text-ink">ESG &amp; sustainability jobs</h2>
-          <span className="text-[11.5px] text-ink-faint">{shown.length} role{shown.length === 1 ? "" : "s"}</span>
-        </div>
-        {shown.map((job) => <JobRow key={job.id} job={job} />)}
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {shown.map((job) => (
+          <JobRow key={job.id} job={job} saved={savedIds.includes(job.id)} onOpen={() => setSheet(job.id)} onSave={() => save(job.id)} />
+        ))}
+        {shown.length === 0 && <div className="text-center py-12 text-ink-muted"><div className="font-display text-[1.05rem] font-bold text-ink mb-1">No roles match</div><div className="text-[13px]">Try another search or category.</div></div>}
         <p className="text-[11px] text-ink-faint leading-relaxed px-1 pt-1">Curated, and linked to the original posting, verify the details and apply there. Not endorsements.</p>
       </div>
+      {sheetJob && <JobSheet job={sheetJob} all={jobs} saved={savedIds.includes(sheetJob.id)} onSave={() => save(sheetJob.id)} onOpen={(id) => setSheet(id)} onClose={() => setSheet(null)} />}
     </div>
   );
 }

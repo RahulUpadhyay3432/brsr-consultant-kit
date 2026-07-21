@@ -28,9 +28,15 @@ export interface Job {
   seniority?: string;       // free text, e.g. "Entry", "3–5 yrs", "Senior"
   salary?: string;          // free text, e.g. "₹12–18 LPA" (omit if unknown)
   experience?: string;      // free text, e.g. "2–4 years"
-  summary?: string;         // 1–2 lines on the role
+  summary?: string;         // 1–2 lines on the role (list preview)
+  aboutRole?: string;       // longer "About the job" detail-pane copy
+  aboutCompany?: string;    // "About the company" detail-pane copy
+  companySize?: string;     // e.g. "50–200 people"
   tags?: string[];          // skills / keywords
   sourceName?: string;      // where it's posted, e.g. "LinkedIn" / company site
+  featured?: boolean;       // pin to the top + a "Featured" badge
+  activelyHiring?: boolean; // green "Actively hiring" signal
+  closed?: boolean;         // applications closed (dimmed, no apply)
 }
 
 export const JOB_CATEGORIES: { slug: JobCategory; label: string }[] = [
@@ -62,12 +68,54 @@ const JOB_TYPE_LABEL: Record<JobType, string> = {
 export const workModeLabel = (m?: WorkMode) => (m ? WORK_MODE_LABEL[m] : null);
 export const jobTypeLabel = (t?: JobType) => (t ? JOB_TYPE_LABEL[t] : null);
 
-// All jobs, newest first. Only categories that actually appear are surfaced as
-// filters, so an empty category never shows an empty pill.
+// All jobs, featured first then newest. Only categories that actually appear are
+// surfaced as filters, so an empty category never shows an empty pill.
 export function getJobs(): Job[] {
-  return [...(jobsData.jobs as Job[])].sort((a, b) =>
-    (b.postedDate || "").localeCompare(a.postedDate || "")
+  return [...(jobsData.jobs as Job[])].sort(
+    (a, b) =>
+      (b.featured ? 1 : 0) - (a.featured ? 1 : 0) ||
+      (b.postedDate || "").localeCompare(a.postedDate || "")
   );
+}
+
+export function jobChips(j: Job): string[] {
+  return [jobTypeLabel(j.type), workModeLabel(j.workMode), j.seniority, j.experience].filter(
+    Boolean
+  ) as string[];
+}
+
+export function similarJobs(all: Job[], job: Job, limit = 4): Job[] {
+  return all.filter((j) => j.category === job.category && j.id !== job.id).slice(0, limit);
+}
+
+export function matchesQuery(j: Job, q: string): boolean {
+  const query = q.trim().toLowerCase();
+  if (!query) return true;
+  return `${j.title} ${j.company} ${(j.tags || []).join(" ")}`.toLowerCase().includes(query);
+}
+
+// ── Saved jobs (localStorage, SSR-safe; shared by /jobs and the Brief tab) ────
+const SAVED_JOBS_KEY = "saaksh:brief:savedjobs";
+export function getSavedJobIds(): string[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(SAVED_JOBS_KEY);
+    const list = raw ? (JSON.parse(raw) as unknown) : [];
+    return Array.isArray(list) ? (list as string[]) : [];
+  } catch {
+    return [];
+  }
+}
+export function toggleSavedJob(id: string): boolean {
+  const list = getSavedJobIds();
+  const has = list.includes(id);
+  const next = has ? list.filter((x) => x !== id) : [...list, id];
+  try {
+    window.localStorage.setItem(SAVED_JOBS_KEY, JSON.stringify(next));
+  } catch {
+    /* quota / private mode */
+  }
+  return !has;
 }
 
 export function usedCategories(jobs: Job[]): { slug: JobCategory; label: string }[] {
