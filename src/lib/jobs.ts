@@ -5,6 +5,7 @@ import jobsData from "@/data/jobs.json";
 
 export type JobCategory =
   | "brsr-reporting"
+  | "assurance"
   | "carbon-climate"
   | "esg-strategy"
   | "sustainability-ops"
@@ -41,6 +42,7 @@ export interface Job {
 
 export const JOB_CATEGORIES: { slug: JobCategory; label: string }[] = [
   { slug: "brsr-reporting", label: "BRSR & Reporting" },
+  { slug: "assurance", label: "ESG Assurance" },
   { slug: "carbon-climate", label: "Carbon & Climate" },
   { slug: "esg-strategy", label: "ESG Strategy" },
   { slug: "sustainability-ops", label: "Sustainability Ops" },
