@@ -13,6 +13,7 @@ import { track } from "@/lib/mixpanel";
 import type { BriefCategory, BriefItem } from "@/lib/brief/types";
 import { BRIEF_CATEGORIES, CATEGORY_BY_SLUG } from "@/lib/brief/types";
 import { whyItMattersAction } from "@/lib/brief/actions";
+import { SaakshMark } from "@/components/SaakshMark";
 import {
   cacheWhy, getCachedWhy, getLastVisit, getSaved, isSaved, stampVisit, toggleSaved, touchStreak,
 } from "@/lib/brief/store";
@@ -302,7 +303,7 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
       <header className="flex-shrink-0 px-4 pt-3 pb-2 bg-page/95 backdrop-blur z-20 border-b border-line">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="grid place-items-center h-6 w-6 rounded-md bg-brand-600 text-white text-[13px] font-bold">S</span>
+            <SaakshMark size={22} />
             <span className="font-display font-bold text-[16px] text-ink">Saaksh Brief</span>
             {newCount > 0 && (
               <span className="inline-flex items-center gap-1 text-[10.5px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full">
