@@ -16,10 +16,11 @@ import { whyItMattersAction } from "@/lib/brief/actions";
 import { SaakshMark } from "@/components/SaakshMark";
 import CompanyAvatar from "@/components/CompanyAvatar";
 import {
-  getJobs, usedCategories, jobAge, jobChips, similarJobs, matchesQuery,
+  usedCategories, jobAge, jobChips, similarJobs, matchesQuery,
   getSavedJobIds, toggleSavedJob, workModeLabel,
   type Job, type JobCategory,
 } from "@/lib/jobs";
+import { useMergedJobs } from "@/lib/jobs/useMergedJobs";
 import {
   cacheWhy, getCachedWhy, getLastVisit, getSaved, isSaved, stampVisit, toggleSaved, touchStreak,
 } from "@/lib/brief/store";
@@ -147,7 +148,7 @@ type View = "feed" | "jobs" | "saved" | "profile";
 
 export default function BriefFeed({ items }: { items: BriefItem[] }) {
   const router = useRouter();
-  const jobs = useMemo(() => getJobs(), []);
+  const jobs = useMergedJobs();
   const [view, setView] = useState<View>("feed");
   const [cat, setCat] = useState<Tab>("all");
   const [why, setWhy] = useState<BriefItem | null>(null);
