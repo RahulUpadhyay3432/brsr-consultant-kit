@@ -1,59 +1,72 @@
 "use client";
 
-// The whole Saaksh Brief experience: a swipeable (CSS scroll-snap) vertical card
-// feed inside a phone column, with category pills, a grounded "Why it matters"
-// sheet, Saved + Profile views, a daily streak, and PWA install. Light theme, to
-// match the rest of Saaksh; dep-free (no framer-motion).
+// The whole Saaksh Brief experience: a swipeable card feed inside a phone column.
+// Vertical = native CSS scroll-snap; horizontal = Framer Motion drag to change
+// category (spring + adjacent-category peek + direction-locked touch), adapted
+// from Kapyn. Plus a "New since last visit" hook, hero image fade-in, and pull-to-
+// refresh. Light theme, to match the rest of Saaksh.
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence, useMotionValue, useVelocity, animate } from "framer-motion";
 import { track } from "@/lib/mixpanel";
 import type { BriefCategory, BriefItem } from "@/lib/brief/types";
 import { BRIEF_CATEGORIES, CATEGORY_BY_SLUG } from "@/lib/brief/types";
 import { whyItMattersAction } from "@/lib/brief/actions";
 import {
-  cacheWhy,
-  getCachedWhy,
-  getSaved,
-  isSaved,
-  toggleSaved,
-  touchStreak,
+  cacheWhy, getCachedWhy, getLastVisit, getSaved, isSaved, stampVisit, toggleSaved, touchStreak,
 } from "@/lib/brief/store";
+
+type Tab = BriefCategory | "all";
+const SWIPE_DISTANCE = 72;
+const SWIPE_VELOCITY = 400;
+const PTR_THRESHOLD = 64;
+const DIR_LOCK = 8;
 
 /* ── icons ──────────────────────────────────────────────────────────────── */
 const I = {
   bookmark: (f: boolean) => (
     <svg viewBox="0 0 24 24" width="20" height="20" fill={f ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" /></svg>
   ),
-  share: (
-    <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" /></svg>
-  ),
-  spark: (
-    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l1.6 4.6L18 9l-4.4 1.4L12 15l-1.6-4.6L6 9l4.4-1.4z" /><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" /></svg>
-  ),
+  share: <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" /></svg>,
+  spark: <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l1.6 4.6L18 9l-4.4 1.4L12 15l-1.6-4.6L6 9l4.4-1.4z" /><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z" /></svg>,
   arrowUp: <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5M5 12l7-7 7 7" /></svg>,
   ext: <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17L17 7M7 7h10v10" /></svg>,
+  chevL: <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>,
+  chevR: <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6" /></svg>,
   feed: <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="5" rx="1.5" /><rect x="3" y="13" width="18" height="7" rx="1.5" /></svg>,
   saved: (f: boolean) => <svg viewBox="0 0 24 24" width="20" height="20" fill={f ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" /></svg>,
   profile: <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="3.4" /><path d="M5 20c0-3.4 3.1-5.5 7-5.5s7 2.1 7 5.5" /></svg>,
   fire: <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2c1 3-1 4-2 6-1 1.6-1 3 0 4 .6.6.6 1.6 0 2 2-.4 3-2 3-4 2 1.5 3 3.6 3 5.5C16 19 14 22 12 22S6 19.5 6 16c0-2.6 1.4-4.4 3-6 1.6-1.6 3-3.6 3-8z" /></svg>,
 };
 
-type View = "feed" | "saved" | "profile";
+const labelFor = (t: Tab) => (t === "all" ? "All" : CATEGORY_BY_SLUG[t].label);
 
 function Hero({ item }: { item: BriefItem }) {
   const cat = CATEGORY_BY_SLUG[item.category];
+  const [loaded, setLoaded] = useState(false);
   return (
     <div className="relative w-full aspect-[16/10] lg:aspect-auto lg:h-[200px] flex-shrink-0 overflow-hidden">
-      {item.imageUrl ? (
-        <img src={item.imageUrl} alt="" loading="lazy" className="w-full h-full object-cover" />
-      ) : (
-        <div className="w-full h-full flex items-end p-4" style={{ background: `linear-gradient(145deg, ${cat.gradient[0]}, ${cat.gradient[1]})` }}>
-          <span className="font-display text-[2.4rem] font-bold text-white/15 leading-none">{cat.label}</span>
-        </div>
+      {/* Gradient always underneath, so there's never a blank flash before an image loads */}
+      <div className="absolute inset-0 flex items-end p-4" style={{ background: `linear-gradient(145deg, ${cat.gradient[0]}, ${cat.gradient[1]})` }}>
+        <span className="font-display text-[2.4rem] font-bold text-white/15 leading-none">{cat.label}</span>
+      </div>
+      {item.imageUrl && (
+        <img
+          src={item.imageUrl} alt="" loading="lazy" decoding="async"
+          onLoad={() => setLoaded(true)}
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+          style={{ opacity: loaded ? 1 : 0 }}
+        />
       )}
-      <div className="absolute inset-x-0 top-0 p-3.5 flex items-center gap-2">
+      <div className="absolute inset-x-0 top-0 p-3.5 flex items-center gap-2 z-10">
         <span className="text-[10.5px] font-bold uppercase tracking-[0.08em] px-2 py-1 rounded-md text-white shadow-sm" style={{ background: cat.accent }}>{item.tagLabel}</span>
         <span className="text-[11.5px] font-semibold text-white/95 drop-shadow">{item.displayDate}</span>
+        {item.isNew && (
+          <span className="ml-auto inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-emerald-500 text-white">
+            <span className="w-1.5 h-1.5 rounded-full bg-white" /> New
+          </span>
+        )}
       </div>
     </div>
   );
@@ -66,16 +79,9 @@ function Card({ item, onWhy }: { item: BriefItem; onWhy: (i: BriefItem) => void 
   const share = async () => {
     const url = item.external ? item.href : `https://saaksh.co${item.href}`;
     track("brief_shared", { category: item.category, kind: item.kind });
-    try {
-      if (navigator.share) await navigator.share({ title: item.title, url });
-      else { await navigator.clipboard.writeText(url); }
-    } catch { /* dismissed */ }
+    try { if (navigator.share) await navigator.share({ title: item.title, url }); else await navigator.clipboard.writeText(url); } catch { /* dismissed */ }
   };
-  const bookmark = () => {
-    const now = toggleSaved(item);
-    setSaved(now);
-    if (now) track("brief_bookmarked", { category: item.category, kind: item.kind });
-  };
+  const bookmark = () => { const now = toggleSaved(item); setSaved(now); if (now) track("brief_bookmarked", { category: item.category, kind: item.kind }); };
 
   const sourceLine =
     item.kind === "news" ? `AI summary · ${item.model || "gpt-oss"}${item.sourceName ? ` · ${item.sourceName}` : ""}`
@@ -86,7 +92,7 @@ function Card({ item, onWhy }: { item: BriefItem; onWhy: (i: BriefItem) => void 
   const onOpen = () => track("brief_source_opened", { kind: item.kind });
 
   return (
-    <div className="snap-start h-full flex flex-col bg-page">
+    <div className="h-full flex flex-col bg-page">
       <Hero item={item} />
       <div className="flex-1 flex flex-col px-5 pt-4 pb-2 min-h-0">
         {item.external ? (
@@ -94,14 +100,12 @@ function Card({ item, onWhy }: { item: BriefItem; onWhy: (i: BriefItem) => void 
         ) : (
           <Link href={item.href} onClick={onOpen} className={titleCls}>{item.title}</Link>
         )}
-        <p className="mt-2.5 text-[15px] leading-[1.55] text-ink-body line-clamp-5 flex-1">{item.summary}</p>
-
+        <p className="mt-2.5 text-[15px] leading-[1.55] text-ink-body line-clamp-6 flex-1">{item.summary}</p>
         <div className="mt-3 flex items-center gap-1.5 text-[11.5px] text-ink-faint">
           {item.aiSummary && <span className="text-brand-600">{I.spark}</span>}
           <span className="truncate">{sourceLine}</span>
           {item.external && <span className="ml-auto inline-flex items-center gap-1 text-ink-muted">open {I.ext}</span>}
         </div>
-
         <div className="mt-3 flex items-center gap-2">
           <button onClick={() => onWhy(item)} className="pressable flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-white border border-line shadow-elev-1 hover:shadow-elev-2 py-2.5 text-[13.5px] font-semibold text-ink">
             <span className="text-brand-600">{I.spark}</span> Why it matters
@@ -116,7 +120,7 @@ function Card({ item, onWhy }: { item: BriefItem; onWhy: (i: BriefItem) => void 
 
 function CaughtUp({ streak, onTop }: { streak: number; onTop: () => void }) {
   return (
-    <div className="snap-start h-full flex flex-col items-center justify-center text-center px-8 gap-4 bg-page">
+    <div className="h-full flex flex-col items-center justify-center text-center px-8 gap-4 bg-page">
       <div className="grid place-items-center h-16 w-16 rounded-2xl bg-brand-50 text-brand-600">
         <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
       </div>
@@ -128,18 +132,45 @@ function CaughtUp({ streak, onTop }: { streak: number; onTop: () => void }) {
   );
 }
 
+type View = "feed" | "saved" | "profile";
+
 export default function BriefFeed({ items }: { items: BriefItem[] }) {
+  const router = useRouter();
   const [view, setView] = useState<View>("feed");
-  const [cat, setCat] = useState<BriefCategory | "all">("all");
+  const [cat, setCat] = useState<Tab>("all");
   const [why, setWhy] = useState<BriefItem | null>(null);
   const [savedList, setSavedList] = useState<BriefItem[]>([]);
   const [streak, setStreak] = useState(0);
   const [installEvt, setInstallEvt] = useState<Event | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const [toast, setToast] = useState(false);
+  const [lastVisit] = useState<number | null>(() => getLastVisit());
+
   const scrollRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
   const seenRef = useRef<Set<string>>(new Set());
+  const dragX = useMotionValue(0);
+  const dragVel = useVelocity(dragX);
+  const animating = useRef(false);
+  const activeIdxRef = useRef(0);
+
+  // Mark items published since the last visit as "new".
+  const withNew = useMemo(
+    () => items.map((it) => ({ ...it, isNew: lastVisit != null && new Date(it.date).getTime() > lastVisit })),
+    [items, lastVisit]
+  );
+  const feed = useMemo(() => (cat === "all" ? withNew : withNew.filter((i) => i.category === cat)), [withNew, cat]);
+  const cats = useMemo(() => {
+    const present = new Set(items.map((i) => i.category));
+    return BRIEF_CATEGORIES.filter((c) => present.has(c.slug));
+  }, [items]);
+  const tabs = useMemo<Tab[]>(() => ["all", ...cats.map((c) => c.slug)], [cats]);
+  const tabIdx = tabs.indexOf(cat);
+  const newCount = useMemo(() => (lastVisit == null ? 0 : withNew.filter((i) => i.isNew).length), [withNew, lastVisit]);
 
   useEffect(() => {
     setStreak(touchStreak());
+    stampVisit();
     track("brief_opened", {});
     const onInstall = (e: Event) => { e.preventDefault(); setInstallEvt(e); };
     window.addEventListener("beforeinstallprompt", onInstall);
@@ -149,23 +180,98 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
 
   useEffect(() => { if (view === "saved") setSavedList(getSaved()); }, [view]);
 
-  const feed = useMemo(() => (cat === "all" ? items : items.filter((i) => i.category === cat)), [items, cat]);
-  const cats = useMemo(() => {
-    const present = new Set(items.map((i) => i.category));
-    return BRIEF_CATEGORIES.filter((c) => present.has(c.slug));
-  }, [items]);
+  const changeCat = useCallback((c: Tab) => {
+    setCat(c);
+    seenRef.current.clear();
+    activeIdxRef.current = 0;
+    scrollRef.current?.scrollTo({ top: 0 });
+    track("brief_category_changed", { category: c });
+  }, []);
 
+  // ── Horizontal swipe → change category (Framer Motion) ─────────────────────
+  const commitSwipe = useCallback((dx: number) => {
+    if (animating.current) return;
+    const vel = dragVel.get();
+    const width = viewportRef.current?.clientWidth ?? 390;
+    const goNext = (dx < -SWIPE_DISTANCE || vel < -SWIPE_VELOCITY) && tabIdx < tabs.length - 1;
+    const goPrev = (dx > SWIPE_DISTANCE || vel > SWIPE_VELOCITY) && tabIdx > 0;
+    if (goNext || goPrev) {
+      animating.current = true;
+      const next = tabs[goNext ? tabIdx + 1 : tabIdx - 1];
+      if (navigator.vibrate) navigator.vibrate(8);
+      animate(dragX, goNext ? -width : width, {
+        type: "spring", stiffness: 400, damping: 38, restDelta: 1,
+        onComplete: () => { changeCat(next); dragX.set(0); animating.current = false; },
+      });
+    } else {
+      animate(dragX, 0, { type: "spring", stiffness: 400, damping: 38 });
+    }
+  }, [tabIdx, tabs, dragX, dragVel, changeCat]);
+
+  // Non-passive touch listeners on the scroll container: 8px direction lock,
+  // horizontal → drive dragX (and preventDefault so vertical scroll doesn't fight
+  // it), vertical → native scroll + pull-to-refresh at the top.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || view !== "feed") return;
+    let sx = 0, sy = 0, cx = 0, lock: "none" | "h" | "v" = "none";
+    const onStart = (e: TouchEvent) => { lock = "none"; sx = cx = e.touches[0].clientX; sy = e.touches[0].clientY; };
+    const onMove = (e: TouchEvent) => {
+      if (animating.current) return;
+      cx = e.touches[0].clientX;
+      const dx = cx - sx, dy = e.touches[0].clientY - sy;
+      if (lock === "none") {
+        if (Math.abs(dx) >= DIR_LOCK || Math.abs(dy) >= DIR_LOCK) lock = Math.abs(dx) >= Math.abs(dy) ? "h" : "v";
+        return;
+      }
+      if (lock === "h") {
+        e.preventDefault();
+        const atEdge = (dx < 0 && tabIdx >= tabs.length - 1) || (dx > 0 && tabIdx <= 0);
+        dragX.set(atEdge ? dx * 0.25 : dx);
+      } else if (el.scrollTop <= 4 && dy > 0 && !refreshing) {
+        setPull(Math.min(dy * 0.5, PTR_THRESHOLD * 1.3));
+      }
+    };
+    const onEnd = () => {
+      const dx = cx - sx;
+      const wasLock = lock; lock = "none";
+      if (wasLock === "h") { commitSwipe(dx); return; }
+      if (pullRef.current >= PTR_THRESHOLD && el.scrollTop <= 4 && !refreshing) doRefresh();
+      setPull(0);
+    };
+    el.addEventListener("touchstart", onStart, { passive: true });
+    el.addEventListener("touchmove", onMove, { passive: false });
+    el.addEventListener("touchend", onEnd, { passive: true });
+    return () => {
+      el.removeEventListener("touchstart", onStart);
+      el.removeEventListener("touchmove", onMove);
+      el.removeEventListener("touchend", onEnd);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view, tabIdx, tabs, refreshing, commitSwipe]);
+
+  // Pull-to-refresh state (ref mirrors so the touch handler reads the latest).
+  const [pull, setPullState] = useState(0);
+  const pullRef = useRef(0);
+  const setPull = (v: number) => { pullRef.current = v; setPullState(v); };
+  const doRefresh = useCallback(() => {
+    setRefreshing(true);
+    track("brief_refreshed", {});
+    router.refresh();
+    setTimeout(() => { setRefreshing(false); setToast(true); setTimeout(() => setToast(false), 1600); }, 1100);
+  }, [router]);
+
+  // Active-card tracking: fire one view per card + a soft haptic.
   useEffect(() => {
     const root = scrollRef.current;
     if (!root || view !== "feed") return;
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
         if (e.isIntersecting && e.intersectionRatio > 0.6) {
+          const idx = Number((e.target as HTMLElement).dataset.idx);
           const id = (e.target as HTMLElement).dataset.id;
-          if (id && !seenRef.current.has(id)) {
-            seenRef.current.add(id);
-            track("brief_card_viewed", { id });
-          }
+          if (idx !== activeIdxRef.current) { activeIdxRef.current = idx; if (navigator.vibrate) navigator.vibrate(6); }
+          if (id && !seenRef.current.has(id)) { seenRef.current.add(id); track("brief_card_viewed", { id }); }
         }
       }
     }, { root, threshold: [0.6] });
@@ -173,18 +279,15 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
     return () => io.disconnect();
   }, [feed, view]);
 
-  const openWhy = useCallback((item: BriefItem) => {
-    setWhy(item);
-    track("brief_why_it_matters", { kind: item.kind });
-  }, []);
+  // Preload the next few hero images so a swipe-down has them ready.
+  useEffect(() => {
+    for (let i = 0; i < Math.min(3, feed.length); i++) {
+      const url = feed[i]?.imageUrl;
+      if (url) { const img = new window.Image(); img.decoding = "async"; img.src = url; }
+    }
+  }, [feed]);
 
-  const changeCat = (c: BriefCategory | "all") => {
-    setCat(c);
-    seenRef.current.clear();
-    scrollRef.current?.scrollTo({ top: 0 });
-    track("brief_category_changed", { category: c });
-  };
-
+  const openWhy = useCallback((item: BriefItem) => { setWhy(item); track("brief_why_it_matters", { kind: item.kind }); }, []);
   const install = async () => {
     const e = installEvt as (Event & { prompt?: () => Promise<void> }) | null;
     if (e?.prompt) { await e.prompt(); track("brief_installed", {}); setInstallEvt(null); }
@@ -198,26 +301,61 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
           <div className="flex items-center gap-2">
             <span className="grid place-items-center h-6 w-6 rounded-md bg-brand-600 text-white text-[13px] font-bold">S</span>
             <span className="font-display font-bold text-[16px] text-ink">Saaksh Brief</span>
+            {newCount > 0 && (
+              <span className="inline-flex items-center gap-1 text-[10.5px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> {newCount} new
+              </span>
+            )}
           </div>
           {streak > 0 && <span className="inline-flex items-center gap-1 text-[12px] font-semibold text-ember"><span>{I.fire}</span>{streak}</span>}
         </div>
         {view === "feed" && (
           <div className="mt-2.5 -mx-4 px-4 flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <Pill active={cat === "all"} onClick={() => changeCat("all")}>All</Pill>
-            {cats.map((c) => <Pill key={c.slug} active={cat === c.slug} onClick={() => changeCat(c.slug)}>{c.label}</Pill>)}
+            {tabs.map((t) => <Pill key={t} active={cat === t} onClick={() => changeCat(t)}>{labelFor(t)}</Pill>)}
           </div>
         )}
       </header>
 
-      {/* Main */}
+      {/* Feed viewport (clips the sliding stack) */}
       {view === "feed" && (
-        <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto snap-y snap-mandatory scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {feed.map((item) => (
-            <section key={item.id} data-id={item.id} className="h-full">
-              <Card item={item} onWhy={openWhy} />
-            </section>
-          ))}
-          <section className="h-full"><CaughtUp streak={streak} onTop={() => scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" })} /></section>
+        <div ref={viewportRef} className="relative flex-1 min-h-0 overflow-hidden bg-page">
+          {/* Adjacent-category peek */}
+          {tabIdx > 0 && (
+            <div className="absolute inset-0 flex items-center justify-end pr-6 gap-1.5 text-ink-faint text-[12px] font-bold uppercase tracking-wide">
+              {I.chevL}{labelFor(tabs[tabIdx - 1])}
+            </div>
+          )}
+          {tabIdx < tabs.length - 1 && (
+            <div className="absolute inset-0 flex items-center justify-start pl-6 gap-1.5 text-ink-faint text-[12px] font-bold uppercase tracking-wide">
+              {labelFor(tabs[tabIdx + 1])}{I.chevR}
+            </div>
+          )}
+          {/* Pull-to-refresh spinner */}
+          {(pull > 8 || refreshing) && (
+            <div className="absolute left-1/2 -translate-x-1/2 z-30 pointer-events-none" style={{ top: Math.min(pull * 0.4, 22) }}>
+              <span className="block h-6 w-6 rounded-full border-[3px] border-line border-t-brand-600 animate-spin" />
+            </div>
+          )}
+          {/* Sliding card stack */}
+          <motion.div style={{ x: dragX }} className="absolute inset-0 flex flex-col">
+            <div ref={scrollRef} className="flex-1 min-h-0 overflow-y-auto snap-y snap-mandatory scroll-smooth bg-page [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {feed.map((item, i) => (
+                <section key={item.id} data-id={item.id} data-idx={i} className="h-full snap-start">
+                  <Card item={item} onWhy={openWhy} />
+                </section>
+              ))}
+              <section className="h-full snap-start"><CaughtUp streak={streak} onTop={() => scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" })} /></section>
+            </div>
+          </motion.div>
+          {/* Toast */}
+          <AnimatePresence>
+            {toast && (
+              <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 rounded-full bg-ink/85 text-white text-[12px] font-semibold px-4 py-1.5">
+                Feed refreshed
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       )}
 
@@ -291,7 +429,7 @@ function ProfileView({ streak, canInstall, onInstall }: { streak: number; canIns
       )}
       <div className="rounded-2xl bg-white border border-line shadow-elev-1 p-4">
         <p className="text-[13px] font-semibold text-ink mb-1.5">About the Brief</p>
-        <p className="text-[13px] text-ink-muted leading-relaxed">A 30-second read on Indian ESG and BRSR: SEBI, BRSR Core, CBAM, CCTS and global frameworks. Fresh news is AI-summarised and always links the source; regulatory items and guides are hand-cited.</p>
+        <p className="text-[13px] text-ink-muted leading-relaxed">A 30-second read on Indian ESG and BRSR: SEBI, BRSR Core, CBAM, CCTS and global frameworks. Fresh news is AI-summarised and always links the source; regulatory items and guides are hand-cited. Swipe left or right to change topic.</p>
       </div>
       <div className="text-center">
         <Link href="/" className="text-[13px] font-semibold text-brand-700">Explore the full Saaksh toolkit →</Link>
@@ -310,8 +448,7 @@ function WhySheet({ item, onClose }: { item: BriefItem; onClose: () => void }) {
     whyItMattersAction({ id: item.id, title: item.title, summary: item.summary }).then((r) => {
       if (!live) return;
       const t = r.text || item.summary;
-      setText(t);
-      setLoading(false);
+      setText(t); setLoading(false);
       if (r.text) cacheWhy(item.id, r.text);
     });
     return () => { live = false; };
@@ -324,9 +461,7 @@ function WhySheet({ item, onClose }: { item: BriefItem; onClose: () => void }) {
         <div className="mx-auto h-1 w-10 rounded-full bg-line mb-4" />
         <p className="inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-wide text-brand-700 mb-2"><span>{I.spark}</span> Why it matters</p>
         {loading ? (
-          <div className="space-y-2">
-            <div className="skeleton h-4 w-full rounded" /><div className="skeleton h-4 w-11/12 rounded" /><div className="skeleton h-4 w-4/6 rounded" />
-          </div>
+          <div className="space-y-2"><div className="skeleton h-4 w-full rounded" /><div className="skeleton h-4 w-11/12 rounded" /><div className="skeleton h-4 w-4/6 rounded" /></div>
         ) : (
           <p className="text-[15px] leading-[1.6] text-ink-body">{text}</p>
         )}

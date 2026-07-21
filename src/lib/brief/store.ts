@@ -69,6 +69,17 @@ export function touchStreak(): number {
   return next.count;
 }
 
+// ── Last visit (drives the "New since last visit" badge) ─────────────────────
+const LAST_VISIT_KEY = "saaksh:brief:lastvisit";
+// The previous visit's timestamp (ms), or null for a first-timer (nothing missed yet).
+export function getLastVisit(): number | null {
+  const v = read<number | null>(LAST_VISIT_KEY, null);
+  return typeof v === "number" ? v : null;
+}
+export function stampVisit(): void {
+  write(LAST_VISIT_KEY, Date.now());
+}
+
 // ── Cached "Why it matters" ──────────────────────────────────────────────────
 export function getCachedWhy(id: string): string | null {
   return read<Record<string, string>>(K.why, {})[id] || null;

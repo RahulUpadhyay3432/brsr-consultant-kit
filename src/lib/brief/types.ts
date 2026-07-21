@@ -29,6 +29,7 @@ export interface BriefItem {
   imageUrl?: string;     // news OG image or blog coverImage; else a gradient is used
   model?: string;        // model name for the "AI summary · <model>" label
   whyItMatters?: string; // cached grounded explanation, if generated
+  isNew?: boolean;       // published since the reader's last visit (client-computed)
 }
 
 // The tab bar + the hero-fallback gradients + accent colours. One definition drives
