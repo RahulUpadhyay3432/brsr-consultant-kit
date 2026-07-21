@@ -121,6 +121,11 @@ body::before {
 /* The Brief is a self-contained phone app; the site-wide top hairline reads as
    a stray line inside it, so hide it on that route. */
 body:has(.brief-root)::before { display: none; }
+/* Keep the Brief's inner scroll from chaining to the page: overscroll at a list
+   boundary must not rubber-band the body (which toggles the mobile toolbar and
+   makes the fixed bottom nav appear to jump). */
+html:has(.brief-root),
+body:has(.brief-root) { overscroll-behavior: none; }
 
 /* Status badges — Ready (green) · Verify (amber) · Collect (ember) */
 .badge-tracked {

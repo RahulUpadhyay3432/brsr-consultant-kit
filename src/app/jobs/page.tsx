@@ -65,7 +65,7 @@ function FilterGroup({ title, options, value, onChange }: { title: string; optio
 function JobCard({ job, selected, saved, onSelect, onSave }: { job: Job; selected: boolean; saved: boolean; onSelect: () => void; onSave: () => void }) {
   return (
     <div role="button" tabIndex={0} onClick={onSelect} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(); } }}
-      className={`p-4 rounded-2xl flex flex-col gap-3 cursor-pointer transition-all ${selected ? "bg-brand-50 border border-brand-300 shadow-elev-2 ring-1 ring-brand-300" : "bg-white border border-line shadow-elev-1 hover:shadow-elev-2 hover:border-brand-200"} ${job.closed ? "opacity-70" : ""}`}>
+      className={`group p-[18px] rounded-2xl flex flex-col gap-3 cursor-pointer transition-all ${selected ? "bg-brand-50 border border-brand-300 shadow-elev-2 ring-1 ring-brand-300" : "bg-white border border-line shadow-elev-1 hover:shadow-elev-2 hover:border-brand-200 hover:-translate-y-0.5"} ${job.closed ? "opacity-70" : ""}`}>
       <div className="flex gap-3 items-start">
         <CompanyAvatar name={job.company} size={44} />
         <div className="flex-1 min-w-0">
@@ -82,11 +82,11 @@ function JobCard({ job, selected, saved, onSelect, onSave }: { job: Job; selecte
       </div>
       {job.salary && <div className="text-[16px] font-bold text-ink tracking-[-0.01em]">{job.salary}</div>}
       {jobChips(job).length > 0 && <div className="flex flex-wrap gap-1.5">{jobChips(job).map((c) => <Chip key={c}>{c}</Chip>)}</div>}
-      <div className="flex items-center justify-between gap-3 pt-0.5">
-        <span className="text-[12.5px] text-ink-faint">{jobAge(job.postedDate)}{job.sourceName ? ` · via ${job.sourceName}` : ""}</span>
+      <div className="flex items-center justify-between gap-3 pt-2.5 mt-0.5 border-t border-line">
+        <span className="text-[12px] text-ink-faint truncate">{CATEGORY_LABEL[job.category]} · {jobAge(job.postedDate)}{job.sourceName ? ` · ${job.sourceName}` : ""}</span>
         {job.closed
-          ? <span className="text-[13px] text-ink-faint font-medium">Applications closed</span>
-          : <a href={job.applyUrl} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-1 text-[13px] font-semibold text-brand-700 whitespace-nowrap">View &amp; apply <ArrowUpRight /></a>}
+          ? <span className="text-[12px] text-ink-faint font-medium whitespace-nowrap">Closed</span>
+          : <span className="inline-flex items-center gap-1 text-[12.5px] font-semibold text-ink-muted group-hover:text-brand-700 transition-colors whitespace-nowrap">Details <span className="transition-transform group-hover:translate-x-0.5">→</span></span>}
       </div>
     </div>
   );
@@ -117,6 +117,7 @@ function DetailPane({ job, all, saved, onSave, onSelect }: { job: Job; all: Job[
             </div>
             <h2 className="m-0 font-editorial text-[1.6rem] font-semibold tracking-[-0.01em] leading-tight text-ink">{job.title}</h2>
             <div className="flex items-center gap-2 mt-1.5 text-[14px] text-ink-muted"><span className="font-semibold text-ink-body">{job.company}</span> · <span>{job.location}</span></div>
+            <div className="mt-1 text-[12.5px] text-ink-faint">Posted {jobAge(job.postedDate)} · via {job.sourceName || "source"}</div>
           </div>
           <button onClick={onSave} aria-pressed={saved} className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl border border-line bg-white text-[13px] font-semibold text-ink-body flex-shrink-0 hover:bg-band"><Bookmark filled={saved} size={16} />{saved ? "Saved" : "Save"}</button>
         </div>
