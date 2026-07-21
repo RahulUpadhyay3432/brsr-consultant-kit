@@ -1,3 +1,4 @@
+import QRCode from "qrcode";
 import { getBriefFeed } from "@/lib/brief/feed";
 import BriefFeed from "@/components/brief/BriefFeed";
 
@@ -6,6 +7,11 @@ export const dynamic = "force-dynamic";
 
 export default async function BriefPage() {
   const items = await getBriefFeed();
+  const qr = await QRCode.toDataURL("https://saaksh.co/brief", {
+    width: 240,
+    margin: 1,
+    color: { dark: "#0F1E33", light: "#FFFFFF" },
+  });
 
   return (
     <div className="min-h-[100dvh] bg-band text-ink lg:flex lg:items-center lg:justify-center lg:gap-8 lg:px-8 lg:py-10">
@@ -33,17 +39,18 @@ export default async function BriefPage() {
         </ul>
       </aside>
 
-      {/* The phone column (full-screen on mobile, framed on desktop) */}
-      <BriefFeed items={items} />
+      {/* The phone (full-screen on mobile; a real device bezel on desktop) */}
+      <div className="lg:flex-shrink-0 lg:p-[11px] lg:rounded-[2.7rem] lg:bg-gradient-to-b lg:from-[#2a2a2f] lg:to-[#141416] lg:border lg:border-black/60 lg:shadow-[0_36px_100px_rgba(15,30,51,0.30),inset_0_1px_0_rgba(255,255,255,0.06)]">
+        <BriefFeed items={items} />
+      </div>
 
-      {/* Desktop: open-on-phone panel */}
+      {/* Desktop: open-on-phone panel with a scannable QR */}
       <aside className="hidden lg:flex flex-col w-[240px] gap-3 rounded-2xl border border-line bg-white shadow-elev-1 p-6 text-center">
         <p className="text-[13px] font-semibold text-ink">Open it on your phone</p>
-        <div className="mx-auto my-1 grid place-items-center h-28 w-28 rounded-xl bg-band border border-line text-ink-faint text-[11px] leading-tight px-2">
-          Visit<br /><span className="text-ink font-semibold">saaksh.co/brief</span><br />on mobile
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={qr} alt="Scan to open saaksh.co/brief" width={132} height={132} className="mx-auto my-1 rounded-lg border border-line" />
         <p className="text-[12.5px] text-ink-muted leading-relaxed">
-          Then use <span className="text-ink font-semibold">Add to Home Screen</span> to keep the Brief one tap away.
+          Scan it, then use <span className="text-ink font-semibold">Add to Home Screen</span> to keep the Brief one tap away.
         </p>
       </aside>
     </div>

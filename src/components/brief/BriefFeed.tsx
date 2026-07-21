@@ -43,12 +43,12 @@ type View = "feed" | "saved" | "profile";
 function Hero({ item }: { item: BriefItem }) {
   const cat = CATEGORY_BY_SLUG[item.category];
   return (
-    <div className="relative w-full aspect-[16/10] flex-shrink-0 overflow-hidden">
+    <div className="relative w-full aspect-[16/10] lg:aspect-auto lg:h-[200px] flex-shrink-0 overflow-hidden">
       {item.imageUrl ? (
         <img src={item.imageUrl} alt="" loading="lazy" className="w-full h-full object-cover" />
       ) : (
         <div className="w-full h-full flex items-end p-4" style={{ background: `linear-gradient(145deg, ${cat.gradient[0]}, ${cat.gradient[1]})` }}>
-          <span className="font-display text-[2.6rem] font-bold text-white/15 leading-none">{cat.label}</span>
+          <span className="font-display text-[2.4rem] font-bold text-white/15 leading-none">{cat.label}</span>
         </div>
       )}
       <div className="absolute inset-x-0 top-0 p-3.5 flex items-center gap-2">
@@ -82,7 +82,7 @@ function Card({ item, onWhy }: { item: BriefItem; onWhy: (i: BriefItem) => void 
     : item.kind === "regulation" ? `Source · ${item.sourceName || "primary source"}`
     : `Guide${item.sourceName ? ` · ${item.sourceName}` : ""}`;
 
-  const titleCls = "font-display text-[1.35rem] leading-[1.2] font-bold text-ink tracking-[-0.01em] hover:text-brand-700";
+  const titleCls = "block font-display text-[1.3rem] leading-[1.2] font-bold text-ink tracking-[-0.01em] hover:text-brand-700 line-clamp-3";
   const onOpen = () => track("brief_source_opened", { kind: item.kind });
 
   return (
@@ -191,7 +191,7 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
   };
 
   return (
-    <div className="relative w-full max-w-[440px] h-[100dvh] lg:h-[880px] lg:max-h-[92vh] lg:rounded-[2.2rem] lg:border lg:border-line lg:shadow-elev-3 bg-page text-ink overflow-hidden flex flex-col">
+    <div className="relative w-full max-w-[430px] h-[100dvh] lg:h-[820px] lg:max-h-[86vh] lg:rounded-[2.1rem] bg-page text-ink overflow-hidden flex flex-col">
       {/* Top bar */}
       <header className="flex-shrink-0 px-4 pt-3 pb-2 bg-page/95 backdrop-blur z-20 border-b border-line">
         <div className="flex items-center justify-between">

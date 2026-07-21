@@ -70,7 +70,7 @@ const SYSTEM = `You classify and summarise a single ESG/sustainability news item
 STRICT RULES:
 - Use ONLY the provided title and text. Never invent, infer, estimate, or add any fact, number, name, date, or company not present in the input.
 - Write a calm, factual summary of 2 to 3 sentences. Present tense, active voice, no hype, no emojis, no exclamation marks. First sentence states the core fact in 10 to 15 words.
-- If the item is trivial, an advertisement, a listicle, or NOT about ESG / sustainability reporting / carbon regulation / BRSR / CBAM / carbon markets / global sustainability frameworks (relevant to India or global compliance), output exactly LOW_SIGNAL and nothing else.
+- RELEVANCE GATE (strict): the reader is an Indian ESG/BRSR consultant. Output exactly LOW_SIGNAL (and nothing else) UNLESS the item has a real, material angle for them: SEBI / BRSR / BRSR Core / assurance moves; India's CCTS / carbon market / GEI targets; the EU CBAM as it affects Indian exporters; a NAMED INDIAN LISTED COMPANY's ESG/BRSR filing or disclosure; or a genuine CHANGE to a major global framework (CSRD/ESRS, CDP, EcoVadis, IFRS/ISSB, GRI, TNFD). Reject as LOW_SIGNAL: a random foreign company's routine sustainability/CSR report, award, or medal with no India or regulatory angle; product marketing or press-release fluff; generic "company goes green" PR; and anything not about ESG, sustainability reporting, or carbon regulation.
 - Otherwise output STRICT JSON only, no prose, no markdown fences: {"category_slug":"<one of the categories>","summary":"<your summary>"}
 Categories:
 ${VALID.map((c) => `- ${c}: ${CATEGORY_DEFINITIONS[c]}`).join("\n")}`;
