@@ -12,9 +12,9 @@
       "workMode": "hybrid",
       "seniority": "Mid–Senior",
       "summary": "Support client ESG strategy, sustainability reporting, decarbonisation, and data management.",
-      "aboutRole": "Engage clients on their sustainability objectives, conduct research and analysis, and support ESG reporting with frameworks like GRI, BRSR, and TCFD. Develop solutions and track sustainability KPIs across engagements.",
+      "aboutRole": "Engage clients to understand their sustainability objectives, research regulations and industry practice, and develop proposals, business cases and solution recommendations. Gather business requirements, document user stories and process flows, and support ESG disclosure programmes while working with technical teams on implementation. Define and track sustainability KPIs, run workshops, POCs and client presentations, and mentor junior consultants. Requires knowledge of GRI, CSRD, BRSR, TCFD, CDP and SASB/ISSB, data tools such as Power BI, Tableau or Python, and a degree in Engineering, Environmental Sciences, Sustainability or Management.",
       "aboutCompany": "Infosys is a global leader in next-generation digital services and consulting.",
-      "tags": ["ESG Reporting", "BRSR", "Decarbonisation"],
+      "tags": ["ESG Reporting", "BRSR", "CSRD", "TCFD", "Decarbonisation"],
       "sourceName": "LinkedIn",
       "featured": true,
       "activelyHiring": true
@@ -31,8 +31,8 @@
       "workMode": "onsite",
       "seniority": "Entry",
       "salary": "₹15,000 / month",
-      "summary": "Work with founders on carbon calculations, LCAs, and client presentations at a climate-tech firm.",
-      "aboutRole": "Work directly with founders, engage with clients, analyse real sustainability data, and contribute to ESG and carbon accounting projects. Build client-ready presentations and help solve pressing sustainability challenges for businesses.",
+      "summary": "Six-month internship working with founders on carbon calculations, LCAs, and client work at a climate-tech firm.",
+      "aboutRole": "A six-month, on-site internship working directly with the founders and engaging clients on live sustainability projects. Analyse real sustainability data and contribute to ESG and carbon-accounting engagements across sectors like construction, textiles and pharmaceuticals. Build client-ready presentations and support carbon accounting, life-cycle assessment, sustainability reporting, ESG disclosures, and climate strategy work. Requires a bachelor's degree, strong Excel and PowerPoint, structured analytical thinking, and a genuine interest in sustainability and climate-tech. Stipend is ₹15,000 per month.",
       "aboutCompany": "Karbonwise is a climate-tech advisory firm working with companies across textiles, pharmaceuticals, and manufacturing to measure emissions and ESG.",
       "tags": ["Carbon Accounting", "LCA", "ESG Reporting", "Excel"],
       "sourceName": "SimplyHired",
@@ -49,8 +49,9 @@
       "type": "full-time",
       "workMode": "hybrid",
       "seniority": "Mid–Senior",
+      "experience": "8+ years",
       "summary": "Direct environmental compliance, emissions reporting, and data-system integration for a global energy leader.",
-      "aboutRole": "Lead preparation and submission of complex environmental reports (GHG, TRI, TSCA, DMR), and align metrics with global sustainability frameworks like GRI, SASB, BRSR, and TCFD. Use advanced analytics and visualisation tools to deliver actionable insights.",
+      "aboutRole": "Lead preparation of environmental reports such as DMR, TSCA, TRI and GHG filings, and oversee quarterly and annual emissions reporting with compliance reviews and root-cause analysis. Build validation frameworks and automated dashboards for sustainability KPIs in Power BI and Tableau, and interpret regulations like the Clean Air Act, GHGRP and NSR while aligning to GRI, CDP, SASB, BRSR and TCFD. Automate reporting workflows, benchmark emissions, run predictive analytics, advise site leadership, and mentor junior analysts. Requires a degree in environmental science, sustainability or engineering and at least 8 years in sustainability reporting, environmental compliance or ESG strategy; ISO 14001, GRI or SASB certifications and LCA experience are preferred.",
       "aboutCompany": "ExxonMobil is a global energy leader with an extensive business support, research, and technology footprint in India.",
       "tags": ["BRSR", "GRI", "GHG", "Power BI", "Environmental Reporting"],
       "sourceName": "Company site"
@@ -58,7 +59,7 @@
     {
       "id": "deloitte-assistant-manager-environment",
       "title": "Assistant Manager – Environment & Sustainability",
-      "company": "Deloitte South Asia LLP",
+      "company": "Deloitte Touche Tohmatsu India LLP",
       "location": "Bengaluru, Karnataka",
       "category": "sustainability-ops",
       "applyUrl": "https://in.indeed.com/viewjob?jk=0aea20fe2600bf0e",
@@ -66,10 +67,11 @@
       "type": "full-time",
       "workMode": "hybrid",
       "seniority": "Mid-level",
-      "summary": "Solve sustainability and climate-change challenges across a wide range of advisory clients.",
-      "aboutRole": "Solve the full spectrum of sustainability and climate-change challenges across clients. Focus on baseline data collection, stakeholder engagement, social risk assessment, and compliance against international standards including the IFC Performance Standards.",
-      "aboutCompany": "Deloitte South Asia LLP provides market-leading professional tax, financial, and sustainability services.",
-      "tags": ["IFC Performance Standards", "Stakeholder Engagement", "Climate Change"],
+      "experience": "2–4 years",
+      "summary": "Lead social and environmental impact assessments and due diligence across lender-advisory clients.",
+      "aboutRole": "Lead social baseline studies, environmental and social impact assessments (ESIA) and due-diligence assignments, including primary surveys, stakeholder consultations and field data collection. Run gap assessments against international standards such as the IFC Performance Standards (PS1 and PS5), ADB Safeguards and EHS Guidelines, and prepare reports while coordinating multidisciplinary teams on lender-advisory mandates. Sector exposure spans power and renewables, oil and gas, waste, transmission and distribution, manufacturing and infrastructure. Requires a degree in social sciences, sociology, development studies or a related field and 2 to 4 years in social impact, ESIA/ESDD or sustainability consulting; extensive fieldwork travel is expected.",
+      "aboutCompany": "Deloitte provides market-leading professional audit, tax, financial advisory, and sustainability services.",
+      "tags": ["IFC Performance Standards", "ESIA", "Stakeholder Engagement", "Social Impact"],
       "sourceName": "Indeed"
     },
     {
@@ -84,9 +86,9 @@
       "workMode": "onsite",
       "seniority": "Mid-level",
       "summary": "Execute environmental impact analyses, life-cycle assessments, and emissions-reduction pathways.",
-      "aboutRole": "Conduct comprehensive analyses including carbon emissions tracking, carbon footprint assessments, environmental impact analyses, life-cycle assessments (LCAs), emissions reduction strategies, and climate risk evaluations.",
+      "aboutRole": "Run carbon emissions tracking and carbon-footprint assessments, develop data-driven decarbonisation strategies, lead sustainability initiatives, and help enhance the firm's ESG products while monitoring standards compliance. Technical work covers carbon-footprint analysis, GHG assessment and climate-risk advisory across frameworks such as SASB, GRI, TCFD, UN PRI, CSRD/NFRD and SFDR. Requires a master's in environmental engineering, sustainability or a related field and substantial climate-change experience in consulting, financial services or research. Familiarity with SBTi, LCA and ISO 14044/14064 is expected; climate-risk or ISO certifications are highly desirable, and senior-associate levels need people-management and consulting experience.",
       "aboutCompany": "Apex Group is a global fund administrator and middle-office solutions provider.",
-      "tags": ["Carbon Tracking", "LCA", "Carbon Footprint", "Environmental Management"],
+      "tags": ["Carbon Tracking", "LCA", "SASB", "TCFD", "SFDR"],
       "sourceName": "Indeed"
     },
     {
@@ -102,9 +104,9 @@
       "seniority": "3–5 yrs",
       "experience": "2–4 years",
       "summary": "Track international regulations like EU CBAM and manage supplier ESG data systems.",
-      "aboutRole": "Support Optimas' global response to environmental regulations by managing supply-chain ESG data, coordinating supplier disclosures, and supporting robust data controls. Monitor ESG regulatory developments relevant to the business (EU CBAM, EU ETS, UK SECR, conflict minerals).",
+      "aboutRole": "Support Optimas' global sustainability work through supply-chain ESG data management, reporting to the Head of Sustainability. Monitor ESG regulation such as EU CBAM, EU ETS, UK SECR and conflict minerals, maintain compliance calendars, and coordinate collection and validation of supplier ESG and carbon data. Support Scope 1, 2 and 3 emissions calculations under the GHG Protocol, maintain product-level and logistics carbon databases, and prepare audit-ready data for CDP, EcoVadis, Assent and M2030. Requires 2 to 4 years in ESG, energy or carbon accounting, working knowledge of the GHG Protocol and supply-chain emissions, familiarity with GRI and SASB, and strong Excel skills for large, imperfect manufacturing datasets.",
       "aboutCompany": "Optimas Solutions is a global distributor of integrated supply-chain fasteners, components, and logistics support.",
-      "tags": ["Supply Chain", "CBAM", "Carbon Accounting", "CDP"],
+      "tags": ["Supply Chain", "CBAM", "Scope 1 2 3", "CDP", "EcoVadis"],
       "sourceName": "Indeed"
     },
     {
@@ -118,10 +120,11 @@
       "type": "full-time",
       "workMode": "onsite",
       "seniority": "Mid-level",
+      "experience": "3+ years",
       "summary": "Embed social-impact and ESG frameworks across a growing NBFC's lending portfolios.",
-      "aboutRole": "Support the integration of Credit Saison India's ESG and impact-management framework in line with the company's lending strategy and rapidly evolving regulations and sector standards.",
+      "aboutRole": "Embed Credit Saison's Impact and ESG framework across business teams while maintaining regulatory compliance, reporting to the Senior Impact and ESG Officer. Evaluate environmental and social risks within the loan portfolio, gather and analyse borrower ESG data, and develop reporting on portfolio impact and risk assessments. Support staff training on ESG processes and tools. Requires at least 3 years in lending or financial services (fintech, microfinance, SME or impact finance) with a minimum of 1 year in ESG risk or impact management, ideally in private debt. Technical knowledge should cover the IFC Performance Standards, the Operating Principles for Impact Management and GIIN IRIS+ metrics.",
       "aboutCompany": "Credit Saison India is a fast-growing, tech-enabled Non-Bank Financial Company (NBFC) lender established in 2019.",
-      "tags": ["ESG Integration", "Impact Management", "Sustainable Finance", "Risk Policy"],
+      "tags": ["ESG Integration", "Impact Management", "IFC Standards", "Sustainable Finance"],
       "sourceName": "Indeed"
     },
     {
@@ -138,9 +141,9 @@
       "experience": "Fresher to 4 years",
       "salary": "₹16,000 – ₹40,000 / month",
       "summary": "Implement sustainability strategies, assessments, and ESG alignment for corporate clients.",
-      "aboutRole": "Support organisations in implementing sustainability strategies, conducting assessments, and aligning with ESG standards. Qualifications include a Master's degree in Sustainability, Environmental Management, or Environmental Science.",
+      "aboutRole": "Conduct ESG assessments and develop sustainability roadmaps for clients, prepare compliance reports, and perform carbon-footprint calculations and life-cycle assessments. Support clients across frameworks including EcoVadis, CDP, GRI Standards and BRSR. Suits candidates from fresher to 4 years, and requires a master's in Sustainability, Environmental Management or a related field with strong knowledge of ESG frameworks and carbon-accounting methods. A permanent, full-time, in-person role; benefits include flexible scheduling, paid time off, leave encashment and provident fund.",
       "aboutCompany": "Growlity is a management consulting firm helping companies structure low-carbon and ESG policies.",
-      "tags": ["Carbon Accounting", "LCA", "ESG Strategy", "Environmental Audits"],
+      "tags": ["Carbon Accounting", "LCA", "EcoVadis", "GRI", "BRSR"],
       "sourceName": "Indeed"
     },
     {
@@ -154,8 +157,9 @@
       "type": "contract",
       "workMode": "onsite",
       "seniority": "Entry",
+      "experience": "3–5 years",
       "summary": "Deliver end-to-end sustainability disclosures, ESG research, and stakeholder communications.",
-      "aboutRole": "Strengthen corporate sustainability positioning through end-to-end reporting, ESG research, strategic communications, and capacity-building. Craft focused strategies and action plans grounded in data-driven insights, aligned to BRSR and GRI.",
+      "aboutRole": "A contractual role covering three areas: developing GRI and BRSR-aligned sustainability reports, ESG communication and content development, and capacity building. Collaborate with senior stakeholders to define scope, manage ESG data collection, and coordinate across functions for quality reporting. Craft stakeholder-specific messaging, turn ESG insights into communication assets across digital and offline channels, and help design training modules. Requires 3 to 5 years in sustainability, ESG or corporate reporting, working familiarity with GRI and BRSR, and strong research, analytical and Excel skills; Kannada proficiency is preferred.",
       "aboutCompany": "Sattva Consulting is a global impact consulting firm from India, established in 2009.",
       "tags": ["BRSR", "GRI", "ESG Reporting", "ESG Research"],
       "sourceName": "Indeed"
@@ -172,7 +176,7 @@
       "workMode": "remote",
       "seniority": "5+ years",
       "summary": "Freelance social-compliance role running digital worker-voice programs across western India.",
-      "aboutRole": "Lead the deployment of digital worker-voice programs in Indian workplaces, deliver supplier platform training and technical support, and manage grievance case files, supporting investigation and remediation for social and SA8000 audits.",
+      "aboutRole": "A part-time contract or freelance role with EcoVadis' Ulula arm, deploying digital worker-voice programmes across Indian workplaces. Provide platform training and technical support to suppliers, manage grievance cases and investigations, and develop onboarding materials. Maintain regular supplier communications and act as a liaison between internal teams, suppliers and brands, with occasional national travel. Requires 5+ years in global supply chain with a background in social compliance or labour rights, fluency in English and Gujarati (Marathi and Hindi preferred), and familiarity with auditing standards such as BSCI, ETI and SA8000. Applicants must be based in India, preferably Gujarat or Maharashtra, and submit a resume, cover letter and proposed rates.",
       "aboutCompany": "EcoVadis is the leading global provider of business sustainability ratings, analysing environmental and ethical supply-chain risk.",
       "tags": ["Social Compliance", "Supply Chain", "Human Rights", "SA8000", "SEDEX"],
       "sourceName": "Wall Street Careers"
@@ -190,7 +194,7 @@
       "seniority": "Entry",
       "companySize": "11–50 people",
       "summary": "Structured mentorship and cross-functional project exposure at a climate-tech SaaS startup.",
-      "aboutRole": "Gain hands-on experience in a dynamic startup environment. The fellowship offers mentorship, cross-functional exposure, and the opportunity to work on impactful projects across the tech and ESG platforms. Ideal for students and recent graduates passionate about technology and sustainability.",
+      "aboutRole": "A fellowship for students and recent graduates passionate about technology and sustainability, based in Bengaluru. It offers hands-on experience in a startup environment with mentorship, cross-functional exposure, and impactful projects across Breathe ESG's tech and ESG platforms. It is an internship-style opportunity rather than a senior hire. The careers page lists the fellowship at a high level, so specific responsibilities and requirements are shared on application by email.",
       "aboutCompany": "Breathe ESG is an impact-tech startup using cloud-based software to streamline sustainability and carbon calculations.",
       "tags": ["Mentorship", "ESG Tech", "SaaS", "Sustainability"],
       "sourceName": "Company site"
@@ -207,9 +211,9 @@
       "workMode": "hybrid",
       "seniority": "Associate",
       "summary": "Advise banks and financial institutions on climate risk models, scenario analysis, and ESG integration.",
-      "aboutRole": "Consult on risk processes including ESG and climate risk models, scenario and stress-testing frameworks. Develop transition plans aligned with sustainability targets, and run data analyses for risk assessments and ESG topics such as emissions calculations.",
+      "aboutRole": "An associate-level Climate Risk consultant role in KPMG's business consulting practice, focused on climate and emerging-risk management for banks. Consult on risk processes and regulatory advisory grounded in EU regulation such as CRR and the EBA Guidelines, and develop and validate risk and ESG models. Integrate geopolitical risk factors into frameworks and design scenario analyses and stress tests. Develop and refine transition plans aligned with sustainability and ESG targets, and run data analysis for risk assessments, workflow automation, early-warning indicators and Excel-tool maintenance.",
       "aboutCompany": "KPMG India is a leading professional services firm providing audit, tax, and advisory services.",
-      "tags": ["Climate Risk", "ESG", "Risk Modelling"],
+      "tags": ["Climate Risk", "ESG", "Scenario Analysis", "Risk Modelling"],
       "sourceName": "LinkedIn"
     },
     {
@@ -225,9 +229,9 @@
       "seniority": "Associate",
       "experience": "5–10 years",
       "summary": "Support climate change, ESG, and sustainability advisory projects with government stakeholders.",
-      "aboutRole": "Support climate resilience projects, conduct research on climate change and ESG, and develop reports and presentations. Engage stakeholders and support climate finance initiatives across government advisory engagements.",
+      "aboutRole": "Support climate, ESG and sustainability initiatives for government stakeholders within KPMG's Government Advisory practice. Support climate-resilience projects with government departments, and research climate change, ESG, renewable energy and circular economy. Develop reports, concept notes and presentations, support climate-finance work such as project evaluation and funding strategy, and engage stakeholders across government, private sector and development partners. Requires a master's in Climate Change, Sustainability, Environment, Economics or Finance, 5 to 10 years of climate or ESG advisory experience (ideally public sector), knowledge of adaptation and mitigation, carbon markets and MRV, nature-based solutions and climate finance, and Gujarati proficiency; TCFD/TNFD exposure is a plus.",
       "aboutCompany": "KPMG India is a leading professional services firm providing audit, tax, and advisory services.",
-      "tags": ["Climate Change", "ESG", "Government Advisory"],
+      "tags": ["Climate Change", "ESG", "Carbon Markets", "Government Advisory"],
       "sourceName": "LinkedIn"
     },
     {
@@ -243,7 +247,7 @@
       "seniority": "Mid–Senior",
       "experience": "12–17 years",
       "summary": "Lead sustainability reporting, GHG inventory, and decarbonisation aligned with global standards.",
-      "aboutRole": "Design and maintain sustainability reporting systems per GRI, SASB, and TCFD, and prepare annual sustainability reports and ESG disclosures. Develop the GHG emissions inventory per the GHG Protocol and monitor decarbonisation measures.",
+      "aboutRole": "Build and run sustainability reporting systems aligned with GRI, SASB and TCFD, coordinating cross-functional teams to gather ESG data and leading the annual sustainability report. Ensure regulatory compliance, develop GHG emissions inventories under the GHG Protocol, and implement decarbonisation measures supporting net-zero targets. Requires 12 to 17 years of relevant experience and a B.Tech, BE or M.Tech in Environmental Engineering. Preferred certifications include ISO 14001 Lead Auditor, GRI Sustainability Certification, TCFD, SASB and Certified Green Factory Practitioner.",
       "aboutCompany": "Tata Electronics is part of the Tata Group, focused on electronics manufacturing.",
       "tags": ["Sustainability Reporting", "GRI", "GHG Protocol", "BRSR"],
       "sourceName": "LinkedIn"
