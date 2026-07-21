@@ -174,6 +174,7 @@ export interface IngestResult {
   candidates: number;
   kept: number;
   inserted: number;
+  insertedItems?: { title: string; category_slug: string }[]; // genuinely-new, for push
   samples?: { title: string; category_slug: string; summary: string }[]; // for monitoring
 }
 
@@ -208,14 +209,15 @@ export async function runIngest(): Promise<IngestResult> {
     });
   }
 
-  const inserted = await insertNews(rows);
+  const insertedRows = await insertNews(rows);
   await pruneOldNews();
   return {
     configured: true,
     fetched: all.length,
     candidates: candidates.length,
     kept: rows.length,
-    inserted,
+    inserted: insertedRows.length,
+    insertedItems: insertedRows.map((r) => ({ title: r.title, category_slug: r.category_slug })),
     samples: rows.slice(0, 4).map((r) => ({ title: r.title, category_slug: r.category_slug, summary: r.summary })),
   };
 }

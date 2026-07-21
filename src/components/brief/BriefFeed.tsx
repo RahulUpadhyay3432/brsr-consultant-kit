@@ -16,6 +16,9 @@ import { whyItMattersAction } from "@/lib/brief/actions";
 import {
   cacheWhy, getCachedWhy, getLastVisit, getSaved, isSaved, stampVisit, toggleSaved, touchStreak,
 } from "@/lib/brief/store";
+import {
+  getPushState, pushSupported, subscribeToPush, unsubscribeFromPush, type PushState,
+} from "@/lib/brief/push-client";
 
 type Tab = BriefCategory | "all";
 const SWIPE_DISTANCE = 72;
@@ -417,6 +420,48 @@ function SavedView({ items, onWhy, onChange, onBrowse }: { items: BriefItem[]; o
   );
 }
 
+function NotifyCard() {
+  const [state, setState] = useState<PushState>("idle");
+  const [busy, setBusy] = useState(false);
+  useEffect(() => { getPushState().then(setState); }, []);
+  if (!pushSupported() || state === "unsupported") return null;
+
+  const on = state === "subscribed";
+  const toggle = async () => {
+    setBusy(true);
+    const next = on ? await unsubscribeFromPush() : await subscribeToPush();
+    setState(next);
+    if (next === "subscribed") track("brief_notifications_on", {});
+    setBusy(false);
+  };
+
+  return (
+    <div className="rounded-2xl bg-white border border-line shadow-elev-1 p-4">
+      <div className="flex items-start gap-3">
+        <span className="grid place-items-center h-9 w-9 flex-shrink-0 rounded-xl bg-brand-50 text-brand-600">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.7 21a2 2 0 01-3.4 0" /></svg>
+        </span>
+        <div className="min-w-0">
+          <p className="text-[13.5px] font-semibold text-ink">Notify me on big updates</p>
+          <p className="text-[12.5px] text-ink-muted leading-relaxed mt-0.5">
+            {state === "denied"
+              ? "Notifications are blocked in your browser settings. Enable them for this site to turn this on."
+              : "A quiet ping when a real SEBI, BRSR or CBAM change lands. A few a day at most."}
+          </p>
+        </div>
+      </div>
+      {state !== "denied" && (
+        <button
+          onClick={toggle} disabled={busy}
+          className={`pressable mt-3 w-full rounded-xl py-2.5 text-[13.5px] font-semibold disabled:opacity-60 ${on ? "bg-band border border-line text-ink" : "bg-brand-600 text-white"}`}
+        >
+          {busy ? "…" : on ? "Turn off notifications" : "Turn on notifications"}
+        </button>
+      )}
+    </div>
+  );
+}
+
 function ProfileView({ streak, canInstall, onInstall }: { streak: number; canInstall: boolean; onInstall: () => void }) {
   return (
     <div className="flex-1 min-h-0 overflow-y-auto px-5 py-5 space-y-5 bg-page [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
@@ -427,6 +472,7 @@ function ProfileView({ streak, canInstall, onInstall }: { streak: number; canIns
       {canInstall && (
         <button onClick={onInstall} className="pressable w-full rounded-2xl bg-brand-600 hover:bg-brand-700 py-3.5 text-[14px] font-semibold text-white">Add Brief to home screen</button>
       )}
+      <NotifyCard />
       <div className="rounded-2xl bg-white border border-line shadow-elev-1 p-4">
         <p className="text-[13px] font-semibold text-ink mb-1.5">About the Brief</p>
         <p className="text-[13px] text-ink-muted leading-relaxed">A 30-second read on Indian ESG and BRSR: SEBI, BRSR Core, CBAM, CCTS and global frameworks. Fresh news is AI-summarised and always links the source; regulatory items and guides are hand-cited. Swipe left or right to change topic.</p>

@@ -97,17 +97,19 @@ export interface NewsInsert {
 }
 
 // Insert new rows, ignoring any that collide on the source_url unique index.
-export async function insertNews(rows: NewsInsert[]): Promise<number> {
-  if (!rows.length) return 0;
+// Returns the rows that were actually inserted (duplicates are excluded), so a
+// caller can notify only on genuinely-new items.
+export async function insertNews(rows: NewsInsert[]): Promise<NewsInsert[]> {
+  if (!rows.length) return [];
   try {
     const res = await rest("brsr_news?on_conflict=source_url", {
       method: "POST",
       prefer: "resolution=ignore-duplicates,return=representation",
       body: JSON.stringify(rows),
     });
-    return ((await res.json()) as unknown[]).length;
+    return (await res.json()) as NewsInsert[];
   } catch {
-    return 0;
+    return [];
   }
 }
 
