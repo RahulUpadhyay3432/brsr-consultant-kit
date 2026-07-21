@@ -14,6 +14,11 @@ import type { BriefCategory, BriefItem } from "@/lib/brief/types";
 import { BRIEF_CATEGORIES, CATEGORY_BY_SLUG } from "@/lib/brief/types";
 import { whyItMattersAction } from "@/lib/brief/actions";
 import { SaakshMark } from "@/components/SaakshMark";
+import CompanyAvatar from "@/components/CompanyAvatar";
+import {
+  getJobs, usedCategories, jobAge, workModeLabel, jobTypeLabel,
+  type Job, type JobCategory,
+} from "@/lib/jobs";
 import {
   cacheWhy, getCachedWhy, getLastVisit, getSaved, isSaved, stampVisit, toggleSaved, touchStreak,
 } from "@/lib/brief/store";
@@ -41,6 +46,7 @@ const I = {
   feed: <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="5" rx="1.5" /><rect x="3" y="13" width="18" height="7" rx="1.5" /></svg>,
   saved: (f: boolean) => <svg viewBox="0 0 24 24" width="20" height="20" fill={f ? "currentColor" : "none"} stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" /></svg>,
   profile: <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="3.4" /><path d="M5 20c0-3.4 3.1-5.5 7-5.5s7 2.1 7 5.5" /></svg>,
+  jobs: <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" /></svg>,
   fire: <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2c1 3-1 4-2 6-1 1.6-1 3 0 4 .6.6.6 1.6 0 2 2-.4 3-2 3-4 2 1.5 3 3.6 3 5.5C16 19 14 22 12 22S6 19.5 6 16c0-2.6 1.4-4.4 3-6 1.6-1.6 3-3.6 3-8z" /></svg>,
 };
 
@@ -136,10 +142,11 @@ function CaughtUp({ streak, onTop }: { streak: number; onTop: () => void }) {
   );
 }
 
-type View = "feed" | "saved" | "profile";
+type View = "feed" | "jobs" | "saved" | "profile";
 
 export default function BriefFeed({ items }: { items: BriefItem[] }) {
   const router = useRouter();
+  const jobs = useMemo(() => getJobs(), []);
   const [view, setView] = useState<View>("feed");
   const [cat, setCat] = useState<Tab>("all");
   const [why, setWhy] = useState<BriefItem | null>(null);
@@ -363,12 +370,14 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
         </div>
       )}
 
+      {view === "jobs" && <JobsView jobs={jobs} />}
       {view === "saved" && <SavedView items={savedList} onWhy={openWhy} onChange={() => setSavedList(getSaved())} onBrowse={() => setView("feed")} />}
       {view === "profile" && <ProfileView streak={streak} canInstall={!!installEvt} onInstall={install} />}
 
       {/* Bottom nav */}
-      <nav className="flex-shrink-0 grid grid-cols-3 border-t border-line bg-page/95 backdrop-blur z-20">
+      <nav className="flex-shrink-0 grid grid-cols-4 border-t border-line bg-page/95 backdrop-blur z-20">
         <NavBtn active={view === "feed"} onClick={() => setView("feed")} icon={I.feed} label="Feed" />
+        <NavBtn active={view === "jobs"} onClick={() => setView("jobs")} icon={I.jobs} label="Jobs" />
         <NavBtn active={view === "saved"} onClick={() => setView("saved")} icon={I.saved(view === "saved")} label="Saved" />
         <NavBtn active={view === "profile"} onClick={() => setView("profile")} icon={I.profile} label="Profile" />
       </nav>
@@ -459,6 +468,73 @@ function NotifyCard() {
           {busy ? "…" : on ? "Turn off notifications" : "Turn on notifications"}
         </button>
       )}
+    </div>
+  );
+}
+
+function JobChip({ children, highlight }: { children: React.ReactNode; highlight?: boolean }) {
+  return (
+    <span className={`inline-flex items-center text-[11px] font-semibold rounded-md px-1.5 py-0.5 ${highlight ? "text-brand-700 bg-brand-50 border border-[#CDE2F6]" : "text-ink-body bg-band border border-line"}`}>{children}</span>
+  );
+}
+
+function JobRow({ job }: { job: Job }) {
+  const meta = [jobTypeLabel(job.type), workModeLabel(job.workMode), job.seniority].filter(Boolean) as string[];
+  return (
+    <a
+      href={job.applyUrl} target="_blank" rel="noreferrer"
+      onClick={() => track("job_clicked", { category: job.category, company: job.company, from: "brief" })}
+      className="pressable block rounded-2xl bg-white border border-line shadow-elev-1 hover:shadow-elev-2 transition-shadow p-3.5"
+    >
+      <div className="flex items-start gap-3">
+        <CompanyAvatar name={job.company} size={38} />
+        <div className="min-w-0 flex-1">
+          <p className="font-display text-[14.5px] font-bold text-ink leading-snug line-clamp-2">{job.title}</p>
+          <p className="text-[12px] text-ink-muted mt-0.5 truncate">{job.company} · {job.location}</p>
+        </div>
+        <span className="text-[10.5px] text-ink-faint whitespace-nowrap">{jobAge(job.postedDate)}</span>
+      </div>
+      {job.summary && <p className="text-[12.5px] text-ink-body leading-relaxed mt-2 line-clamp-2">{job.summary}</p>}
+      <div className="flex flex-wrap items-center gap-1.5 mt-2.5">
+        {job.salary && <JobChip highlight>{job.salary}</JobChip>}
+        {meta.map((m) => <JobChip key={m}>{m}</JobChip>)}
+        <span className="ml-auto inline-flex items-center gap-1 text-[12px] font-semibold text-brand-700">Apply {I.ext}</span>
+      </div>
+    </a>
+  );
+}
+
+function JobsView({ jobs }: { jobs: Job[] }) {
+  const cats = useMemo(() => usedCategories(jobs), [jobs]);
+  const [cat, setCat] = useState<JobCategory | "all">("all");
+  const shown = cat === "all" ? jobs : jobs.filter((j) => j.category === cat);
+
+  if (!jobs.length) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center text-center px-8 gap-3 bg-page">
+        <span className="grid place-items-center h-14 w-14 rounded-2xl bg-brand-50 text-brand-600">{I.jobs}</span>
+        <h3 className="font-display text-[1.2rem] font-bold text-ink">Fresh ESG roles land here</h3>
+        <p className="text-[13px] text-ink-muted max-w-[260px] leading-relaxed">Hand-picked BRSR, ESG and sustainability jobs across India, each links to the original posting. First roles landing shortly.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex-1 min-h-0 flex flex-col bg-page">
+      {cats.length > 1 && (
+        <div className="flex-shrink-0 px-4 py-2 flex gap-2 overflow-x-auto border-b border-line [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <Pill active={cat === "all"} onClick={() => setCat("all")}>All</Pill>
+          {cats.map((c) => <Pill key={c.slug} active={cat === c.slug} onClick={() => setCat(c.slug)}>{c.label}</Pill>)}
+        </div>
+      )}
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-4 space-y-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex items-baseline justify-between px-1">
+          <h2 className="font-display text-[1.1rem] font-bold text-ink">ESG &amp; sustainability jobs</h2>
+          <span className="text-[11.5px] text-ink-faint">{shown.length} role{shown.length === 1 ? "" : "s"}</span>
+        </div>
+        {shown.map((job) => <JobRow key={job.id} job={job} />)}
+        <p className="text-[11px] text-ink-faint leading-relaxed px-1 pt-1">Curated, and linked to the original posting, verify the details and apply there. Not endorsements.</p>
+      </div>
     </div>
   );
 }
