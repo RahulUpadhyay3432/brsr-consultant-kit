@@ -20,7 +20,8 @@
     "next": "14.2.35",
     "pdfjs-dist": "^4.7.76",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "rss-parser": "^3.13.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0",
