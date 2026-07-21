@@ -306,8 +306,12 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
     if (e?.prompt) { await e.prompt(); track("brief_installed", {}); setInstallEvt(null); }
   };
 
+  // On mobile the shell is fixed to the viewport (inset-0) so the document behind
+  // it can't scroll at all, which stops the iOS toolbar from toggling and shoving
+  // the bottom nav. On desktop it reverts to an in-flow phone frame inside the
+  // bezel. Nav + feed live in this flex column; only the inner list scrolls.
   return (
-    <div className="relative w-full max-w-[430px] h-[100dvh] lg:w-[330px] lg:max-w-[330px] lg:h-[min(830px,calc(100dvh-88px))] lg:rounded-[38px] bg-page text-ink overflow-hidden flex flex-col">
+    <div className="fixed inset-0 mx-auto w-full max-w-[430px] h-[100dvh] lg:relative lg:inset-auto lg:mx-0 lg:w-[330px] lg:max-w-[330px] lg:h-[min(830px,calc(100dvh-88px))] lg:rounded-[38px] bg-page text-ink overflow-hidden flex flex-col">
       {/* Top bar */}
       <header className="flex-shrink-0 px-4 pt-3 pb-2 bg-page/95 backdrop-blur z-20 border-b border-line">
         <div className="flex items-center justify-between">
@@ -522,7 +526,7 @@ function JobSheet({ job, all, saved, onSave, onOpen, onClose }: { job: Job; all:
       <div className="absolute inset-0 bg-ink/40" />
       <div onClick={(e) => e.stopPropagation()} className="dropdown-in relative rounded-t-3xl bg-white border-t border-line shadow-elev-3 flex flex-col max-h-[94%]">
         <div className="flex-shrink-0 pt-3 pb-1"><div className="mx-auto h-1 w-10 rounded-full bg-line" /></div>
-        <div className="flex-1 overflow-y-auto overscroll-contain px-5 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-5 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {job.closed && <div className="px-3 py-2 rounded-xl bg-[#F6F2ED] border border-[#EADFD1] text-[#946B41] text-[12.5px] font-medium mb-3.5">No longer accepting applications.</div>}
           <div className="flex gap-3 items-start">
             <CompanyAvatar name={job.company} size={50} />
