@@ -206,7 +206,9 @@ export default function JobsPage() {
   const shown = all.filter(
     (j) => (cat === "all" || j.category === cat) && (mode === "all" || j.workMode === mode) && (type === "all" || j.type === type) && matchDate(j) && matchesQuery(j, query)
   );
-  const activeJob = all.find((j) => j.id === selected) || shown[0] || null;
+  // Prefer the selected job only if it's still in the filtered list, so changing a
+  // filter also refreshes the detail pane (otherwise it looks like nothing happened).
+  const activeJob = shown.find((j) => j.id === selected) || shown[0] || null;
   const anyFilter = cat !== "all" || mode !== "all" || type !== "all" || date !== "all" || !!query;
   const clear = () => { setCat("all"); setMode("all"); setType("all"); setDate("all"); setQuery(""); };
 
