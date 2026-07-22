@@ -236,10 +236,10 @@ export default function JobsPage() {
           title="Sustainability & ESG roles, hand-picked"
           subtitle="A small, curated board of BRSR, climate and sustainable-finance roles across India. Every listing links straight to the original posting."
           whoFor="For consultants hiring or subcontracting, and for anyone building a career in sustainability. We link out, we never scrape."
-          maxWidth={1180}
+          maxWidth={1520}
         />
 
-        <div className="anim-up-sm mx-auto w-full px-5 sm:px-8 py-8" style={{ maxWidth: 1180 }}>
+        <div className="anim-up-sm mx-auto w-full px-5 sm:px-8 lg:px-12 py-8" style={{ maxWidth: 1520 }}>
           {all.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-line bg-white/60 px-6 py-16 text-center">
               <div className="mx-auto grid place-items-center h-14 w-14 rounded-2xl bg-brand-50 text-brand-600 mb-4">
@@ -260,7 +260,7 @@ export default function JobsPage() {
                 <span className="text-[14px] text-ink-muted whitespace-nowrap"><span className="font-bold text-ink">{shown.length}</span> role{shown.length === 1 ? "" : "s"}</span>
               </div>
 
-              <div className="grid lg:grid-cols-[212px_minmax(320px,380px)_minmax(360px,1fr)] gap-6 items-start">
+              <div className="grid lg:grid-cols-[220px_minmax(360px,460px)_minmax(440px,1fr)] gap-6 xl:gap-8 items-start">
                 {/* filter rail */}
                 <aside className="hidden lg:flex flex-col gap-5 sticky top-5">
                   <div className="flex items-center justify-between">
