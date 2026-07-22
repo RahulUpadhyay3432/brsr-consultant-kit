@@ -19,6 +19,15 @@ export type JobCategory =
 export type WorkMode = "onsite" | "hybrid" | "remote";
 export type JobType = "full-time" | "part-time" | "contract" | "internship";
 
+// A rich, structured chunk of a job description: an optional heading, an optional
+// intro paragraph, and an optional bullet list. When a job has `sections`, the
+// detail views render these instead of the plain `aboutRole` prose.
+export interface JobSection {
+  heading?: string;
+  body?: string;
+  bullets?: string[];
+}
+
 export interface Job {
   id: string;
   title: string;
@@ -33,7 +42,8 @@ export interface Job {
   salary?: string;          // free text, e.g. "₹12–18 LPA" (omit if unknown)
   experience?: string;      // free text, e.g. "2–4 years"
   summary?: string;         // 1–2 lines on the role (list preview)
-  aboutRole?: string;       // longer "About the job" detail-pane copy
+  aboutRole?: string;       // longer "About the job" detail-pane copy (fallback)
+  sections?: JobSection[];  // rich, structured description (headings + bullets)
   aboutCompany?: string;    // "About the company" detail-pane copy
   companySize?: string;     // e.g. "50–200 people"
   tags?: string[];          // skills / keywords

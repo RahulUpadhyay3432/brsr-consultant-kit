@@ -16,11 +16,12 @@ import { whyItMattersAction } from "@/lib/brief/actions";
 import { SaakshMark } from "@/components/SaakshMark";
 import CompanyAvatar from "@/components/CompanyAvatar";
 import {
-  usedCategories, jobAge, jobChips, similarJobs, matchesQuery, toBullets,
+  usedCategories, jobAge, jobChips, similarJobs, matchesQuery,
   getSavedJobIds, toggleSavedJob, workModeLabel,
   type Job, type JobCategory,
 } from "@/lib/jobs";
 import { useMergedJobs } from "@/lib/jobs/useMergedJobs";
+import { JobDescription } from "@/components/jobs/JobDescription";
 import {
   cacheWhy, getCachedWhy, getLastVisit, getSaved, isSaved, stampVisit, toggleSaved, touchStreak,
 } from "@/lib/brief/store";
@@ -544,17 +545,7 @@ function JobSheet({ job, all, saved, onSave, onOpen, onClose }: { job: Job; all:
           <div className="pt-3.5">
             {tab === "job" && (
               <div>
-                {toBullets(job.aboutRole).length >= 2 ? (
-                  <ul className="m-0 mb-3 list-none pl-0 flex flex-col gap-1.5">
-                    {toBullets(job.aboutRole).map((b, i) => (
-                      <li key={i} className="flex gap-2 text-[14px] leading-relaxed text-ink-body">
-                        <span className="mt-[7px] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" /><span>{b}</span>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="m-0 mb-3 text-[14px] leading-relaxed text-ink-body">{job.aboutRole || job.summary || "See the original posting for the full description."}</p>
-                )}
+                <div className="mb-3"><JobDescription job={job} compact /></div>
                 {job.tags && job.tags.length > 0 && <div className="flex flex-wrap gap-1.5">{job.tags.map((t) => <span key={t} className="px-2.5 py-1 rounded-lg bg-[#EEF3F8] text-[#55617A] text-[12px] font-medium">{t}</span>)}</div>}
               </div>
             )}

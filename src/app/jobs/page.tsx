@@ -8,11 +8,12 @@ import CompanyAvatar from "@/components/CompanyAvatar";
 import { SubscribeForm } from "@/components/SubscribeForm";
 import { track } from "@/lib/mixpanel";
 import {
-  usedCategories, jobAge, jobChips, similarJobs, matchesQuery, toBullets,
+  usedCategories, jobAge, jobChips, similarJobs, matchesQuery,
   getSavedJobIds, toggleSavedJob, workModeLabel, jobTypeLabel, CATEGORY_LABEL,
   type Job, type JobCategory,
 } from "@/lib/jobs";
 import { useMergedJobs } from "@/lib/jobs/useMergedJobs";
+import { JobDescription } from "@/components/jobs/JobDescription";
 
 /* ── small pieces ─────────────────────────────────────────────────────────── */
 function ArrowUpRight({ cls = "w-4 h-4" }: { cls?: string }) {
@@ -92,24 +93,6 @@ function JobCard({ job, selected, saved, onSelect, onSave }: { job: Job; selecte
 
 /* ── detail pane ──────────────────────────────────────────────────────────── */
 type Tab = "job" | "company" | "similar";
-// Render "about the role" as bullets when it's more than one sentence, else a paragraph.
-function AboutRole({ text, fallback }: { text?: string; fallback: string }) {
-  const bullets = toBullets(text);
-  if (bullets.length >= 2) {
-    return (
-      <ul className="m-0 mb-4 list-none pl-0 flex flex-col gap-2">
-        {bullets.map((b, i) => (
-          <li key={i} className="flex gap-2.5 text-[14.5px] leading-relaxed text-ink-body">
-            <span className="mt-[7px] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" />
-            <span>{b}</span>
-          </li>
-        ))}
-      </ul>
-    );
-  }
-  return <p className="m-0 mb-4 text-[14.5px] leading-relaxed text-ink-body">{text || fallback}</p>;
-}
-
 function DetailPane({ job, all, saved, onSave, onSelect }: { job: Job; all: Job[]; saved: boolean; onSave: () => void; onSelect: (id: string) => void }) {
   const [tab, setTab] = useState<Tab>("job");
   useEffect(() => setTab("job"), [job.id]);
@@ -161,13 +144,13 @@ function DetailPane({ job, all, saved, onSave, onSelect }: { job: Job; all: Job[
         </div>
       </div>
 
-      <div className="px-6 py-5 max-h-[360px] overflow-y-auto">
+      <div className="px-6 py-5 max-h-[calc(100vh-320px)] min-h-[280px] overflow-y-auto">
         {tab === "job" && (
           <div>
-            <AboutRole text={job.aboutRole} fallback={job.summary || "Details are on the original posting, open it to read the full description."} />
+            <JobDescription job={job} />
             {job.tags && job.tags.length > 0 && (
               <>
-                <div className="text-[11px] font-semibold uppercase tracking-[0.05em] text-ink-faint mb-2.5">Skills &amp; focus</div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.05em] text-ink-faint mb-2.5 mt-4">Skills &amp; focus</div>
                 <div className="flex flex-wrap gap-1.5">{job.tags.map((t) => <span key={t} className="px-2.5 py-1 rounded-lg bg-[#EEF3F8] text-[#55617A] text-[12.5px] font-medium">{t}</span>)}</div>
               </>
             )}

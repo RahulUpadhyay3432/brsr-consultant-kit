@@ -13,6 +13,31 @@
       "seniority": "Mid–Senior",
       "summary": "Support client ESG strategy, sustainability reporting, decarbonisation, and data management.",
       "aboutRole": "Engage clients to understand their sustainability objectives, research regulations and industry practice, and develop proposals, business cases and solution recommendations. Gather business requirements, document user stories and process flows, and support ESG disclosure programmes while working with technical teams on implementation. Define and track sustainability KPIs, run workshops, POCs and client presentations, and mentor junior consultants. Requires knowledge of GRI, CSRD, BRSR, TCFD, CDP and SASB/ISSB, data tools such as Power BI, Tableau or Python, and a degree in Engineering, Environmental Sciences, Sustainability or Management.",
+      "sections": [
+        { "heading": "About the role", "body": "Infosys is seeking experienced sustainability consulting professionals to support client engagements across ESG strategy, sustainability reporting, decarbonisation, and sustainability data management. You work closely with clients to understand their sustainability challenges, develop solutions, define business requirements, and drive implementation through data-driven insights and technology-enabled approaches." },
+        { "heading": "Key responsibilities", "bullets": [
+          "Engage with clients to understand sustainability objectives and define solution approaches.",
+          "Conduct research and analysis on sustainability trends, regulations, and industry practices.",
+          "Develop proposals, business cases, and solution recommendations for sustainability initiatives.",
+          "Gather and document business requirements, user stories, process flows, and functional specifications.",
+          "Support sustainability reporting and compliance initiatives aligned with ESG frameworks and standards.",
+          "Collaborate with technical teams to implement sustainability and ESG-related solutions.",
+          "Define and track sustainability KPIs and business value metrics.",
+          "Run solution demonstrations, workshops, Proof of Concept (POC), and client presentations.",
+          "Prepare effort estimations and support project planning activities.",
+          "Guide and mentor consultants on sustainability concepts, ESG reporting, and data management."
+        ] },
+        { "heading": "Required skills", "bullets": [
+          "Strong understanding of ESG and sustainability concepts.",
+          "Experience in sustainability reporting and ESG disclosure programmes.",
+          "Knowledge of reporting frameworks: GRI, CSRD, BRSR, TCFD, CDP, and SASB/ISSB.",
+          "Experience in sustainability data analysis and reporting.",
+          "Proficiency in Power BI or Tableau, and working knowledge of Python for analytics and automation.",
+          "Strong consulting, stakeholder management, problem-solving, and communication skills.",
+          "Familiarity with AI-enabled solutions and digital transformation within sustainability programmes."
+        ] },
+        { "heading": "Qualification", "body": "Bachelor's or Master's degree in Engineering, Environmental Sciences, Sustainability, Management, or a related discipline." }
+      ],
       "aboutCompany": "Infosys is a global leader in next-generation digital services and consulting.",
       "tags": ["ESG Reporting", "BRSR", "CSRD", "TCFD", "Decarbonisation"],
       "sourceName": "LinkedIn",
@@ -52,6 +77,33 @@
       "experience": "8+ years",
       "summary": "Direct environmental compliance, emissions reporting, and data-system integration for a global energy leader.",
       "aboutRole": "Lead preparation of environmental reports such as DMR, TSCA, TRI and GHG filings, and oversee quarterly and annual emissions reporting with compliance reviews and root-cause analysis. Build validation frameworks and automated dashboards for sustainability KPIs in Power BI and Tableau, and interpret regulations like the Clean Air Act, GHGRP and NSR while aligning to GRI, CDP, SASB, BRSR and TCFD. Automate reporting workflows, benchmark emissions, run predictive analytics, advise site leadership, and mentor junior analysts. Requires a degree in environmental science, sustainability or engineering and at least 8 years in sustainability reporting, environmental compliance or ESG strategy; ISO 14001, GRI or SASB certifications and LCA experience are preferred.",
+      "sections": [
+        { "heading": "About the role", "body": "The Sustainability Specialist leads advanced environmental compliance, sustainability reporting, and ESG performance initiatives across ExxonMobil's global operations. The role manages complex reporting processes, ensures regulatory compliance, drives digital transformation in sustainability data systems, and delivers actionable insights, while mentoring junior team members and collaborating with cross-functional stakeholders." },
+        { "heading": "What you will do", "bullets": [
+          "Lead preparation and submission of complex environmental reports for programmes such as DMR, TSCA, TRI, and GHG.",
+          "Oversee quarterly and annual emissions reporting, including flaring, water, and air compliance.",
+          "Conduct compliance reviews, root cause analysis, and corrective actions for CEMS and flaring systems.",
+          "Design and implement data validation frameworks and quality-control processes.",
+          "Build automated dashboards and reporting tools for sustainability KPIs using Power BI and Tableau.",
+          "Interpret and apply U.S. federal and provincial environmental regulations (Clean Air Act, GHGRP, NSR).",
+          "Ensure alignment with global frameworks (GRI, CDP, SASB, BRSR, TCFD) and emerging ESG disclosure requirements.",
+          "Lead initiatives to automate reporting workflows and integrate digital solutions with IT and data-engineering teams.",
+          "Advise site leadership and global sustainability teams, and mentor junior analysts."
+        ] },
+        { "heading": "Skills and qualifications", "bullets": [
+          "Bachelor's or Master's degree in Environmental, Sustainability, Engineering, or a related field.",
+          "Minimum 8 years in sustainability reporting, environmental compliance, or ESG strategy, with leadership on complex projects.",
+          "Advanced Microsoft Excel (macros, data modeling) and data visualisation tools (Power BI, Tableau).",
+          "Strong understanding of environmental regulations and sustainability frameworks.",
+          "Experience with environmental data platforms such as Enablon, GaBi, or SimaPro."
+        ] },
+        { "heading": "Preferred", "bullets": [
+          "Expertise in ESG reporting and assurance processes.",
+          "Familiarity with life-cycle assessment (LCA) and carbon-accounting methodologies.",
+          "Professional certifications such as ISO 14001 Lead Auditor, GRI Certified, or SASB FSA Credential.",
+          "A proven track record of driving sustainability initiatives in a global organisation."
+        ] }
+      ],
       "aboutCompany": "ExxonMobil is a global energy leader with an extensive business support, research, and technology footprint in India.",
       "tags": ["BRSR", "GRI", "GHG", "Power BI", "Environmental Reporting"],
       "sourceName": "Company site"
