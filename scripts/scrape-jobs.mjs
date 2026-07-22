@@ -30,8 +30,10 @@ const UA =
 const SOURCES = [
   { url: "https://www.iimjobs.com/k/esg-jobs", sourceName: "iimjobs" },
   { url: "https://www.iimjobs.com/k/sustainability-jobs", sourceName: "iimjobs" },
-  { url: "https://in.indeed.com/jobs?q=ESG+sustainability&l=India&sort=date", sourceName: "Indeed" },
-  { url: "https://in.indeed.com/jobs?q=BRSR&l=India&sort=date", sourceName: "Indeed" },
+  { url: "https://www.iimjobs.com/k/csr-jobs", sourceName: "iimjobs" },
+  { url: "https://www.iimjobs.com/k/climate-change-jobs", sourceName: "iimjobs" },
+  { url: "https://www.iimjobs.com/k/brsr-jobs", sourceName: "iimjobs" },
+  { url: "https://in.indeed.com/jobs?q=BRSR+sustainability&l=India&sort=date", sourceName: "Indeed" },
   { url: "https://climatebase.org/jobs?l=India", sourceName: "Climatebase" },
 ];
 
