@@ -323,25 +323,6 @@
       "aboutCompany": "Neterwala Group is a diversified industrial conglomerate with manufacturing operations across India.",
       "tags": ["GRI", "SASB", "TCFD", "Manufacturing", "Waste Management"],
       "sourceName": "iimjobs"
-    },
-    {
-      "id": "breathe-esg-ghg-decarbonisation-consultant",
-      "title": "ESG Consultant – GHG & Decarbonisation",
-      "company": "Breathe ESG",
-      "location": "Bengaluru, Karnataka",
-      "category": "carbon-climate",
-      "applyUrl": "https://www.foundit.in/job/esg-consultant-ghg-decarbonisation-specialist-breathe-esg-bengaluru-bangalore-55299310",
-      "postedDate": "2026-07-22",
-      "type": "full-time",
-      "workMode": "onsite",
-      "seniority": "3–5 yrs",
-      "experience": "2–4 years",
-      "companySize": "11–50 people",
-      "summary": "Own Scope 1, 2, and 3 emissions and decarbonisation advisory for a cross-sector client portfolio.",
-      "aboutRole": "Work with clients across sectors to build GHG accounting programs, decarbonisation strategies, and ESG disclosures. Lead Scope 1, 2, and 3 inventory development applying the GHG Protocol Corporate and Scope 3 Standards, plan roadmaps aligned to SBTi, and draft CDP responses.",
-      "aboutCompany": "Breathe ESG is an impact-tech startup helping organisations manage sustainability through software-driven carbon management.",
-      "tags": ["GHG Protocol", "Scope 1 2 3", "Decarbonisation", "SBTi", "CDP"],
-      "sourceName": "Foundit"
     }
   ]
 }

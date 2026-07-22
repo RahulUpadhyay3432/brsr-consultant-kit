@@ -1,7 +1,7 @@
-// Supabase access for the `brsr_jobs` table (scraped/ingested job listings), via
-// PostgREST + service_role, same SDK-free posture as datarequest/db.ts and
-// brief/news.ts. Every reader/writer is best-effort: before the table is migrated
-// the board simply falls back to the curated jobs.json.
+// Read access for the `brsr_jobs` table (jobs ingested by the free headless scraper,
+// scripts/scrape-jobs.mjs) via PostgREST + service_role, same SDK-free posture as
+// datarequest/db.ts. Best-effort: before the table is migrated the board simply falls
+// back to the curated jobs.json. Writes happen in the scraper script, not here.
 import "server-only";
 import type { Job, JobCategory } from "@/lib/jobs";
 import { JOB_CATEGORIES } from "@/lib/jobs";
@@ -13,15 +13,12 @@ export function jobsDbConfigured(): boolean {
   return !!URL && !!KEY;
 }
 
-async function rest(path: string, init?: RequestInit & { prefer?: string }): Promise<Response> {
+async function rest(path: string): Promise<Response> {
   if (!URL || !KEY) throw new Error("supabase-not-configured");
-  const headers: Record<string, string> = {
-    apikey: KEY,
-    Authorization: `Bearer ${KEY}`,
-    "Content-Type": "application/json",
-  };
-  if (init?.prefer) headers["Prefer"] = init.prefer;
-  const res = await fetch(`${URL}/rest/v1/${path}`, { ...init, headers, cache: "no-store" });
+  const res = await fetch(`${URL}/rest/v1/${path}`, {
+    headers: { apikey: KEY, Authorization: `Bearer ${KEY}` },
+    cache: "no-store",
+  });
   if (!res.ok) throw new Error(`Supabase ${res.status}: ${await res.text().catch(() => "")}`);
   return res;
 }
@@ -87,72 +84,5 @@ export async function fetchStoredJobs(days = 30, limit = 200): Promise<Job[]> {
     return ((await res.json()) as JobRow[]).map(mapRow);
   } catch {
     return [];
-  }
-}
-
-export async function existingJobUrls(urls: string[]): Promise<Set<string>> {
-  if (!urls.length) return new Set();
-  try {
-    const inList = urls.map((u) => `"${u.replace(/"/g, "")}"`).join(",");
-    const res = await rest(`brsr_jobs?apply_url=in.(${encodeURIComponent(inList)})&select=apply_url`);
-    return new Set(((await res.json()) as { apply_url: string }[]).map((r) => r.apply_url));
-  } catch {
-    return new Set();
-  }
-}
-
-export interface JobInsert {
-  title: string;
-  company: string | null;
-  location: string | null;
-  category: string | null;
-  apply_url: string;
-  posted_date: string | null;
-  type: string | null;
-  work_mode: string | null;
-  seniority: string | null;
-  experience: string | null;
-  salary: string | null;
-  summary: string | null;
-  about_role: string | null;
-  about_company: string | null;
-  company_size: string | null;
-  tags: string[] | null;
-  source_name: string | null;
-}
-
-export async function insertJobs(rows: JobInsert[]): Promise<number> {
-  if (!rows.length) return 0;
-  try {
-    const res = await rest("brsr_jobs?on_conflict=apply_url", {
-      method: "POST",
-      prefer: "resolution=ignore-duplicates,return=representation",
-      body: JSON.stringify(rows),
-    });
-    return ((await res.json()) as unknown[]).length;
-  } catch {
-    return 0;
-  }
-}
-
-// Drop rows older than the window so closed roles age out.
-export async function pruneOldJobs(days = 30): Promise<void> {
-  try {
-    const cutoff = new Date(Date.now() - days * 86400000).toISOString();
-    await rest(`brsr_jobs?created_at=lt.${cutoff}`, { method: "DELETE" });
-  } catch {
-    /* best-effort */
-  }
-}
-
-// Mark a stored job closed (used by the prune pass when its link 404s).
-export async function markJobClosed(applyUrl: string): Promise<void> {
-  try {
-    await rest(`brsr_jobs?apply_url=eq.${encodeURIComponent(applyUrl)}`, {
-      method: "PATCH",
-      body: JSON.stringify({ closed: true }),
-    });
-  } catch {
-    /* best-effort */
   }
 }
