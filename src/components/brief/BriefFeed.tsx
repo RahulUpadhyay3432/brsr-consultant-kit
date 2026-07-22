@@ -16,7 +16,7 @@ import { whyItMattersAction } from "@/lib/brief/actions";
 import { SaakshMark } from "@/components/SaakshMark";
 import CompanyAvatar from "@/components/CompanyAvatar";
 import {
-  usedCategories, jobAge, jobChips, similarJobs, matchesQuery,
+  usedCategories, jobAge, jobChips, similarJobs, matchesQuery, toBullets,
   getSavedJobIds, toggleSavedJob, workModeLabel,
   type Job, type JobCategory,
 } from "@/lib/jobs";
@@ -58,7 +58,7 @@ function Hero({ item }: { item: BriefItem }) {
   const cat = CATEGORY_BY_SLUG[item.category];
   const [loaded, setLoaded] = useState(false);
   return (
-    <div className="relative w-full aspect-[16/10] lg:aspect-auto lg:h-[200px] flex-shrink-0 overflow-hidden">
+    <div className="relative w-full aspect-[2/1] lg:aspect-auto lg:h-[168px] flex-shrink-0 overflow-hidden">
       {/* Gradient always underneath, so there's never a blank flash before an image loads */}
       <div className="absolute inset-0 flex items-end p-4" style={{ background: `linear-gradient(145deg, ${cat.gradient[0]}, ${cat.gradient[1]})` }}>
         <span className="font-display text-[2.4rem] font-bold text-white/15 leading-none">{cat.label}</span>
@@ -112,7 +112,7 @@ function Card({ item, onWhy }: { item: BriefItem; onWhy: (i: BriefItem) => void 
         ) : (
           <Link href={item.href} onClick={onOpen} className={titleCls}>{item.title}</Link>
         )}
-        <p className="mt-2.5 text-[15px] leading-[1.55] text-ink-body line-clamp-6 flex-1">{item.summary}</p>
+        <p className="mt-2.5 text-[15px] leading-[1.55] text-ink-body line-clamp-[8] flex-1">{item.summary}</p>
         <div className="mt-3 flex items-center gap-1.5 text-[11.5px] text-ink-faint">
           {item.aiSummary && <span className="text-brand-600">{I.spark}</span>}
           <span className="truncate">{sourceLine}</span>
@@ -544,7 +544,17 @@ function JobSheet({ job, all, saved, onSave, onOpen, onClose }: { job: Job; all:
           <div className="pt-3.5">
             {tab === "job" && (
               <div>
-                <p className="m-0 mb-3 text-[14px] leading-relaxed text-ink-body">{job.aboutRole || job.summary || "See the original posting for the full description."}</p>
+                {toBullets(job.aboutRole).length >= 2 ? (
+                  <ul className="m-0 mb-3 list-none pl-0 flex flex-col gap-1.5">
+                    {toBullets(job.aboutRole).map((b, i) => (
+                      <li key={i} className="flex gap-2 text-[14px] leading-relaxed text-ink-body">
+                        <span className="mt-[7px] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" /><span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="m-0 mb-3 text-[14px] leading-relaxed text-ink-body">{job.aboutRole || job.summary || "See the original posting for the full description."}</p>
+                )}
                 {job.tags && job.tags.length > 0 && <div className="flex flex-wrap gap-1.5">{job.tags.map((t) => <span key={t} className="px-2.5 py-1 rounded-lg bg-[#EEF3F8] text-[#55617A] text-[12px] font-medium">{t}</span>)}</div>}
               </div>
             )}

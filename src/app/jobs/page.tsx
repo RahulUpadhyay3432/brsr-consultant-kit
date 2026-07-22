@@ -8,7 +8,7 @@ import CompanyAvatar from "@/components/CompanyAvatar";
 import { SubscribeForm } from "@/components/SubscribeForm";
 import { track } from "@/lib/mixpanel";
 import {
-  usedCategories, jobAge, jobChips, similarJobs, matchesQuery,
+  usedCategories, jobAge, jobChips, similarJobs, matchesQuery, toBullets,
   getSavedJobIds, toggleSavedJob, workModeLabel, jobTypeLabel, CATEGORY_LABEL,
   type Job, type JobCategory,
 } from "@/lib/jobs";
@@ -66,28 +66,25 @@ function FilterGroup({ title, options, value, onChange }: { title: string; optio
 function JobCard({ job, selected, saved, onSelect, onSave }: { job: Job; selected: boolean; saved: boolean; onSelect: () => void; onSave: () => void }) {
   return (
     <div role="button" tabIndex={0} onClick={onSelect} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(); } }}
-      className={`group p-[18px] rounded-2xl flex flex-col gap-3 cursor-pointer transition-all ${selected ? "bg-brand-50 border border-brand-300 shadow-elev-2 ring-1 ring-brand-300" : "bg-white border border-line shadow-elev-1 hover:shadow-elev-2 hover:border-brand-200 hover:-translate-y-0.5"} ${job.closed ? "opacity-70" : ""}`}>
+      className={`group relative p-4 rounded-xl flex flex-col gap-2.5 cursor-pointer border transition-all ${selected ? "border-brand-500 bg-brand-50/50 shadow-elev-1" : "border-line bg-white hover:border-brand-300 hover:shadow-elev-1"} ${job.closed ? "opacity-70" : ""}`}>
+      {selected && <span className="absolute left-0 top-4 bottom-4 w-[3px] rounded-r bg-brand-500" />}
       <div className="flex gap-3 items-start">
-        <CompanyAvatar name={job.company} size={44} />
+        <CompanyAvatar name={job.company} size={40} />
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            {job.featured && <FeaturedBadge />}
-            {job.closed && <ClosedBadge />}
-            <h3 className="w-full m-0 text-[16px] font-semibold tracking-[-0.01em] text-ink leading-snug">{job.title}</h3>
-          </div>
-          <p className="mt-0.5 text-[13.5px] text-ink-muted"><span className="font-semibold text-ink-body">{job.company}</span> · {job.location}</p>
-          {job.activelyHiring && !job.closed && <div className="mt-1.5"><ActiveSignal /></div>}
+          {(job.featured || job.closed) && (
+            <div className="flex items-center gap-1.5 mb-1">{job.featured && <FeaturedBadge />}{job.closed && <ClosedBadge />}</div>
+          )}
+          <h3 className="m-0 text-[15px] font-semibold tracking-[-0.01em] text-ink leading-snug">{job.title}</h3>
+          <p className="mt-0.5 text-[13px] text-ink-muted truncate"><span className="font-semibold text-ink-body">{job.company || "Company on posting"}</span>{job.location ? ` · ${job.location}` : ""}</p>
         </div>
         <button onClick={(e) => { e.stopPropagation(); onSave(); }} aria-pressed={saved} aria-label={saved ? "Saved" : "Save"} title={saved ? "Saved" : "Save"}
-          className={`p-1 rounded-lg flex-shrink-0 ${saved ? "text-brand-600" : "text-ink-faint hover:text-ink-muted"}`}><Bookmark filled={saved} size={19} /></button>
+          className={`p-1 rounded-lg flex-shrink-0 ${saved ? "text-brand-600" : "text-ink-faint hover:text-ink-muted"}`}><Bookmark filled={saved} size={18} /></button>
       </div>
-      {job.salary && <div className="text-[16px] font-bold text-ink tracking-[-0.01em]">{job.salary}</div>}
-      {jobChips(job).length > 0 && <div className="flex flex-wrap gap-1.5">{jobChips(job).map((c) => <Chip key={c}>{c}</Chip>)}</div>}
-      <div className="flex items-center justify-between gap-3 pt-2.5 mt-0.5 border-t border-line">
-        <span className="text-[12px] text-ink-faint truncate">{CATEGORY_LABEL[job.category]} · {jobAge(job.postedDate)}{job.sourceName ? ` · ${job.sourceName}` : ""}</span>
-        {job.closed
-          ? <span className="text-[12px] text-ink-faint font-medium whitespace-nowrap">Closed</span>
-          : <span className="inline-flex items-center gap-1 text-[12.5px] font-semibold text-ink-muted group-hover:text-brand-700 transition-colors whitespace-nowrap">Details <span className="transition-transform group-hover:translate-x-0.5">→</span></span>}
+      {jobChips(job).length > 0 && <div className="flex flex-wrap gap-1.5">{jobChips(job).slice(0, 3).map((c) => <Chip key={c}>{c}</Chip>)}</div>}
+      <div className="flex items-center gap-2 text-[11.5px] text-ink-faint">
+        {job.activelyHiring && !job.closed && <span className="inline-flex items-center gap-1 font-semibold text-emerald-600"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />Hiring</span>}
+        <span className="truncate">{CATEGORY_LABEL[job.category]} · {jobAge(job.postedDate)}{job.sourceName ? ` · ${job.sourceName}` : ""}</span>
+        {job.salary && <span className="ml-auto font-semibold text-ink-body whitespace-nowrap">{job.salary}</span>}
       </div>
     </div>
   );
@@ -95,6 +92,24 @@ function JobCard({ job, selected, saved, onSelect, onSave }: { job: Job; selecte
 
 /* ── detail pane ──────────────────────────────────────────────────────────── */
 type Tab = "job" | "company" | "similar";
+// Render "about the role" as bullets when it's more than one sentence, else a paragraph.
+function AboutRole({ text, fallback }: { text?: string; fallback: string }) {
+  const bullets = toBullets(text);
+  if (bullets.length >= 2) {
+    return (
+      <ul className="m-0 mb-4 list-none pl-0 flex flex-col gap-2">
+        {bullets.map((b, i) => (
+          <li key={i} className="flex gap-2.5 text-[14.5px] leading-relaxed text-ink-body">
+            <span className="mt-[7px] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" />
+            <span>{b}</span>
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  return <p className="m-0 mb-4 text-[14.5px] leading-relaxed text-ink-body">{text || fallback}</p>;
+}
+
 function DetailPane({ job, all, saved, onSave, onSelect }: { job: Job; all: Job[]; saved: boolean; onSave: () => void; onSelect: (id: string) => void }) {
   const [tab, setTab] = useState<Tab>("job");
   useEffect(() => setTab("job"), [job.id]);
@@ -149,7 +164,7 @@ function DetailPane({ job, all, saved, onSave, onSelect }: { job: Job; all: Job[
       <div className="px-6 py-5 max-h-[360px] overflow-y-auto">
         {tab === "job" && (
           <div>
-            <p className="m-0 mb-4 text-[14.5px] leading-relaxed text-ink-body">{job.aboutRole || job.summary || "Details are on the original posting — open it to read the full description."}</p>
+            <AboutRole text={job.aboutRole} fallback={job.summary || "Details are on the original posting, open it to read the full description."} />
             {job.tags && job.tags.length > 0 && (
               <>
                 <div className="text-[11px] font-semibold uppercase tracking-[0.05em] text-ink-faint mb-2.5">Skills &amp; focus</div>

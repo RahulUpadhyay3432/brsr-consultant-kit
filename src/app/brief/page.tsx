@@ -40,7 +40,7 @@ export default async function BriefPage() {
   });
 
   return (
-    <div className="brief-root min-h-[100dvh] bg-band text-ink lg:flex lg:justify-center lg:gap-6 lg:px-6 lg:py-8">
+    <div className="brief-root min-h-[100dvh] bg-band text-ink lg:flex lg:justify-between lg:items-start lg:gap-8 lg:px-10 lg:py-8 lg:max-w-[1280px] lg:mx-auto">
       {/* Left: site navigation, so a direct visitor to /brief can reach the rest
           of Saaksh. Hidden on mobile (the phone owns the screen there). */}
       <aside className="hidden lg:flex flex-col w-[212px] flex-shrink-0">

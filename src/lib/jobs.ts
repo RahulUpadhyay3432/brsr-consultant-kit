@@ -93,6 +93,17 @@ export function similarJobs(all: Job[], job: Job, limit = 4): Job[] {
   return all.filter((j) => j.category === job.category && j.id !== job.id).slice(0, limit);
 }
 
+// Split a prose "about the role" into bullet points on sentence boundaries, so the
+// detail views can render responsibilities as a scannable list. Returns [] for empty
+// input, and a single-item list if there's only one sentence.
+export function toBullets(text?: string): string[] {
+  if (!text) return [];
+  return text
+    .split(/(?<=[.!?])\s+(?=[A-Z0-9(])/)
+    .map((s) => s.trim().replace(/\s+/g, " ").replace(/[.]+$/, ""))
+    .filter((s) => s.length > 1);
+}
+
 export function matchesQuery(j: Job, q: string): boolean {
   const query = q.trim().toLowerCase();
   if (!query) return true;
