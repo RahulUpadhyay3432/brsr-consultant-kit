@@ -10,10 +10,13 @@ import { chromium } from "@playwright/test";
 
 const SUPABASE_URL = (process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "").replace(/\/$/, "");
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-const GROQ_KEYS = [
-  process.env.GROQ_API_KEY, process.env.GROQ_API_KEY2, process.env.GROQ_API_KEY3,
-  process.env.GROQ_API_KEY4, process.env.GROQ_API_KEY5, process.env.GROQ_API_KEY6,
-].map((k) => (k || "").trim().replace(/^["']|["']$/g, "")).filter((k) => k.startsWith("gsk_"));
+// Accept every GROQ_API_KEY variant (GROQ_API_KEY, GROQ_API_KEY2, GROQ_API_KEY_2, ...)
+// so it works with whatever naming the env already uses.
+const GROQ_KEYS = Object.keys(process.env)
+  .filter((k) => /^GROQ_API_KEY(_?\d+)?$/i.test(k))
+  .sort()
+  .map((k) => (process.env[k] || "").trim().replace(/^["']|["']$/g, ""))
+  .filter((k) => k.startsWith("gsk_"));
 
 const MAX_PER_SOURCE = 12;
 const FRESH_DAYS = 30;
@@ -42,7 +45,8 @@ const SYSTEM = `You extract Indian ESG/sustainability JOB LISTINGS from the text
 STRICT RULES:
 - Use ONLY the provided text. Never invent a company, title, salary, date, or link.
 - Include an entry ONLY if it is a specific role with an ABSOLUTE http(s) apply/detail URL present in the text. Skip anything without a real link. Skip navigation, ads, and "see all jobs" links.
-- Keep only roles based in India (or explicitly Remote-India). Drop unrelated roles.
+- Keep only roles based in India (or explicitly Remote-India).
+- RELEVANCE GATE: include ONLY genuine sustainability / ESG / climate / EHS / BRSR / carbon / ESG-assurance / sustainable-finance roles. DROP generic sales, pre-sales, software, IT, marketing, HR, or admin roles even if the word "ESG" or "sustainability" appears somewhere on the page.
 - Return STRICT JSON only: an array of objects. No prose, no markdown fences. Empty array [] if none.
 Each object:
 {"title","company","location","applyUrl","category","type","workMode","seniority","experience","salary","summary","aboutRole","aboutCompany","companySize","tags"}
@@ -52,8 +56,23 @@ Each object:
 - summary: one line. aboutRole: 3-6 sentences from the posting if available (else omit). tags: up to 6 skills.
 - Omit any field you cannot fill; never guess.`;
 
+// Enrichment prompt: turn a single job's own detail page into a fuller, faithful
+// "about the role" plus whatever structured fields the posting states.
+const ENRICH = `From the text of a SINGLE job posting, return STRICT JSON with only these keys, using ONLY facts present on the page (omit any key you cannot fill): {"aboutRole","company","location","experience","salary","type","workMode","seniority","companySize","tags"}.
+- aboutRole: 3 to 5 COMPLETE sentences on the real responsibilities and requirements from the posting. Finish every sentence. Plain text only: no em dashes, no ellipses, no trailing "...". No fabrication.
+- type: full-time | part-time | contract | internship. workMode: onsite | hybrid | remote. tags: up to 6 skills.
+Return the JSON object only, no prose, no fences.`;
+
 let gi = 0;
-async function groq(user) {
+let lastGroqAt = 0;
+// Groq free tier caps gpt-oss-20b at 8000 tokens/min PER KEY. Keep every request well
+// under that, and space calls out so the per-minute budget (across 6 rotated keys)
+// never overflows. reasoning_effort:low cuts token use and stops empty-content replies.
+const MIN_GAP_MS = 5000;
+async function groq(system, user, maxTokens = 1600) {
+  const wait = lastGroqAt + MIN_GAP_MS - Date.now();
+  if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+  lastGroqAt = Date.now();
   for (let n = 0; n < GROQ_KEYS.length; n++) {
     const key = GROQ_KEYS[gi++ % GROQ_KEYS.length];
     try {
@@ -63,17 +82,46 @@ async function groq(user) {
         body: JSON.stringify({
           model: "openai/gpt-oss-20b",
           temperature: 0.1,
-          max_tokens: 2400,
-          messages: [{ role: "system", content: SYSTEM }, { role: "user", content: user }],
+          max_tokens: maxTokens,
+          reasoning_effort: "low",
+          messages: [{ role: "system", content: system }, { role: "user", content: user }],
         }),
       });
-      if (!res.ok) continue;
+      if (!res.ok) { if (process.env.JOBS_DEBUG) console.log(`    groq HTTP ${res.status}: ${(await res.text()).slice(0, 160)}`); continue; }
       const j = await res.json();
       const txt = j?.choices?.[0]?.message?.content;
       if (txt) return txt;
     } catch { /* try next key */ }
   }
   return null;
+}
+
+function parseObj(raw) {
+  if (!raw) return null;
+  const m = raw.match(/\{[\s\S]*\}/);
+  if (!m) return null;
+  try {
+    const o = JSON.parse(m[0]);
+    return o && typeof o === "object" ? o : null;
+  } catch {
+    return null;
+  }
+}
+
+// Fold a job's own detail-page facts into the listing-level row (detail wins).
+function mergeEnrichment(row, e) {
+  if (e.aboutRole) row.about_role = String(e.aboutRole).slice(0, 1400);
+  if (e.company && !row.company) row.company = String(e.company).slice(0, 120);
+  if (e.location) row.location = String(e.location).slice(0, 120);
+  if (e.experience) row.experience = String(e.experience).slice(0, 60);
+  if (e.salary) row.salary = String(e.salary).slice(0, 60);
+  if (e.seniority) row.seniority = String(e.seniority).slice(0, 40);
+  if (e.companySize) row.company_size = String(e.companySize).slice(0, 60);
+  const t = String(e.type || "").toLowerCase();
+  if (["full-time", "part-time", "contract", "internship"].includes(t)) row.type = t;
+  const w = String(e.workMode || "").toLowerCase();
+  if (["onsite", "hybrid", "remote"].includes(w)) row.work_mode = w;
+  if (Array.isArray(e.tags) && e.tags.length) row.tags = e.tags.slice(0, 6).map((x) => String(x).slice(0, 40));
 }
 
 async function sb(path, init) {
@@ -169,8 +217,8 @@ async function main() {
       // otherwise push the real ones out of the model's character window).
       const isJob = (h) => /\/j\/|viewjob|\/job\/|jobdetail|-\d{6,}/i.test(h);
       const ordered = [...links.filter((l) => isJob(l.h)), ...links.filter((l) => !isJob(l.h))].slice(0, 120);
-      const linkBlock = ordered.map((l) => `- ${l.t} -> ${l.h}`).join("\n").slice(0, 14000);
-      const raw = await groq(`Source: ${src.sourceName}\n\nPAGE TEXT:\n${text.slice(0, 12000)}\n\nLINKS ON PAGE (anchor text -> url):\n${linkBlock}`);
+      const linkBlock = ordered.map((l) => `- ${l.t} -> ${l.h}`).join("\n").slice(0, 4500);
+      const raw = await groq(SYSTEM, `Source: ${src.sourceName}\n\nPAGE TEXT:\n${text.slice(0, 4500)}\n\nLINKS ON PAGE (anchor text -> url):\n${linkBlock}`, 1600);
       const rows = parseArray(raw).slice(0, MAX_PER_SOURCE).map((e) => toRow(e, src.sourceName)).filter(Boolean);
       console.log(`  ${src.sourceName}: extracted ${rows.length}`);
       candidates.push(...rows);
@@ -193,19 +241,31 @@ async function main() {
   } catch (e) { console.log("existing-url check failed:", e.message); }
   const fresh = unique.filter((c) => !known.has(c.apply_url));
 
-  // 3) Verify each apply link is live (real browser navigation).
+  // 3) One visit per fresh job: verify the link is live AND enrich from its own
+  //    detail page (fuller aboutRole + any structured fields the posting states).
   const verified = [];
   for (const c of fresh) {
     const page = await ctx.newPage();
     try {
       const resp = await page.goto(c.apply_url, { waitUntil: "domcontentloaded", timeout: 30000 });
       const status = resp ? resp.status() : 0;
-      if (status !== 404 && status !== 410) verified.push(c);
-      else console.log(`  drop dead link (${status}): ${c.apply_url}`);
+      if (status === 404 || status === 410) {
+        console.log(`  drop dead link (${status}): ${c.apply_url}`);
+        await page.close().catch(() => {});
+        continue;
+      }
+      await page.waitForTimeout(1500);
+      const detail = ((await page.evaluate(() => document.body?.innerText || "")) || "").slice(0, 14000);
+      await page.close().catch(() => {});
+      if (detail.length > 400) {
+        const e = parseObj(await groq(ENRICH, `Job: ${c.title}${c.company ? ` at ${c.company}` : ""}\n\n${detail.slice(0, 6000)}`, 1400));
+        if (e) mergeEnrichment(c, e);
+      }
+      verified.push(c);
     } catch {
-      verified.push(c); // network hiccup — don't drop a possibly-good link
+      verified.push(c); // network hiccup — keep, no enrichment
+      await page.close().catch(() => {});
     }
-    await page.close().catch(() => {});
   }
 
   await browser.close();
