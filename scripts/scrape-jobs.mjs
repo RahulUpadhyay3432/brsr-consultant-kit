@@ -20,15 +20,16 @@ const FRESH_DAYS = 30;
 const UA =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36";
 
-// Source listing/careers pages. Headless Chromium reaches these (incl. iimjobs, which
-// plain fetch cannot). Tune freely; LinkedIn is left out on purpose (litigious outlier).
+// Source LISTING pages that actually render India ESG roles WITH per-role detail URLs
+// (verified: iimjobs /k/ listings and Indeed search yield; /c/ paths, EY's marketing
+// page, and email-apply career pages do not). Headless Chromium reaches these where a
+// plain fetch is 403'd. LinkedIn is left out on purpose (litigious outlier). Tune freely.
 const SOURCES = [
+  { url: "https://www.iimjobs.com/k/esg-jobs", sourceName: "iimjobs" },
+  { url: "https://www.iimjobs.com/k/sustainability-jobs", sourceName: "iimjobs" },
+  { url: "https://in.indeed.com/jobs?q=ESG+sustainability&l=India&sort=date", sourceName: "Indeed" },
+  { url: "https://in.indeed.com/jobs?q=BRSR&l=India&sort=date", sourceName: "Indeed" },
   { url: "https://climatebase.org/jobs?l=India", sourceName: "Climatebase" },
-  { url: "https://www.ey.com/en_in/careers/climate-change-sustainability-services", sourceName: "EY careers" },
-  { url: "https://www.breatheesg.com/careers", sourceName: "Breathe ESG" },
-  { url: "https://www.karbonwise.com/careers", sourceName: "Karbonwise" },
-  { url: "https://www.iimjobs.com/c/esg-jobs", sourceName: "iimjobs" },
-  { url: "https://www.naukri.com/esg-sustainability-jobs", sourceName: "Naukri" },
 ];
 
 const JOB_CATEGORIES = [
@@ -140,11 +141,36 @@ async function main() {
     const page = await ctx.newPage();
     try {
       await page.goto(src.url, { waitUntil: "domcontentloaded", timeout: 45000 });
-      await page.waitForTimeout(3500);
-      const text = ((await page.evaluate(() => document.body?.innerText || "")) || "").slice(0, 40000);
+      await page.waitForLoadState("networkidle", { timeout: 15000 }).catch(() => {}); // let SPAs settle
+      await page.waitForTimeout(2500);
+      // Visible text carries the role titles; the anchor list carries the apply/detail
+      // URLs (which never appear in innerText). Feed the model both.
+      const { text, links } = await page.evaluate(() => {
+        const t = (document.body?.innerText || "").slice(0, 26000);
+        const out = [];
+        document.querySelectorAll("a[href]").forEach((a) => {
+          const tt = (a.innerText || a.textContent || "").trim().replace(/\s+/g, " ").slice(0, 120);
+          if (tt && /^https?:\/\//.test(a.href)) out.push({ t: tt, h: a.href });
+        });
+        // Indeed puts the job id in data-jk on the card, not in an <a href>; build the
+        // viewjob URL from it so the model has a real apply link to attach.
+        if (location.host.includes("indeed")) {
+          document.querySelectorAll("[data-jk]").forEach((el) => {
+            const jk = el.getAttribute("data-jk");
+            const tt = (el.innerText || "").trim().replace(/\s+/g, " ").slice(0, 120);
+            if (jk && /^[0-9a-f]{10,}$/i.test(jk)) out.push({ t: tt || "job", h: `https://in.indeed.com/viewjob?jk=${jk}` });
+          });
+        }
+        return { text: t, links: out.slice(0, 500) };
+      });
       await page.close();
-      if (text.length < 200) { console.log(`  ${src.sourceName}: thin page (${text.length} chars), skipped`); continue; }
-      const raw = await groq(`Source: ${src.sourceName}\n\n${text}`);
+      if (text.length < 200 && !links.length) { console.log(`  ${src.sourceName}: thin page, skipped`); continue; }
+      // Front-load the job-detail links (nav links dominate DOM order and would
+      // otherwise push the real ones out of the model's character window).
+      const isJob = (h) => /\/j\/|viewjob|\/job\/|jobdetail|-\d{6,}/i.test(h);
+      const ordered = [...links.filter((l) => isJob(l.h)), ...links.filter((l) => !isJob(l.h))].slice(0, 120);
+      const linkBlock = ordered.map((l) => `- ${l.t} -> ${l.h}`).join("\n").slice(0, 14000);
+      const raw = await groq(`Source: ${src.sourceName}\n\nPAGE TEXT:\n${text.slice(0, 12000)}\n\nLINKS ON PAGE (anchor text -> url):\n${linkBlock}`);
       const rows = parseArray(raw).slice(0, MAX_PER_SOURCE).map((e) => toRow(e, src.sourceName)).filter(Boolean);
       console.log(`  ${src.sourceName}: extracted ${rows.length}`);
       candidates.push(...rows);
