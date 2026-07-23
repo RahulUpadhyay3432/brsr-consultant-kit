@@ -103,6 +103,13 @@ function Card({ item, onWhy }: { item: BriefItem; onWhy: (i: BriefItem) => void 
 
   const titleCls = "block font-display text-[1.3rem] leading-[1.2] font-bold text-ink tracking-[-0.01em] hover:text-brand-700 line-clamp-3";
   const onOpen = () => track("brief_source_opened", { kind: item.kind });
+  // Explicit "read more" affordance right after the summary (the title opens the
+  // article too, but that's not discoverable on its own).
+  const readLabel =
+    item.kind === "news" ? "Read the full story"
+    : item.kind === "regulation" ? "Read the official source"
+    : "Read the full guide";
+  const readCls = "mt-2 inline-flex items-center gap-1 text-[13.5px] font-semibold text-brand-700 hover:text-brand-600";
 
   return (
     <div className="h-full flex flex-col bg-page">
@@ -113,11 +120,17 @@ function Card({ item, onWhy }: { item: BriefItem; onWhy: (i: BriefItem) => void 
         ) : (
           <Link href={item.href} onClick={onOpen} className={titleCls}>{item.title}</Link>
         )}
-        <p className="mt-2.5 text-[15px] leading-[1.55] text-ink-body line-clamp-[8] flex-1">{item.summary}</p>
+        <div className="flex-1 min-h-0 mt-2.5">
+          <p className="text-[15px] leading-[1.55] text-ink-body line-clamp-[7]">{item.summary}</p>
+          {item.external ? (
+            <a href={item.href} target="_blank" rel="noreferrer" onClick={onOpen} className={readCls}>{readLabel} {I.ext}</a>
+          ) : (
+            <Link href={item.href} onClick={onOpen} className={readCls}>{readLabel} {I.ext}</Link>
+          )}
+        </div>
         <div className="mt-3 flex items-center gap-1.5 text-[11.5px] text-ink-faint">
           {item.aiSummary && <span className="text-brand-600">{I.spark}</span>}
           <span className="truncate">{sourceLine}</span>
-          {item.external && <span className="ml-auto inline-flex items-center gap-1 text-ink-muted">open {I.ext}</span>}
         </div>
         <div className="mt-3 flex items-center gap-2">
           <button onClick={() => onWhy(item)} className="pressable flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl bg-white border border-line shadow-elev-1 hover:shadow-elev-2 py-2.5 text-[13.5px] font-semibold text-ink">
