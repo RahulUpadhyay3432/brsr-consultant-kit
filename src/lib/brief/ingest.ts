@@ -25,17 +25,36 @@ const GNEWS_SOURCES: string[] = [
   gnews("SEBI ESG disclosure India sustainability"),
   gnews("CSRD OR ESRS OR EcoVadis OR CDP sustainability reporting"),
   gnews("BRSR Core assurance India"),
+  // Government / ministry moves (MoEFCC, CPCB, BEE, Power) and compliance rules.
+  gnews('MoEFCC OR "environment ministry" OR CPCB India notification climate OR carbon'),
+  gnews('"Bureau of Energy Efficiency" OR "Ministry of Power" OR "green credit programme" India'),
+  gnews('EPR OR "extended producer responsibility" plastic waste rules India'),
+  // Market and big-player moves: ratings, funds, corporate filings and targets.
+  gnews('"ESG rating" OR "ESG funds" India SEBI OR MSCI OR CRISIL'),
+  gnews('India listed company "sustainability report" OR "net zero" target'),
 ];
 
 // Dedicated publisher feeds. These are direct-link WordPress-style feeds that
 // carry a real article URL AND a media image, so their cards get actual photos.
 // (The relevance gate still drops anything off-topic for an Indian ESG reader.)
 const PUBLISHER_SOURCES: string[] = [
-  "https://india.mongabay.com/feed/",   // India environment/climate, media:content
-  "https://www.esgtoday.com/feed/",     // global ESG/frameworks, featured images
+  "https://india.mongabay.com/feed/",                          // India environment/climate, media:content
+  "https://www.esgtoday.com/feed/",                            // global ESG/frameworks, featured images
+  "https://esgnews.com/feed/",                                 // global ESG deals, ratings, frameworks
+  "https://energy.economictimes.indiatimes.com/rss/renewable", // India energy transition, images
 ];
 
-export const BRIEF_SOURCES: string[] = [...GNEWS_SOURCES, ...PUBLISHER_SOURCES];
+// Government primary feeds: straight from the regulator, but high-volume and mostly
+// non-ESG, so collectCandidates keyword-gates them before they consume any of the
+// per-run AI budget.
+const GOV_SOURCES: string[] = [
+  "https://www.sebi.gov.in/sebirss.xml", // SEBI circulars + press releases at the source
+];
+
+export const BRIEF_SOURCES: string[] = [...GNEWS_SOURCES, ...PUBLISHER_SOURCES, ...GOV_SOURCES];
+
+const GOV_FEED_RE = /sebi\.gov\.in|pib\.gov\.in/i;
+const GOV_KEYWORDS = /brsr|esg|sustainab|climate|green|carbon|environment|stewardship|social bond/i;
 
 const stripHtml = (s: string) => s.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
 
@@ -93,6 +112,9 @@ async function collectCandidates(): Promise<Candidate[]> {
       const m = title.match(/^(.+?)\s+-\s+([^-]{2,60})$/);
       if (m) { title = m[1].trim(); sourceName = m[2].trim(); }
       if (!title) continue;
+      // Government feeds publish mostly non-ESG items (appeals, MF circulars);
+      // keyword-gate them so they never consume the per-run AI budget.
+      if (GOV_FEED_RE.test(link) && !GOV_KEYWORDS.test(title)) continue;
       out.push({
         title,
         link,
@@ -110,7 +132,7 @@ const SYSTEM = `You classify and summarise a single ESG/sustainability news item
 STRICT RULES:
 - Use ONLY the provided title and text. Never invent, infer, estimate, or add any fact, number, name, date, or company not present in the input.
 - Write a calm, factual summary of 2 to 3 sentences. Present tense, active voice, no hype, no emojis, no exclamation marks. First sentence states the core fact in 10 to 15 words.
-- RELEVANCE GATE (strict): the reader is an Indian ESG/BRSR consultant. Output exactly LOW_SIGNAL (and nothing else) UNLESS the item has a real, material angle for them: SEBI / BRSR / BRSR Core / assurance moves; India's CCTS / carbon market / GEI targets; the EU CBAM as it affects Indian exporters; a NAMED INDIAN LISTED COMPANY's ESG/BRSR filing or disclosure; or a genuine CHANGE to a major global framework (CSRD/ESRS, CDP, EcoVadis, IFRS/ISSB, GRI, TNFD). Reject as LOW_SIGNAL: a random foreign company's routine sustainability/CSR report, award, or medal with no India or regulatory angle; product marketing or press-release fluff; generic "company goes green" PR; and anything not about ESG, sustainability reporting, or carbon regulation.
+- RELEVANCE GATE (strict): the reader is an Indian ESG/BRSR consultant. Output exactly LOW_SIGNAL (and nothing else) UNLESS the item has a real, material angle for them: SEBI / BRSR / BRSR Core / assurance moves; India's CCTS / carbon market / GEI targets; a significant Indian government, ministry, or regulator move on climate, carbon, energy transition, or environmental compliance (MoEFCC, CPCB, BEE, Ministry of Power, EPR rules, green credit programme); the EU CBAM as it affects Indian exporters; a NAMED INDIAN LISTED COMPANY's ESG/BRSR filing, disclosure, rating change, or net-zero commitment; or a genuine CHANGE to a major global framework (CSRD/ESRS, CDP, EcoVadis, IFRS/ISSB, GRI, TNFD). Reject as LOW_SIGNAL: a random foreign company's routine sustainability/CSR report, award, or medal with no India or regulatory angle; product marketing or press-release fluff; generic "company goes green" PR; and anything not about ESG, sustainability reporting, or carbon regulation.
 - Otherwise output STRICT JSON only, no prose, no markdown fences: {"category_slug":"<one of the categories>","summary":"<your summary>"}
 Categories:
 ${VALID.map((c) => `- ${c}: ${CATEGORY_DEFINITIONS[c]}`).join("\n")}`;
