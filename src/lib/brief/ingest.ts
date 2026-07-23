@@ -200,6 +200,33 @@ export interface IngestResult {
   samples?: { title: string; category_slug: string; summary: string }[]; // for monitoring
 }
 
+// Round-robin the per-run budget across source hosts (all Google News queries share
+// one host; each publisher and SEBI are their own). Without this, a high-volume
+// publisher's newest items flood the whole budget and the precise India-scoped
+// queries never get evaluated.
+function interleaveByHost(list: Candidate[], max: number): Candidate[] {
+  const groups = new Map<string, Candidate[]>();
+  for (const c of list) {
+    let host = "other";
+    try { host = new URL(c.link).hostname; } catch { /* keep "other" */ }
+    const g = groups.get(host) || [];
+    g.push(c);
+    groups.set(host, g);
+  }
+  const queues = Array.from(groups.values()); // each already newest-first
+  const out: Candidate[] = [];
+  let added = true;
+  while (out.length < max && added) {
+    added = false;
+    for (const q of queues) {
+      if (out.length >= max) break;
+      const c = q.shift();
+      if (c) { out.push(c); added = true; }
+    }
+  }
+  return out;
+}
+
 // The full pipeline. Safe to call with no Groq / no DB: it degrades to a no-op.
 export async function runIngest(): Promise<IngestResult> {
   if (!groqConfigured() || !newsConfigured()) {
@@ -208,7 +235,7 @@ export async function runIngest(): Promise<IngestResult> {
   const all = await collectCandidates();
   const fresh = all.filter((c) => c.link);
   const known = await existingUrls(fresh.map((c) => c.link));
-  const candidates = fresh.filter((c) => !known.has(c.link)).slice(0, MAX_PER_RUN);
+  const candidates = interleaveByHost(fresh.filter((c) => !known.has(c.link)), MAX_PER_RUN);
 
   const rows: NewsInsert[] = [];
   // Small concurrency so one run doesn't take too long, key rotation via salt.
