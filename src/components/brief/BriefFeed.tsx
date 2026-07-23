@@ -361,9 +361,10 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
               {labelFor(tabs[tabIdx + 1])}{I.chevR}
             </div>
           )}
-          {/* Pull-to-refresh spinner */}
+          {/* Pull-to-refresh spinner (full-width flex centering — transform-based
+              centering breaks when other transforms are applied) */}
           {(pull > 8 || refreshing) && (
-            <div className="absolute left-1/2 -translate-x-1/2 z-30 pointer-events-none" style={{ top: Math.min(pull * 0.4, 22) }}>
+            <div className="absolute inset-x-0 z-30 pointer-events-none flex justify-center" style={{ top: Math.min(pull * 0.4, 22) }}>
               <span className="block h-6 w-6 rounded-full border-[3px] border-line border-t-brand-600 animate-spin" />
             </div>
           )}
@@ -378,12 +379,14 @@ export default function BriefFeed({ items }: { items: BriefItem[] }) {
               <section className="h-full snap-start"><CaughtUp streak={streak} onTop={() => scrollRef.current?.scrollTo({ top: 0, behavior: "smooth" })} /></section>
             </div>
           </motion.div>
-          {/* Toast */}
+          {/* Toast. The motion.div spans the full width and the pill is flex-centered
+              inside it: framer-motion owns `transform` for the y animation, which
+              would silently cancel a CSS -translate-x-1/2 centering. */}
           <AnimatePresence>
             {toast && (
               <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 rounded-full bg-ink/85 text-white text-[12px] font-semibold px-4 py-1.5">
-                Feed refreshed
+                className="absolute inset-x-0 bottom-4 z-40 flex justify-center pointer-events-none">
+                <span className="rounded-full bg-ink/85 text-white text-[12px] font-semibold px-4 py-1.5">Feed refreshed</span>
               </motion.div>
             )}
           </AnimatePresence>
