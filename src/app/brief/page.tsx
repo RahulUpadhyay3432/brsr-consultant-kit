@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import QRCode from "qrcode";
 import { getBriefFeed } from "@/lib/brief/feed";
@@ -30,7 +31,11 @@ const NAV: { label: string; href: string; k: keyof typeof icon }[] = [
   { label: "About", href: "/about", k: "about" },
 ];
 
-export default async function BriefPage() {
+// The data-dependent centre (phone) + right rail, streamed behind Suspense so the
+// shell and <head> (OG tags) flush immediately. Link-preview bots (WhatsApp) time
+// out around 3s, and awaiting the feed before first byte pushed TTFB past that,
+// which made shared links show a bare domain card instead of the rich preview.
+async function BriefContent() {
   const items = await getBriefFeed();
   const radar = items.slice(0, 5);
   const qr = await QRCode.toDataURL("https://saaksh.co/brief", {
@@ -40,37 +45,7 @@ export default async function BriefPage() {
   });
 
   return (
-    <div className="brief-root min-h-[100dvh] bg-band text-ink lg:flex lg:justify-between lg:items-start lg:gap-8 lg:px-10 lg:py-8 lg:max-w-[1280px] lg:mx-auto">
-      {/* Left: site navigation, so a direct visitor to /brief can reach the rest
-          of Saaksh. Hidden on mobile (the phone owns the screen there). */}
-      <aside className="hidden lg:flex flex-col w-[212px] flex-shrink-0">
-        <Link href="/" aria-label="Saaksh home" className="flex items-center gap-2.5 px-2 hover:opacity-90 transition-opacity">
-          <SaakshMark size={30} />
-          <span className="font-display text-[20px] font-bold text-ink">Saaksh</span>
-        </Link>
-        <p className="mt-1 px-2 text-[12px] text-ink-faint">The Brief · 30-second ESG read</p>
-
-        <nav className="mt-6 flex flex-col gap-0.5">
-          {NAV.map((n) => (
-            <Link
-              key={n.href} href={n.href}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14.5px] font-medium text-ink-body hover:bg-white hover:text-ink transition-colors"
-            >
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="text-ink-muted">{icon[n.k]}</svg>
-              {n.label}
-            </Link>
-          ))}
-        </nav>
-
-        <Link href="/start" className="mt-5 mx-1 inline-flex items-center justify-center gap-2 rounded-xl bg-forest text-white text-[13.5px] font-semibold px-4 py-2.5 hover:bg-forest-light transition-colors">
-          Start a free report
-        </Link>
-
-        <p className="mt-auto px-2 pt-8 text-[12px] text-ink-faint leading-relaxed">
-          Cited to SEBI &amp; ICAI.<br />No signup, nothing stored.
-        </p>
-      </aside>
-
+    <>
       {/* Center: the phone (full-screen on mobile; a real two-layer device bezel
           on desktop, at Kapyn's exact dimensions). */}
       <div className="lg:flex-shrink-0 lg:p-[11px] lg:rounded-[52px] lg:bg-gradient-to-b lg:from-[#2a2a2f] lg:to-[#141416] lg:border lg:border-black/60 lg:shadow-[0_40px_110px_rgba(15,30,51,0.30),inset_0_1px_0_rgba(255,255,255,0.06)]">
@@ -113,6 +88,63 @@ export default async function BriefPage() {
           </div>
         </div>
       </aside>
+    </>
+  );
+}
+
+// Layout-stable placeholder while the feed streams in: same phone footprint on
+// desktop, a full-screen calm loading state on mobile.
+function BriefFallback() {
+  return (
+    <>
+      <div className="lg:flex-shrink-0 lg:p-[11px] lg:rounded-[52px] lg:bg-gradient-to-b lg:from-[#2a2a2f] lg:to-[#141416] lg:border lg:border-black/60 lg:shadow-[0_40px_110px_rgba(15,30,51,0.30),inset_0_1px_0_rgba(255,255,255,0.06)]">
+        <div className="lg:p-[4px] lg:rounded-[42px] lg:bg-[#0a0a0a]">
+          <div className="fixed inset-0 mx-auto w-full max-w-[430px] h-[100dvh] lg:relative lg:inset-auto lg:mx-0 lg:w-[330px] lg:max-w-[330px] lg:h-[min(830px,calc(100dvh-88px))] lg:rounded-[38px] bg-page grid place-items-center">
+            <span className="block h-7 w-7 rounded-full border-[3px] border-line border-t-brand-600 animate-spin" />
+          </div>
+        </div>
+      </div>
+      <aside className="hidden lg:block w-[300px] flex-shrink-0" />
+    </>
+  );
+}
+
+export default function BriefPage() {
+  return (
+    <div className="brief-root min-h-[100dvh] bg-band text-ink lg:flex lg:justify-between lg:items-start lg:gap-8 lg:px-10 lg:py-8 lg:max-w-[1280px] lg:mx-auto">
+      {/* Left: site navigation, so a direct visitor to /brief can reach the rest
+          of Saaksh. Hidden on mobile (the phone owns the screen there). */}
+      <aside className="hidden lg:flex flex-col w-[212px] flex-shrink-0">
+        <Link href="/" aria-label="Saaksh home" className="flex items-center gap-2.5 px-2 hover:opacity-90 transition-opacity">
+          <SaakshMark size={30} />
+          <span className="font-display text-[20px] font-bold text-ink">Saaksh</span>
+        </Link>
+        <p className="mt-1 px-2 text-[12px] text-ink-faint">The Brief · 30-second ESG read</p>
+
+        <nav className="mt-6 flex flex-col gap-0.5">
+          {NAV.map((n) => (
+            <Link
+              key={n.href} href={n.href}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14.5px] font-medium text-ink-body hover:bg-white hover:text-ink transition-colors"
+            >
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="text-ink-muted">{icon[n.k]}</svg>
+              {n.label}
+            </Link>
+          ))}
+        </nav>
+
+        <Link href="/start" className="mt-5 mx-1 inline-flex items-center justify-center gap-2 rounded-xl bg-forest text-white text-[13.5px] font-semibold px-4 py-2.5 hover:bg-forest-light transition-colors">
+          Start a free report
+        </Link>
+
+        <p className="mt-auto px-2 pt-8 text-[12px] text-ink-faint leading-relaxed">
+          Cited to SEBI &amp; ICAI.<br />No signup, nothing stored.
+        </p>
+      </aside>
+
+      <Suspense fallback={<BriefFallback />}>
+        <BriefContent />
+      </Suspense>
     </div>
   );
 }
