@@ -235,11 +235,10 @@ async function main() {
   const unique = candidates.filter((c) => (seen.has(c.apply_url) ? false : (seen.add(c.apply_url), true)));
   let known = new Set();
   try {
-    const inList = unique.map((c) => `"${c.apply_url.replace(/"/g, "")}"`).join(",");
-    if (inList) {
-      const res = await sb(`brsr_jobs?apply_url=in.(${encodeURIComponent(inList)})&select=apply_url`);
-      known = new Set((await res.json()).map((r) => r.apply_url));
-    }
+    // Fetch every stored URL (small rolling table) rather than an in.(...) filter,
+    // whose request URL can exceed length limits and fail silently.
+    const res = await sb("brsr_jobs?select=apply_url&limit=2000");
+    known = new Set((await res.json()).map((r) => r.apply_url));
   } catch (e) { console.log("existing-url check failed:", e.message); }
   const fresh = unique.filter((c) => !known.has(c.apply_url));
 

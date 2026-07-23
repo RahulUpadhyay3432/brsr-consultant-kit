@@ -78,9 +78,12 @@ export async function fetchBriefNews(days = 14, limit = 120): Promise<BriefItem[
 export async function existingUrls(urls: string[]): Promise<Set<string>> {
   if (!urls.length) return new Set();
   try {
-    const inList = urls.map((u) => `"${u.replace(/"/g, "")}"`).join(",");
-    const res = await rest(`brsr_news?source_url=in.(${encodeURIComponent(inList)})&select=source_url`);
-    return new Set(((await res.json()) as { source_url: string }[]).map((r) => r.source_url));
+    // The table holds only a rolling window (pruneOldNews), so fetching every stored
+    // URL is small and bounded. An in.(...) filter with hundreds of long Google News
+    // URLs exceeds the request-line limit and fails silently, killing dedup.
+    const res = await rest(`brsr_news?select=source_url&order=created_at.desc&limit=2000`);
+    const stored = new Set(((await res.json()) as { source_url: string }[]).map((r) => r.source_url));
+    return new Set(urls.filter((u) => stored.has(u)));
   } catch {
     return new Set();
   }
