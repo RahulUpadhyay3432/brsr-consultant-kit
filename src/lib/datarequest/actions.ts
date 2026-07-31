@@ -10,7 +10,7 @@ import { uploadEvidence } from "./storage";
 import { generateNarrative, type NarrativeResult } from "./narrative";
 import { extractValues, extractValuesBulk, extractFromChunk, type ImportResult, type BulkImportResult, type BulkDoc, type DocCategory, type BulkSuggestion } from "./importer";
 import { groqConfigured } from "./groq";
-import { geminiConfigured } from "./gemini";
+import { geminiConfigured, geminiVision } from "./gemini";
 import { extractCbam, type CbamSuggestion } from "./cbam-extract";
 import { requireConsultant } from "./guard";
 
@@ -103,6 +103,77 @@ export async function cloneCampaignAction(sourceId: string): Promise<void> {
 
   revalidatePath("/requests");
   redirect(`/requests/${newId}`);
+}
+
+// OCR auto-fill (beta): read a photo/scan of a bill, invoice, meter reading or
+// register and map legible figures to BRSR fields as reviewable suggestions (never
+// auto-applied). Grounded, extract-only, best-effort. Feeds the same review UI as the
+// text importer. Uses Gemini vision (gpt-oss has no vision).
+export async function extractBillImageAction(
+  campaignId: string,
+  imageBase64: string,
+  mimeType: string,
+  sourceDoc = "photo",
+): Promise<{ configured: boolean; suggestions: BulkSuggestion[] }> {
+  requireConsultant();
+  if (!geminiConfigured()) return { configured: false, suggestions: [] };
+  const b64 = (imageBase64 || "").trim();
+  if (!b64 || !campaignId) return { configured: true, suggestions: [] };
+
+  // Ground to the numeric fields a bill / invoice / register would contain.
+  const numeric = REQUEST_FIELDS.filter((f) => f.unit || f.kind === "activity");
+  const candidates = numeric
+    .map((f) => `${f.id} | ${f.label}${f.unit ? ` | ${f.unit}` : ""}`)
+    .join("\n")
+    .slice(0, 12000);
+
+  const SYSTEM = `You read a single photo or scan of an Indian utility bill, invoice, meter reading, or register for a BRSR data-collection tool.
+STRICT RULES:
+- Extract ONLY figures clearly legible in the image. Never invent, estimate, round, or infer a number that is not shown.
+- Map each figure to the single best-matching field id from the candidate list. If nothing matches, omit it.
+- For each, set "source" to the exact text/number you read on the image, and "confidence" to high, medium, or low by legibility.
+- Match units carefully (kWh, litres, kL, tonnes, %). Return STRICT JSON only: an array of {"fieldId","value","unit","source","confidence"}. Empty array [] if none.`;
+  const USER = `Candidate fields (id | label | unit):\n${candidates}\n\nRead the attached image and extract the matching figures.`;
+
+  let raw: string | null = null;
+  try {
+    raw = await geminiVision(SYSTEM, USER, b64, mimeType || "image/jpeg", { maxOutputTokens: 2048 });
+  } catch {
+    raw = null;
+  }
+  if (!raw) return { configured: true, suggestions: [] };
+
+  let arr: Array<{ fieldId?: string; value?: string | number; source?: string; confidence?: string }> = [];
+  const m = raw.match(/\[[\s\S]*\]/);
+  if (m) {
+    try { arr = JSON.parse(m[0]); } catch { arr = []; }
+  }
+  if (!Array.isArray(arr)) return { configured: true, suggestions: [] };
+
+  const byId = new Map(REQUEST_FIELDS.map((f) => [f.id, f]));
+  const seen = new Set<string>();
+  const suggestions: BulkSuggestion[] = [];
+  for (const e of arr) {
+    const fieldId = String(e?.fieldId || "").trim();
+    const value = String(e?.value ?? "").trim();
+    const field = byId.get(fieldId);
+    if (!field || !value || seen.has(fieldId)) continue;
+    seen.add(fieldId);
+    const conf = (["high", "medium", "low"].includes(String(e?.confidence)) ? e!.confidence : "medium") as BulkSuggestion["confidence"];
+    suggestions.push({
+      fieldId,
+      section: field.section,
+      principle: field.principle,
+      label: field.label,
+      unit: field.unit ?? null,
+      value,
+      source: String(e?.source || "").slice(0, 300),
+      sourceDoc,
+      confidence: conf,
+      verified: true,
+    });
+  }
+  return { configured: true, suggestions };
 }
 
 // CBAM screening auto-fill: extract the covered good + production/export quantity from

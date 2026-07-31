@@ -19,6 +19,50 @@ export function geminiConfigured(): boolean {
   return keys().length > 0;
 }
 
+// Vision extraction: reads a photo/scan of a bill, invoice, meter reading or register
+// and returns grounded JSON. gemini-2.5-flash is multimodal, so the image rides along
+// as an inline_data part. Same key rotation + never-throws posture as geminiComplete.
+export async function geminiVision(
+  system: string,
+  user: string,
+  imageBase64: string,
+  mimeType: string,
+  opts: { maxOutputTokens?: number; salt?: number } = {},
+): Promise<string | null> {
+  const ks = keys();
+  if (ks.length === 0 || !imageBase64) return null;
+  const start = (((opts.salt ?? 0) % ks.length) + ks.length) % ks.length;
+  const body = JSON.stringify({
+    system_instruction: { parts: [{ text: system }] },
+    contents: [{ role: "user", parts: [
+      { text: user },
+      { inline_data: { mime_type: mimeType, data: imageBase64 } },
+    ] }],
+    generationConfig: {
+      temperature: 0,
+      maxOutputTokens: opts.maxOutputTokens ?? 2048,
+      responseMimeType: "application/json",
+    },
+  });
+  for (let i = 0; i < ks.length; i++) {
+    const key = ks[(start + i) % ks.length];
+    try {
+      const res = await fetch(endpoint(key), { method: "POST", headers: { "Content-Type": "application/json" }, body, cache: "no-store" });
+      if (res.ok) {
+        const data = await res.json();
+        const parts = data?.candidates?.[0]?.content?.parts;
+        const text = Array.isArray(parts) ? parts.map((p: { text?: string }) => p?.text || "").join("") : "";
+        if (text && text.trim()) return text;
+        continue;
+      }
+      continue; // rate-limited / blocked → try the next key
+    } catch {
+      continue;
+    }
+  }
+  return null;
+}
+
 // Best-effort JSON completion. Rotates keys from `salt` so a rate-limited key falls
 // through to the next. Returns the model text (JSON), or null if none produced output.
 export async function geminiComplete(

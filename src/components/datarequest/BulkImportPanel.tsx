@@ -11,7 +11,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { extractPdfText } from "@/lib/pdf-extract";
-import { extractChunkAction } from "@/lib/datarequest/actions";
+import { extractChunkAction, extractBillImageAction } from "@/lib/datarequest/actions";
 import { track } from "@/lib/mixpanel";
 import type {
   BulkSuggestion,
@@ -119,37 +119,81 @@ export default function BulkImportPanel({
     setWarn(null);
   }
 
-  // Step 1, read the chosen PDFs locally and stage them with a default category.
-  // Nothing is sent yet; the consultant tags each file's type, then runs the fill.
+  // Read a File to base64 (strip the data: URL prefix) for the vision OCR path.
+  function fileToBase64(file: File): Promise<{ base64: string; mime: string }> {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => {
+        const s = String(r.result || "");
+        const comma = s.indexOf(",");
+        resolve({ base64: comma >= 0 ? s.slice(comma + 1) : s, mime: file.type || "image/jpeg" });
+      };
+      r.onerror = () => reject(new Error("read failed"));
+      r.readAsDataURL(file);
+    });
+  }
+
+  // Merge OCR suggestions straight into the review state (images are extracted on
+  // upload; PDFs go through the staged tag-then-fill flow). Keeps the highest-
+  // confidence per field, and pre-ticks everything but low confidence.
+  function addSuggestions(newOnes: BulkSuggestion[]) {
+    if (!newOnes.length) return;
+    setSuggestions((prev) => {
+      const map = new Map<string, BulkSuggestion>((prev || []).map((s) => [s.fieldId, s]));
+      for (const s of newOnes) {
+        const cur = map.get(s.fieldId);
+        if (!cur || RANK[s.confidence] > RANK[cur.confidence]) map.set(s.fieldId, s);
+      }
+      return Array.from(map.values());
+    });
+    setTicked((prev) => { const n = { ...prev }; for (const s of newOnes) if (!(s.fieldId in n)) n[s.fieldId] = s.confidence !== "low"; return n; });
+    setValues((prev) => { const n = { ...prev }; for (const s of newOnes) if (!(s.fieldId in n)) n[s.fieldId] = s.value; return n; });
+  }
+
+  // Step 1, read the chosen files locally. PDFs are staged (tag-then-fill); image
+  // files (photos of bills/invoices) are OCR'd on the server right away and their
+  // figures appear in the same review list.
   async function onFiles(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
     if (files.length) e.target.value = ""; // allow re-selecting the same file later
     if (!files.length) return;
     setMsg(null);
     setWarn(null);
+    const images = files.filter((f) => f.type.startsWith("image/"));
+    const pdfs = files.filter((f) => !f.type.startsWith("image/"));
     try {
+      // Images → vision OCR now.
+      let ocrFound = 0;
+      for (let i = 0; i < images.length; i++) {
+        setBusy(images.length === 1 ? "Reading your photo…" : `Reading photo ${i + 1} of ${images.length}…`);
+        try {
+          const { base64, mime } = await fileToBase64(images[i]);
+          const res = await extractBillImageAction(campaignId, base64, mime, images[i].name);
+          if (res.configured === false) { setBusy(null); setMsg("AI auto-fill isn't configured on this deployment yet."); return; }
+          addSuggestions(res.suggestions);
+          ocrFound += res.suggestions.length;
+        } catch { /* skip this image */ }
+      }
+
+      // PDFs → stage for the existing tag-then-fill flow.
       const docs: StagedDoc[] = [];
-      for (let i = 0; i < files.length; i++) {
-        setBusy(
-          files.length === 1
-            ? "Reading your document…"
-            : `Reading document ${i + 1} of ${files.length}…`,
-        );
-        const { text, pages } = await extractPdfText(files[i]);
-        if (text.trim()) docs.push({ name: files[i].name, text, pages, category: "auto" });
+      for (let i = 0; i < pdfs.length; i++) {
+        setBusy(pdfs.length === 1 ? "Reading your document…" : `Reading document ${i + 1} of ${pdfs.length}…`);
+        const { text, pages } = await extractPdfText(pdfs[i]);
+        if (text.trim()) docs.push({ name: pdfs[i].name, text, pages, category: "auto" });
       }
       setBusy(null);
-      if (!docs.length) {
-        setMsg(
-          "These look like scanned PDFs (no selectable text found). Upload text-based PDFs, ones you can select text in.",
-        );
-        return;
+
+      if (docs.length) {
+        setStaged((prev) => [...prev, ...docs]);
+      } else if (pdfs.length && !images.length) {
+        setMsg("These look like scanned PDFs (no selectable text found). Upload a text-based PDF, or add a photo of the page and we'll read it.");
+      } else if (images.length && ocrFound === 0 && !docs.length) {
+        setWarn("Couldn't read a clear figure from that photo. Try a sharper, straight-on shot, or enter the value by hand.");
       }
-      // Append to any already-staged files so several batches can be tagged together.
-      setStaged((prev) => [...prev, ...docs]);
     } catch {
       setBusy(null);
-      setMsg("Could not read one of those files. Please try different PDFs.");
+      setMsg("Could not read one of those files. Please try again.");
     }
   }
 
@@ -408,12 +452,15 @@ export default function BulkImportPanel({
             <p className="mt-2.5 text-[13px] text-ink-muted leading-relaxed">
               Upload one or several PDFs at once, any client document works. Each is read in your browser; nothing is sent until you apply. Optionally tag a file&apos;s type above to sharpen accuracy.
             </p>
+            <p className="mt-1.5 text-[12.5px] text-ink-faint leading-relaxed">
+              You can also add a <b className="font-semibold text-ink-muted">photo of a bill, invoice or meter reading</b> (JPG/PNG), it&apos;s read on the server and every figure stays a suggestion you verify. <span className="text-ink-faint">Beta.</span>
+            </p>
           </div>
 
           <input
             ref={fileRef}
             type="file"
-            accept="application/pdf"
+            accept="application/pdf,image/*"
             multiple
             onChange={onFiles}
             className="hidden"
