@@ -87,6 +87,10 @@ export default function BulkImportPanel({
   const [staged, setStaged] = useState<StagedDoc[]>([]);
   const [suggestions, setSuggestions] = useState<BulkSuggestion[] | null>(null);
   const [truncated, setTruncated] = useState(false);
+  // How much of the uploaded document(s) was actually read: read = chunks that
+  // succeeded, total = all page-batched chunks. The whole document is always
+  // attempted; a shortfall means a few sections errored (not that we capped it).
+  const [coverage, setCoverage] = useState<{ read: number; total: number } | null>(null);
   // ticked rows + per-row edited values, keyed by fieldId
   const [ticked, setTicked] = useState<Record<string, boolean>>({});
   const [values, setValues] = useState<Record<string, string>>({});
@@ -107,6 +111,7 @@ export default function BulkImportPanel({
     setSuggestions(null);
     setStaged([]);
     setTruncated(false);
+    setCoverage(null);
     setTicked({});
     setValues({});
     setCollapsed({});
@@ -256,6 +261,7 @@ export default function BulkImportPanel({
     setValues(initValues);
     setSuggestions(all);
     setTruncated(failed > 0);
+    setCoverage({ read: chunks.length - failed, total: chunks.length });
   }
 
   function selectAllHigh() {
@@ -496,11 +502,11 @@ export default function BulkImportPanel({
             </span>
           </div>
 
-          {truncated && (
+          {coverage && (
             <p className="mt-3 text-[13px] text-ink-muted leading-relaxed">
-              Note: these are long documents, only the first part of each was
-              scanned. For anything missing, upload the specific section or enter
-              it by hand.
+              {truncated
+                ? `Read ${coverage.read} of ${coverage.total} section${coverage.total === 1 ? "" : "s"} of the document; a few couldn't be parsed this time. Retry, or upload the specific section or enter it by hand.`
+                : `Read the full document${coverage.total > 1 ? ` (${coverage.total} sections)` : ""}. Anything missing wasn't found in the text, add it by hand.`}
             </p>
           )}
 
