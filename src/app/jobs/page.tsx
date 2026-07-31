@@ -93,7 +93,7 @@ function JobCard({ job, selected, saved, onSelect, onSave }: { job: Job; selecte
 
 /* ── detail pane ──────────────────────────────────────────────────────────── */
 type Tab = "job" | "company" | "similar";
-function DetailPane({ job, all, saved, onSave, onSelect }: { job: Job; all: Job[]; saved: boolean; onSave: () => void; onSelect: (id: string) => void }) {
+function DetailPane({ job, all, saved, onSave, onSelect, embedded = false }: { job: Job; all: Job[]; saved: boolean; onSave: () => void; onSelect: (id: string) => void; embedded?: boolean }) {
   const [tab, setTab] = useState<Tab>("job");
   useEffect(() => setTab("job"), [job.id]);
   const chips = jobChips(job);
@@ -144,7 +144,7 @@ function DetailPane({ job, all, saved, onSave, onSelect }: { job: Job; all: Job[
         </div>
       </div>
 
-      <div className="px-6 py-5 max-h-[calc(100vh-320px)] min-h-[280px] overflow-y-auto">
+      <div className={`px-6 py-5 ${embedded ? "" : "max-h-[calc(100vh-320px)] min-h-[280px] overflow-y-auto"}`}>
         {tab === "job" && (
           <div>
             <JobDescription job={job} />
@@ -195,6 +195,7 @@ export default function JobsPage() {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false); // mobile filter sheet
+  const [mobileDetail, setMobileDetail] = useState(false); // mobile job-detail sheet
   const [savedIds, setSavedIds] = useState<string[]>([]);
   useEffect(() => setSavedIds(getSavedJobIds()), []);
   const save = (id: string) => { toggleSavedJob(id); setSavedIds(getSavedJobIds()); };
@@ -283,7 +284,7 @@ export default function JobsPage() {
                     </div>
                   )}
                   {shown.map((job) => (
-                    <JobCard key={job.id} job={job} selected={activeJob?.id === job.id} saved={savedIds.includes(job.id)} onSelect={() => { setSelected(job.id); track("job_selected", { company: job.company }); }} onSave={() => save(job.id)} />
+                    <JobCard key={job.id} job={job} selected={activeJob?.id === job.id} saved={savedIds.includes(job.id)} onSelect={() => { setSelected(job.id); setMobileDetail(true); track("job_selected", { company: job.company }); }} onSave={() => save(job.id)} />
                   ))}
                   {shown.length === 0 && (
                     <div className="text-center py-14 px-6 bg-white border border-line rounded-2xl">
@@ -329,6 +330,23 @@ export default function JobsPage() {
             <div className="px-5 py-3.5 border-t border-line">
               <button onClick={() => setShowFilters(false)} className="pressable w-full rounded-xl bg-brand-600 text-white text-[14px] font-semibold py-3">Show {shown.length} role{shown.length === 1 ? "" : "s"}</button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile job detail. The desktop detail pane is lg-only, so on phones a tapped
+          card opens this full-screen sheet with the same DetailPane. Rendered at the
+          page root to escape the anim-up-sm transform. */}
+      {mobileDetail && activeJob && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-page flex flex-col">
+          <div className="flex items-center gap-2 px-4 py-3 border-b border-line bg-white flex-shrink-0">
+            <button onClick={() => setMobileDetail(false)} className="pressable inline-flex items-center gap-1.5 text-[14px] font-semibold text-ink-body">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
+              All roles
+            </button>
+          </div>
+          <div className="flex-1 min-h-0 overflow-y-auto p-4">
+            <DetailPane job={activeJob} all={all} saved={savedIds.includes(activeJob.id)} onSave={() => save(activeJob.id)} onSelect={(id) => setSelected(id)} embedded />
           </div>
         </div>
       )}
