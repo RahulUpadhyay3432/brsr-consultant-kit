@@ -13,6 +13,7 @@ import { groqConfigured } from "./groq";
 import { geminiConfigured, geminiVision } from "./gemini";
 import { extractCbam, type CbamSuggestion } from "./cbam-extract";
 import { requireConsultant } from "./guard";
+import { bumpYear, nextReportingPeriod } from "./clone-util";
 
 function baseUrl(): string {
   return process.env.APP_BASE_URL || "http://localhost:3000";
@@ -55,25 +56,6 @@ export async function deleteCampaignAction(campaignId: string): Promise<void> {
   if (!campaignId) return;
   await db.deleteCampaign(campaignId);
   revalidatePath("/requests");
-}
-
-// Shift an ISO date (YYYY-MM-DD) forward one year; null-safe.
-function bumpYear(iso: string | null): string | null {
-  if (!iso) return null;
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return null;
-  d.setFullYear(d.getFullYear() + 1);
-  return d.toISOString().slice(0, 10);
-}
-
-// Advance a "FY 2024-25" / "2024-25" reporting period by one year; unchanged if unparseable.
-function nextReportingPeriod(p: string | null): string | null {
-  if (!p) return null;
-  return p.replace(/(\d{4})\s*[-/]\s*(\d{2,4})/, (_m, y1: string, y2: string) => {
-    const a = Number(y1) + 1;
-    const b = y2.length === 2 ? String((Number(y2) + 1) % 100).padStart(2, "0") : String(Number(y2) + 1);
-    return `${a}-${b}`;
-  });
 }
 
 // Clone a collection for the next reporting year: recreate its data owners and the
