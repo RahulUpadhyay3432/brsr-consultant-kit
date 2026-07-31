@@ -54,10 +54,16 @@ WhatsApp analysis and surface angles to fold into the phases above:
   owners); reuses what we have. We were under-selling it.
 - **Supplier-lite Collect** — a simpler submission flow for the client's 2%+ value-chain (MSME)
   partners. On the FY2026-27 mandatory-assured tailwind; a natural Collect extension.
-- **Clone-last-year campaign** — recreate a collection with pre-filled owners + fields + prior-year
-  values. The recurring re-chase is the retention hook ("can't-stop-using-it" lever).
-- **Unit / sanity validation at data entry** — flag implausible values + enforce units; cheap, and
-  directly lowers the assurance unit-error risk consultants named.
+- **Clone-last-year campaign** ✅ BUILT (2026-08-01, in the pending-deploy sprint) — `cloneCampaignAction`
+  recreates owners + assigned fields for the next FY and carries this year's figures into `prior_value`;
+  surfaced as "Clone for next year" in `CampaignRowMenu`. (Was the top retention lever.)
+- **Unit / sanity validation at data entry** ✅ BUILT — `validation.ts` `validateItemValue` (wired into
+  `SubmitItemRow`) warns on non-numeric / negative / ≥10×·≤0.1× YoY, and now `%`-over-100. Soft-warn only.
+- **Scanned-bill OCR (beta)** ✅ BUILT (2026-08-01) — `geminiVision` + `extractBillImageAction`; a photo of a
+  bill/invoice → figures as verify-first suggestions in the Collect importer. Accuracy UNVERIFIED (Gemini
+  credits were exhausted at build time); degrades gracefully.
+- **Supplier-lite Collect** — still open. A simpler submission flow for the client's 2%+ value-chain (MSME)
+  partners. On the FY2026-27 mandatory-assured tailwind; a natural Collect extension.
 
 ---
 
