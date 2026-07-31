@@ -134,11 +134,11 @@ export async function extractBillImageAction(
   imageBase64: string,
   mimeType: string,
   sourceDoc = "photo",
-): Promise<{ configured: boolean; suggestions: BulkSuggestion[] }> {
+): Promise<{ configured: boolean; aiError: boolean; suggestions: BulkSuggestion[] }> {
   requireConsultant();
-  if (!geminiConfigured()) return { configured: false, suggestions: [] };
+  if (!geminiConfigured()) return { configured: false, aiError: false, suggestions: [] };
   const b64 = (imageBase64 || "").trim();
-  if (!b64 || !campaignId) return { configured: true, suggestions: [] };
+  if (!b64 || !campaignId) return { configured: true, aiError: false, suggestions: [] };
 
   // Ground to the numeric fields a bill / invoice / register would contain.
   const numeric = REQUEST_FIELDS.filter((f) => f.unit || f.kind === "activity");
@@ -161,14 +161,17 @@ STRICT RULES:
   } catch {
     raw = null;
   }
-  if (!raw) return { configured: true, suggestions: [] };
+  // raw === null means the vision call itself didn't return (rate-limited, no credits,
+  // blocked). That's distinct from a successful read that found nothing, so the UI can
+  // say "try again" vs "no figures found".
+  if (!raw) return { configured: true, aiError: true, suggestions: [] };
 
   let arr: Array<{ fieldId?: string; value?: string | number; source?: string; confidence?: string }> = [];
   const m = raw.match(/\[[\s\S]*\]/);
   if (m) {
     try { arr = JSON.parse(m[0]); } catch { arr = []; }
   }
-  if (!Array.isArray(arr)) return { configured: true, suggestions: [] };
+  if (!Array.isArray(arr)) return { configured: true, aiError: false, suggestions: [] };
 
   const byId = new Map(REQUEST_FIELDS.map((f) => [f.id, f]));
   const seen = new Set<string>();
@@ -193,7 +196,7 @@ STRICT RULES:
       verified: true,
     });
   }
-  return { configured: true, suggestions };
+  return { configured: true, aiError: false, suggestions };
 }
 
 // CBAM screening auto-fill: extract the covered good + production/export quantity from

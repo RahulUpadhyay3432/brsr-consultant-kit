@@ -164,12 +164,14 @@ export default function BulkImportPanel({
     try {
       // Images → vision OCR now.
       let ocrFound = 0;
+      let ocrAiError = false;
       for (let i = 0; i < images.length; i++) {
         setBusy(images.length === 1 ? "Reading your photo…" : `Reading photo ${i + 1} of ${images.length}…`);
         try {
           const { base64, mime } = await fileToBase64(images[i]);
           const res = await extractBillImageAction(campaignId, base64, mime, images[i].name);
           if (res.configured === false) { setBusy(null); setMsg("AI auto-fill isn't configured on this deployment yet."); return; }
+          if (res.aiError) ocrAiError = true;
           addSuggestions(res.suggestions);
           ocrFound += res.suggestions.length;
         } catch { /* skip this image */ }
@@ -189,7 +191,11 @@ export default function BulkImportPanel({
       } else if (pdfs.length && !images.length) {
         setMsg("These look like scanned PDFs (no selectable text found). Upload a text-based PDF, or add a photo of the page and we'll read it.");
       } else if (images.length && ocrFound === 0 && !docs.length) {
-        setWarn("Couldn't read a clear figure from that photo. Try a sharper, straight-on shot, or enter the value by hand.");
+        if (ocrAiError) {
+          setMsg("The image reader couldn't be reached just now (it may be busy or out of quota). Please try again in a moment, or enter the value by hand.");
+        } else {
+          setWarn("Couldn't read a clear figure from that photo. Try a sharper, straight-on shot, or enter the value by hand.");
+        }
       }
     } catch {
       setBusy(null);
