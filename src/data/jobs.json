@@ -58,6 +58,19 @@
       "salary": "₹15,000 / month",
       "summary": "Six-month internship working with founders on carbon calculations, LCAs, and client work at a climate-tech firm.",
       "aboutRole": "A six-month, on-site internship working directly with the founders and engaging clients on live sustainability projects. Analyse real sustainability data and contribute to ESG and carbon-accounting engagements across sectors like construction, textiles and pharmaceuticals. Build client-ready presentations and support carbon accounting, life-cycle assessment, sustainability reporting, ESG disclosures, and climate strategy work. Requires a bachelor's degree, strong Excel and PowerPoint, structured analytical thinking, and a genuine interest in sustainability and climate-tech. Stipend is ₹15,000 per month.",
+      "sections": [
+        { "heading": "About the internship", "body": "A six-month, on-site internship working directly with the founders and engaging clients on live sustainability projects. Stipend is ₹15,000 per month." },
+        { "heading": "What you will do", "bullets": [
+          "Analyse real sustainability data and contribute to ESG and carbon-accounting engagements across sectors like construction, textiles and pharmaceuticals.",
+          "Build client-ready presentations.",
+          "Support carbon accounting, life-cycle assessment, sustainability reporting, ESG disclosures and climate-strategy work."
+        ] },
+        { "heading": "What you will bring", "bullets": [
+          "A bachelor's degree.",
+          "Strong Excel and PowerPoint, and structured analytical thinking.",
+          "A genuine interest in sustainability and climate-tech."
+        ] }
+      ],
       "aboutCompany": "Karbonwise is a climate-tech advisory firm working with companies across textiles, pharmaceuticals, and manufacturing to measure emissions and ESG.",
       "tags": ["Carbon Accounting", "LCA", "ESG Reporting", "Excel"],
       "sourceName": "SimplyHired",
@@ -122,6 +135,20 @@
       "experience": "2–4 years",
       "summary": "Lead social and environmental impact assessments and due diligence across lender-advisory clients.",
       "aboutRole": "Lead social baseline studies, environmental and social impact assessments (ESIA) and due-diligence assignments, including primary surveys, stakeholder consultations and field data collection. Run gap assessments against international standards such as the IFC Performance Standards (PS1 and PS5), ADB Safeguards and EHS Guidelines, and prepare reports while coordinating multidisciplinary teams on lender-advisory mandates. Sector exposure spans power and renewables, oil and gas, waste, transmission and distribution, manufacturing and infrastructure. Requires a degree in social sciences, sociology, development studies or a related field and 2 to 4 years in social impact, ESIA/ESDD or sustainability consulting; extensive fieldwork travel is expected.",
+      "sections": [
+        { "heading": "About the role", "body": "Lead social baseline studies, environmental and social impact assessments (ESIA) and due-diligence assignments on lender-advisory mandates, coordinating multidisciplinary teams." },
+        { "heading": "Key responsibilities", "bullets": [
+          "Conduct social baseline studies and ESIAs, including primary surveys, stakeholder consultations and field data collection.",
+          "Run gap assessments against international standards such as the IFC Performance Standards (PS1 and PS5), ADB Safeguards and EHS Guidelines.",
+          "Prepare reports and coordinate multidisciplinary teams on lender-advisory mandates."
+        ] },
+        { "heading": "Sector exposure", "body": "Power and renewables, oil and gas, waste, transmission and distribution, manufacturing and infrastructure." },
+        { "heading": "Requirements", "bullets": [
+          "A degree in social sciences, sociology, development studies or a related field.",
+          "2 to 4 years in social impact, ESIA/ESDD or sustainability consulting.",
+          "Willingness to travel; extensive fieldwork is expected."
+        ] }
+      ],
       "aboutCompany": "Deloitte provides market-leading professional audit, tax, financial advisory, and sustainability services.",
       "tags": ["IFC Performance Standards", "ESIA", "Stakeholder Engagement", "Social Impact"],
       "sourceName": "Indeed"
@@ -332,6 +359,21 @@
       "seniority": "5+ years",
       "summary": "Freelance social-compliance role running digital worker-voice programs across western India.",
       "aboutRole": "A part-time contract or freelance role with EcoVadis' Ulula arm, deploying digital worker-voice programmes across Indian workplaces. Provide platform training and technical support to suppliers, manage grievance cases and investigations, and develop onboarding materials. Maintain regular supplier communications and act as a liaison between internal teams, suppliers and brands, with occasional national travel. Requires 5+ years in global supply chain with a background in social compliance or labour rights, fluency in English and Gujarati (Marathi and Hindi preferred), and familiarity with auditing standards such as BSCI, ETI and SA8000. Applicants must be based in India, preferably Gujarat or Maharashtra, and submit a resume, cover letter and proposed rates.",
+      "sections": [
+        { "heading": "About the role", "body": "A part-time contract or freelance role with EcoVadis' Ulula arm, deploying digital worker-voice programmes across Indian workplaces." },
+        { "heading": "Key responsibilities", "bullets": [
+          "Provide platform training and technical support to suppliers.",
+          "Manage grievance cases and investigations, and develop onboarding materials.",
+          "Maintain regular supplier communications and act as a liaison between internal teams, suppliers and brands, with occasional national travel."
+        ] },
+        { "heading": "Requirements", "bullets": [
+          "5+ years in global supply chain, with a background in social compliance or labour rights.",
+          "Fluency in English and Gujarati (Marathi and Hindi preferred).",
+          "Familiarity with auditing standards such as BSCI, ETI and SA8000.",
+          "Based in India, preferably Gujarat or Maharashtra."
+        ] },
+        { "heading": "To apply", "body": "Submit a resume, cover letter and proposed rates." }
+      ],
       "aboutCompany": "EcoVadis is the leading global provider of business sustainability ratings, analysing environmental and ethical supply-chain risk.",
       "tags": ["Social Compliance", "Supply Chain", "Human Rights", "SA8000", "SEDEX"],
       "sourceName": "Wall Street Careers"
@@ -350,6 +392,13 @@
       "companySize": "11–50 people",
       "summary": "Structured mentorship and cross-functional project exposure at a climate-tech SaaS startup.",
       "aboutRole": "A fellowship for students and recent graduates passionate about technology and sustainability, based in Bengaluru. It offers hands-on experience in a startup environment with mentorship, cross-functional exposure, and impactful projects across Breathe ESG's tech and ESG platforms. It is an internship-style opportunity rather than a senior hire. The careers page lists the fellowship at a high level, so specific responsibilities and requirements are shared on application by email.",
+      "sections": [
+        { "heading": "About the fellowship", "body": "A fellowship for students and recent graduates passionate about technology and sustainability, based in Bengaluru. It offers hands-on experience in a startup environment with mentorship, cross-functional exposure, and impactful projects across Breathe ESG's tech and ESG platforms." },
+        { "heading": "Good to know", "bullets": [
+          "An internship-style opportunity rather than a senior hire.",
+          "The careers page lists the fellowship at a high level; specific responsibilities and requirements are shared on application by email."
+        ] }
+      ],
       "aboutCompany": "Breathe ESG is an impact-tech startup using cloud-based software to streamline sustainability and carbon calculations.",
       "tags": ["Mentorship", "ESG Tech", "SaaS", "Sustainability"],
       "sourceName": "Company site"

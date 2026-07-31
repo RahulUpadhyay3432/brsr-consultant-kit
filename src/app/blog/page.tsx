@@ -4,7 +4,7 @@ import { useState, useMemo, CSSProperties } from "react";
 import Link from "next/link";
 import { BLOG_POSTS, formatDate, CATEGORY_COLORS, BlogCategory, BlogPost } from "@/data/blog-posts";
 import { BlogCoverArt } from "@/components/blog/BlogCoverArt";
-import { BlogHeader } from "@/components/blog/BlogHeader";
+import { SiteHeader } from "@/components/SiteHeader";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 
 const ALL_CATEGORIES: BlogCategory[] = ["BRSR", "Regulation", "GHG & Emissions", "How-to", "Case Studies"];
@@ -148,7 +148,7 @@ export default function BlogIndexPage() {
 
   return (
     <div className="min-h-screen bg-[#FBFCFE] flex flex-col">
-      <BlogHeader />
+      <SiteHeader active="blog" />
 
       <main className="flex-1">
         <div className="max-w-[1200px] mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-20">

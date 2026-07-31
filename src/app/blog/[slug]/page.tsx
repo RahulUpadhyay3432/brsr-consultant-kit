@@ -4,7 +4,7 @@ import { getPost, formatDate, CATEGORY_COLORS, BLOG_POSTS, BlogCategory, BlogPos
 import { BLOG_CONTENT } from "@/content/blog-content";
 import { BlogCoverArt } from "@/components/blog/BlogCoverArt";
 import { BlogToc } from "@/components/blog/BlogToc";
-import { BlogHeader } from "@/components/blog/BlogHeader";
+import { SiteHeader } from "@/components/SiteHeader";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 import { SubscribeForm } from "@/components/SubscribeForm";
 import { jsonLdHtml } from "@/lib/jsonld";
@@ -137,7 +137,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     <div className="min-h-screen bg-[#FBFCFE] flex flex-col">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }} />
       {faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(faqLd) }} />}
-      <BlogHeader />
+      <SiteHeader active="blog" />
 
       <main className="flex-1">
         <div className="anim-up-sm max-w-[1080px] mx-auto px-6 py-10">

@@ -1,11 +1,11 @@
-import { BlogHeader } from "@/components/blog/BlogHeader";
+import { SiteHeader } from "@/components/SiteHeader";
 
 /* Shown instantly while a post route resolves, so clicking a card feels responsive
    instead of hanging on a blank screen. Mirrors the article's layout. */
 export default function Loading() {
   return (
     <div className="min-h-screen bg-[#FBFCFE] flex flex-col">
-      <BlogHeader />
+      <SiteHeader active="blog" />
       <main className="flex-1">
         <div className="max-w-[1080px] mx-auto px-6 py-10">
           <div className="h-4 w-16 rounded bg-[#E9EEF5] animate-pulse mb-8" />
