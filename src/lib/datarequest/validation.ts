@@ -49,6 +49,12 @@ export function validateItemValue(
     return { level: "warn", message: "That's a negative value, please double-check." };
   }
 
+  // Percentages should sit in 0–100; a value above that is usually a unit slip
+  // (e.g. a fraction entered as a raw count).
+  if (/%|percent/i.test(field.unit || "") && current > 100) {
+    return { level: "warn", message: "Percentages are usually between 0 and 100, please double-check the value." };
+  }
+
   const prior = parseLooseNumber(priorRaw);
   if (!Number.isNaN(prior) && prior > 0) {
     const ratio = current / prior;

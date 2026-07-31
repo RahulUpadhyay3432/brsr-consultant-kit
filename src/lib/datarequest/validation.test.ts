@@ -45,4 +45,9 @@ describe("validateItemValue", () => {
   it("treats empty current value as ok", () => {
     expect(validateItemValue(elec, "", "1,00,000").level).toBe("ok");
   });
+  it("warns when a percentage field exceeds 100", () => {
+    const pct = { unit: "%", kind: "value" };
+    expect(validateItemValue(pct, "180", null).level).toBe("warn");
+    expect(validateItemValue(pct, "82", null).level).toBe("ok");
+  });
 });
