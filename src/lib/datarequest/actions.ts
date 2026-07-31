@@ -101,6 +101,26 @@ export async function cloneCampaignAction(sourceId: string): Promise<void> {
     await db.addContact(newId, c.name || "", c.email, randomBytes(24).toString("base64url"), fields);
   }
 
+  // Carry this year's collected figures into next year's "prior" column, so the
+  // year-on-year comparison BRSR needs is pre-filled. Re-fetch for the new item ids,
+  // then match each to its source by (owner email + field). Best-effort.
+  try {
+    const priorByKey = new Map<string, string>();
+    for (const c of src.contacts) {
+      if (c.email === "imported@saaksh.local") continue;
+      for (const it of c.items) if (it.value) priorByKey.set(`${c.email}::${it.fieldId}`, it.value);
+    }
+    if (priorByKey.size) {
+      const cloned = await db.getCampaign(newId);
+      for (const c of cloned?.contacts || []) {
+        for (const it of c.items) {
+          const prior = priorByKey.get(`${c.email}::${it.fieldId}`);
+          if (prior) await db.setItemPrior(it.id, prior);
+        }
+      }
+    }
+  } catch { /* best-effort; the clone itself still succeeds */ }
+
   revalidatePath("/requests");
   redirect(`/requests/${newId}`);
 }

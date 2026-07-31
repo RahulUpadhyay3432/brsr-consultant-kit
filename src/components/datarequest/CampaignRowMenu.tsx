@@ -49,7 +49,7 @@ export default function CampaignRowMenu({
   function onClone() {
     setOpen(false);
     if (!cloneAction) return;
-    if (!window.confirm(`Clone "${clientName}" for next year? This recreates the same data owners and their assigned fields as a fresh collection (no data carried over, no emails sent).`)) return;
+    if (!window.confirm(`Clone "${clientName}" for next year? This recreates the same data owners and their assigned fields, carries this year's figures in as last-year references, and sends no emails until you choose to.`)) return;
     startTransition(() => {
       void cloneAction(campaignId);
     });
