@@ -194,6 +194,7 @@ export default function JobsPage() {
   const [date, setDate] = useState<DateFilter>("all");
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState(false); // mobile filter sheet
   const [savedIds, setSavedIds] = useState<string[]>([]);
   useEffect(() => setSavedIds(getSavedJobIds()), []);
   const save = (id: string) => { toggleSavedJob(id); setSavedIds(getSavedJobIds()); };
@@ -211,6 +212,18 @@ export default function JobsPage() {
   const activeJob = shown.find((j) => j.id === selected) || shown[0] || null;
   const anyFilter = cat !== "all" || mode !== "all" || type !== "all" || date !== "all" || !!query;
   const clear = () => { setCat("all"); setMode("all"); setType("all"); setDate("all"); setQuery(""); };
+  // Count of active non-search filters, shown on the mobile Filters button.
+  const activeFilterCount = [cat !== "all", mode !== "all", type !== "all", date !== "all"].filter(Boolean).length;
+
+  // The four filter groups, shared by the desktop rail and the mobile sheet.
+  const filterGroups = (
+    <>
+      {cats.length > 1 && <FilterGroup title="Role type" value={cat} onChange={(v) => setCat(v as JobCategory | "all")} options={[{ label: "All roles", value: "all" }, ...cats.map((c) => ({ label: c.label, value: c.slug }))]} />}
+      {modes.length > 1 && <FilterGroup title="Workplace" value={mode} onChange={setMode} options={[{ label: "Any", value: "all" }, ...modes.map((m) => ({ label: workModeLabel(m as never) || m, value: m }))]} />}
+      {types.length > 1 && <FilterGroup title="Employment" value={type} onChange={setType} options={[{ label: "Any", value: "all" }, ...types.map((t) => ({ label: jobTypeLabel(t as never) || t, value: t }))]} />}
+      <FilterGroup title="Date posted" value={date} onChange={(v) => setDate(v as DateFilter)} options={[{ label: "Any time", value: "all" }, { label: "Past 24 hours", value: "24h" }, { label: "Past week", value: "week" }, { label: "Past month", value: "month" }]} />
+    </>
+  );
 
   return (
     <div className="min-h-screen bg-page flex flex-col">
@@ -237,12 +250,16 @@ export default function JobsPage() {
           ) : (
             <>
               {/* search */}
-              <div className="flex items-center gap-3.5 mb-5">
+              <div className="flex items-center gap-3 mb-5">
                 <label className="flex-1 flex items-center gap-2.5 bg-white border border-line rounded-xl px-4 py-2.5 shadow-elev-1 text-ink-faint focus-within:border-brand-300">
                   <SearchIcon />
                   <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search roles, companies, or skills" aria-label="Search roles" className="border-none outline-none bg-transparent text-[14.5px] text-ink w-full placeholder:text-ink-faint" />
                 </label>
-                <span className="text-[14px] text-ink-muted whitespace-nowrap"><span className="font-bold text-ink">{shown.length}</span> role{shown.length === 1 ? "" : "s"}</span>
+                <button onClick={() => setShowFilters(true)} className="lg:hidden flex-shrink-0 inline-flex items-center gap-1.5 rounded-xl border border-line bg-white px-3.5 py-2.5 text-[13.5px] font-semibold text-ink-body shadow-elev-1">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="6" x2="20" y2="6" /><line x1="7" y1="12" x2="17" y2="12" /><line x1="10" y1="18" x2="14" y2="18" /></svg>
+                  Filters{activeFilterCount > 0 && <span className="ml-0.5 grid place-items-center min-w-[18px] h-[18px] rounded-full bg-brand-600 text-white text-[11px] font-bold px-1">{activeFilterCount}</span>}
+                </button>
+                <span className="text-[14px] text-ink-muted whitespace-nowrap"><span className="font-bold text-ink">{shown.length}</span> <span className="hidden sm:inline">role{shown.length === 1 ? "" : "s"}</span></span>
               </div>
 
               <div className="grid lg:grid-cols-[220px_minmax(360px,460px)_minmax(440px,1fr)] gap-6 xl:gap-8 items-start">
@@ -252,10 +269,7 @@ export default function JobsPage() {
                     <div className="text-[15px] font-bold tracking-[-0.01em] text-ink">Filters</div>
                     {anyFilter && <button onClick={clear} className="text-brand-700 text-[12.5px] font-semibold">Clear all</button>}
                   </div>
-                  {cats.length > 1 && <FilterGroup title="Role type" value={cat} onChange={(v) => setCat(v as JobCategory | "all")} options={[{ label: "All roles", value: "all" }, ...cats.map((c) => ({ label: c.label, value: c.slug }))]} />}
-                  {modes.length > 1 && <FilterGroup title="Workplace" value={mode} onChange={setMode} options={[{ label: "Any", value: "all" }, ...modes.map((m) => ({ label: workModeLabel(m as never) || m, value: m }))]} />}
-                  {types.length > 1 && <FilterGroup title="Employment" value={type} onChange={setType} options={[{ label: "Any", value: "all" }, ...types.map((t) => ({ label: jobTypeLabel(t as never) || t, value: t }))]} />}
-                  <FilterGroup title="Date posted" value={date} onChange={(v) => setDate(v as DateFilter)} options={[{ label: "Any time", value: "all" }, { label: "Past 24 hours", value: "24h" }, { label: "Past week", value: "week" }, { label: "Past month", value: "month" }]} />
+                  {filterGroups}
                 </aside>
 
                 {/* list */}
@@ -299,6 +313,25 @@ export default function JobsPage() {
         </div>
       </main>
       <BlogFooter />
+
+      {/* Mobile filter sheet. Rendered at the page root (outside the anim-up-sm
+          container, whose transform would otherwise break position:fixed) so it
+          overlays the viewport. Reuses the same FilterGroups as the desktop rail. */}
+      {showFilters && (
+        <div className="lg:hidden fixed inset-0 z-50 flex flex-col justify-end">
+          <button aria-label="Close filters" onClick={() => setShowFilters(false)} className="absolute inset-0 bg-ink/40" />
+          <div className="dropdown-in relative bg-white rounded-t-3xl border-t border-line shadow-elev-3 max-h-[85%] flex flex-col">
+            <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-line">
+              <div className="font-display text-[1.1rem] font-bold text-ink">Filters</div>
+              {anyFilter && <button onClick={clear} className="text-brand-700 text-[13px] font-semibold">Clear all</button>}
+            </div>
+            <div className="flex-1 min-h-0 overflow-y-auto px-5 py-4 flex flex-col gap-5">{filterGroups}</div>
+            <div className="px-5 py-3.5 border-t border-line">
+              <button onClick={() => setShowFilters(false)} className="pressable w-full rounded-xl bg-brand-600 text-white text-[14px] font-semibold py-3">Show {shown.length} role{shown.length === 1 ? "" : "s"}</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
