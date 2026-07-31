@@ -48,7 +48,11 @@ export async function requestAccessAction(formData: FormData): Promise<{ ok: boo
   const organisation = cap(String(formData.get("organisation") || "").trim(), 200);
   const email = String(formData.get("email") || "").trim().toLowerCase();
   const clients = cap(String(formData.get("clients") || "").trim(), 60);
-  const message = cap(String(formData.get("message") || "").trim(), 2000);
+  const rawMessage = cap(String(formData.get("message") || "").trim(), 2000);
+  const agency = String(formData.get("agency") || "").trim() === "yes";
+  // Tag agency/partnership interest inline (no schema change) so it's captured in
+  // the stored lead and stands out in the founder email.
+  const message = agency ? cap(`[AGENCY / PARTNERSHIP INTEREST] ${rawMessage}`.trim(), 2000) : rawMessage;
 
   if (!name || !EMAIL_RE.test(email) || email.length > MAX_EMAIL) {
     return { ok: false, message: "Please add your name and a valid email." };
@@ -65,11 +69,12 @@ export async function requestAccessAction(formData: FormData): Promise<{ ok: boo
   // Store (durable) and notify (immediate, rate-capped). Both best-effort.
   await db.addAccessRequest({ name, organisation, email, clients, message }).catch(() => {});
   if (allowFounderEmail()) {
-    await notifyFounder(`Pro access request from ${name}`, [
+    await notifyFounder(`Pro access request from ${name}${agency ? " (AGENCY / PARTNER)" : ""}`, [
       ["Name", name],
       ["Organisation", organisation || "—"],
       ["Email", email],
       ["Clients", clients || "—"],
+      ["Agency / partner interest", agency ? "YES — wants to bundle/resell Saaksh" : "—"],
       ["Message", message || "—"],
     ]).catch(() => {});
   }

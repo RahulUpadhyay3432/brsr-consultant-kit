@@ -87,6 +87,11 @@ export function RequestAccessForm() {
         <textarea id="ra-msg" name="message" rows={3} maxLength={2000} placeholder="What you're hoping Collect can do for you (optional)" className={`${inputCls} resize-none`} />
       </div>
 
+      <label className="flex items-start gap-2.5 cursor-pointer select-none rounded-xl border border-line bg-page/60 px-3.5 py-3">
+        <input type="checkbox" name="agency" value="yes" className="mt-0.5 h-4 w-4 rounded border-line text-brand-600 focus:ring-2 focus:ring-brand-200" />
+        <span className="text-[13px] text-ink-body leading-snug">I run an agency or consultancy and I&apos;m interested in <b className="font-semibold text-ink">bundling or reselling Saaksh</b> to our clients.</span>
+      </label>
+
       {state === "error" && (
         <p className="text-[13px] text-ember font-medium">{error}</p>
       )}

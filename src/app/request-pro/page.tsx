@@ -36,6 +36,9 @@ export default function RequestProPage() {
             and attributing emissions, keeping the assurance trail, and drafting the report. We onboard consultants
             manually and price per engagement, tell us a little about your practice and we&apos;ll set you up.
           </p>
+          <p className="text-[14px] text-ondark-faint leading-relaxed mt-3.5 max-w-[620px]">
+            Run an agency or consultancy? We partner with firms to bundle Saaksh into their BRSR delivery, tick the box in the form and we&apos;ll talk.
+          </p>
         </div>
       </header>
 
