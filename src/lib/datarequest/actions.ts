@@ -57,6 +57,54 @@ export async function deleteCampaignAction(campaignId: string): Promise<void> {
   revalidatePath("/requests");
 }
 
+// Shift an ISO date (YYYY-MM-DD) forward one year; null-safe.
+function bumpYear(iso: string | null): string | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  d.setFullYear(d.getFullYear() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+// Advance a "FY 2024-25" / "2024-25" reporting period by one year; unchanged if unparseable.
+function nextReportingPeriod(p: string | null): string | null {
+  if (!p) return null;
+  return p.replace(/(\d{4})\s*[-/]\s*(\d{2,4})/, (_m, y1: string, y2: string) => {
+    const a = Number(y1) + 1;
+    const b = y2.length === 2 ? String((Number(y2) + 1) % 100).padStart(2, "0") : String(Number(y2) + 1);
+    return `${a}-${b}`;
+  });
+}
+
+// Clone a collection for the next reporting year: recreate its data owners and the
+// exact fields each was asked for, as a FRESH chase (no values carried, no emails
+// sent). The stickiest retention hook, the year-on-year re-collection in one click.
+export async function cloneCampaignAction(sourceId: string): Promise<void> {
+  requireConsultant();
+  if (!sourceId) redirect("/requests");
+  const src = await db.getCampaign(sourceId);
+  if (!src) redirect("/requests");
+
+  const newId = await db.createCampaign(
+    src.clientName,
+    bumpYear(src.deadline),
+    nextReportingPeriod(src.reportingPeriod),
+  );
+
+  // Recreate every real data owner with the same assigned fields; skip the synthetic
+  // "Imported documents" contact. db.addContact sends no email, so the clone is silent
+  // until the consultant chooses to send the requests.
+  for (const c of src.contacts) {
+    if (c.email === "imported@saaksh.local") continue;
+    const fields = fieldsByIds(c.items.map((i) => i.fieldId));
+    if (!fields.length) continue;
+    await db.addContact(newId, c.name || "", c.email, randomBytes(24).toString("base64url"), fields);
+  }
+
+  revalidatePath("/requests");
+  redirect(`/requests/${newId}`);
+}
+
 // CBAM screening auto-fill: extract the covered good + production/export quantity from
 // an uploaded document (text extracted on-device first). Grounded, best-effort.
 export async function cbamExtractAction(

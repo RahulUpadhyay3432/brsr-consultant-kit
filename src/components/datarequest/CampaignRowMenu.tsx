@@ -10,10 +10,12 @@ export default function CampaignRowMenu({
   campaignId,
   clientName,
   deleteAction,
+  cloneAction,
 }: {
   campaignId: string;
   clientName: string;
   deleteAction: (id: string) => Promise<void>;
+  cloneAction?: (id: string) => Promise<void>;
 }) {
   const [open, setOpen] = useState(false);
   const [pending, startTransition] = useTransition();
@@ -41,6 +43,15 @@ export default function CampaignRowMenu({
     if (!window.confirm(`Delete "${clientName}" and all its collected data? This can't be undone.`)) return;
     startTransition(() => {
       void deleteAction(campaignId);
+    });
+  }
+
+  function onClone() {
+    setOpen(false);
+    if (!cloneAction) return;
+    if (!window.confirm(`Clone "${clientName}" for next year? This recreates the same data owners and their assigned fields as a fresh collection (no data carried over, no emails sent).`)) return;
+    startTransition(() => {
+      void cloneAction(campaignId);
     });
   }
 
@@ -72,8 +83,21 @@ export default function CampaignRowMenu({
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-9 z-20 w-48 bg-white border border-line rounded-lg shadow-[0_8px_24px_rgba(15,30,51,0.12)] py-1 dropdown-in"
+          className="absolute right-0 top-9 z-20 w-52 bg-white border border-line rounded-lg shadow-[0_8px_24px_rgba(15,30,51,0.12)] py-1 dropdown-in"
         >
+          {cloneAction && (
+            <button
+              type="button"
+              role="menuitem"
+              onClick={onClone}
+              className="w-full flex items-center gap-2.5 text-left px-3 py-2 text-[13.5px] font-medium text-ink-body hover:bg-line/50 transition-colors focus:outline-none focus-visible:bg-line/50"
+            >
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+                <rect x="9" y="9" width="11" height="11" rx="2" /><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+              </svg>
+              Clone for next year
+            </button>
+          )}
           <button
             type="button"
             role="menuitem"

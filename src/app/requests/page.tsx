@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { listCampaigns } from "@/lib/datarequest/db";
-import { loadSampleClientAction, deleteCampaignAction } from "@/lib/datarequest/actions";
+import { loadSampleClientAction, deleteCampaignAction, cloneCampaignAction } from "@/lib/datarequest/actions";
 import CompanyAvatar from "@/components/CompanyAvatar";
 import CampaignRowMenu from "@/components/datarequest/CampaignRowMenu";
 
@@ -179,7 +179,7 @@ export default async function RequestsPage() {
                     </div>
                   </Link>
                   <div className="absolute top-3 right-3">
-                    <CampaignRowMenu campaignId={c.id} clientName={c.clientName} deleteAction={deleteCampaignAction} />
+                    <CampaignRowMenu campaignId={c.id} clientName={c.clientName} deleteAction={deleteCampaignAction} cloneAction={cloneCampaignAction} />
                   </div>
                 </div>
               );
