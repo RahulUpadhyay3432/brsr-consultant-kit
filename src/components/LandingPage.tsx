@@ -606,6 +606,7 @@ function Header({
           <a href="#how" className="whitespace-nowrap text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">How it works</a>
           <Link href="/pricing" className="whitespace-nowrap text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Pricing</Link>
           <Link href="/community" className="whitespace-nowrap text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Community</Link>
+          <Link href="/jobs" className="whitespace-nowrap text-[15px] font-medium text-ink-muted hover:text-ink px-3 py-2 rounded-lg hover:bg-band transition-colors">Jobs</Link>
 
           {/* Resources dropdown (Latest + Blog + Methodology + About) */}
           <div
@@ -1424,6 +1425,7 @@ function Footer({ onStart, scrollTo }: { onStart: () => void; scrollTo: (id: str
             {[
               ["/blog", "Blog"],
               ["/community", "Community"],
+              ["/jobs", "Jobs & gigs"],
               ["/pricing", "Pricing"],
               ["/features/gap-analysis", "Gap analysis guide"],
               ["/features/ghg-calculator", "GHG calculator guide"],
