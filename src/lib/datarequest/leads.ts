@@ -40,7 +40,65 @@ export async function subscribeAction(formData: FormData): Promise<{ ok: boolean
   return { ok: true };
 }
 
-// On-site "Request Pro access" lead form (replaces the old mailto).
+// A consultant asking to be listed in the directory.
+//
+// Same posture as postGigAction: stored against the access-request table with a
+// "[DIRECTORY]" marker so no migration is needed, and treated as an inbox rather
+// than the directory itself. Contact details are collected so we can reply, but
+// the published profile carries only the link the consultant gives us, never an
+// email or a phone number.
+export async function listConsultantAction(formData: FormData): Promise<{ ok: boolean; message?: string }> {
+  if (String(formData.get("company_url") || "").trim()) return { ok: true }; // honeypot
+
+  const name = cap(String(formData.get("name") || "").trim(), 120);
+  const email = String(formData.get("email") || "").trim().toLowerCase();
+  const headline = cap(String(formData.get("headline") || "").trim(), 160);
+  const location = cap(String(formData.get("location") || "").trim(), 120);
+  const expertise = cap(String(formData.get("expertise") || "").trim(), 240);
+  const experience = cap(String(formData.get("experience") || "").trim(), 60);
+  const link = cap(String(formData.get("link") || "").trim(), 300);
+  const about = cap(String(formData.get("about") || "").trim(), 1200);
+
+  if (!name || !EMAIL_RE.test(email) || email.length > MAX_EMAIL || !headline) {
+    return { ok: false, message: "Please add your name, a valid email, and a one-line headline." };
+  }
+
+  const message = cap(
+    [
+      `[DIRECTORY] ${headline}`,
+      location && `Location: ${location}`,
+      expertise && `Expertise: ${expertise}`,
+      experience && `Experience: ${experience}`,
+      link && `Link: ${link}`,
+      about && `About: ${about}`,
+    ]
+      .filter(Boolean)
+      .join("\n"),
+    2000
+  );
+
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  try {
+    if (await db.recentAccessRequestExists(email, since)) return { ok: true };
+  } catch { /* fall through and record */ }
+
+  await db.addAccessRequest({ name, organisation: "", email, clients: "", message }).catch(() => {});
+  if (allowFounderEmail()) {
+    await notifyFounder(`Directory listing: ${name}`, [
+      ["Name", name],
+      ["Headline", headline],
+      ["Email", email],
+      ["Location", location || "not given"],
+      ["Expertise", expertise || "not given"],
+      ["Experience", experience || "not given"],
+      ["Link", link || "not given"],
+      ["About", about || "not given"],
+    ]).catch(() => {});
+  }
+
+  return { ok: true };
+}
+
 // A one-off freelance assignment someone wants listed on the gigs board.
 //
 // Deliberately reuses the access-request table with a "[GIG]" marker rather than
@@ -98,6 +156,7 @@ export async function postGigAction(formData: FormData): Promise<{ ok: boolean; 
   return { ok: true };
 }
 
+// On-site "Request Pro access" lead form (replaces the old mailto).
 export async function requestAccessAction(formData: FormData): Promise<{ ok: boolean; message?: string }> {
   if (String(formData.get("company_url") || "").trim()) return { ok: true }; // honeypot
 

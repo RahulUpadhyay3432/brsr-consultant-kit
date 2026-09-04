@@ -422,7 +422,7 @@ export default function JobsPage() {
           )}
 
           <p className="text-[13px] text-ink-muted leading-relaxed mt-8">
-            Roles are curated and link to the original posting, verify the details and apply there. Listings are not endorsements. Have a one-off assignment? Post it under Freelance gigs. Hiring for a full-time role?{" "}
+            Roles are curated and link to the original posting, verify the details and apply there. Listings are not endorsements. Have a one-off assignment? Post it under Freelance gigs, or find someone in the{" "}<Link href="/directory" className="text-brand-700 font-semibold underline decoration-line hover:decoration-brand-500">consultant directory</Link>. Hiring for a full-time role?{" "}
             <a href="mailto:rahulu626@gmail.com?subject=ESG%20job%20listing%20for%20Saaksh" className="text-brand-700 font-semibold underline decoration-line hover:decoration-brand-500">Send it to us</a>.
           </p>
         </div>
