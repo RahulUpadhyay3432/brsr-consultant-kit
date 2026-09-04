@@ -5,6 +5,7 @@
 // NOTE: this module is imported by server routes (via src/lib/jobs/db.ts), so it must
 // stay hook-free. The client `useMergedJobs` hook lives in src/lib/jobs/useMergedJobs.ts.
 import jobsData from "@/data/jobs.json";
+import { canonicalUrl } from "@/lib/jobs/url";
 
 export type JobCategory =
   | "brsr-reporting"
@@ -123,8 +124,18 @@ export function matchesQuery(j: Job, q: string): boolean {
 // Merge curated jobs.json with ingested jobs (from /api/jobs), de-duping on apply
 // URL (curated wins), featured-first then newest. Used by the client hook.
 export function mergeJobs(curated: Job[], stored: Job[]): Job[] {
-  const urls = new Set(curated.map((j) => j.applyUrl));
-  const extra = stored.filter((j) => j.applyUrl && !urls.has(j.applyUrl));
+  // Compare on the canonical link, not the raw one: a scraped row can carry the
+  // board's listing-position params (`?ref=kp&jobPos=7`) on a URL we already
+  // curate by hand, which would otherwise show the same role on the board twice.
+  const urls = new Set(curated.map((j) => canonicalUrl(j.applyUrl)));
+  const seen = new Set<string>();
+  const extra = stored.filter((j) => {
+    if (!j.applyUrl) return false;
+    const key = canonicalUrl(j.applyUrl);
+    if (urls.has(key) || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
   return [...curated, ...extra].sort(
     (a, b) =>
       (b.featured ? 1 : 0) - (a.featured ? 1 : 0) ||

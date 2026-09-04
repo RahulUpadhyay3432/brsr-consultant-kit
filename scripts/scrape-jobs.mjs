@@ -27,13 +27,19 @@ const UA =
 // (verified: iimjobs /k/ listings and Indeed search yield; /c/ paths, EY's marketing
 // page, and email-apply career pages do not). Headless Chromium reaches these where a
 // plain fetch is 403'd. LinkedIn is left out on purpose (litigious outlier). Tune freely.
+// Probed 2026-09-04: /k/climate-change-jobs and /k/brsr-jobs render an empty shell
+// (0 job links, ~2.5k chars of chrome) — iimjobs only has /k/ pages for tags it
+// actually carries, so those two were burning a page visit and a Groq call for
+// nothing. That is also why the board had zero brsr-reporting roles. Replaced with
+// /k/ehs-jobs (50 links) and a second, tighter Indeed query, both link-verified.
+// NOTE: Indeed rate-limits — a third query in the same run 403s, so keep it to two.
 const SOURCES = [
   { url: "https://www.iimjobs.com/k/esg-jobs", sourceName: "iimjobs" },
   { url: "https://www.iimjobs.com/k/sustainability-jobs", sourceName: "iimjobs" },
   { url: "https://www.iimjobs.com/k/csr-jobs", sourceName: "iimjobs" },
-  { url: "https://www.iimjobs.com/k/climate-change-jobs", sourceName: "iimjobs" },
-  { url: "https://www.iimjobs.com/k/brsr-jobs", sourceName: "iimjobs" },
+  { url: "https://www.iimjobs.com/k/ehs-jobs", sourceName: "iimjobs" },
   { url: "https://in.indeed.com/jobs?q=BRSR+sustainability&l=India&sort=date", sourceName: "Indeed" },
+  { url: "https://in.indeed.com/jobs?q=BRSR&l=India&sort=date", sourceName: "Indeed" },
   { url: "https://climatebase.org/jobs?l=India", sourceName: "Climatebase" },
 ];
 
@@ -42,6 +48,28 @@ const JOB_CATEGORIES = [
   "sustainability-ops", "ehs", "esg-finance", "other",
 ];
 const VALID_CAT = new Set(JOB_CATEGORIES);
+
+// Listing pages append the role's POSITION IN THE LIST to its detail link
+// (iimjobs: `?ref=kp_br&jobPos=14`). That position changes every time the board
+// reorders, so the same job arrived with a new apply_url on every run and sailed
+// straight past the dedup check — one role was stored nine times. Strip the
+// volatile params so a job has one stable identity. Applied both when building a
+// row and when reading the stored set, so rows written before this fix still match.
+const TRACKING_PARAM = /^(jobpos|ref|src|source|position|fromjob|utm_[a-z]+)$/i;
+function canonicalUrl(u) {
+  try {
+    const url = new URL(String(u).trim());
+    url.hash = "";
+    // Collect first, then delete — mutating while iterating skips entries.
+    const drop = [];
+    url.searchParams.forEach((_v, k) => { if (TRACKING_PARAM.test(k)) drop.push(k); });
+    drop.forEach((k) => url.searchParams.delete(k));
+    url.pathname = url.pathname.replace(/\/+$/, "");
+    return url.toString();
+  } catch {
+    return String(u || "").trim();
+  }
+}
 
 const SYSTEM = `You extract Indian ESG/sustainability JOB LISTINGS from the text of a careers or job-board page, for a curated jobs board.
 STRICT RULES:
@@ -52,7 +80,7 @@ STRICT RULES:
 - Return STRICT JSON only: an array of objects. No prose, no markdown fences. Empty array [] if none.
 Each object:
 {"title","company","location","applyUrl","category","type","workMode","seniority","experience","salary","summary","aboutRole","aboutCompany","companySize","tags"}
-- category: one of ${JOB_CATEGORIES.join(", ")}. Choose the best fit; use "other" if unsure.
+- category: one of ${JOB_CATEGORIES.join(", ")}. Definitions — brsr-reporting: writing or owning BRSR / sustainability / integrated reports, ESG disclosure, GRI, TCFD, CSRD, IFRS S1-S2, ESG data management for disclosure. assurance: assurance, verification or audit of non-financial / ESG data (incl. limited assurance of BRSR). carbon-climate: GHG accounting, Scope 1/2/3, LCA, decarbonisation, net-zero, climate risk, carbon markets or credits, CBAM, CCTS. esg-strategy: ESG or CSR strategy, advisory, materiality, ratings (CDP, EcoVadis, MSCI, DJSI), and Head/Lead-of-ESG roles. sustainability-ops: running sustainability programmes in-house, supply-chain sustainability, circularity, EPR, water and waste programmes. ehs: environment, health and safety, environmental compliance, consents, pollution control. esg-finance: sustainable or green finance, ESG investing, impact investing, climate finance, green taxonomy. Pick the MOST SPECIFIC category that fits; use "other" only when genuinely none of the above apply. A reporting or disclosure role is brsr-reporting even when the title only says "Sustainability Reporting".
 - type: one of full-time, part-time, contract, internship (or omit).
 - workMode: one of onsite, hybrid, remote (or omit).
 - summary: one line. aboutRole: 3-6 sentences from the posting if available (else omit). tags: up to 6 skills.
@@ -156,7 +184,7 @@ function toRow(e, sourceName) {
     company: (e.company || "").trim() || null,
     location: (e.location || "").trim() || null,
     category: VALID_CAT.has(cat) ? cat : "other",
-    apply_url: applyUrl,
+    apply_url: canonicalUrl(applyUrl),
     posted_date: new Date().toISOString().slice(0, 10),
     type: e.type?.toLowerCase() || null,
     work_mode: e.workMode?.toLowerCase() || null,
@@ -238,7 +266,9 @@ async function main() {
     // Fetch every stored URL (small rolling table) rather than an in.(...) filter,
     // whose request URL can exceed length limits and fail silently.
     const res = await sb("brsr_jobs?select=apply_url&limit=2000");
-    known = new Set((await res.json()).map((r) => r.apply_url));
+    // Canonicalise the stored side too: rows written before the fix still carry
+    // `?jobPos=…`, and without this every one of them would look "new" once more.
+    known = new Set((await res.json()).map((r) => canonicalUrl(r.apply_url)));
   } catch (e) { console.log("existing-url check failed:", e.message); }
   const fresh = unique.filter((c) => !known.has(c.apply_url));
 
@@ -250,7 +280,10 @@ async function main() {
     try {
       const resp = await page.goto(c.apply_url, { waitUntil: "domcontentloaded", timeout: 30000 });
       const status = resp ? resp.status() : 0;
-      if (status === 404 || status === 410) {
+      // Anything 4xx/5xx is not a live posting. Indeed and a few boards answer 403
+      // to a headless visit, so those are kept unverified rather than dropped —
+      // but a 404/410/500 from a board that does let us in is a genuinely dead link.
+      if (status >= 400 && status !== 403 && status !== 429) {
         console.log(`  drop dead link (${status}): ${c.apply_url}`);
         await page.close().catch(() => {});
         continue;
