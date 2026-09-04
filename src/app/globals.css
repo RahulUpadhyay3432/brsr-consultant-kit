@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 :root {
+  /* The site header is `sticky top-0`, so anything else that sticks has to clear
+     it or it parks underneath. Both sticky columns on /jobs were pinned at 20px
+     and lost their top 51px behind the header, clipping the job title. Keep this
+     in step with SiteHeader's rendered height. */
+  --site-header-h: 71px;
+
   /* Vivid Blue + Coral tokens — white canvas, navy anchor, blue accent, near-black text */
   --brand-500: #1E9DF2;   /* bright blue accent */
   --brand-800: #0C4C8E;   /* deep blue */

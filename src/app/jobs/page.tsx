@@ -147,7 +147,7 @@ function DetailPane({ job, all, saved, onSave, onSelect, embedded = false }: { j
 
       {/* key={tab} remounts the panel so the fade replays on every switch, and the
           scroll position resets to the top of the new tab rather than carrying over. */}
-      <div key={tab} className={`tab-fade px-6 py-5 ${embedded ? "" : "max-h-[calc(100vh-320px)] min-h-[280px] overflow-y-auto"}`}>
+      <div key={tab} className={`tab-fade px-6 py-5 ${embedded ? "" : "max-h-[calc(100vh-var(--site-header-h)-320px)] min-h-[280px] overflow-y-auto"}`}>
         {tab === "job" && (
           <div>
             <JobDescription job={job} />
@@ -291,7 +291,7 @@ export default function JobsPage() {
 
               <div className="grid lg:grid-cols-[220px_minmax(360px,460px)_minmax(440px,1fr)] gap-6 xl:gap-8 items-start">
                 {/* filter rail */}
-                <aside className="hidden lg:flex flex-col gap-5 sticky top-5">
+                <aside className="hidden lg:flex flex-col gap-5 sticky top-[calc(var(--site-header-h)+1.25rem)]">
                   <div className="flex items-center justify-between">
                     <div className="text-[15px] font-bold tracking-[-0.01em] text-ink">Filters</div>
                     {anyFilter && <button onClick={clear} className="text-brand-700 text-[12.5px] font-semibold">Clear all</button>}
@@ -322,7 +322,7 @@ export default function JobsPage() {
                 </div>
 
                 {/* detail pane */}
-                <section className="hidden lg:block sticky top-5 min-w-0">
+                <section className="hidden lg:block sticky top-[calc(var(--site-header-h)+1.25rem)] min-w-0">
                   {activeJob
                     ? <DetailPane job={activeJob} all={all} saved={savedIds.includes(activeJob.id)} onSave={() => save(activeJob.id)} onSelect={(id) => setSelected(id)} />
                     : <div className="bg-white border border-dashed border-line rounded-[18px] py-16 px-10 text-center font-editorial text-[1.15rem] font-semibold text-ink-muted">Select a role to see the details</div>}
