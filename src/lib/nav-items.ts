@@ -12,7 +12,7 @@ export const FREE_NAV_ITEMS: { label: string; sub: string; href: string; badge?:
   { label: "BRSR gap analysis",        sub: "108-field instant readiness report",             href: "/start",                    badge: "Start free" },
   { label: "BRSR applicability checker", sub: "Must your client file, and by when?",           href: "/tools/brsr-applicability" },
   { label: "GHG & emissions calculator", sub: "Scope 1 & 2, energy, water, CEA & IPCC cited", href: "/tools/ghg-calculator" },
-  { label: "Scope 3 screening",         sub: "Activity-based Cat 4–9, GHG Protocol + DEFRA", href: "/tools/scope3-calculator" },
+  { label: "Scope 3 screening",         sub: "Activity-based Cat 4-9, GHG Protocol + DEFRA", href: "/tools/scope3-calculator" },
   { label: "Materiality matrix builder", sub: "Impact × stakeholder grid, CSV export",        href: "/tools/materiality" },
   { label: "Templates & workbooks",     sub: "BRSR workbook, materiality grid, stakeholder plan", href: "/features/templates" },
   { label: "Cross-framework mapping",   sub: "BRSR ↔ GRI, TCFD, IFRS, TNFD, searchable + export", href: "/tools/brsr-framework-mapping" },
