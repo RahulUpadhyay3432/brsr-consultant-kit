@@ -5,6 +5,7 @@
 // NOTE: this module is imported by server routes (via src/lib/jobs/db.ts), so it must
 // stay hook-free. The client `useMergedJobs` hook lives in src/lib/jobs/useMergedJobs.ts.
 import jobsData from "@/data/jobs.json";
+import gigsData from "@/data/gigs.json";
 import { canonicalUrl } from "@/lib/jobs/url";
 
 export type JobCategory =
@@ -18,7 +19,12 @@ export type JobCategory =
   | "other";
 
 export type WorkMode = "onsite" | "hybrid" | "remote";
-export type JobType = "full-time" | "part-time" | "contract" | "internship";
+// "gig" is a one-off freelance assignment rather than a role: an LCA study, a
+// VVB empanelment, an ash-dyke audit. These never appear on iimjobs or Indeed --
+// of 107 scraped listings, 93 were full-time and not one was a gig. They
+// circulate in consultant WhatsApp groups instead, which is why they are
+// submitted here rather than crawled.
+export type JobType = "full-time" | "part-time" | "contract" | "internship" | "gig";
 
 // A rich, structured chunk of a job description: an optional heading, an optional
 // intro paragraph, and an optional bullet list. When a job has `sections`, the
@@ -79,6 +85,7 @@ const JOB_TYPE_LABEL: Record<JobType, string> = {
   "part-time": "Part-time",
   contract: "Contract",
   internship: "Internship",
+  gig: "Freelance gig",
 };
 
 export const workModeLabel = (m?: WorkMode) => (m ? WORK_MODE_LABEL[m] : null);
@@ -163,6 +170,14 @@ export function realCompany(name?: string): string | undefined {
   const n = (name || "").trim().replace(/^\(+|\)+$/g, "").trim();
   if (!n || NO_COMPANY.test(n)) return undefined;
   return deDash(n);
+}
+
+// Curated freelance gigs, kept apart from the roles board: a consultant looking
+// for their next assignment and one looking for a job want different lists.
+export function getGigs(): Job[] {
+  return [...((gigsData.gigs || []) as Job[])].sort(
+    (a, b) => (b.postedDate || "").localeCompare(a.postedDate || "")
+  );
 }
 
 export function jobChips(j: Job): string[] {

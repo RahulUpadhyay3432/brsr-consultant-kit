@@ -10,11 +10,12 @@ import { track } from "@/lib/mixpanel";
 import {
   usedCategories, jobAge, jobChips, similarJobs, matchesQuery,
   getSavedJobIds, toggleSavedJob, workModeLabel, jobTypeLabel, CATEGORY_LABEL,
-  sortJobs, JOB_SORTS, deDash, realCompany,
+  sortJobs, JOB_SORTS, deDash, realCompany, getGigs,
   type Job, type JobCategory, type JobSort,
 } from "@/lib/jobs";
 import { useMergedJobs } from "@/lib/jobs/useMergedJobs";
 import { JobDescription } from "@/components/jobs/JobDescription";
+import { PostGigForm } from "@/components/jobs/PostGigForm";
 
 /* ── small pieces ─────────────────────────────────────────────────────────── */
 function ArrowUpRight({ cls = "w-4 h-4" }: { cls?: string }) {
@@ -183,6 +184,68 @@ function DetailPane({ job, all, saved, onSave, onSelect, embedded = false }: { j
   );
 }
 
+/* ── gigs ─────────────────────────────────────────────────────────────────── */
+// The gigs board is deliberately not a second copy of the roles board: there is
+// no filter rail, no detail pane, no sort. A handful of curated assignments does
+// not need furniture, and the submission form is the point of the page while the
+// list is still short.
+function GigsPanel({ gigs }: { gigs: Job[] }) {
+  return (
+    <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(360px,440px)] gap-8 items-start">
+      <div className="flex flex-col gap-3 min-w-0">
+        {gigs.length > 0 ? (
+          gigs.map((g) => (
+            <a
+              key={g.id}
+              href={g.applyUrl}
+              target="_blank"
+              rel="noreferrer"
+              onClick={() => track("gig_clicked", { title: g.title })}
+              className="group p-4 rounded-xl border border-line bg-white hover:border-brand-300 hover:shadow-elev-1 transition-[border-color,box-shadow] duration-150 ease-out"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <h3 className="m-0 text-[15px] font-semibold text-ink leading-snug">{deDash(g.title)}</h3>
+                {g.salary && (
+                  <span className="text-[13px] font-semibold text-ink-body whitespace-nowrap">{deDash(g.salary)}</span>
+                )}
+              </div>
+              <p className="mt-1 text-[13px] text-ink-muted">
+                {realCompany(g.company) || "Posted directly"}
+                {g.location ? ` · ${deDash(g.location)}` : ""}
+                {` · ${jobAge(g.postedDate)}`}
+              </p>
+              {g.summary && (
+                <p className="mt-2 text-[13.5px] text-ink-body leading-relaxed">{deDash(g.summary)}</p>
+              )}
+            </a>
+          ))
+        ) : (
+          <div className="rounded-2xl border border-dashed border-line bg-white/60 px-6 py-12 text-center">
+            <h3 className="font-display text-[1.2rem] font-bold text-ink m-0">No gigs up yet</h3>
+            <p className="mx-auto mt-2.5 max-w-[460px] text-[14px] text-ink-muted leading-relaxed">
+              One-off assignments, an LCA study, a VVB empanelment, an EIA coordination,
+              an ash-dyke audit, mostly travel by word of mouth in WhatsApp groups and
+              never reach a job board. This is a place to put them where the consultants
+              who do that work will actually see them.
+            </p>
+            <p className="mx-auto mt-3 max-w-[460px] text-[14px] text-ink-body leading-relaxed">
+              Have one? Post it on the right. It is free, and it takes a minute.
+            </p>
+          </div>
+        )}
+      </div>
+
+      <aside className="rounded-2xl border border-line bg-white p-5 shadow-elev-1 lg:sticky lg:top-[calc(var(--site-header-h)+1.25rem)]">
+        <h3 className="font-display text-[1.15rem] font-bold text-ink m-0">Post a gig</h3>
+        <p className="mt-1.5 mb-4 text-[13.5px] text-ink-muted leading-relaxed">
+          Need a one-off piece of ESG work done? Put it in front of consultants who do it.
+        </p>
+        <PostGigForm />
+      </aside>
+    </div>
+  );
+}
+
 /* ── page ─────────────────────────────────────────────────────────────────── */
 type DateFilter = "all" | "24h" | "week" | "month";
 export default function JobsPage() {
@@ -197,6 +260,8 @@ export default function JobsPage() {
   const [date, setDate] = useState<DateFilter>("all");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<JobSort>("newest");
+  const [board, setBoard] = useState<"roles" | "gigs">("roles");
+  const gigs = useMemo(() => getGigs(), []);
   const [selected, setSelected] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false); // mobile filter sheet
   const [mobileDetail, setMobileDetail] = useState(false); // mobile job-detail sheet
@@ -240,8 +305,8 @@ export default function JobsPage() {
           active="jobs"
           eyebrow="Careers · ESG & sustainability"
           title="Sustainability & ESG roles, hand-picked"
-          subtitle="A small, curated board of BRSR, climate and sustainable-finance roles across India. Every listing links straight to the original posting."
-          whoFor="For consultants hiring or subcontracting, and for anyone building a career in sustainability. We link out, we never scrape."
+          subtitle="A small, curated board of BRSR, climate and sustainable-finance work across India: full-time roles, and the one-off assignments that usually only travel by word of mouth."
+          whoFor="For consultants looking for their next assignment, for anyone building a career in sustainability, and for the people who need a piece of ESG work done. We link out, we never scrape."
           maxWidth={1520}
         />
 
@@ -257,6 +322,26 @@ export default function JobsPage() {
             </div>
           ) : (
             <>
+              {/* Roles vs gigs. A consultant hunting their next assignment and one
+                  hunting a job want different lists, and only one of the two can be
+                  crawled -- gigs are submitted. */}
+              <div className="inline-flex items-center gap-1 p-1 mb-5 rounded-xl border border-line bg-white shadow-elev-1">
+                {([["roles", `Roles${all.length ? ` (${all.length})` : ""}`], ["gigs", `Freelance gigs${gigs.length ? ` (${gigs.length})` : ""}`]] as const).map(([v, label]) => (
+                  <button
+                    key={v}
+                    onClick={() => { setBoard(v); track("jobs_board_switched", { board: v }); }}
+                    aria-pressed={board === v}
+                    className={`rounded-lg px-3.5 py-1.5 text-[13.5px] font-semibold transition-colors duration-150 ${board === v ? "bg-brand-600 text-white" : "text-ink-body hover:bg-band"}`}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+
+              {board === "gigs" ? (
+                <GigsPanel gigs={gigs} />
+              ) : (
+              <>
               {/* search */}
               <div className="flex items-center gap-3 mb-5">
                 <label className="flex-1 flex items-center gap-2.5 bg-white border border-line rounded-xl px-4 py-2.5 shadow-elev-1 text-ink-faint focus-within:border-brand-300">
@@ -329,12 +414,15 @@ export default function JobsPage() {
                 </section>
               </div>
 
+              </>
+              )}
+
               <div className="mt-8"><SubscribeForm variant="strip" source="jobs" /></div>
             </>
           )}
 
           <p className="text-[13px] text-ink-muted leading-relaxed mt-8">
-            Roles are curated and link to the original posting, verify the details and apply there. Listings are not endorsements. Hiring for a sustainability role and want it here?{" "}
+            Roles are curated and link to the original posting, verify the details and apply there. Listings are not endorsements. Have a one-off assignment? Post it under Freelance gigs. Hiring for a full-time role?{" "}
             <a href="mailto:rahulu626@gmail.com?subject=ESG%20job%20listing%20for%20Saaksh" className="text-brand-700 font-semibold underline decoration-line hover:decoration-brand-500">Send it to us</a>.
           </p>
         </div>

@@ -41,6 +41,63 @@ export async function subscribeAction(formData: FormData): Promise<{ ok: boolean
 }
 
 // On-site "Request Pro access" lead form (replaces the old mailto).
+// A one-off freelance assignment someone wants listed on the gigs board.
+//
+// Deliberately reuses the access-request table with a "[GIG]" marker rather than
+// adding a schema, exactly as the agency/partner nudge does. Gigs are curated by
+// hand into src/data/gigs.json before they appear, so the store here is an inbox,
+// not the board: nothing a stranger submits goes live unreviewed.
+export async function postGigAction(formData: FormData): Promise<{ ok: boolean; message?: string }> {
+  if (String(formData.get("company_url") || "").trim()) return { ok: true }; // honeypot
+
+  const name = cap(String(formData.get("name") || "").trim(), 120);
+  const email = String(formData.get("email") || "").trim().toLowerCase();
+  const organisation = cap(String(formData.get("organisation") || "").trim(), 200);
+  const title = cap(String(formData.get("title") || "").trim(), 200);
+  const location = cap(String(formData.get("location") || "").trim(), 120);
+  const budget = cap(String(formData.get("budget") || "").trim(), 60);
+  const brief = cap(String(formData.get("brief") || "").trim(), 1500);
+
+  if (!name || !EMAIL_RE.test(email) || email.length > MAX_EMAIL || !title) {
+    return { ok: false, message: "Please add your name, a valid email, and what the assignment is." };
+  }
+
+  const message = cap(
+    [
+      `[GIG] ${title}`,
+      location && `Location: ${location}`,
+      budget && `Budget: ${budget}`,
+      brief && `Brief: ${brief}`,
+    ]
+      .filter(Boolean)
+      .join("\n"),
+    2000
+  );
+
+  // Same 24h per-email dedupe as the access form, so a double submit or a retry
+  // loop cannot flood the inbox. Someone with a genuine second gig can post it
+  // tomorrow, or reply to the acknowledgement.
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  try {
+    if (await db.recentAccessRequestExists(email, since)) return { ok: true };
+  } catch { /* fall through and record */ }
+
+  await db.addAccessRequest({ name, organisation, email, clients: "", message }).catch(() => {});
+  if (allowFounderEmail()) {
+    await notifyFounder(`Gig submitted: ${title}`, [
+      ["Assignment", title],
+      ["Posted by", name],
+      ["Organisation", organisation || "not given"],
+      ["Email", email],
+      ["Location", location || "not given"],
+      ["Budget", budget || "not given"],
+      ["Brief", brief || "not given"],
+    ]).catch(() => {});
+  }
+
+  return { ok: true };
+}
+
 export async function requestAccessAction(formData: FormData): Promise<{ ok: boolean; message?: string }> {
   if (String(formData.get("company_url") || "").trim()) return { ok: true }; // honeypot
 

@@ -1,0 +1,4 @@
+{
+  "_comment": "One-off freelance assignments, curated by hand from submissions through /jobs. Same shape as jobs.json. Use type 'gig', put the budget in 'salary' and the brief in 'aboutRole' or 'sections'. Only publish a gig the poster has agreed to have listed.",
+  "gigs": []
+}
