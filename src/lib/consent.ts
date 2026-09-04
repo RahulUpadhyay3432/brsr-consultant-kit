@@ -15,9 +15,42 @@ const KEY = "saaksh_consent";
 const CHANGE_EVENT = "saaksh-consent-change";
 const OPEN_EVENT = "saaksh-consent-open";
 
+// ── Device opt-out link ──────────────────────────────────────────────────────
+// Opening any Saaksh URL with `?notrack=1` once on a device permanently excludes
+// that browser from analytics — no banner, no console. `?notrack=0` clears the
+// choice again (it deliberately does NOT opt you in: under the DPDP Act consent
+// has to be given explicitly, so the banner simply asks again).
+//
+// This is applied inside getConsent, not in a useEffect, so it lands on the very
+// first read — before AnalyticsGate decides whether to mount any script. An effect
+// would race the analytics tags and let one pageview through.
+export const OPT_OUT_PARAM = "notrack";
+let urlChecked = false;
+
+function applyUrlOptOut(): void {
+  if (urlChecked || typeof window === "undefined") return;
+  urlChecked = true;
+  try {
+    const raw = new URLSearchParams(window.location.search).get(OPT_OUT_PARAM);
+    if (raw === null) return;
+    const optOut = !(raw === "0" || raw === "false");
+    if (optOut) {
+      window.localStorage.setItem(
+        KEY,
+        JSON.stringify({ analytics: false, ts: Date.now() } satisfies Consent)
+      );
+    } else {
+      window.localStorage.removeItem(KEY);
+    }
+  } catch {
+    /* private mode / blocked storage — nothing to do */
+  }
+}
+
 // Returns the stored choice, or null if the user hasn't decided yet.
 export function getConsent(): Consent | null {
   if (typeof window === "undefined") return null;
+  applyUrlOptOut();
   try {
     const raw = window.localStorage.getItem(KEY);
     if (!raw) return null;
