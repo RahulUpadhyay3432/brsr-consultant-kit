@@ -14,9 +14,107 @@ The "100% on-device / no data stored" framing applies to **(1) only**. Collect d
 
 Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUpadhyay3432/brsr-consultant-kit
 
-## Project Status — last updated 2026-08-01
+## Project Status — last updated 2026-09-04
 
-**⚠️ DEPLOY STATE (read first, 2026-08-01): a ~12-commit sprint is COMMITTED LOCALLY but NOT YET PUSHED/DEPLOYED.** The dev machine lost outbound connectivity to **github.com + vercel.com (and api.anthropic.com)** mid-sprint while google.com still returned 200 — i.e. a **local firewall/VPN/proxy block on those specific hosts**, not a GitHub/Vercel outage, and not DNS. So `git push` and `vercel` both fail with connection timeouts. **A new session MUST first run `git rev-list --count origin/master..HEAD` (expect ~12) and, once the machine can reach github.com again (toggle VPN / use a phone hotspot), run `git push origin master` then `$env:NODE_TLS_REJECT_UNAUTHORIZED="0"; vercel --prod --yes`.** Everything *before* this sprint was pushed + deployed live to saaksh.co during the session. The pending commits are all clean-build + verified locally (20-route Playwright smoke desktop+mobile = 0 errors; 20 unit tests pass): blog-nav unify + last-4 job JDs · jobs mobile filter sheet · clone-last-year · agency nudge · brief push quiet-hours · importer coverage note · %-validation · scanned-bill OCR (beta) · mobile job-detail sheet · clone prior-year carry · OCR failure-messaging · clone-util tests. (Untracked stray root `*.png`/`*.jpeg` screenshots and `docs/ECS-one-pager.html` are intentionally NOT committed.)
+**Everything below through 2026-08-01 is pushed and deployed.** The old "12 commits unpushed"
+warning is gone: that sprint went out, and origin/master == local == live. Deploys are still
+`$env:NODE_TLS_REJECT_UNAUTHORIZED="0"; vercel --prod --yes` and still ship the WORKING TREE,
+so run `git status` first.
+
+### What the numbers actually say (GA4, read 2026-09-04)
+
+Property `a396601351p539979083` under **rahulu626@gmail.com** (not the account Chrome defaults
+to). **Analytics is opt-IN**, so every count below is a FLOOR, not a total; ratios are sound,
+absolutes are not.
+
+- **May 1 to Sep 4: 175 users, 434 sessions, average engagement 6m 31s.** That engagement number
+  is genuinely strong. The people who arrive use the thing properly.
+- **Traffic is the constraint, not the product.** 175 users in four months, and 175 of them new:
+  essentially nobody returns.
+- **AI assistants are now the largest channel.** Over 28 days: AI Assistant 25 sessions (49%),
+  Organic Search 18 (35%), Direct 7, Organic Social 1. Over four months Direct still leads
+  (236) with LinkedIn second (92), so ChatGPT is the fastest-GROWING channel, not the biggest
+  historically. It engages worst though (28s vs organic search's 1m 24s): people arrive with a
+  specific question and leave without an answer. That is an addressable product problem.
+- **Best pages:** /report (4m 06s, 59 users over four months) and /jobs (7 active users in 28
+  days, the single most-visited page by users). /brief has 3 users and 0 new: the PWA, swipe
+  feed and web-push build has essentially no audience. Do not extend it.
+- **The funnel leaks at the LEAD forms, not the intake form.** 41 users hit `form_start` and 59
+  reached a report, so the intake works. It is the email capture and Pro request that convert
+  to almost nothing: 2 subscribers and 1 access request in the database, and 5 file downloads
+  in four months.
+- GA4 had ZERO custom events until 2026-09-04, which is why every report read "Key events:
+  0.00". Fixed (see below). **USER TO-DO: once events have appeared for a day or two, mark
+  report_generated, pro_access_requested, newsletter_subscribed and gig_submitted as key events
+  in GA4 Admin.**
+
+### What the consultant WhatsApp group says (five weeks read, to 2026-09-03)
+
+Load-bearing, because it is the ICP talking unprompted:
+
+1. **The work that circulates there is FREELANCE GIGS, not jobs** - an LCA study in Chennai, an
+   ISO 13485 lead auditor, VVB empanelment, an ash-dyke audit in Aligarh, an EIA coordinator,
+   an LCA/PCF study for a petrochemical firm. Of 107 scraped listings on our board, 93 are
+   full-time and 4 are contract (the same role stored four times). iimjobs and Indeed do not
+   carry this work at all, so it can only be submitted, never crawled.
+2. **"Who can do this?" is the most repeated question, and the only answer is ever "DM me."**
+   That is a search with no index, and it is why /directory exists.
+3. **Pricing is asked and never answered.** "How much for a CBAM readiness assessment?" and "am
+   I underpricing my ESG/LCA/GIS freelance work?" both got only "it depends". NOT YET BUILT and
+   the strongest remaining content idea: it is exactly what gets asked of ChatGPT, our
+   fastest-growing channel.
+4. **People hand over an email instantly for a SPECIFIC artifact.** One offer of training
+   material drew nine emails in nine minutes. Saaksh has two subscribers in four months. The
+   ask is the problem: "subscribe for updates" versus a named, downloadable thing.
+5. Someone said outright that answers should go in the group rather than DMs "it will help our
+   whole community", and two people agreed. Unanswered there: GRI 1 Requirement 9 notification,
+   whether CSR 2% money may fund carbon-credit projects, ISO 14001/45001 document registers.
+   Cited answers are the whole positioning; this is a content seam.
+6. Webinars work in this community (an EcoVadis session drew 100 registrations off a Google
+   Form). Untried by us.
+
+**Do NOT seed the boards from that group.** Those posts carry people's names and phone numbers
+and were shared in a private space. Ask the poster.
+
+### Shipped 2026-09-04
+
+- **/notrack** - open the link once on a device and it is excluded from analytics (GA4,
+  Mixpanel and Vercel all sit behind one consent gate, so nothing loads). `?notrack=1` works on
+  any URL. Applied inside getConsent so it lands before AnalyticsGate mounts anything.
+- **Jobs board fixes.** Dedup was keyed on the raw apply URL while iimjobs appends the listing
+  POSITION (`?jobPos=14`), so one role was stored nine times and 67 of 107 rows were duplicates;
+  `canonicalUrl` fixed it and the board went 125 cards to 58. Two of seven scraper sources
+  rendered an empty shell (`/k/brsr-jobs`, `/k/climate-change-jobs`) which is why BRSR-reporting
+  was empty; replaced with `/k/ehs-jobs` and a second Indeed query. Category prompt now has real
+  definitions. Employer placeholders ("Unknown", "(Unnamed)") no longer show as real companies.
+- **Sort control** (newest / oldest / company A-Z; deliberately no salary sort, it is prose).
+- **Motion pass** from the review-animations skill: both mobile sheets were using a DROPDOWN
+  animation while anchored to the bottom of the screen; hover is now gated behind a real pointer.
+- **Sticky columns** were parked 51px behind the sticky header, clipping the job title. New
+  `--site-header-h` token.
+- **GA4 event bridge**: `track()` now mirrors every event into gtag, covering all ~30 call sites.
+- **Freelance gigs** (`/jobs` toggle) and the **consultant directory** (`/directory`). Both are
+  curated from submissions into `src/data/gigs.json` / `src/data/consultants.json`; the actions
+  reuse the access-request table with `[GIG]` / `[DIRECTORY]` markers so neither needs a
+  migration. A directory profile never shows an email or phone, only the link the consultant
+  gives. **Both are EMPTY and will not fill themselves.**
+- **Jobs promoted to top-level nav** - it was the best-performing page and was hidden in a dropdown.
+
+### Open, in the order I would do them
+
+1. **Seed the two boards.** 3-4 gigs, 5-6 consultants, asked for by hand. Everything else waits
+   on this; an empty board teaches nobody anything.
+2. **Mark the GA4 key events** (a day or two after 2026-09-04).
+3. **Pricing benchmark page.** Asked twice in five weeks, never answered, and ChatGPT-shaped.
+4. **Change the email ask** to a named artifact rather than "updates".
+5. **Send the ECS approach.** `docs/ECS-proposal.html` is written and committed; the WhatsApp
+   intro to Mayuri Ganguly has not been sent. GTM is the actual bottleneck, not features.
+6. Optional, unlocks structured JDs on scraped roles:
+   `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections jsonb;`
+
+## Project Status — earlier: last updated 2026-08-01
+
+**DEPLOY STATE (2026-08-01) — RESOLVED on 2026-09-04, kept only for history. That sprint is pushed and live; ignore the instructions in this paragraph.** A ~12-commit sprint was committed locally but not pushed. The dev machine had lost outbound connectivity to **github.com + vercel.com (and api.anthropic.com)** mid-sprint while google.com still returned 200 — i.e. a **local firewall/VPN/proxy block on those specific hosts**, not a GitHub/Vercel outage, and not DNS. So `git push` and `vercel` both fail with connection timeouts. **A new session MUST first run `git rev-list --count origin/master..HEAD` (expect ~12) and, once the machine can reach github.com again (toggle VPN / use a phone hotspot), run `git push origin master` then `$env:NODE_TLS_REJECT_UNAUTHORIZED="0"; vercel --prod --yes`.** Everything *before* this sprint was pushed + deployed live to saaksh.co during the session. The pending commits are all clean-build + verified locally (20-route Playwright smoke desktop+mobile = 0 errors; 20 unit tests pass): blog-nav unify + last-4 job JDs · jobs mobile filter sheet · clone-last-year · agency nudge · brief push quiet-hours · importer coverage note · %-validation · scanned-bill OCR (beta) · mobile job-detail sheet · clone prior-year carry · OCR failure-messaging · clone-util tests. (Untracked stray root `*.png`/`*.jpeg` screenshots and `docs/ECS-one-pager.html` are intentionally NOT committed.)
 
 **ESG Jobs board — `/jobs` + a free headless scraping pipeline (built + mostly deployed this session):** A curated + auto-refreshed board of Indian ESG/sustainability roles (retention + a consultant top-of-funnel). **(1) Board** — `src/app/jobs/page.tsx` (desktop master-detail, widened to `maxWidth 1520`; a **mobile filter sheet** [a "Filters" button → bottom sheet reusing the desktop `FilterGroup`/`OptionRow`] and a **mobile job-detail sheet** [tapping a card opens a full-screen `DetailPane` via a new `embedded` prop] — both rendered at the *page root* to escape the `anim-up-sm` ancestor transform that otherwise breaks `position:fixed`). Data model in `src/lib/jobs.ts` (`Job`, `JobSection`, `toBullets`, and the **`useMergedJobs`** client hook in `src/lib/jobs/useMergedJobs.ts` merging curated `src/data/jobs.json` + stored `/api/jobs`, curated wins). A phone **Jobs tab lives inside the Brief** (`BriefFeed.tsx` `JobsView`/`JobRow`/`JobSheet`); saved jobs in `localStorage` (`saaksh:brief:savedjobs`). **All 18 curated jobs now carry rich structured JDs** (`sections: [{heading, body?, bullets?}]`, rendered by `src/components/jobs/JobDescription.tsx`, which prefers `sections` over the `aboutRole` fallback); each was verified live + structured from the real posting text. **(2) Free scraping pipeline** — `scripts/scrape-jobs.mjs` runs a real headless Chromium (Playwright) **inside GitHub Actions** (`.github/workflows/jobs-refresh.yml`, twice daily) → grounded Groq extract → per-link liveness verify → upsert into a new Supabase **`brsr_jobs`** table; served read-only through `/api/jobs` (`src/lib/jobs/db.ts`, best-effort → `[]` before the table exists). **No paid scraper** — Firecrawl was prototyped then dropped for the free headless-in-CI approach (user's "free scrapers only" ask); LinkedIn is deliberately excluded. Load-bearing learnings: Groq free tier = **8000 TPM per key** (a big request 413s → small prompts + `reasoning_effort:low` + 5s spacing + 6-key rotation), and a dedup `in.(...)` filter with hundreds of long URLs overflows the request line and silently fails → both the jobs scraper and the Brief now fetch the stored-URL set and intersect locally. **USER TO-DO to switch scraping on:** run the `brsr_jobs` CREATE TABLE SQL (posted in-session) — the GitHub repo secrets (`NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `GROQ_API_KEY`+`_2..6`, `APP_URL`, `CRON_SECRET`) were already set via `gh secret set` this session.
 
