@@ -296,6 +296,29 @@ body:has(.brief-root) { overscroll-behavior: none; }
 }
 .dropdown-in { transform-origin: top center; animation: dropdownIn 140ms var(--ease-out) both; }
 
+/* Bottom sheets and the full-screen mobile detail sheet. `dropdown-in` was being
+   reused here, which scaled the panel down from its TOP edge while it sits
+   anchored to the BOTTOM of the screen — physically backwards. A sheet travels
+   by its own height, so the percentage adapts to any panel size. Curve is
+   Ionic's drawer easing: a fast start that settles without bounce. */
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+.sheet-up { animation: sheetUp 250ms cubic-bezier(0.32, 0.72, 0, 1) both; will-change: transform; }
+
+/* The scrim is what says "modal". Hard-cutting it in reads as a repaint glitch. */
+@keyframes scrimIn { from { opacity: 0; } to { opacity: 1; } }
+.scrim-in { animation: scrimIn 200ms var(--ease-out) both; }
+
+/* Touch devices fire :hover on tap and then leave it stuck on the last thing
+   tapped. Tailwind's hover variant is gated globally via hoverOnlyWhenSupported;
+   these two carry MOTION on hover, so they are neutralised here as well. */
+@media (hover: none), (pointer: coarse) {
+  .pressable:hover { transform: none; }
+  .cta-glow:hover  { transform: none; box-shadow: 0 1px 2px rgba(15, 30, 51, 0.12); }
+}
+
 /* Scroll reveal — JS adds .reveal-init (hidden) only when motion is allowed; the
    element is visible by default (SSR / no-JS / reduced-motion all stay visible). */
 .reveal-init { opacity: 0; transform: translateY(14px); }

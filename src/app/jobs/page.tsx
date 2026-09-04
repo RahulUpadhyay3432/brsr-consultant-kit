@@ -68,7 +68,7 @@ function FilterGroup({ title, options, value, onChange }: { title: string; optio
 function JobCard({ job, selected, saved, onSelect, onSave }: { job: Job; selected: boolean; saved: boolean; onSelect: () => void; onSave: () => void }) {
   return (
     <div role="button" tabIndex={0} onClick={onSelect} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(); } }}
-      className={`group relative p-4 rounded-xl flex flex-col gap-2.5 cursor-pointer border transition-all ${selected ? "border-brand-500 bg-brand-50/50 shadow-elev-1" : "border-line bg-white hover:border-brand-300 hover:shadow-elev-1"} ${job.closed ? "opacity-70" : ""}`}>
+      className={`group relative p-4 rounded-xl flex flex-col gap-2.5 cursor-pointer border transition-[border-color,box-shadow,background-color,opacity] duration-150 ease-out ${selected ? "border-brand-500 bg-brand-50/50 shadow-elev-1" : "border-line bg-white hover:border-brand-300 hover:shadow-elev-1"} ${job.closed ? "opacity-70" : ""}`}>
       {selected && <span className="absolute left-0 top-4 bottom-4 w-[3px] rounded-r bg-brand-500" />}
       <div className="flex gap-3 items-start">
         <CompanyAvatar name={realCompany(job.company) || "?"} size={40} />
@@ -80,7 +80,7 @@ function JobCard({ job, selected, saved, onSelect, onSave }: { job: Job; selecte
           <p className="mt-0.5 text-[13px] text-ink-muted truncate"><span className="font-semibold text-ink-body">{realCompany(job.company) || "Company on posting"}</span>{job.location ? ` · ${deDash(job.location)}` : ""}</p>
         </div>
         <button onClick={(e) => { e.stopPropagation(); onSave(); }} aria-pressed={saved} aria-label={saved ? "Saved" : "Save"} title={saved ? "Saved" : "Save"}
-          className={`p-1 rounded-lg flex-shrink-0 ${saved ? "text-brand-600" : "text-ink-faint hover:text-ink-muted"}`}><Bookmark filled={saved} size={18} /></button>
+          className={`p-1 rounded-lg flex-shrink-0 transition-[transform,color] duration-150 ease-out active:scale-90 ${saved ? "text-brand-600" : "text-ink-faint hover:text-ink-muted"}`}><Bookmark filled={saved} size={18} /></button>
       </div>
       {jobChips(job).length > 0 && <div className="flex flex-wrap gap-1.5">{jobChips(job).slice(0, 3).map((c) => <Chip key={c}>{c}</Chip>)}</div>}
       <div className="flex items-center gap-2 text-[11.5px] text-ink-faint">
@@ -145,7 +145,9 @@ function DetailPane({ job, all, saved, onSave, onSelect, embedded = false }: { j
         </div>
       </div>
 
-      <div className={`px-6 py-5 ${embedded ? "" : "max-h-[calc(100vh-320px)] min-h-[280px] overflow-y-auto"}`}>
+      {/* key={tab} remounts the panel so the fade replays on every switch, and the
+          scroll position resets to the top of the new tab rather than carrying over. */}
+      <div key={tab} className={`tab-fade px-6 py-5 ${embedded ? "" : "max-h-[calc(100vh-320px)] min-h-[280px] overflow-y-auto"}`}>
         {tab === "job" && (
           <div>
             <JobDescription job={job} />
@@ -167,10 +169,10 @@ function DetailPane({ job, all, saved, onSave, onSelect, embedded = false }: { j
           <div className="flex flex-col gap-2.5">
             {sim.map((j) => (
               <div key={j.id} role="button" tabIndex={0} onClick={() => onSelect(j.id)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(j.id); } }}
-                className="flex gap-3 items-center p-3 border border-line rounded-xl cursor-pointer bg-white hover:border-brand-200 hover:shadow-elev-1 transition-all">
-                <CompanyAvatar name={j.company} size={38} />
-                <div className="flex-1 min-w-0"><div className="text-[14px] font-semibold text-ink truncate">{j.title}</div><div className="text-[12.5px] text-ink-muted truncate">{j.company} · {workModeLabel(j.workMode) || CATEGORY_LABEL[j.category]} · {jobAge(j.postedDate)}</div></div>
-                {j.salary && <div className="text-[13px] font-semibold text-ink whitespace-nowrap">{j.salary}</div>}
+                className="flex gap-3 items-center p-3 border border-line rounded-xl cursor-pointer bg-white hover:border-brand-200 hover:shadow-elev-1 transition-[border-color,box-shadow] duration-150 ease-out">
+                <CompanyAvatar name={realCompany(j.company) || "?"} size={38} />
+                <div className="flex-1 min-w-0"><div className="text-[14px] font-semibold text-ink truncate">{deDash(j.title)}</div><div className="text-[12.5px] text-ink-muted truncate">{realCompany(j.company) || "Company on posting"} · {workModeLabel(j.workMode) || CATEGORY_LABEL[j.category]} · {jobAge(j.postedDate)}</div></div>
+                {j.salary && <div className="text-[13px] font-semibold text-ink whitespace-nowrap">{deDash(j.salary)}</div>}
               </div>
             ))}
             {sim.length === 0 && <div className="p-6 text-center text-[13.5px] text-ink-faint bg-band rounded-xl">No similar roles on the board right now.</div>}
@@ -344,8 +346,8 @@ export default function JobsPage() {
           overlays the viewport. Reuses the same FilterGroups as the desktop rail. */}
       {showFilters && (
         <div className="lg:hidden fixed inset-0 z-50 flex flex-col justify-end">
-          <button aria-label="Close filters" onClick={() => setShowFilters(false)} className="absolute inset-0 bg-ink/40" />
-          <div className="dropdown-in relative bg-white rounded-t-3xl border-t border-line shadow-elev-3 max-h-[85%] flex flex-col">
+          <button aria-label="Close filters" onClick={() => setShowFilters(false)} className="scrim-in absolute inset-0 bg-ink/40" />
+          <div className="sheet-up relative bg-white rounded-t-3xl border-t border-line shadow-elev-3 max-h-[85%] flex flex-col">
             <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-line">
               <div className="font-display text-[1.1rem] font-bold text-ink">Filters</div>
               {anyFilter && <button onClick={clear} className="text-brand-700 text-[13px] font-semibold">Clear all</button>}
@@ -362,7 +364,7 @@ export default function JobsPage() {
           card opens this full-screen sheet with the same DetailPane. Rendered at the
           page root to escape the anim-up-sm transform. */}
       {mobileDetail && activeJob && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-page flex flex-col">
+        <div className="sheet-up lg:hidden fixed inset-0 z-50 bg-page flex flex-col">
           <div className="flex items-center gap-2 px-4 py-3 border-b border-line bg-white flex-shrink-0">
             <button onClick={() => setMobileDetail(false)} className="pressable inline-flex items-center gap-1.5 text-[14px] font-semibold text-ink-body">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
