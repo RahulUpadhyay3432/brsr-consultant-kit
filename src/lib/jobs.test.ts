@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { deDash, sortJobs, type Job, type JobSort } from "./jobs";
+import { deDash, realCompany, sortJobs, type Job, type JobSort } from "./jobs";
 
 function job(p: Partial<Job>): Job {
   return {
@@ -77,5 +77,28 @@ describe("deDash", () => {
   it("passes empty and missing values straight through", () => {
     expect(deDash("")).toBe("");
     expect(deDash(undefined)).toBeUndefined();
+  });
+});
+
+describe("realCompany", () => {
+  it("treats the model's placeholder answers as no company at all", () => {
+    // Real values seen on the live board.
+    for (const p of ["Unknown", "(Unnamed)", "(Company not specified in text)", "N/A", "None", "Confidential", "Not specified"]) {
+      expect(realCompany(p)).toBeUndefined();
+    }
+  });
+
+  it("keeps real employers whose name merely starts with one of those words", () => {
+    // Matching on a prefix would have discarded these.
+    expect(realCompany("NA Consulting")).toBe("NA Consulting");
+    expect(realCompany("Nonesuch Consulting")).toBe("Nonesuch Consulting");
+    expect(realCompany("Northern Arc")).toBe("Northern Arc");
+    expect(realCompany("Unknown Ventures Pvt Ltd")).toBe("Unknown Ventures Pvt Ltd");
+  });
+
+  it("tidies dashes in the names it keeps, and handles blanks", () => {
+    expect(realCompany("Tata – Steel")).toBe("Tata - Steel");
+    expect(realCompany("")).toBeUndefined();
+    expect(realCompany(undefined)).toBeUndefined();
   });
 });

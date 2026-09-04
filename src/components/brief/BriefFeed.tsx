@@ -17,7 +17,7 @@ import { SaakshMark } from "@/components/SaakshMark";
 import CompanyAvatar from "@/components/CompanyAvatar";
 import {
   usedCategories, jobAge, jobChips, similarJobs, matchesQuery,
-  getSavedJobIds, toggleSavedJob, workModeLabel,
+  getSavedJobIds, toggleSavedJob, workModeLabel, deDash, realCompany,
   type Job, type JobCategory,
 } from "@/lib/jobs";
 import { useMergedJobs } from "@/lib/jobs/useMergedJobs";
@@ -509,14 +509,14 @@ function JobRow({ job, saved, onOpen, onSave }: { job: Job; saved: boolean; onOp
     <div role="button" tabIndex={0} onClick={onOpen} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onOpen(); } }}
       className={`pressable rounded-2xl bg-white border border-line shadow-elev-1 p-3.5 flex flex-col gap-2 cursor-pointer ${job.closed ? "opacity-70" : ""}`}>
       <div className="flex items-start gap-3">
-        <CompanyAvatar name={job.company} size={40} />
+        <CompanyAvatar name={realCompany(job.company) || "?"} size={40} />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
             {job.featured && <span className="px-1.5 py-0.5 rounded bg-forest text-white text-[9.5px] font-bold tracking-wide">Featured</span>}
             {job.closed && <span className="px-1.5 py-0.5 rounded bg-band text-ink-faint text-[9.5px] font-bold border border-line">Closed</span>}
           </div>
           <p className="font-display text-[14.5px] font-bold text-ink leading-snug line-clamp-2">{job.title}</p>
-          <p className="text-[12px] text-ink-muted mt-0.5 truncate">{job.company} · {job.location}</p>
+          <p className="text-[12px] text-ink-muted mt-0.5 truncate">{realCompany(job.company) || "Company on posting"} · {deDash(job.location)}</p>
         </div>
         <button onClick={(e) => { e.stopPropagation(); onSave(); }} aria-label={saved ? "Saved" : "Save"} className={`p-0.5 flex-shrink-0 ${saved ? "text-brand-600" : "text-ink-faint"}`}>{jobSave(saved)}</button>
       </div>
@@ -546,7 +546,7 @@ function JobSheet({ job, all, saved, onSave, onOpen, onClose }: { job: Job; all:
         <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-5 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {job.closed && <div className="px-3 py-2 rounded-xl bg-[#F6F2ED] border border-[#EADFD1] text-[#946B41] text-[12.5px] font-medium mb-3.5">No longer accepting applications.</div>}
           <div className="flex gap-3 items-start">
-            <CompanyAvatar name={job.company} size={50} />
+            <CompanyAvatar name={realCompany(job.company) || "?"} size={50} />
             <div className="min-w-0 flex-1">
               {job.featured && <span className="inline-block px-2 py-0.5 rounded bg-forest text-white text-[10px] font-semibold mb-1.5">Featured</span>}
               <h2 className="m-0 font-editorial text-[1.35rem] font-semibold tracking-[-0.01em] leading-tight text-ink">{job.title}</h2>
@@ -567,7 +567,7 @@ function JobSheet({ job, all, saved, onSave, onOpen, onClose }: { job: Job; all:
             )}
             {tab === "company" && (
               <div>
-                <div className="flex gap-3 items-center mb-3"><CompanyAvatar name={job.company} size={40} /><div><div className="text-[14.5px] font-semibold text-ink">{job.company}</div>{companyMeta && <div className="text-[12.5px] text-ink-muted">{companyMeta}</div>}</div></div>
+                <div className="flex gap-3 items-center mb-3"><CompanyAvatar name={realCompany(job.company) || "?"} size={40} /><div><div className="text-[14.5px] font-semibold text-ink">{job.company}</div>{companyMeta && <div className="text-[12.5px] text-ink-muted">{companyMeta}</div>}</div></div>
                 <p className="m-0 text-[14px] leading-relaxed text-ink-body">{job.aboutCompany || `${job.company} is hiring for this role — see the posting for more.`}</p>
               </div>
             )}

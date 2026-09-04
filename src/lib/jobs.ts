@@ -117,8 +117,8 @@ export function sortJobs(jobs: Job[], sort: JobSort): Job[] {
         // Some listings never name the employer. An empty string sorts first,
         // which puts the anonymous roles at the head of an A-Z list; push them
         // to the end instead, where an unnamed company belongs.
-        const an = a.company?.trim() || "";
-        const bn = b.company?.trim() || "";
+        const an = realCompany(a.company) || "";
+        const bn = realCompany(b.company) || "";
         if (!an !== !bn) return an ? -1 : 1;
         return an.localeCompare(bn, "en", { sensitivity: "base" }) || byDate(a, b);
       }
@@ -147,6 +147,22 @@ export function deDash(text?: string): string | undefined {
     .replace(/ *[–—] */g, (m) => (/ /.test(m) ? " - " : "-"))
     .replace(/\s{2,}/g, " ")
     .trim();
+}
+
+// The extraction model is told to omit a field it cannot fill, and mostly does,
+// but for the employer it sometimes answers in words instead: "Unknown",
+// "(Unnamed)", "(Company not specified in text)". Those reached the board as if
+// they were real employers, and a leading bracket even sorted them to the top of
+// A-Z. Treat them as absent so the graceful fallback shows instead.
+const NO_COMPANY = /^(unknown|unnamed|none|n\.?\/?a\.?|na|unspecified|confidential|not\s+specified|not\s+available|no\s+company(\s+name)?|company\s+not\s+specified.*|.*not\s+specified\s+in\s+text)$/i;
+
+export function realCompany(name?: string): string | undefined {
+  // Matched against the WHOLE value, with any wrapping brackets removed, so a real
+  // firm that merely starts with one of these words ("NA Consulting", "Nonesuch")
+  // is not thrown away.
+  const n = (name || "").trim().replace(/^\(+|\)+$/g, "").trim();
+  if (!n || NO_COMPANY.test(n)) return undefined;
+  return deDash(n);
 }
 
 export function jobChips(j: Job): string[] {

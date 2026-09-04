@@ -10,7 +10,7 @@ import { track } from "@/lib/mixpanel";
 import {
   usedCategories, jobAge, jobChips, similarJobs, matchesQuery,
   getSavedJobIds, toggleSavedJob, workModeLabel, jobTypeLabel, CATEGORY_LABEL,
-  sortJobs, JOB_SORTS, deDash,
+  sortJobs, JOB_SORTS, deDash, realCompany,
   type Job, type JobCategory, type JobSort,
 } from "@/lib/jobs";
 import { useMergedJobs } from "@/lib/jobs/useMergedJobs";
@@ -71,13 +71,13 @@ function JobCard({ job, selected, saved, onSelect, onSave }: { job: Job; selecte
       className={`group relative p-4 rounded-xl flex flex-col gap-2.5 cursor-pointer border transition-all ${selected ? "border-brand-500 bg-brand-50/50 shadow-elev-1" : "border-line bg-white hover:border-brand-300 hover:shadow-elev-1"} ${job.closed ? "opacity-70" : ""}`}>
       {selected && <span className="absolute left-0 top-4 bottom-4 w-[3px] rounded-r bg-brand-500" />}
       <div className="flex gap-3 items-start">
-        <CompanyAvatar name={job.company} size={40} />
+        <CompanyAvatar name={realCompany(job.company) || "?"} size={40} />
         <div className="flex-1 min-w-0">
           {(job.featured || job.closed) && (
             <div className="flex items-center gap-1.5 mb-1">{job.featured && <FeaturedBadge />}{job.closed && <ClosedBadge />}</div>
           )}
           <h3 className="m-0 text-[15px] font-semibold tracking-[-0.01em] text-ink leading-snug">{deDash(job.title)}</h3>
-          <p className="mt-0.5 text-[13px] text-ink-muted truncate"><span className="font-semibold text-ink-body">{deDash(job.company) || "Company on posting"}</span>{job.location ? ` · ${deDash(job.location)}` : ""}</p>
+          <p className="mt-0.5 text-[13px] text-ink-muted truncate"><span className="font-semibold text-ink-body">{realCompany(job.company) || "Company on posting"}</span>{job.location ? ` · ${deDash(job.location)}` : ""}</p>
         </div>
         <button onClick={(e) => { e.stopPropagation(); onSave(); }} aria-pressed={saved} aria-label={saved ? "Saved" : "Save"} title={saved ? "Saved" : "Save"}
           className={`p-1 rounded-lg flex-shrink-0 ${saved ? "text-brand-600" : "text-ink-faint hover:text-ink-muted"}`}><Bookmark filled={saved} size={18} /></button>
@@ -86,7 +86,7 @@ function JobCard({ job, selected, saved, onSelect, onSave }: { job: Job; selecte
       <div className="flex items-center gap-2 text-[11.5px] text-ink-faint">
         {job.activelyHiring && !job.closed && <span className="inline-flex items-center gap-1 font-semibold text-emerald-600"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />Hiring</span>}
         <span className="truncate">{CATEGORY_LABEL[job.category]} · {jobAge(job.postedDate)}{job.sourceName ? ` · ${job.sourceName}` : ""}</span>
-        {job.salary && <span className="ml-auto font-semibold text-ink-body whitespace-nowrap">{job.salary}</span>}
+        {job.salary && <span className="ml-auto font-semibold text-ink-body whitespace-nowrap">{deDash(job.salary)}</span>}
       </div>
     </div>
   );
@@ -109,14 +109,14 @@ function DetailPane({ job, all, saved, onSave, onSelect, embedded = false }: { j
       <div className="px-6 pt-6">
         {job.closed && <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[#F6F2ED] border border-[#EADFD1] text-[#946B41] text-[13px] font-medium mb-4">This role is no longer accepting applications.</div>}
         <div className="flex gap-4 items-start">
-          <CompanyAvatar name={job.company} size={56} />
+          <CompanyAvatar name={realCompany(job.company) || "?"} size={56} />
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               {job.featured && <FeaturedBadge />}
               {job.activelyHiring && !job.closed && <ActiveSignal />}
             </div>
             <h2 className="m-0 font-editorial text-[1.6rem] font-semibold tracking-[-0.01em] leading-tight text-ink">{deDash(job.title)}</h2>
-            <div className="flex items-center gap-2 mt-1.5 text-[14px] text-ink-muted"><span className="font-semibold text-ink-body">{deDash(job.company)}</span> · <span>{deDash(job.location)}</span></div>
+            <div className="flex items-center gap-2 mt-1.5 text-[14px] text-ink-muted"><span className="font-semibold text-ink-body">{realCompany(job.company) || "Company on posting"}</span> · <span>{deDash(job.location)}</span></div>
             <div className="mt-1 text-[12.5px] text-ink-faint">Posted {jobAge(job.postedDate)} · via {job.sourceName || "source"}</div>
           </div>
           <button onClick={onSave} aria-pressed={saved} className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl border border-line bg-white text-[13px] font-semibold text-ink-body flex-shrink-0 hover:bg-band"><Bookmark filled={saved} size={16} />{saved ? "Saved" : "Save"}</button>
@@ -125,7 +125,7 @@ function DetailPane({ job, all, saved, onSave, onSelect, embedded = false }: { j
         {job.salary && (
           <div className="mt-[18px] px-4 py-3.5 bg-brand-50 border border-[#CDE2F6] rounded-xl">
             <div className="text-[11px] font-semibold uppercase tracking-[0.05em] text-ink-faint mb-0.5">Compensation</div>
-            <div className="text-[21px] font-bold text-ink tracking-[-0.01em]">{job.salary}</div>
+            <div className="text-[21px] font-bold text-ink tracking-[-0.01em]">{deDash(job.salary)}</div>
           </div>
         )}
 
@@ -159,8 +159,8 @@ function DetailPane({ job, all, saved, onSave, onSelect, embedded = false }: { j
         )}
         {tab === "company" && (
           <div>
-            <div className="flex gap-3 items-center mb-3.5"><CompanyAvatar name={job.company} size={44} /><div><div className="text-[15.5px] font-semibold text-ink">{deDash(job.company)}</div>{companyMeta && <div className="text-[13px] text-ink-muted">{companyMeta}</div>}</div></div>
-            <p className="m-0 text-[14.5px] leading-relaxed text-ink-body">{deDash(job.aboutCompany) || `${deDash(job.company)} is hiring for this role. See the original posting for more about the team.`}</p>
+            <div className="flex gap-3 items-center mb-3.5"><CompanyAvatar name={realCompany(job.company) || "?"} size={44} /><div><div className="text-[15.5px] font-semibold text-ink">{realCompany(job.company) || "Company on posting"}</div>{companyMeta && <div className="text-[13px] text-ink-muted">{companyMeta}</div>}</div></div>
+            <p className="m-0 text-[14.5px] leading-relaxed text-ink-body">{deDash(job.aboutCompany) || `${realCompany(job.company) || "The employer"} is hiring for this role. See the original posting for more about the team.`}</p>
           </div>
         )}
         {tab === "similar" && (

@@ -145,7 +145,7 @@ function parseObj(raw) {
 // Fold a job's own detail-page facts into the listing-level row (detail wins).
 function mergeEnrichment(row, e) {
   if (e.aboutRole) row.about_role = String(e.aboutRole).slice(0, 1400);
-  if (e.company && !row.company) row.company = String(e.company).slice(0, 120);
+  if (!row.company) row.company = realCompany(e.company)?.slice(0, 120) || null;
   if (e.location) row.location = String(e.location).slice(0, 120);
   if (e.experience) row.experience = String(e.experience).slice(0, 60);
   if (e.salary) row.salary = String(e.salary).slice(0, 60);
@@ -198,6 +198,15 @@ function parseArray(raw) {
   }
 }
 
+// Mirrors realCompany() in src/lib/jobs.ts. Told to omit a field it cannot fill,
+// the model sometimes answers in words instead ("Unknown", "(Unnamed)", "(Company
+// not specified in text)"), and those were stored as if they were real employers.
+const NO_COMPANY = /^(unknown|unnamed|none|n\.?\/?a\.?|na|unspecified|confidential|not\s+specified|not\s+available|no\s+company(\s+name)?|company\s+not\s+specified.*|.*not\s+specified\s+in\s+text)$/i;
+function realCompany(name) {
+  const n = String(name || "").trim().replace(/^\(+|\)+$/g, "").trim();
+  return !n || NO_COMPANY.test(n) ? null : n;
+}
+
 function toRow(e, sourceName) {
   const applyUrl = (e.applyUrl || "").trim();
   const title = (e.title || "").trim();
@@ -205,7 +214,7 @@ function toRow(e, sourceName) {
   const cat = (e.category || "").toLowerCase();
   return {
     title,
-    company: (e.company || "").trim() || null,
+    company: realCompany(e.company),
     location: (e.location || "").trim() || null,
     category: VALID_CAT.has(cat) ? cat : "other",
     apply_url: canonicalUrl(applyUrl),
