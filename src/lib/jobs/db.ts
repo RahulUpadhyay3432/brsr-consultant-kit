@@ -3,7 +3,7 @@
 // datarequest/db.ts. Best-effort: before the table is migrated the board simply falls
 // back to the curated jobs.json. Writes happen in the scraper script, not here.
 import "server-only";
-import type { Job, JobCategory } from "@/lib/jobs";
+import type { Job, JobCategory, JobSection } from "@/lib/jobs";
 import { JOB_CATEGORIES } from "@/lib/jobs";
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -42,6 +42,9 @@ interface JobRow {
   about_role: string | null;
   about_company: string | null;
   company_size: string | null;
+  // jsonb, added later than the rest of the table: absent on older rows and on a
+  // table that has not been migrated, hence the defensive check in mapRow.
+  sections: JobSection[] | null;
   tags: string[] | null;
   source_name: string | null;
   featured: boolean | null;
@@ -67,6 +70,7 @@ function mapRow(r: JobRow): Job {
     summary: r.summary || undefined,
     aboutRole: r.about_role || undefined,
     aboutCompany: r.about_company || undefined,
+    sections: Array.isArray(r.sections) && r.sections.length ? r.sections : undefined,
     companySize: r.company_size || undefined,
     tags: r.tags || undefined,
     sourceName: r.source_name || undefined,

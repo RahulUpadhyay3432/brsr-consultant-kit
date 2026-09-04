@@ -10,7 +10,8 @@ import { track } from "@/lib/mixpanel";
 import {
   usedCategories, jobAge, jobChips, similarJobs, matchesQuery,
   getSavedJobIds, toggleSavedJob, workModeLabel, jobTypeLabel, CATEGORY_LABEL,
-  type Job, type JobCategory,
+  sortJobs, JOB_SORTS, deDash,
+  type Job, type JobCategory, type JobSort,
 } from "@/lib/jobs";
 import { useMergedJobs } from "@/lib/jobs/useMergedJobs";
 import { JobDescription } from "@/components/jobs/JobDescription";
@@ -75,8 +76,8 @@ function JobCard({ job, selected, saved, onSelect, onSave }: { job: Job; selecte
           {(job.featured || job.closed) && (
             <div className="flex items-center gap-1.5 mb-1">{job.featured && <FeaturedBadge />}{job.closed && <ClosedBadge />}</div>
           )}
-          <h3 className="m-0 text-[15px] font-semibold tracking-[-0.01em] text-ink leading-snug">{job.title}</h3>
-          <p className="mt-0.5 text-[13px] text-ink-muted truncate"><span className="font-semibold text-ink-body">{job.company || "Company on posting"}</span>{job.location ? ` · ${job.location}` : ""}</p>
+          <h3 className="m-0 text-[15px] font-semibold tracking-[-0.01em] text-ink leading-snug">{deDash(job.title)}</h3>
+          <p className="mt-0.5 text-[13px] text-ink-muted truncate"><span className="font-semibold text-ink-body">{deDash(job.company) || "Company on posting"}</span>{job.location ? ` · ${deDash(job.location)}` : ""}</p>
         </div>
         <button onClick={(e) => { e.stopPropagation(); onSave(); }} aria-pressed={saved} aria-label={saved ? "Saved" : "Save"} title={saved ? "Saved" : "Save"}
           className={`p-1 rounded-lg flex-shrink-0 ${saved ? "text-brand-600" : "text-ink-faint hover:text-ink-muted"}`}><Bookmark filled={saved} size={18} /></button>
@@ -98,7 +99,7 @@ function DetailPane({ job, all, saved, onSave, onSelect, embedded = false }: { j
   useEffect(() => setTab("job"), [job.id]);
   const chips = jobChips(job);
   const sim = similarJobs(all, job);
-  const companyMeta = [job.location, job.companySize].filter(Boolean).join(" · ");
+  const companyMeta = [job.location, job.companySize].filter(Boolean).map((x) => deDash(x as string)).join(" · ");
   const TabBtn = ({ k, label }: { k: Tab; label: string }) => (
     <button onClick={() => setTab(k)} className={`pb-3 -mb-px text-[14.5px] border-b-2 transition-colors ${tab === k ? "text-ink font-semibold border-brand-600" : "text-ink-muted font-medium border-transparent hover:text-ink-body"}`}>{label}</button>
   );
@@ -114,8 +115,8 @@ function DetailPane({ job, all, saved, onSave, onSelect, embedded = false }: { j
               {job.featured && <FeaturedBadge />}
               {job.activelyHiring && !job.closed && <ActiveSignal />}
             </div>
-            <h2 className="m-0 font-editorial text-[1.6rem] font-semibold tracking-[-0.01em] leading-tight text-ink">{job.title}</h2>
-            <div className="flex items-center gap-2 mt-1.5 text-[14px] text-ink-muted"><span className="font-semibold text-ink-body">{job.company}</span> · <span>{job.location}</span></div>
+            <h2 className="m-0 font-editorial text-[1.6rem] font-semibold tracking-[-0.01em] leading-tight text-ink">{deDash(job.title)}</h2>
+            <div className="flex items-center gap-2 mt-1.5 text-[14px] text-ink-muted"><span className="font-semibold text-ink-body">{deDash(job.company)}</span> · <span>{deDash(job.location)}</span></div>
             <div className="mt-1 text-[12.5px] text-ink-faint">Posted {jobAge(job.postedDate)} · via {job.sourceName || "source"}</div>
           </div>
           <button onClick={onSave} aria-pressed={saved} className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl border border-line bg-white text-[13px] font-semibold text-ink-body flex-shrink-0 hover:bg-band"><Bookmark filled={saved} size={16} />{saved ? "Saved" : "Save"}</button>
@@ -158,8 +159,8 @@ function DetailPane({ job, all, saved, onSave, onSelect, embedded = false }: { j
         )}
         {tab === "company" && (
           <div>
-            <div className="flex gap-3 items-center mb-3.5"><CompanyAvatar name={job.company} size={44} /><div><div className="text-[15.5px] font-semibold text-ink">{job.company}</div>{companyMeta && <div className="text-[13px] text-ink-muted">{companyMeta}</div>}</div></div>
-            <p className="m-0 text-[14.5px] leading-relaxed text-ink-body">{job.aboutCompany || `${job.company} is hiring for this role — see the original posting for more about the team.`}</p>
+            <div className="flex gap-3 items-center mb-3.5"><CompanyAvatar name={job.company} size={44} /><div><div className="text-[15.5px] font-semibold text-ink">{deDash(job.company)}</div>{companyMeta && <div className="text-[13px] text-ink-muted">{companyMeta}</div>}</div></div>
+            <p className="m-0 text-[14.5px] leading-relaxed text-ink-body">{deDash(job.aboutCompany) || `${deDash(job.company)} is hiring for this role. See the original posting for more about the team.`}</p>
           </div>
         )}
         {tab === "similar" && (
@@ -193,6 +194,7 @@ export default function JobsPage() {
   const [type, setType] = useState("all");
   const [date, setDate] = useState<DateFilter>("all");
   const [query, setQuery] = useState("");
+  const [sort, setSort] = useState<JobSort>("newest");
   const [selected, setSelected] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false); // mobile filter sheet
   const [mobileDetail, setMobileDetail] = useState(false); // mobile job-detail sheet
@@ -205,8 +207,11 @@ export default function JobsPage() {
     const days = (Date.now() - new Date(j.postedDate).getTime()) / 86400000;
     return date === "24h" ? days <= 1 : date === "week" ? days <= 7 : days <= 30;
   };
-  const shown = all.filter(
-    (j) => (cat === "all" || j.category === cat) && (mode === "all" || j.workMode === mode) && (type === "all" || j.type === type) && matchDate(j) && matchesQuery(j, query)
+  const shown = sortJobs(
+    all.filter(
+      (j) => (cat === "all" || j.category === cat) && (mode === "all" || j.workMode === mode) && (type === "all" || j.type === type) && matchDate(j) && matchesQuery(j, query)
+    ),
+    sort
   );
   // Prefer the selected job only if it's still in the filtered list, so changing a
   // filter also refreshes the detail pane (otherwise it looks like nothing happened).
@@ -260,7 +265,26 @@ export default function JobsPage() {
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" y1="6" x2="20" y2="6" /><line x1="7" y1="12" x2="17" y2="12" /><line x1="10" y1="18" x2="14" y2="18" /></svg>
                   Filters{activeFilterCount > 0 && <span className="ml-0.5 grid place-items-center min-w-[18px] h-[18px] rounded-full bg-brand-600 text-white text-[11px] font-bold px-1">{activeFilterCount}</span>}
                 </button>
-                <span className="text-[14px] text-ink-muted whitespace-nowrap"><span className="font-bold text-ink">{shown.length}</span> <span className="hidden sm:inline">role{shown.length === 1 ? "" : "s"}</span></span>
+              </div>
+
+              {/* count + sort. Its own row rather than crammed beside the search
+                  box, which on a phone left the count clipped to a bare number. */}
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <span className="text-[13.5px] text-ink-muted whitespace-nowrap">
+                  <span className="font-bold text-ink">{shown.length}</span> role{shown.length === 1 ? "" : "s"}
+                  {anyFilter && <span className="text-ink-faint"> of {all.length}</span>}
+                </span>
+                <label className="flex items-center gap-2 text-[13px] text-ink-muted">
+                  <span className="hidden sm:inline">Sort by</span>
+                  <select
+                    value={sort}
+                    onChange={(e) => { setSort(e.target.value as JobSort); track("jobs_sorted", { sort: e.target.value }); }}
+                    aria-label="Sort roles"
+                    className="rounded-lg border border-line bg-white px-2.5 py-1.5 text-[13px] font-semibold text-ink-body shadow-elev-1 outline-none focus:border-brand-300"
+                  >
+                    {JOB_SORTS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select>
+                </label>
               </div>
 
               <div className="grid lg:grid-cols-[220px_minmax(360px,460px)_minmax(440px,1fr)] gap-6 xl:gap-8 items-start">

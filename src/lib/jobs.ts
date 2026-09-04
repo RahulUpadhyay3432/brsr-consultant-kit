@@ -94,10 +94,67 @@ export function getJobs(): Job[] {
   );
 }
 
+// ── Sorting ──────────────────────────────────────────────────────────────────
+// Deliberately no "by salary": only a minority of postings state one, and those
+// that do state it as free text ("12-18 LPA", "As per industry", "Competitive"),
+// so a salary sort would silently rank on a number parsed out of prose. Better to
+// offer three orders that are always true than four where one quietly lies.
+export type JobSort = "newest" | "oldest" | "company";
+
+export const JOB_SORTS: { value: JobSort; label: string }[] = [
+  { value: "newest", label: "Newest first" },
+  { value: "oldest", label: "Oldest first" },
+  { value: "company", label: "Company A-Z" },
+];
+
+export function sortJobs(jobs: Job[], sort: JobSort): Job[] {
+  const byDate = (a: Job, b: Job) => (b.postedDate || "").localeCompare(a.postedDate || "");
+  return [...jobs].sort((a, b) => {
+    switch (sort) {
+      case "oldest":
+        return -byDate(a, b);
+      case "company": {
+        // Some listings never name the employer. An empty string sorts first,
+        // which puts the anonymous roles at the head of an A-Z list; push them
+        // to the end instead, where an unnamed company belongs.
+        const an = a.company?.trim() || "";
+        const bn = b.company?.trim() || "";
+        if (!an !== !bn) return an ? -1 : 1;
+        return an.localeCompare(bn, "en", { sensitivity: "base" }) || byDate(a, b);
+      }
+      default:
+        // Featured roles are pinned only in the default order. Once someone picks
+        // an explicit sort, honour it — a pinned card in an A-Z list reads as a bug.
+        return (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || byDate(a, b);
+    }
+  });
+}
+
+// ── Text tidy ────────────────────────────────────────────────────────────────
+// Listings arrive from job boards and from the extraction model, and both sprinkle
+// em and en dashes through titles and prose. The rest of the product was scrubbed
+// of them deliberately; this keeps ingested copy to the same house style, at render
+// time, so it applies to rows already stored.
+export function deDash(text: string): string;
+export function deDash(text: undefined): undefined;
+export function deDash(text?: string): string | undefined;
+export function deDash(text?: string): string | undefined {
+  if (!text) return text;
+  return text
+    // Take the spacing from the source rather than imposing one. A spaced dash was
+    // punctuation ("Manager - Environment"); an unspaced one joined a compound or a
+    // range ("Mid-Senior", "3-5 years"), and spacing those out would misread them.
+    .replace(/ *[–—] */g, (m) => (/ /.test(m) ? " - " : "-"))
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 export function jobChips(j: Job): string[] {
-  return [jobTypeLabel(j.type), workModeLabel(j.workMode), j.seniority, j.experience].filter(
-    Boolean
-  ) as string[];
+  // Seniority and experience are free text from the posting ("Mid-Senior",
+  // "3-5 yrs"), so they get the same dash treatment as the prose.
+  return [jobTypeLabel(j.type), workModeLabel(j.workMode), j.seniority, j.experience]
+    .filter(Boolean)
+    .map((c) => deDash(c as string)) as string[];
 }
 
 export function similarJobs(all: Job[], job: Job, limit = 4): Job[] {

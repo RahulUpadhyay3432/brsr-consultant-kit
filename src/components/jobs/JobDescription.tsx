@@ -3,7 +3,7 @@
 // (heading + intro + bullets), falling back to bulleting the plain `aboutRole`
 // prose, and finally to a short line. Shared by the desktop detail pane and the
 // phone job sheet; `compact` trims the type scale slightly for the phone.
-import { toBullets, type Job } from "@/lib/jobs";
+import { deDash, toBullets, type Job } from "@/lib/jobs";
 
 function Bullets({ items, textCls }: { items: string[]; textCls: string }) {
   return (
@@ -11,7 +11,7 @@ function Bullets({ items, textCls }: { items: string[]; textCls: string }) {
       {items.map((b, i) => (
         <li key={i} className={`flex gap-2.5 leading-relaxed text-ink-body ${textCls}`}>
           <span className="mt-[7px] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-brand-500" />
-          <span>{b}</span>
+          <span>{deDash(b)}</span>
         </li>
       ))}
     </ul>
@@ -27,9 +27,9 @@ export function JobDescription({ job, compact = false }: { job: Job; compact?: b
       <div className="flex flex-col gap-4">
         {job.sections.map((s, i) => (
           <div key={i}>
-            {s.heading && <div className={headCls}>{s.heading}</div>}
+            {s.heading && <div className={headCls}>{deDash(s.heading)}</div>}
             {s.body && (
-              <p className={`m-0 ${s.bullets && s.bullets.length ? "mb-2.5" : ""} leading-relaxed text-ink-body ${textCls}`}>{s.body}</p>
+              <p className={`m-0 ${s.bullets && s.bullets.length ? "mb-2.5" : ""} leading-relaxed text-ink-body ${textCls}`}>{deDash(s.body)}</p>
             )}
             {s.bullets && s.bullets.length > 0 && <Bullets items={s.bullets} textCls={textCls} />}
           </div>
@@ -42,7 +42,7 @@ export function JobDescription({ job, compact = false }: { job: Job; compact?: b
   if (bullets.length >= 2) return <Bullets items={bullets} textCls={textCls} />;
   return (
     <p className={`m-0 leading-relaxed text-ink-body ${textCls}`}>
-      {job.aboutRole || job.summary || "Open the original posting to read the full description."}
+      {deDash(job.aboutRole) || deDash(job.summary) || "Open the original posting to read the full description."}
     </p>
   );
 }

@@ -88,9 +88,13 @@ Each object:
 
 // Enrichment prompt: turn a single job's own detail page into a fuller, faithful
 // "about the role" plus whatever structured fields the posting states.
-const ENRICH = `From the text of a SINGLE job posting, return STRICT JSON with only these keys, using ONLY facts present on the page (omit any key you cannot fill): {"aboutRole","company","location","experience","salary","type","workMode","seniority","companySize","tags"}.
-- aboutRole: 3 to 5 COMPLETE sentences on the real responsibilities and requirements from the posting. Finish every sentence. Plain text only: no em dashes, no ellipses, no trailing "...". No fabrication.
+const ENRICH = `From the text of a SINGLE job posting, return STRICT JSON with only these keys, using ONLY facts present on the page (omit any key you cannot fill): {"summary","aboutRole","sections","company","location","experience","salary","type","workMode","seniority","companySize","aboutCompany","tags"}.
+- summary: ONE sentence, under 140 characters, on what the role actually does.
+- aboutRole: 3 to 5 COMPLETE sentences on the real responsibilities and requirements from the posting. Finish every sentence. No fabrication.
+- sections: the posting's own structure, as an array of at most 4 objects {"heading","body","bullets"}. Use the posting's real headings where it has them (for example Responsibilities, Requirements, Qualifications, What we offer); "bullets" is up to 6 short points quoted or closely paraphrased from that section. Omit "sections" entirely if the posting is a single block of prose with no structure to preserve. Never invent a section.
+- aboutCompany: 1 to 2 sentences about the employer, only if the posting says something about them.
 - type: full-time | part-time | contract | internship. workMode: onsite | hybrid | remote. tags: up to 6 skills.
+- STYLE, applies to every text field: plain text, no markdown. No em dashes or en dashes; use a plain hyphen. No ellipses, no trailing "...". Write out complete sentences.
 Return the JSON object only, no prose, no fences.`;
 
 let gi = 0;
@@ -151,7 +155,27 @@ function mergeEnrichment(row, e) {
   if (["full-time", "part-time", "contract", "internship"].includes(t)) row.type = t;
   const w = String(e.workMode || "").toLowerCase();
   if (["onsite", "hybrid", "remote"].includes(w)) row.work_mode = w;
+  if (e.summary) row.summary = String(e.summary).slice(0, 200);
+  if (e.aboutCompany) row.about_company = String(e.aboutCompany).slice(0, 600);
   if (Array.isArray(e.tags) && e.tags.length) row.tags = e.tags.slice(0, 6).map((x) => String(x).slice(0, 40));
+  // Structured JD, shaped like the curated entries in src/data/jobs.json so the
+  // detail pane renders ingested roles as richly as hand-picked ones.
+  if (Array.isArray(e.sections)) {
+    const secs = e.sections
+      .filter((x) => x && (x.heading || x.body || Array.isArray(x.bullets)))
+      .slice(0, 4)
+      .map((x) => {
+        const out = {};
+        if (x.heading) out.heading = String(x.heading).slice(0, 80);
+        if (x.body) out.body = String(x.body).slice(0, 600);
+        if (Array.isArray(x.bullets) && x.bullets.length) {
+          out.bullets = x.bullets.slice(0, 6).map((b) => String(b).slice(0, 240)).filter(Boolean);
+        }
+        return out;
+      })
+      .filter((x) => x.body || (x.bullets && x.bullets.length));
+    if (secs.length) row.sections = secs;
+  }
 }
 
 async function sb(path, init) {
@@ -307,6 +331,17 @@ async function main() {
   // 4) Upsert + prune.
   let inserted = 0;
   if (verified.length) {
+    // `sections` is a newer jsonb column. PostgREST rejects the whole batch if it
+    // does not exist yet, so probe once and drop the field rather than take the
+    // pipeline down on a table that has not been migrated.
+    let hasSections = false;
+    try {
+      await sb("brsr_jobs?select=sections&limit=1");
+      hasSections = true;
+    } catch {
+      console.log("brsr_jobs.sections column absent - storing without structured sections");
+    }
+    if (!hasSections) for (const r of verified) delete r.sections;
     try {
       const res = await sb("brsr_jobs?on_conflict=apply_url", {
         method: "POST",
