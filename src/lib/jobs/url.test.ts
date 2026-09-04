@@ -11,7 +11,7 @@ describe("canonicalUrl", () => {
     ];
     const unique = new Set(seen.map(canonicalUrl));
     expect(unique.size).toBe(1);
-    expect([...unique][0]).toBe(
+    expect(Array.from(unique)[0]).toBe(
       "https://www.iimjobs.com/j/rlg-systems-head-csr-and-esg-1715022"
     );
   });

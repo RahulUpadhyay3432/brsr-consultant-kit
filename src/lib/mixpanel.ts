@@ -49,8 +49,37 @@ export function identifyUser(id: string, profile?: Dict) {
   });
 }
 
+// GA4 rejects nested values, so flatten to the scalars it accepts and drop the
+// rest. Names are already snake_case and within GA4's 40-char limit.
+function gaParams(props?: Dict): Record<string, string | number> {
+  const out: Record<string, string | number> = {};
+  if (!props) return out;
+  for (const [k, v] of Object.entries(props)) {
+    if (typeof v === "number" || typeof v === "string") out[k] = v;
+    else if (typeof v === "boolean") out[k] = String(v);
+  }
+  return out;
+}
+
 export function track(event: string, props?: Dict) {
   if (typeof window === "undefined" || !analyticsAllowed()) return;
+
+  // Mirror every event into GA4 as well. Mixpanel is where product behaviour is
+  // analysed, but acquisition lives in GA4 — and with no custom events reaching
+  // it, GA could not join a traffic source to an outcome: every report showed
+  // "Key events: 0.00" while ~30 events were being tracked elsewhere. gtag is
+  // installed by <GoogleAnalytics> inside AnalyticsGate, so it exists only after
+  // consent, same as Mixpanel; the optional call keeps this a no-op before then.
+  try {
+    (window as unknown as { gtag?: (...a: unknown[]) => void }).gtag?.(
+      "event",
+      event,
+      gaParams(props)
+    );
+  } catch {
+    /* best-effort, never break the interaction that fired the event */
+  }
+
   (initPromise ?? initMixpanel()).then(() => {
     try { mp?.track(event, props); } catch { /* best-effort */ }
   });
