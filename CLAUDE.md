@@ -14,7 +14,103 @@ The "100% on-device / no data stored" framing applies to **(1) only**. Collect d
 
 Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUpadhyay3432/brsr-consultant-kit
 
-## Project Status — last updated 2026-09-04
+## Project Status — last updated 2026-09-08
+
+### ⚠️ DEPLOY STATE: 6 commits committed locally, NOT pushed, NOT deployed
+
+`saaksh.co` is 6 commits behind. Everything in this section exists only on this machine.
+**First action for a new session:** `git rev-list --count origin/master..HEAD` (expect 6), then
+`git push origin master`, then `$env:NODE_TLS_REJECT_UNAUTHORIZED="0"; vercel --prod --yes`.
+Deploys ship the WORKING TREE, so run `git status` first. Build is clean (206 pages) and every
+claim below was verified against the built output.
+
+### The SEO + AEO sprint (2026-09-08)
+
+Driven by the GA4 finding from 2026-09-04: **AI assistants are now 49% of 28-day sessions but
+engage for 28s**, versus 1m24s for organic search. That is people arriving mid-question and not
+finding the answer. The site was findable but leaked in specific places.
+
+**What shipped (6 commits, in order):**
+
+1. **`feat(seo)` — foundations.** Canonical URLs on every content route (there were **2 of 34**);
+   app surfaces (`/report`, `/requests`, `/login`, `/submit`, `/clients`, `/demo`) set to noindex
+   via new thin layouts; `/start` and `/latest` given their own `layout.tsx` with real titles (they
+   were client components inheriting the generic root title). `dateModified` (new optional
+   `updated` field on `BlogPost` → `lastTouched()`), visible "Updated" line, sitemap
+   `lastModified`, `BreadcrumbList`, publisher logo, `articleSection`, `inLanguage` on all posts.
+   **`llms.txt` moved from a hand-written `public/llms.txt` (which had rotted to 15 of 30 posts)
+   to a generated route at `src/app/llms.txt/route.ts`** built from `BLOG_POSTS` + `INDUSTRY_LABELS`
+   — it cannot go stale again, and leads with direct answers to the 8 most-asked questions.
+   `robots.txt` rewritten: added OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User,
+   Perplexity-User, Google-Extended, Applebot, Amazonbot; **fixed a group-scoping bug** (a named
+   User-agent group does NOT inherit `*`'s rules, so every Disallow list is repeated per group).
+2. **`content(blog)` — FAQ backfill.** 15 of 30 posts had no FAQ; now all do. 60 new grounded
+   Q&As (117 pairs total), each drawn from what the post already says so page and schema cannot
+   disagree. Those 15 posts marked `updated: "2026-09-08"`.
+3. **`feat(brsr)` — 108 disclosure reference pages.** New `src/lib/brsr-fields.ts` assembles one
+   record per Section C disclosure from data already in the repo (`brsr_data_points.json` +
+   `brsr_field_explainers.json` + `brsr_quality_examples.json` + `brsr_plain_language.json` +
+   `brsr-owners.ts`). Pages at **`/brsr/<code>`** (e.g. `/brsr/p6-e1`) + a hub at **`/brsr`**.
+   Each emits FAQPage, BreadcrumbList and DefinedTerm; 1050–1341 words, none thin.
+   **Site went 90 → 199 pages.**
+4. **`feat(reference)` — `/glossary` (56 terms, DefinedTermSet, per-term anchors) and
+   `/brsr/statistics`** ("BRSR by the numbers": every load-bearing figure with its primary source
+   and vintage, emitted as a `Dataset`, explicitly free to quote). Note `/brsr/statistics` is a
+   static segment that correctly takes precedence over the `/brsr/[code]` dynamic route.
+5. **`content(blog)` — 5 new posts** answering what the consultant WhatsApp group asks and nothing
+   on the web answers: `brsr-consulting-fees-india` (refuses to invent a benchmark — none exists —
+   and instead gives the method, consistent with the proposal builder's "never assert a market
+   price" stance; asks readers to contribute to an anonymous benchmark),
+   `csr-funds-carbon-credits-india` (MCA has issued **no** clarification naming carbon credits, so
+   the post says so and reasons from the three general CSR tests; the answer turns on who owns the
+   credits), `gri-notification-requirement-9`, `iso-14001-45001-document-register`,
+   `ccts-accredited-carbon-verifier-india`. All fact-checked via web search against primary
+   sources before writing. **206 pages, 35 posts.**
+6. **`docs`** — `docs/distribution-playbook.md` + `scripts/shoot-product.mjs` (below).
+
+**Strategic call made deliberately:** did NOT write more BRSR principle guides. 30 posts already
+saturate BRSR on our own site. The leverage is in (a) programmatic pages from data we own and
+(b) questions with zero competition.
+
+### `scripts/shoot-product.mjs` — repeatable product screenshots
+
+Captures the product's main surfaces for design review. `node scripts/shoot-product.mjs`
+(desktop 1440x900, 33 shots) and `--mobile` (390x844, 23 shots) → `docs/screenshots/`.
+**The PNGs are gitignored (~100 MB, regenerable); the README indexing them and the script are
+tracked.** Requires the dev server. Three things made the report screens fiddly, all commented in
+the script: disclosure rows stay in the DOM while their principle section is collapsed; the sticky
+principle header intercepts clicks on rows scrolled just beneath it (hence scroll-to-centre +
+`force: true`); and section state persists between loop iterations so the toggle must be
+conditional on `aria-expanded`. The consent banner is dismissed via the product's own `/notrack`.
+**Known gap:** mobile captures the marketing pages, all 9 tools and the report Overview, but NOT
+the report's inner tabs or the 4 embedded calculators (the report shell uses different navigation
+at phone width).
+
+### In flight: Lovable design exploration
+
+The user is using **Lovable** to generate UI/UX design directions, starting with the calculators,
+then possibly a whole-site pass. Workflow: user feeds Lovable screenshots + a prompt, brings the
+output back, and **Claude Code reimplements it against the real token system** (Lovable returns
+React/Tailwind/shadcn; Saaksh is inline styles + CSS custom properties, so its output is
+**direction, not code**). Prompts already supplied in-session: a context primer (what the product
+is, who the customer is), a calculator-redesign brief, and a two-step whole-site audit that first
+forces Lovable to prove it can actually load saaksh.co (5 verification questions with known
+answers) before accepting any audit — the confabulation risk is real.
+
+### Open, in priority order
+
+1. **Push + deploy the 6 commits.** Nothing above is live.
+2. **Distribution** — `docs/distribution-playbook.md` is the plan. The 2-hour version: Bing
+   Webmaster Tools + sitemap (ChatGPT's search leans on Bing's index), Google Search Console +
+   sitemap + request indexing on `/brsr` and `/glossary`, answer the 3 zero-competition Quora
+   questions (fees, ACVA, CSR-carbon-credits), change the email ask to a named artifact, mark the
+   4 GA4 key events.
+3. **Seed the two empty boards** (`/jobs` gigs, `/directory`) — by hand, asking posters. Do NOT
+   scrape the WhatsApp group.
+4. Lovable output → reimplement against Saaksh tokens.
+5. Send the ECS approach (`docs/ECS-proposal.html`, written since July, still not sent).
+
+## Project Status — earlier: last updated 2026-09-04
 
 **Everything below through 2026-08-01 is pushed and deployed.** The old "12 commits unpushed"
 warning is gone: that sprint went out, and origin/master == local == live. Deploys are still
