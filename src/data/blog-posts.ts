@@ -498,6 +498,7 @@ export const BLOG_POSTS: BlogPost[] = [
   /* ── Tier 1, Original 5 posts ─────────────────────────────────────────── */
   {
     slug: "brsr-fy2526-changes",
+    updated: "2026-09-08",
     title: "What's new in BRSR for FY 2025-26",
     excerpt:
       "BRSR Core is now mandatory for the top 500 listed companies. Here's what changed, what's voluntary, and what every consultant should brief their clients on before filing this year.",
@@ -508,9 +509,32 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "clipboard",
     author: AUTHOR,
     coverImage: "/blog/brsr-fy2526-changes.jpg",
+    faqs: [
+      {
+        q: "What changed in BRSR for FY 2025-26?",
+        a:
+          "Three things. Reasonable assurance on the 42 BRSR Core KPIs became mandatory for the top 500 listed companies by market capitalisation. Value-chain disclosure was pushed to purely voluntary for FY 2025-26, becoming mandatory from FY 2026-27. And SEBI's March 2025 circular clarified several long-debated points in the format, including introducing assessment as an alternative to full ISAE 3000 assurance.",
+      },
+      {
+        q: "Is BRSR Core assurance mandatory for the top 500 companies?",
+        a:
+          "Yes. For FY 2025-26, SEBI requires reasonable assurance on the 42 BRSR Core KPIs for the top 500 listed companies by market capitalisation. The top 1000 join the same requirement from FY 2026-27. The assurance must come from an independent provider, typically a practising CA firm or a specialist ESG assurer.",
+      },
+      {
+        q: "Are BRSR value-chain disclosures mandatory in FY 2025-26?",
+        a:
+          "No. SEBI's March 2025 circular made value-chain disclosure purely voluntary for FY 2025-26, with mandatory reporting from FY 2026-27. Companies in the top 250 should use this year to map their supply chain and brief their key Tier-1 partners, because the data will not appear on demand next year.",
+      },
+      {
+        q: "When is the BRSR for FY 2025-26 due?",
+        a:
+          "BRSR is filed as part of the Annual Report rather than as a separate document, and is typically due three months after the financial year ends. For FY 2025-26 that means the Annual Report containing the BRSR is expected by late September or October 2026.",
+      },
+    ],
   },
   {
     slug: "scope-1-2-ghg-brsr-guide",
+    updated: "2026-09-08",
     title: "How to calculate Scope 1 & 2 GHG emissions for BRSR",
     excerpt:
       "The P6-E1 disclosure trips up most first-time filers. This guide covers the CEA grid factor, IPCC fuel factors, what 'absolute' emissions means, and the most common calculation mistakes.",
@@ -521,9 +545,32 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "chart",
     author: AUTHOR,
     coverImage: "/blog/scope-1-2-ghg-brsr-guide.jpg",
+    faqs: [
+      {
+        q: "How do you calculate Scope 1 and Scope 2 emissions for BRSR?",
+        a:
+          "Scope 1 is activity-based: collect fuel consumption from purchase records, multiply by the fuel's emission factor, and divide by 1,000 to convert kg to tonnes. Scope 2 is purchased grid electricity: kWh multiplied by the CEA grid factor, divided by 1,000. Both are reported under P6-E1 in absolute tonnes of CO2-equivalent, alongside intensity ratios.",
+      },
+      {
+        q: "Which grid emission factor should an Indian company use for Scope 2?",
+        a:
+          "The Central Electricity Authority CO2 Baseline Database factor, on a location-based approach. Use version 21.0, which is 0.710 kg CO2e per kWh, for FY 2025-26 filings. Using a stale CEA version is one of the most common reasons a figure has to be restated, so state the version alongside the number.",
+      },
+      {
+        q: "What is the diesel emission factor for BRSR Scope 1?",
+        a:
+          "2.68 kg CO2e per litre, from IPCC 2006 Guidelines Volume 2, Table 2.2. LPG is 1.56 kg CO2e per kg and PNG or CNG is 1.89 kg CO2e per cubic metre. Assurers increasingly expect the factor and its source version to be stated with the figure, because undocumented factors are a common reason for a qualified opinion.",
+      },
+      {
+        q: "Does rooftop solar reduce a company's Scope 2 emissions?",
+        a:
+          "Only indirectly. Self-generated renewable electricity is Scope 1-neutral: it neither adds to nor offsets Scope 2. What it does is reduce the volume of electricity imported from the grid, and Scope 2 is calculated on grid imports alone, so the reported figure falls because less electricity was purchased.",
+      },
+    ],
   },
   {
     slug: "brsr-core-vs-essential",
+    updated: "2026-09-08",
     title: "BRSR Core vs BRSR Essential: a clear breakdown",
     excerpt:
       "\"BRSR Core\" and \"BRSR Essential\" confuse almost everyone. Here's exactly what each term means, who it applies to, and what the reasonable assurance requirement actually asks of your client.",
@@ -534,9 +581,32 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "scales",
     author: AUTHOR,
     coverImage: "/blog/brsr-core-vs-essential.jpg",
+    faqs: [
+      {
+        q: "What is the difference between BRSR Core and BRSR Essential?",
+        a:
+          "BRSR Essential is the full reporting format SEBI prescribes, covering Sections A, B and C. BRSR Core is a curated sub-set of 42 Key Performance Indicators drawn from that format, which SEBI identified as the most material and quantifiable. Every BRSR filer completes Essential; only the 42 Core KPIs require independent assurance.",
+      },
+      {
+        q: "How many KPIs are in BRSR Core?",
+        a:
+          "42. They are drawn from the full BRSR format and span all nine principles, mapping to nine broad attribute areas: GHG intensity, energy intensity, water intensity, waste generated, complaints on essential indicators, openness of business, gender-wise pay ratio, inclusive development, and CSR spend.",
+      },
+      {
+        q: "Do companies file a separate BRSR Core report?",
+        a:
+          "No. Companies file the standard BRSR as part of their Annual Report, and the 42 Core KPIs within that filing are independently assured. The assurer then issues a separate Assurance Statement covering those 42 indicators. There is no separate Core filing.",
+      },
+      {
+        q: "What is the difference between reasonable and limited assurance?",
+        a:
+          "Reasonable assurance is a positive opinion: the assurer states that in their opinion the KPIs are free from material misstatement, which is the same level of confidence as a statutory financial audit. Limited assurance is a negative opinion: nothing came to the assurer's attention to suggest misstatement. Reasonable assurance requires substantially more evidence, and it is what BRSR Core demands.",
+      },
+    ],
   },
   {
     slug: "5-brsr-fields-manufacturers-struggle",
+    updated: "2026-09-08",
     title: "5 BRSR disclosures that trip up every manufacturer",
     excerpt:
       "After working through dozens of manufacturer filings, these five disclosures consistently generate the most confusion, data gaps, and revision rounds. Here's what to watch for.",
@@ -547,9 +617,32 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "bulb",
     author: AUTHOR,
     coverImage: "/blog/5-brsr-fields-manufacturers-struggle.jpg",
+    faqs: [
+      {
+        q: "Which BRSR disclosures do manufacturers get wrong most often?",
+        a:
+          "Five recur: P6-E1 GHG emissions (reporting Scope 1 but omitting Scope 2, or using kg instead of tonnes), P3-E1 total workforce (missing third-party contractor headcount), P2-E3 and P2-E4 Extended Producer Responsibility, P6-E7 energy intensity (wrong denominator), and the gender wage ratio. None are conceptually hard; the data is simply scattered or the format is misread.",
+      },
+      {
+        q: "Does BRSR P3-E1 include contract and agency workers?",
+        a:
+          "Yes. P3-E1 asks for total workforce including contractual workers, part-time workers and workers supplied by staffing agencies. Most HR systems track only permanent and direct-hire staff, so security, housekeeping and logistics contractors are almost always missed. Ask facilities or admin for the third-party headcount, not just HR.",
+      },
+      {
+        q: "Which denominator should be used for BRSR energy intensity?",
+        a:
+          "The format allows either turnover in rupees crore or physical output in units or tonnes. Use both where the data exists, since they answer different questions. For a service business with no physical output, turnover alone is acceptable. The mistake to avoid is switching denominators between years, which makes the trend meaningless.",
+      },
+      {
+        q: "Do manufacturers need EPR registration to answer BRSR?",
+        a:
+          "If they use plastic packaging or sell electronics or batteries, they need an Extended Producer Responsibility registration with CPCB under the Plastic Waste, E-Waste and Battery Waste Management Rules 2022. BRSR asks for the EPR obligation and how much was collected or recycled. A missing registration is a compliance problem in its own right, not just a reporting gap.",
+      },
+    ],
   },
   {
     slug: "cbam-2026-indian-exporters",
+    updated: "2026-09-08",
     title: "CBAM in 2026: what Indian exporters need to know",
     excerpt:
       "The EU's Carbon Border Adjustment Mechanism entered its definitive period in January 2026. Indian steel, cement and aluminium exporters now have real reporting obligations, here's what to do.",
@@ -560,11 +653,34 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "globe",
     author: AUTHOR,
     coverImage: "/blog/cbam-2026-indian-exporters.jpg",
+    faqs: [
+      {
+        q: "Does CBAM apply to Indian exporters?",
+        a:
+          "Indirectly but unavoidably. The legal obligation sits with the EU importer, who must buy CBAM certificates covering the embedded emissions in the goods. But the importer can only discharge it with accurate embedded-emissions data from the manufacturer, so the data burden lands on the Indian exporter.",
+      },
+      {
+        q: "Which goods does CBAM cover?",
+        a:
+          "Steel and iron, cement, aluminium, fertilizers, hydrogen and electricity. The definitive phase began on 1 January 2026, so the obligations are live rather than transitional, and the first annual report covering calendar year 2026 is due in May 2027.",
+      },
+      {
+        q: "What happens if an Indian exporter cannot provide embedded-emissions data?",
+        a:
+          "The EU importer must fall back on CBAM default values set by the EU Commission. Those defaults are based on average EU production carbon intensity and are deliberately conservative, so they price the consignment punitively. In practice importers either pass that cost back or move to suppliers who can produce real data.",
+      },
+      {
+        q: "Can BRSR GHG data be reused for CBAM?",
+        a:
+          "Mostly. If a client already calculates Scope 1 and Scope 2 for BRSR P6-E1, that covers most of what CBAM needs. The key difference is granularity: CBAM asks for emissions per tonne of product, not total company emissions, so a plant making multiple products needs an allocation methodology.",
+      },
+    ],
   },
 
   /* ── New SEO posts ──────────────────────────────────────────────────────── */
   {
     slug: "brsr-applicability-guide",
+    updated: "2026-09-08",
     title: "BRSR applicability: which companies must file and when",
     excerpt:
       "Top 1000, top 500, BRSR Core, value chain, the rules layered over three years and the deadlines are now live. Here's a single, clear guide to who must file what for FY 2025-26.",
@@ -575,9 +691,32 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "shield",
     author: AUTHOR,
     coverImage: "/blog/brsr-applicability-guide.jpg",
+    faqs: [
+      {
+        q: "Which companies have to file BRSR?",
+        a:
+          "The top 1000 listed companies by market capitalisation, under SEBI's LODR Regulations, specifically Regulation 34(2)(f). BRSR has been mandatory for that group since FY 2022-23, replacing the older Business Responsibility Report required since 2012.",
+      },
+      {
+        q: "Do first-time BRSR filers have to complete the Leadership indicators?",
+        a:
+          "No. Leadership indicators are required only for companies that have been filing BRSR for three or more years, or that are among the top 1000. A first-time filer completes the 68 Essential indicators. Settling this in the kickoff meeting keeps the data-collection scope honest, because Leadership adds 40 more fields.",
+      },
+      {
+        q: "Is BRSR filed separately from the annual report?",
+        a:
+          "No. BRSR is filed as part of the Annual Report, not as a standalone document, and is typically due three months after the financial year closes. BRSR Core is likewise not a separate report: the 42 Core KPIs sit inside the same filing and attract a separate Assurance Statement.",
+      },
+      {
+        q: "Do unlisted companies have to file BRSR?",
+        a:
+          "Not directly. But an unlisted company can be pulled in as a significant value-chain partner of a listed filer, which from FY 2026-27 means disclosing against the BRSR Core KPIs. Unlisted suppliers to large listed customers should expect the request rather than wait for it.",
+      },
+    ],
   },
   {
     slug: "brsr-core-assurance-fy2526",
+    updated: "2026-09-08",
     title: "BRSR Core assurance in FY 2025-26: a practical guide for top-500 companies",
     excerpt:
       "Reasonable assurance for BRSR Core is now mandatory for India's top 500 listed companies. This guide explains what the 9 KPIs are, what an auditor actually checks, and how to build an assurance-ready data trail.",
@@ -588,9 +727,32 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "check",
     author: AUTHOR,
     coverImage: "/blog/brsr-core-assurance-fy2526.jpg",
+    faqs: [
+      {
+        q: "Who needs BRSR Core assurance in FY 2025-26?",
+        a:
+          "The top 500 listed companies by market capitalisation. FY 2025-26 is the second year the requirement applies to that group. The top 1000 join from FY 2026-27, so companies ranked 501 to 1000 should be building the evidence trail this year rather than next.",
+      },
+      {
+        q: "What standard is BRSR Core assurance carried out under?",
+        a:
+          "ISAE 3000, the international standard for assurance engagements other than audits of historical financial information. BRSR Core requires reasonable assurance under it, which is a positive opinion carrying the same level of confidence as a statutory financial audit.",
+      },
+      {
+        q: "What does a BRSR Core assurer actually check?",
+        a:
+          "Source-level data, not the final reported figure. Expect requests for meter readings rather than just the electricity bill total, site-level data before aggregation to company level, and documentary evidence of every calculation step including the emission factor and its version.",
+      },
+      {
+        q: "What are the ISF BRSR Core standards?",
+        a:
+          "Sector-specific standards published in December 2024 by the Industry Standards Forum, a body constituted under SEBI's aegis. They give binding guidance on how each of the 42 Core KPIs should be measured, and they are also the criteria an evaluator tests against under the lighter assessment pathway.",
+      },
+    ],
   },
   {
     slug: "brsr-data-collection-guide",
+    updated: "2026-09-08",
     title: "BRSR data collection: how to get numbers from your client's team",
     excerpt:
       "The consultant's actual pain: ESG data lives with five different departments and no one answers emails. This guide covers who owns what, what to ask, and how to stop chasing people manually.",
@@ -601,9 +763,32 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "users",
     author: AUTHOR,
     coverImage: "/blog/brsr-data-collection-guide.jpg",
+    faqs: [
+      {
+        q: "Who inside a company owns the BRSR data?",
+        a:
+          "It is split across departments: HR owns Principle 3 workforce and most of Principle 5, EHS and the energy manager own Principle 6 environment, the Company Secretary owns Principle 1 governance and Principle 7, Procurement owns Principle 2 value chain, and CSR owns Principle 8. Mapping principle to owner before sending anything is what stops a request being forwarded three times.",
+      },
+      {
+        q: "Why do BRSR data-collection spreadsheets fail?",
+        a:
+          "Because one large sheet with all 108 fields sent to whoever handles compliance gives the recipient no way to know which fields they own, why each number is needed, or what unit SEBI expects. It sits for two weeks and comes back ten fields filled. Five or six targeted requests, one per team, work far better.",
+      },
+      {
+        q: "What should a BRSR request to the HR team ask for?",
+        a:
+          "Permanent employees and workers segmented by male and female and differently-abled, contract employees and third-party staffing-agency headcount, part-time and on-call numbers, and the Principle 5 human-rights items such as complaints and training. The agency contractors are the ones most often missed, because they are not in the HRMS.",
+      },
+      {
+        q: "How can a consultant speed up BRSR data collection?",
+        a:
+          "Split the ask by owning team, explain in plain language what each field means and where the team would normally find it, and state the unit. Saaksh's free tool generates a per-team data request brief from a client's gap analysis, and Collect (Pro) sends and chases those requests with reminders and no-login submission.",
+      },
+    ],
   },
   {
     slug: "brsr-assurance-vs-assessment",
+    updated: "2026-09-08",
     title: "BRSR assurance vs assessment: what SEBI's March 2025 circular changed",
     excerpt:
       "SEBI's March 2025 circular introduced 'assessment' as a lighter alternative to reasonable assurance under ISAE 3000. Most consultants don't yet know the difference, or which clients can choose which path.",
@@ -614,9 +799,32 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "scales",
     author: AUTHOR,
     coverImage: "/blog/brsr-assurance-vs-assessment.jpg",
+    faqs: [
+      {
+        q: "What is the difference between BRSR assurance and assessment?",
+        a:
+          "Reasonable assurance under ISAE 3000 requires the assurer to gather sufficient evidence for a positive opinion, at the evidence burden of a statutory financial audit. Assessment, introduced by SEBI in March 2025, is an evaluation of whether the reported Core KPIs comply with the ISF sector-specific standards. It is less onerous, but still needs an independent third party and a structured evidence review.",
+      },
+      {
+        q: "When did SEBI introduce the BRSR assessment pathway?",
+        a:
+          "In its circular dated 28 March 2025. Before that, reasonable assurance under ISAE 3000 was the only permitted pathway for verifying the 42 BRSR Core KPIs.",
+      },
+      {
+        q: "Is BRSR assessment a self-certification?",
+        a:
+          "No. Assessment requires an independent evaluator and a structured review of the evidence behind the reported Core KPIs. It is a lighter pathway than ISAE 3000 reasonable assurance, not an internal sign-off.",
+      },
+      {
+        q: "Which companies can choose assessment instead of reasonable assurance?",
+        a:
+          "The specific eligibility criteria are set out in SEBI's circular of 28 March 2025, and the pathway decision should be taken against the circular itself rather than a summary. Read it directly before advising a client; it is published on SEBI's website under the ESG and BRSR section.",
+      },
+    ],
   },
   {
     slug: "brsr-for-it-services",
+    updated: "2026-09-08",
     title: "BRSR for IT services companies: what 'not applicable' really means",
     excerpt:
       "IT companies can mark certain manufacturing-related disclosures as 'not applicable', but only the right ones, and only with a clear justification. Here's the field-by-field guide.",
@@ -627,9 +835,32 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "code",
     author: AUTHOR,
     coverImage: "/blog/brsr-for-it-services.jpg",
+    faqs: [
+      {
+        q: "Which BRSR disclosures are not applicable to an IT services company?",
+        a:
+          "Eleven Section C indicators are manufacturing-specific: P2-E3, P2-E4, P2-L4, P2-L5, P6-E2, P6-E4, P6-E5, P6-E6, P6-E11, P6-E12 and P6-L3. A pure services business with no factory can mark each not applicable, but only with a brief written justification against each one.",
+      },
+      {
+        q: "Do IT companies have to report GHG emissions under BRSR?",
+        a:
+          "Yes. Scope 2 grid electricity for offices and data centres is fully applicable under P6-E1, and Scope 1 applies wherever the company runs DG sets or owns vehicles. Being a services business removes the process-emission disclosures, not the energy ones.",
+      },
+      {
+        q: "Can a services company mark a BRSR field not applicable without explaining why?",
+        a:
+          "It should not. A bare not applicable with no justification is what invites SEBI scrutiny. Each of the eleven manufacturing-specific indicators should carry a one-line reason, such as the company having no manufacturing operations or industrial effluent.",
+      },
+      {
+        q: "Which BRSR principles matter most for IT services companies?",
+        a:
+          "Principle 3 (employee wellbeing) and Principle 5 (human rights) apply in full and are usually the most material, given large workforces and contract staffing. Principle 1 governance and Principle 9 consumer responsibility, particularly data privacy under the DPDP Act, also carry more weight than they do for a manufacturer.",
+      },
+    ],
   },
   {
     slug: "brsr-for-textile-companies",
+    updated: "2026-09-08",
     title: "BRSR for textile companies: sector guide for FY 2025-26",
     excerpt:
       "Textile companies face a double compliance burden in FY 2025-26: BRSR Core assurance and CCTS GHG reporting (BEE deadline: July 31, 2026). This guide covers both, and how they overlap.",
@@ -640,9 +871,32 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "leaf",
     author: AUTHOR,
     coverImage: "/blog/brsr-for-textile-companies.jpg",
+    faqs: [
+      {
+        q: "Does CCTS apply to textile companies?",
+        a:
+          "Yes. BEE notified textile as one of the nine GEI-obligated sectors under India's Carbon Credit Trading Scheme in January 2026. Obligated textile companies must measure their actual GHG emission intensity for FY 2025-26 and submit a verified report to BEE.",
+      },
+      {
+        q: "When is the BEE GEI report due for textile companies?",
+        a:
+          "31 July 2026, for the FY 2025-26 compliance year. Companies that beat their BEE-set GEI target earn Carbon Credit Certificates; those that miss it must buy certificates to cover the shortfall.",
+      },
+      {
+        q: "Which BRSR disclosures matter most for a textile company?",
+        a:
+          "The Principle 6 environmental set, because dyeing and finishing are heat-intensive and textile is among the most water-intensive manufacturing sectors in India, and dyeing effluent carries high chemical oxygen demand. Principles 3 and 5 are equally material given a large, predominantly female and often contract-heavy workforce.",
+      },
+      {
+        q: "Can CCTS and BRSR data collection be combined?",
+        a:
+          "Largely, yes. The fuel consumption, electricity units and production volume that CCTS needs for GHG emission intensity are substantially the same inputs BRSR P6-E1 requires. Collecting them once, at site level and with the emission factor versions documented, serves both obligations.",
+      },
+    ],
   },
   {
     slug: "brsr-value-chain-disclosure",
+    updated: "2026-09-08",
     title: "BRSR value chain disclosure: voluntary now, mandatory from FY 2026-27",
     excerpt:
       "SEBI's March 2025 circular deferred mandatory value chain ESG disclosure to FY 2026-27 and narrowed the scope to partners at 2%+ of purchases/sales. Here's exactly what's required and when.",
@@ -653,9 +907,32 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "chain",
     author: AUTHOR,
     coverImage: "/blog/brsr-value-chain-disclosure.jpg",
+    faqs: [
+      {
+        q: "Are BRSR value-chain disclosures mandatory?",
+        a:
+          "Not for FY 2025-26. SEBI's March 2025 circular made them purely voluntary for that year, with mandatory reporting from FY 2026-27. This replaced the earlier comply-or-explain expectation and gives both listed companies and their suppliers a year to build the capability.",
+      },
+      {
+        q: "Which value-chain partners are in scope for BRSR?",
+        a:
+          "Partners that individually account for 2% or more of the company's total purchases or sales, with aggregate coverage capped at 75%. Once enough partners cover 75% of purchases and sales you stop, even if others individually exceed 2%. You apply whichever criterion yields the smaller number of partners.",
+      },
+      {
+        q: "Do value-chain partners have to file a full BRSR?",
+        a:
+          "No. In-scope partners are not expected to complete all 108 indicators. The expectation is disclosure against the 42 BRSR Core KPIs under the assessment framework, rather than full reasonable assurance.",
+      },
+      {
+        q: "How many suppliers does the 2% threshold typically capture?",
+        a:
+          "For a large manufacturer, usually between 8 and 20 key Tier-1 suppliers, and a similar number of large customers. The threshold narrows the scope considerably compared with the whole-supply-chain exercise many companies initially feared.",
+      },
+    ],
   },
   {
     slug: "brsr-water-disclosure-calculation",
+    updated: "2026-09-08",
     title: "BRSR water disclosure: how to calculate water withdrawal intensity",
     excerpt:
       "P6-E3 requires water withdrawal intensity, but SEBI specifies different denominators for manufacturers (production units) vs service companies (revenue or FTE). Here's the calculation methodology, cited.",
@@ -666,9 +943,32 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "drop",
     author: AUTHOR,
     coverImage: "/blog/brsr-water-disclosure-calculation.jpg",
+    faqs: [
+      {
+        q: "What is the difference between water withdrawal and water consumption in BRSR?",
+        a:
+          "Withdrawal is the total volume taken from all sources. Consumption is the volume that does not return to the source catchment, because it is incorporated into the product, evaporated or otherwise not discharged. The relationship is consumption equals withdrawal minus water discharged, and SEBI expects both figures, not just withdrawal.",
+      },
+      {
+        q: "Which BRSR indicators cover water?",
+        a:
+          "Three. P6-E3 covers total water withdrawal by source, total consumption, and water intensity (Essential). P6-E4 covers effluent generation and treatment (Essential). P6-L1 covers water discharge quality parameters (Leadership, so it applies only to companies with three or more years of filing or in the top 1000).",
+      },
+      {
+        q: "How is water intensity calculated for BRSR?",
+        a:
+          "By dividing the water volume, in kilolitres, by turnover in rupees crore, giving kL per crore of revenue. Physical output can be used as an additional denominator where the client has it. Keep the denominator consistent year on year, or the trend cannot be read.",
+      },
+      {
+        q: "How does Zero Liquid Discharge affect the BRSR water disclosure?",
+        a:
+          "It simplifies it. In a ZLD-certified facility there is no discharge, so water consumption equals water withdrawal. The certification itself is also the evidence an assurer will ask for under P6-E5.",
+      },
+    ],
   },
   {
     slug: "ccts-india-2025-26",
+    updated: "2026-09-08",
     title: "CCTS India 2025-26: which 490 companies must comply and what to do",
     excerpt:
       "India's Carbon Credit Trading Scheme entered force for seven sectors in early 2026. First verified GHG emission intensity reports are due to BEE by July 31, 2026. Here's who's in scope and what the process looks like.",
@@ -679,9 +979,32 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "leaf",
     author: AUTHOR,
     coverImage: "/blog/ccts-india-2025-26.jpg",
+    faqs: [
+      {
+        q: "What is India's Carbon Credit Trading Scheme?",
+        a:
+          "CCTS is India's national carbon market framework, notified by MoEFCC under the Energy Conservation (Amendment) Act 2022 and implemented by the Bureau of Energy Efficiency. BEE sets sector-specific GHG emission intensity targets through GEI Target Orders. Entities that beat their target earn Carbon Credit Certificates tradable on the Indian Carbon Market; those that miss must buy them.",
+      },
+      {
+        q: "Which sectors are obligated under CCTS?",
+        a:
+          "Nine, notified in two tranches. Aluminium, cement, chlor-alkali and pulp and paper came in October 2025. Petroleum refining, petrochemicals, textiles, iron and steel, and fertilisers followed in January 2026.",
+      },
+      {
+        q: "How many companies are obligated under CCTS?",
+        a:
+          "Approximately 490 entities across the nine sectors in the first compliance year. The definitive list is maintained by BEE and can change as BEE updates its assessments, so it should be checked against BEE rather than assumed.",
+      },
+      {
+        q: "When is the first CCTS report due?",
+        a:
+          "31 July 2026. Obligated entities must measure their actual GHG emission intensity across the full FY 2025-26 year, April 2025 to March 2026, and submit a verified emission intensity report to BEE by that date.",
+      },
+    ],
   },
   {
     slug: "brsr-materiality-assessment-guide",
+    updated: "2026-09-08",
     title: "BRSR materiality assessment: a step-by-step guide for consultants",
     excerpt:
       "Only 34% of BSE 100 companies publicly disclose their materiality methodology. This guide walks through a defensible materiality process, stakeholder mapping, impact scoring, and how to document it for BRSR.",
@@ -692,6 +1015,28 @@ export const BLOG_POSTS: BlogPost[] = [
     coverIcon: "chart",
     author: AUTHOR,
     coverImage: "/blog/brsr-materiality-assessment-guide.jpg",
+    faqs: [
+      {
+        q: "Does BRSR require a materiality assessment?",
+        a:
+          "It requires evidence of a process rather than a prescribed methodology. Principle 4 requires companies to identify material stakeholders and describe how they engage them, and the Section B management disclosures ask about policies, targets and governance for ESG issues, which implicitly requires identifying material topics.",
+      },
+      {
+        q: "What are the six BRSR stakeholder groups?",
+        a:
+          "Communities affected by operations, employees (permanent and contract), shareholders and investors, regulators, customers, and value-chain partners such as suppliers and distributors. The useful step is naming the specific groups within each category for that client, rather than restating the six labels.",
+      },
+      {
+        q: "Does BRSR require double materiality like the CSRD?",
+        a:
+          "Not formally, but a defensible assessment demonstrates both directions: outside-in, meaning which ESG topics could affect financial performance, and inside-out, meaning the company's impact on the environment and society. That is broadly the double-materiality concept the EU's CSRD formalises, applied less prescriptively.",
+      },
+      {
+        q: "How many Indian companies disclose their materiality methodology?",
+        a:
+          "Only 34% of BSE 100 companies publicly disclose their materiality assessment methodology, according to WBCSD India's 2024 review. The rest either omit the disclosure or present a pre-screened topic list with no evidence of a genuine stakeholder process.",
+      },
+    ],
   },
 ];
 
