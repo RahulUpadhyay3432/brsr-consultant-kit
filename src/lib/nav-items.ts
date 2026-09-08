@@ -28,6 +28,8 @@ export const RESOURCES_NAV_ITEMS: { label: string; sub: string; href: string }[]
   { label: "ESG jobs & gigs",       sub: "Curated roles, plus one-off freelance assignments", href: "/jobs" },
   { label: "Consultant directory", sub: "Find an ESG consultant by what they take on",       href: "/directory" },
   { label: "All 108 BRSR disclosures", sub: "Every Section C field, explained and cited",  href: "/brsr" },
+  { label: "Glossary",              sub: "BRSR, CBAM, CCTS and framework terms defined", href: "/glossary" },
+  { label: "BRSR by the numbers",   sub: "Every load-bearing figure, with its source",   href: "/brsr/statistics" },
   { label: "Latest updates",        sub: "SEBI, BRSR, CBAM & CCTS moves that matter", href: "/latest" },
   { label: "Blog",                  sub: "Practical, cited BRSR & ESG guides",        href: "/blog" },
   { label: "Methodology & sources", sub: "How we calculate, every figure cited",      href: "/methodology" },

@@ -503,6 +503,7 @@ function Header({
 
   const RESOURCES_ITEMS: { label: string; sub: string; href: string }[] = [
     { label: "All 108 BRSR disclosures", sub: "Every Section C field, explained and cited", href: "/brsr" },
+    { label: "Glossary", sub: "BRSR, CBAM, CCTS and framework terms defined", href: "/glossary" },
     { label: "Latest updates", sub: "SEBI, BRSR, CBAM & CCTS moves that matter", href: "/latest" },
     { label: "Blog", sub: "Practical, cited BRSR & ESG guides", href: "/blog" },
     { label: "Methodology & sources", sub: "How we calculate, every figure cited", href: "/methodology" },

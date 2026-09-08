@@ -19,6 +19,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/community`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE}/directory`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE}/brsr`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE}/brsr/statistics`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE}/glossary`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     // Free tools
     { url: `${BASE}/tools/audit-readiness`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     { url: `${BASE}/tools/xbrl-preflight`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },

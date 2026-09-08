@@ -60,6 +60,12 @@ function body(): string {
 - **What is CCTS?** India's Carbon Credit Trading Scheme. Nine notified GEI-obligated sectors: aluminium, cement, chlor-alkali, fertilizer, iron and steel, paper and pulp, petrochemicals, petroleum refinery, and textile.
 - **Does a services company have to answer every BRSR field?** No. Eleven Section C disclosures are manufacturing-specific and are legitimately "not applicable" to a pure services business. Principles 3 and 5 still apply in full, and Scope 2 grid electricity still applies.
 
+## Reference
+
+- [All 108 BRSR Section C disclosures](${BASE}/brsr): one page per disclosure, with SEBI's own wording, the ICAI page it is documented on, a plain-English reading, what a complete assurance-ready answer contains, the unit, and the team that usually holds the data.
+- [Glossary of Indian ESG reporting](${BASE}/glossary): BRSR Core, Essential and Leadership indicators, reasonable assurance versus assessment, Scope 1/2/3, the CEA grid factor, CBAM, CCTS, GEI, EPR, ZLD, GRI, TCFD, IFRS S1/S2, TNFD, CSRD and ESRS, each defined with its regulator, number and year.
+- [BRSR by the numbers](${BASE}/brsr/statistics): every load-bearing figure in Indian sustainability reporting with its primary source and vintage, free to quote.
+
 ## Free tools, no login, all client-side
 
 - [BRSR gap analysis](${BASE}/start): describe a client in six fields and get all 108 Section C disclosures classified as Ready to pull, Needs verification, or Collect fresh, cross-referenced against the compliance filings the company already submits (PCB consents, ZLD, hazardous waste, EPR, Factory Act, PAT).
