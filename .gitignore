@@ -57,3 +57,8 @@ next-env.d.ts
 # competitor design-study screenshots — kept locally for reference, not committed
 # (public repo: avoids 18MB bloat + republishing competitors' page imagery)
 /docs/competitor-design/
+
+# Product screenshots for design review: ~100 MB of regenerable PNGs. The
+# README and scripts/shoot-product.mjs are tracked so anyone can rebuild them.
+/docs/screenshots/*.png
+/docs/screenshots/MANIFEST*.txt
