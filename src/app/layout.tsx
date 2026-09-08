@@ -31,6 +31,11 @@ const hanken = localFont({
 });
 export const metadata: Metadata = {
   metadataBase: new URL("https://saaksh.co"),
+  // Root canonical. Traffic arrives on "/" with ?utm_* and ?notrack params, which
+  // would otherwise be indexable as separate URLs. Every content route sets its
+  // own canonical (overriding this) and the app routes are noindex, so nothing
+  // else inherits it by accident.
+  alternates: { canonical: "/" },
   title: {
     default: "Saaksh: Free BRSR Readiness Tool for Indian ESG Consultants",
     template: "%s | Saaksh",

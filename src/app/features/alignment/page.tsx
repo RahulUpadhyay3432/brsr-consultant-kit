@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/features/alignment" },
   title: "Cross-framework mapping, BRSR to GRI, TCFD, IFRS, TNFD, ESRS | Saaksh",
   description:
     "Map your client's BRSR data across GRI, TCFD, IFRS S1/S2, TNFD, ESRS (CSRD) and the MSCI, DJSI, CDP and EcoVadis assessments, collect once, report to many frameworks. Free and on-device.",

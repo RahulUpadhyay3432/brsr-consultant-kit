@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/brief" },
   title: "Saaksh Brief — the 30-second ESG & BRSR digest",
   description:
     "A swipeable, install-to-home-screen brief of Indian ESG and BRSR: SEBI, BRSR Core, CBAM, CCTS and global frameworks. Fresh news, cited regulation, plain guides.",

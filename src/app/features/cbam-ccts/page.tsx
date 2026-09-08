@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata = {
+  alternates: { canonical: "/features/cbam-ccts" },
   title: "CBAM & CCTS Readiness, Saaksh",
   description:
     "Know if your client is in scope for the EU Carbon Border Adjustment Mechanism or India's Carbon Credit Trading Scheme, and what to prepare, cited to official sources.",

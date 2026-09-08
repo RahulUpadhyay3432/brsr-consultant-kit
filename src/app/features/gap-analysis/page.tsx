@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/features/gap-analysis" },
   title: "BRSR Gap Analysis, Saaksh",
   description:
     "See exactly which of your client's 108 BRSR disclosures are covered, partially covered, or need fresh data, in under 60 seconds.",

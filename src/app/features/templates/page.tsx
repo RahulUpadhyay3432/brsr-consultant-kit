@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/features/templates" },
   title: "BRSR Templates & Guides, Saaksh",
   description:
     "Downloadable BRSR templates, engagement timelines, and cited how-to guides, built in your browser from real SEBI format data, no login required.",

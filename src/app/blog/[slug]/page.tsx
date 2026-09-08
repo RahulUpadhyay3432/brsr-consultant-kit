@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getPost, formatDate, CATEGORY_COLORS, BLOG_POSTS, BlogCategory, BlogPost } from "@/data/blog-posts";
+import { getPost, formatDate, lastTouched, CATEGORY_COLORS, BLOG_POSTS, BlogCategory, BlogPost } from "@/data/blog-posts";
 import { BLOG_CONTENT } from "@/content/blog-content";
 import { BlogCoverArt } from "@/components/blog/BlogCoverArt";
 import { BlogToc } from "@/components/blog/BlogToc";
@@ -28,12 +28,15 @@ export async function generateMetadata({
   return {
     title: post.title,
     description: post.excerpt,
+    alternates: { canonical: `/blog/${post.slug}` },
     openGraph: {
       title: post.title,
       description: post.excerpt,
       type: "article",
       publishedTime: post.date,
+      modifiedTime: lastTouched(post),
       authors: [post.author.name],
+      section: post.category,
       images: [ogImage],
     },
     twitter: {
@@ -107,16 +110,45 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     ...BLOG_POSTS.filter((p) => p.slug !== post.slug && p.category !== post.category),
   ].slice(0, 3);
 
+  const url = `https://saaksh.co/blog/${post.slug}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
     description: post.excerpt,
     datePublished: post.date,
-    author: { "@type": "Person", name: post.author.name },
-    publisher: { "@type": "Organization", name: "Saaksh", url: "https://saaksh.co" },
-    url: `https://saaksh.co/blog/${post.slug}`,
+    dateModified: lastTouched(post),
+    author: {
+      "@type": "Person",
+      name: post.author.name,
+      jobTitle: post.author.role,
+      url: "https://saaksh.co/about",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Saaksh",
+      url: "https://saaksh.co",
+      logo: { "@type": "ImageObject", url: "https://saaksh.co/icon.svg" },
+    },
+    url,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    articleSection: post.category,
+    inLanguage: "en-IN",
+    isAccessibleForFree: true,
     ...(post.coverImage && { image: `https://saaksh.co${post.coverImage}` }),
+  };
+
+  // Breadcrumbs give search and answer engines the site's shape, and earn the
+  // Home > Blog > Post trail under the result instead of a bare URL.
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://saaksh.co" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://saaksh.co/blog" },
+      { "@type": "ListItem", position: 3, name: post.title, item: url },
+    ],
   };
 
   // FAQPage structured data for posts that carry a Q&A block, so Google can read
@@ -136,6 +168,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   return (
     <div className="min-h-screen bg-[#FBFCFE] flex flex-col">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(breadcrumbLd) }} />
       {faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdHtml(faqLd) }} />}
       <SiteHeader active="blog" />
 
@@ -160,6 +193,14 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               <div className="flex flex-wrap items-center gap-2.5 mb-5">
                 <CategoryPill category={post.category} />
                 <span className="text-[12.5px] text-[#5B6573]">{formatDate(post.date)}</span>
+                {post.updated && (
+                  <>
+                    <span className="text-[#D0D5DD]">·</span>
+                    <span className="text-[12.5px] text-[#5B6573]">
+                      Updated <time dateTime={post.updated}>{formatDate(post.updated)}</time>
+                    </span>
+                  </>
+                )}
                 <span className="text-[#D0D5DD]">·</span>
                 <span className="text-[12.5px] text-[#5B6573]">{post.readTime}</span>
                 <span className="text-[#D0D5DD]">·</span>

@@ -5,6 +5,7 @@ import { RequestAccessForm } from "@/components/RequestAccessForm";
 import { GlowOrb, Contours } from "@/components/brand/Decor";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/request-pro" },
   title: "Request Pro access",
   description:
     "Request access to Saaksh Pro (Collect): chase BRSR data from a client's team, auto-compute emissions, keep an assurance trail, and draft the report. Onboarded manually, priced per engagement.",

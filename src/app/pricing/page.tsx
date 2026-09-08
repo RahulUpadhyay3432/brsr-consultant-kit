@@ -8,6 +8,7 @@ import { GlowOrb, Contours } from "@/components/brand/Decor";
 import { REQUEST_ACCESS_URL } from "@/lib/links";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/pricing" },
   title: "Pricing: the free BRSR tool and the Pro Collect tier",
   description:
     "The Saaksh readiness tool is free forever, no login, nothing stored. Pro adds the Collect workspace that chases data, auto-computes emissions, and drafts the report. Priced per engagement.",

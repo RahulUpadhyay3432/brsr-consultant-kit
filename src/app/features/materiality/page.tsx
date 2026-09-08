@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { BlogFooter } from "@/components/blog/BlogFooter";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/features/materiality" },
   title: "BRSR materiality: suggested topics by industry | Saaksh",
   description:
     "Start a BRSR materiality assessment from the ESG topics that typically matter most in your client's industry. Shortlist, score and export, free and on-device.",

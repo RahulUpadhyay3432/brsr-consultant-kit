@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { BLOG_POSTS } from "@/data/blog-posts";
+import { BLOG_POSTS, lastTouched } from "@/data/blog-posts";
 import { INDUSTRY_LABELS, type IndustryType } from "@/lib/types";
 
 const BASE = "https://saaksh.co";
@@ -46,7 +46,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const blogRoutes: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
     url: `${BASE}/blog/${post.slug}`,
-    lastModified: new Date(post.date).toISOString(),
+    // A revised post is fresher than its publication date, and freshness is
+    // what earns a recrawl on regulation that keeps moving.
+    lastModified: new Date(lastTouched(post)).toISOString(),
     changeFrequency: "monthly" as const,
     priority: 0.85,
   }));

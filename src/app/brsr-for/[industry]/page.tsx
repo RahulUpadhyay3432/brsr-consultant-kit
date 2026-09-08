@@ -55,6 +55,7 @@ export function generateMetadata({ params }: { params: { industry: string } }): 
   if (!label) return {};
   return {
     title: `BRSR for ${label} Companies: Material ESG Topics & Disclosures`,
+    alternates: { canonical: `/brsr-for/${params.industry}` },
     description: `The ESG topics that matter most for ${label.toLowerCase()} companies under BRSR, mapped to the SEBI principles, with example listed peers. Then run a free, cited BRSR gap analysis in minutes.`,
   };
 }

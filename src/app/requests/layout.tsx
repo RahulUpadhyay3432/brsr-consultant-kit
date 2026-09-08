@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import CollectNav from "@/components/datarequest/CollectNav";
 import { SaakshMark } from "@/components/SaakshMark";
 import { logoutAction } from "@/lib/datarequest/auth";
 import { listCampaigns } from "@/lib/datarequest/db";
 import type { Campaign } from "@/lib/datarequest/types";
+
+// The passcode-gated Pro workspace: an app surface, not a content page, so it
+// stays out of the index.
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 // Shared app-shell for the consultant "Collect" area, mirrors the report
 // workspace chrome so the two halves read as one product. (Recipient /submit

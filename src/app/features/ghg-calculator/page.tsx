@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/features/ghg-calculator" },
   title: "GHG & Energy Calculator, Saaksh",
   description:
     "Calculate Scope 1 & 2 GHG emissions, energy intensity, and water intensity for BRSR P6, cited to IPCC 2006 and the latest CEA grid factor, entirely in your browser.",

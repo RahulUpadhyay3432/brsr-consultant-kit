@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/tools/materiality" },
   title: "BRSR Materiality Topic Finder by Industry",
   description:
     "Get a suggested shortlist of material ESG topics for your client's industry, mapped to BRSR principles. A starting point for the stakeholder-driven materiality process.",

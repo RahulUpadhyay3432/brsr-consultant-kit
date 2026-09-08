@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/tools/audit-readiness" },
   title: "BRSR Core Audit Readiness Checklist",
   description:
     "See exactly which source documents a BRSR Core assurance auditor will ask for, grouped by KPI and principle. Free, cited, runs on your device.",

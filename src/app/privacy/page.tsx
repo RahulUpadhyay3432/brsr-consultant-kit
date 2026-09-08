@@ -3,6 +3,7 @@ import LegalPage, { Section, DraftNotice } from "@/components/LegalPage";
 import { SUBPROCESSORS } from "@/lib/subprocessors";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
   title: "Privacy Policy, Saaksh",
   description: "How Saaksh handles personal data, aligned with India's DPDP Act 2023.",
 };

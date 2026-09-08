@@ -7,6 +7,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { GlowOrb, Contours, Blob } from "@/components/brand/Decor";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/community" },
   title: "Community for Indian ESG consultants",
   description:
     "Join the Saaksh community of independent Indian ESG consultants. Cited regulatory updates that matter, practical answers from people who do the work, and first look at new tools.",

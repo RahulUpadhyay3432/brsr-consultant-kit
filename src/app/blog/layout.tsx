@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blog" },
   title: "Blog | Saaksh, BRSR & ESG Compliance for Indian Consultants",
   description:
     "Practical BRSR guidance, GHG calculation walkthroughs, regulatory updates, and sector-specific guides for Indian ESG consultants. Written by practitioners, cited to SEBI and ICAI.",

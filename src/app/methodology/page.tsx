@@ -5,6 +5,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { GlowOrb, Contours } from "@/components/brand/Decor";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/methodology" },
   title: "How we calculate & cite, Saaksh",
   description: "Saaksh's methodology: every factor and disclosure is cited to a primary source, and we never fabricate figures.",
 };

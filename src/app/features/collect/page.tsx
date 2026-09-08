@@ -1,6 +1,7 @@
 import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata = {
+  alternates: { canonical: "/features/collect" },
   title: "Collect, BRSR Data Collection, Saaksh",
   description:
     "Chase BRSR data from your client's team with branded emails, auto-reminders, and no-login owner submissions. Stop managing this over WhatsApp.",

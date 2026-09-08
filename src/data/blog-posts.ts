@@ -23,6 +23,14 @@ export interface BlogPost {
   coverImage?: string;
   /** Q&A pairs. Rendered as an on-page FAQ section AND emitted as FAQPage JSON-LD. */
   faqs?: FaqItem[];
+  /**
+   * Last substantive revision (YYYY-MM-DD). Drives `dateModified` in the
+   * BlogPosting schema, the "Updated" line on the article, and the sitemap's
+   * lastModified. Regulation moves; a post that says when it was last checked
+   * is the one search engines and answer engines trust. Omit until a post is
+   * genuinely revised, so it never claims freshness it does not have.
+   */
+  updated?: string;
 }
 
 const AUTHOR = { name: "Rahul Upadhyay", role: "Founder, Saaksh" };
@@ -689,6 +697,11 @@ export const BLOG_POSTS: BlogPost[] = [
 
 export function getPost(slug: string): BlogPost | null {
   return BLOG_POSTS.find((p) => p.slug === slug) ?? null;
+}
+
+/** The date a post should be judged fresh by: its revision if it has one, else publication. */
+export function lastTouched(post: BlogPost): string {
+  return post.updated ?? post.date;
 }
 
 export function formatDate(dateStr: string): string {

@@ -3,6 +3,7 @@ import LegalPage, { Section } from "@/components/LegalPage";
 import { SUBPROCESSORS } from "@/lib/subprocessors";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/security" },
   title: "Security & Trust, Saaksh",
   description: "How Saaksh protects your data: encryption, access control, sub-processors, and our roadmap.",
 };

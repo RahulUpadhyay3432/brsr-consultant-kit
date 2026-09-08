@@ -7,6 +7,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { GlowOrb, Contours, Blob } from "@/components/brand/Decor";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
   title: "About Saaksh: who built it and why",
   description:
     "Saaksh is a compliance tool for independent Indian ESG consultants, built by Rahul Upadhyay. Evidence-first, cited to SEBI & ICAI, and private by design.",
