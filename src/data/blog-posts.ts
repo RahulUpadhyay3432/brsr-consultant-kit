@@ -36,6 +36,157 @@ export interface BlogPost {
 const AUTHOR = { name: "Rahul Upadhyay", role: "Founder, Saaksh" };
 
 export const BLOG_POSTS: BlogPost[] = [
+  /* ── Questions the consultant community asks and nobody answers (Sep 2026) ── */
+  {
+    slug: "brsr-consulting-fees-india",
+    title: "What to charge for a BRSR engagement: a pricing rubric for Indian consultants",
+    excerpt:
+      "The most-asked and least-answered question in Indian ESG consulting. There is no published fee benchmark, and this post does not pretend otherwise. Instead: what actually drives the price, how to build a defensible number from the bottom up, and the five pricing mistakes that cost independents the most money.",
+    date: "2026-09-08",
+    category: "How-to",
+    readTime: "11 min read",
+    coverGradient: ["#0F1E33", "#0B6FD4"],
+    coverIcon: "scales",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "How much do BRSR consultants charge in India?",
+        a: "There is no published benchmark, and anyone quoting a single market rate is guessing. Fees vary by an order of magnitude depending on whether the client is a first-time filer or a repeat one, whether BRSR Core assurance is in scope, how many sites there are, and how much of the work is data collection versus review. The defensible approach is to build the number bottom-up from your own hours and rate, not to anchor on a figure someone posted in a group.",
+      },
+      {
+        q: "What drives the price of a BRSR engagement?",
+        a: "Seven things, roughly in order of impact: first-time versus repeat filing, the number of sites and legal entities, whether BRSR Core assurance support is in scope, how much data collection you are doing versus the client, whether Leadership indicators apply, whether other frameworks such as GRI or CDP are in scope, and whether value-chain partners have to be engaged. A first filing for a multi-site manufacturer with Core assurance is a different engagement from a repeat filing for a single-site services company.",
+      },
+      {
+        q: "Should a BRSR engagement be priced fixed-fee or hourly?",
+        a: "Fixed fee for a defined scope, with named exclusions and a change-order rate for anything outside it. Clients want budget certainty and hourly billing invites arguments about effort. The risk with fixed fee is scope creep during data collection, which is why the exclusions matter more than the headline number: say explicitly how many sites, how many rounds of review, and what happens if the client's data is not ready.",
+      },
+      {
+        q: "Why do independent consultants underprice BRSR work?",
+        a: "Usually because they price the deliverable rather than the engagement. The report is a week of writing; the eight weeks of chasing data from HR, EHS, the plant and the company secretary is the actual work, and it is the part that overruns. Pricing off the visible artefact rather than the collection effort is the single most common reason an engagement ends up below cost.",
+      },
+    ],
+  },
+  {
+    slug: "csr-funds-carbon-credits-india",
+    title: "Can CSR money fund carbon-credit projects? What the Companies Act actually allows",
+    excerpt:
+      "A question asked constantly in Indian sustainability circles and answered almost never, because the honest answer is uncomfortable: MCA has issued no clarification naming carbon credits. Here are the three tests any CSR spend must pass, where afforestation and renewables sit in Schedule VII, and why who owns the resulting credits decides the answer.",
+    date: "2026-09-08",
+    category: "Regulation",
+    readTime: "9 min read",
+    coverGradient: ["#0C2B1E", "#10A572"],
+    coverIcon: "leaf",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "Can CSR funds be used to buy carbon credits?",
+        a: "Buying credits to offset the company's own emissions almost certainly fails the CSR tests, because the benefit accrues to the company rather than to the community, and CSR cannot be spent on the company's own obligations or on activities in the normal course of business. Funding a community environmental project that happens to reduce emissions is a different matter and can sit within Schedule VII, provided the company does not take the credits.",
+      },
+      {
+        q: "Does Schedule VII of the Companies Act cover environmental projects?",
+        a: "Yes. Schedule VII includes ensuring environmental sustainability, ecological balance, protection of flora and fauna, agroforestry, conservation of natural resources and maintaining the quality of soil, air and water. Afforestation, watershed and clean-energy access projects for communities are relatable to that entry, and MCA has said Schedule VII entries should be interpreted liberally.",
+      },
+      {
+        q: "Has MCA clarified whether carbon credits qualify as CSR?",
+        a: "Not by name. There is no MCA circular or FAQ that addresses carbon credits specifically. That absence is precisely why the question keeps going unanswered, and it means the analysis has to be built from the general CSR tests plus a legal opinion on the specific structure, rather than from a citable ruling.",
+      },
+      {
+        q: "What disqualifies an activity from counting as CSR?",
+        a: "MCA's CSR framework excludes activities undertaken in the normal course of business, activities that fulfil a statutory obligation under Indian law, activities benefiting only employees and their families, sponsorship undertaken for marketing benefit, and anything not relatable to Schedule VII. A carbon-credit arrangement that produces a tradable asset for the company runs into several of these at once.",
+      },
+    ],
+  },
+  {
+    slug: "gri-notification-requirement-9",
+    title: "GRI 1 Requirement 9: how to notify GRI that you used the Standards",
+    excerpt:
+      "A five-minute step that a surprising number of Indian reporters miss, and one of the nine requirements for reporting in accordance with the GRI Standards. What Requirement 9 asks, exactly what to put in the email, where to send it, and when.",
+    date: "2026-09-08",
+    category: "How-to",
+    readTime: "5 min read",
+    coverGradient: ["#101B3C", "#3B4FCF"],
+    coverIcon: "check",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "What is Requirement 9 of GRI 1?",
+        a: "Requirement 9 of GRI 1: Foundation 2021 is the obligation to notify GRI of the use of the GRI Standards. It is one of the nine requirements an organisation must meet to report in accordance with the Standards, and it is met by sending an email to reportregistration@globalreporting.org.",
+      },
+      {
+        q: "How do I notify GRI that I have used the GRI Standards?",
+        a: "Email reportregistration@globalreporting.org with the legal name of the organisation, the statement of use, a link to the GRI content index, a link to the report itself where one is published separately, and a contact person with their details. There is no form to fill in and no fee.",
+      },
+      {
+        q: "Is there a cost to notifying GRI?",
+        a: "No. Notification under Requirement 9 is free. It is a registration step, not a licensing or certification one, and GRI does not review or approve the report as part of it.",
+      },
+      {
+        q: "Does BRSR require GRI notification?",
+        a: "No. BRSR is SEBI's format and has no relationship to GRI's notification requirement. The two only meet in practice: many Indian companies publish a GRI-referenced sustainability report alongside the BRSR in the annual report, and it is that GRI report which triggers Requirement 9.",
+      },
+    ],
+  },
+  {
+    slug: "iso-14001-45001-document-register",
+    title: "The ISO 14001 and 45001 document register: what you must actually keep",
+    excerpt:
+      "Both standards dropped the old requirement to write a procedure for everything, which is exactly why teams now lose track of what is genuinely mandatory. A clause-by-clause register of the documented information ISO 14001:2015 and ISO 45001:2018 require, split into what you maintain and what you retain, and how it doubles as BRSR evidence.",
+    date: "2026-09-08",
+    category: "How-to",
+    readTime: "9 min read",
+    coverGradient: ["#1A1024", "#7B4FCF"],
+    coverIcon: "clipboard",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "What documents are mandatory under ISO 14001:2015?",
+        a: "The documents you maintain are the EMS scope (4.3), the environmental policy (5.2), environmental aspects and impacts (6.1.2), compliance obligations (6.1.3), environmental objectives and the plans to achieve them (6.2), operational control information (8.1) and emergency preparedness and response (8.2). The records you retain cover competence (7.2), communications (7.4), monitoring and measurement results (9.1), compliance evaluation (9.1.2), the internal audit programme and results (9.2), management review outputs (9.3) and nonconformity and corrective action (10.2).",
+      },
+      {
+        q: "What is the difference between maintaining and retaining documented information?",
+        a: "Both ISO 14001:2015 and ISO 45001:2018 use the two words deliberately. Maintain means a living document that is kept current, such as the policy or the aspects register. Retain means a record of something that happened and is not edited afterwards, such as an audit result or a training record. Auditors check version control on the first and completeness on the second.",
+      },
+      {
+        q: "What does ISO 45001 require that ISO 14001 does not?",
+        a: "The occupational health and safety additions: evidence of worker consultation and participation, the hazard identification and risk assessment methodology, the process for eliminating hazards and reducing risk, controls over procurement and contractors, and incident investigation records. The management-system scaffolding, scope, policy, objectives, competence, audit and management review, is structurally the same, which is what makes an integrated register practical.",
+      },
+      {
+        q: "Can an ISO register be used as BRSR evidence?",
+        a: "Yes, and it is one of the strongest sources available. The ISO 14001 aspects register, compliance obligations register and monitoring records feed BRSR Principle 6, and the ISO 45001 incident, training and consultation records feed Principle 3. A company certified to both is usually much further along on BRSR than it realises.",
+      },
+    ],
+  },
+  {
+    slug: "ccts-accredited-carbon-verifier-india",
+    title: "Becoming an Accredited Carbon Verification Agency under India's CCTS",
+    excerpt:
+      "Every obligated entity's GHG emission intensity report has to be verified before it reaches BEE, and roughly 490 entities are obligated in the first compliance year. What an ACVA is, the prerequisite most applicants miss, and what BEE's accreditation procedure asks for.",
+    date: "2026-09-08",
+    category: "Regulation",
+    readTime: "7 min read",
+    coverGradient: ["#1B1405", "#C98A16"],
+    coverIcon: "shield",
+    author: AUTHOR,
+    faqs: [
+      {
+        q: "What is an Accredited Carbon Verification Agency?",
+        a: "An ACVA is a body accredited by the Bureau of Energy Efficiency to carry out validation and verification activities under India's Carbon Credit Trading Scheme. Under the compliance mechanism, an obligated entity's greenhouse gas emission intensity report must be verified by an ACVA before it is submitted to BEE.",
+      },
+      {
+        q: "What is the prerequisite for ACVA accreditation?",
+        a: "BEE's eligibility criteria require prior empanelment as an Accredited Energy Auditor firm, and applicants must provide their empanelment details. This is the requirement most would-be applicants discover late: the energy-auditor empanelment is a separate, earlier process, so an organisation without it cannot apply for ACVA accreditation in the current round.",
+      },
+      {
+        q: "What else does BEE assess in an ACVA application?",
+        a: "Beyond the energy-auditor prerequisite, BEE's criteria look for an established formal system for conducting verification activities, with evidence of how long it has been implemented and who is trained on it; systems that safeguard impartiality; and systems for determining and managing the competence of personnel. In substance these mirror what an accreditation body would expect of any verification body.",
+      },
+      {
+        q: "Where do I find the current ACVA criteria and application window?",
+        a: "On BEE's own site, under the carbon market section, where it publishes the accreditation procedure and eligibility criteria for Accredited Carbon Verification Agencies together with the instruction document for applicants. BEE has run the process in rounds and has sought stakeholder comments on provisionally eligible agencies between them, so check the current round directly rather than relying on any secondary summary, including this one.",
+      },
+    ],
+  },
   /* ── Trending crosswalk + sector batch (July 2026) ─────────────────────── */
   {
     slug: "brsr-vs-csrd-esrs",

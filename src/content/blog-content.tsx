@@ -279,6 +279,318 @@ function ImagePlaceholder({ alt, prompt }: { alt: string; prompt: string }) {
 /* ─────────────────────────────────────────────────────────────────────────── */
 
 export const BLOG_CONTENT: Record<string, React.ReactNode> = {
+  /* ── What to charge for a BRSR engagement ─────────────────────────────── */
+  "brsr-consulting-fees-india": (
+    <>
+      <P>This is the most-asked question in Indian ESG consulting and the least-answered. It comes up in every practitioner group, and the reply is always the same two words: <em>it depends</em>. That answer is not wrong, but it is useless, and it leaves independents guessing at the single number that decides whether their practice is viable.</P>
+      <P>So let us be precise about what is actually unknown. <strong>There is no published benchmark for Indian BRSR consulting fees.</strong> No industry body surveys it, no rate card is public, and the figures that circulate in groups are single data points detached from their scope. Anyone quoting you a market rate is extrapolating from one or two engagements, and you have no way to tell which. This post therefore does not give you a number to copy. It gives you the method to build your own, and it is honest about where the evidence runs out.</P>
+
+      <KeyTakeaways items={[
+        "No public benchmark for Indian BRSR fees exists, so build the number bottom-up from your own hours rather than anchoring on a figure from a group chat.",
+        "The report is not the work. Data collection is, and it is what overruns, so it is what you must price.",
+        "Seven drivers move the number materially: first filing vs repeat, sites and entities, Core assurance in scope, who collects the data, Leadership indicators, other frameworks, and value-chain partners.",
+        "Price fixed-fee for a defined scope, and put more care into the exclusions than the headline figure.",
+      ]} />
+
+      <H2>1. Why nobody answers this question</H2>
+      <P>Three reasons, and it is worth naming them because each one tells you something about how to price.</P>
+      <P><strong>The variance is genuinely enormous.</strong> A repeat BRSR filing for a single-site services company with clean prior-year data and no assurance requirement, and a first filing for a six-plant manufacturer entering BRSR Core assurance, are not the same engagement with a different number attached. They differ by an order of magnitude in effort. A single quoted &ldquo;market rate&rdquo; averages across that range and is therefore wrong for almost everybody.</P>
+      <P><strong>Nobody wants to be the one who names a low number.</strong> Publishing a figure sets an anchor that clients will quote back at every consultant in the market. That is a real collective-action problem, and it is why the silence persists even among people who would benefit from transparency.</P>
+      <P><strong>Most consultants have not costed their own delivery.</strong> If you have never tracked hours across an engagement, you cannot tell whether last year&apos;s fee was profitable, so you have nothing to share even privately. This is the fixable one.</P>
+
+      <H2>2. Price the engagement, not the deliverable</H2>
+      <P>Here is the single most expensive pricing mistake independents make, and it is almost universal among people pricing their first few engagements.</P>
+      <P>The client sees a report. You are tempted to price the report. But writing the BRSR narrative, once the numbers are in front of you, is perhaps a week. The eight to twelve weeks before that, spent extracting workforce data from HR, meter readings from the plant, board minutes from the company secretary, CSR spend from a team that has never heard of Principle 8, and then reconciling all of it, <strong>is the engagement</strong>. It is also the part that overruns, because it depends on people who do not report to you and have no deadline of their own.</P>
+      <Callout title="The test" color="amber">
+        If your fee divided by your realistic total hours lands below what you would accept for a day of advisory work, you have priced the artefact instead of the engagement. Run that division before you send any proposal.
+      </Callout>
+
+      <H2>3. The seven drivers that actually move the number</H2>
+      <P>Roughly in order of how much they matter:</P>
+      <OL items={[
+        <><strong>First filing or repeat.</strong> A first filing has no prior-year figures to carry forward, no established data owners, and no institutional memory of what BRSR wants. Everything is built from nothing. Repeat filings, where last year&apos;s workbook and owner map exist, are a fraction of the effort.</>,
+        <><strong>Sites and legal entities.</strong> Environmental and workforce data is collected per site and aggregated. Each additional plant is another set of meter readings, another EHS contact, another reconciliation. Multi-entity groups add consolidation questions on top.</>,
+        <><strong>Whether BRSR Core assurance is in scope.</strong> Supporting a reasonable-assurance engagement is materially different work: source-level evidence, documented methodologies, factor versions, and an assurer asking follow-up questions for weeks. Price it as its own workstream, not as a rounding-up of the base fee.</>,
+        <><strong>Who is actually collecting the data.</strong> The difference between &ldquo;the client&apos;s sustainability team collects, you review&rdquo; and &ldquo;you chase 40 people across five departments&rdquo; is the difference between two engagements. Establish this in the kickoff and write it into the scope.</>,
+        <><strong>Whether Leadership indicators apply.</strong> Forty additional voluntary fields, applicable to filers of three or more years or in the top 1000. A first-time filer needs only the 68 Essential ones. Confirm which set is in scope before you quote.</>,
+        <><strong>Other frameworks in scope.</strong> GRI, CDP, EcoVadis or an investor questionnaire alongside BRSR. Much of the data is shared, so the marginal cost is real but not proportional; price it as an add-on rather than a second full engagement.</>,
+        <><strong>Value-chain partners.</strong> If the client is preparing for mandatory value-chain disclosure from FY 2026-27, engaging Tier-1 partners is a distinct workstream with its own outreach and follow-up burden.</>,
+      ]} />
+
+      <H2>4. Building the number bottom-up</H2>
+      <P>Estimate hours by phase, apply your rate, then sanity-check the total. The phases are stable across engagements even though the hours are not:</P>
+      <UL items={[
+        <><strong>Scoping and applicability.</strong> Confirming which indicators are in scope, whether the client is in the assurance cohort, and which of the eleven manufacturing-specific disclosures are legitimately not applicable.</>,
+        <><strong>Gap analysis.</strong> Establishing what already exists in filings the company makes elsewhere, PCB consents, PAT returns, hazardous-waste manifests, EPR registrations, versus what has to be collected fresh. Our <A href="/start">free gap analysis</A> does this part in minutes, which is worth knowing when you are estimating.</>,
+        <><strong>Data collection.</strong> The long pole. Estimate it per owning team rather than per field, because that is how the chasing actually works.</>,
+        <><strong>Calculation and validation.</strong> Emissions, energy and water, plus intensity ratios and the unit and denominator checks that catch the common errors.</>,
+        <><strong>Drafting and review rounds.</strong> Name the number of rounds included. Two is normal; unlimited is how a fixed fee becomes an hourly engagement you are not billing for.</>,
+        <><strong>Assurance support</strong>, where in scope. Evidence assembly, assurer queries, and the rework their questions generate.</>,
+        <><strong>Filing support.</strong> XBRL preparation and the scale and unit checks that cause most rejections.</>,
+      ]} />
+      <P>Once you have a bottom-up total, apply the multipliers that are genuinely defensible: a first filing costs more than a repeat, more sites cost more than fewer, and assurance in scope costs more than not. Our free <A href="/requests/proposal">proposal and fee builder</A> structures exactly this rubric, and it deliberately never asserts a market price, for the reason this whole post exists.</P>
+
+      <H2>5. What belongs in the proposal</H2>
+      <P>The exclusions matter more than the headline number, because they are what you point at when scope moves.</P>
+      <UL items={[
+        <>The number of sites and legal entities the fee covers, named.</>,
+        <>Whether Leadership indicators are in or out.</>,
+        <>The number of review rounds included.</>,
+        <>Who collects the data, stated plainly, and what happens if the client&apos;s data is not ready by an agreed date.</>,
+        <>Whether assurance support is included, and if so how many assurer query rounds.</>,
+        <>A change-order rate for anything outside the scope.</>,
+      ]} />
+
+      <H2>6. Five pricing mistakes that cost the most</H2>
+      <OL items={[
+        <><strong>Pricing the report rather than the collection.</strong> Covered above, and the most expensive.</>,
+        <><strong>Quoting before the applicability question is settled.</strong> Essential-only and Essential-plus-Leadership are different engagements. So are assurance and no assurance.</>,
+        <><strong>Unlimited review rounds.</strong> Three words in a proposal that can double delivery cost.</>,
+        <><strong>Absorbing the client&apos;s data problem.</strong> If the client&apos;s data is not ready, that is a schedule and scope event, not something to quietly absorb. Say so in the contract before it happens.</>,
+        <><strong>Discounting to win the first year, then having no path back.</strong> A first filing is the expensive one and the repeat is cheap, so discounting year one and holding the price in year two is exactly backwards. If you must discount, discount the repeat.</>,
+      ]} />
+
+      <H2>7. Help build the benchmark that should exist</H2>
+      <P>The reason this post cannot give you a number is that the data has never been gathered. That is fixable, and it only needs enough practitioners to contribute anonymously: engagement type, client size, scope, and the fee. No names, no clients, and the aggregate published back to everyone who takes part.</P>
+      <P>If you run BRSR engagements in India and would contribute, <A href="/request-pro">get in touch</A> and we will include you when it runs. Until then, treat every fee you hear quoted, including any you might infer from this post, as one data point of unknown scope.</P>
+
+      <PostFaq slug="brsr-consulting-fees-india" />
+    </>
+  ),
+
+  /* ── CSR money and carbon credits ─────────────────────────────────────── */
+  "csr-funds-carbon-credits-india": (
+    <>
+      <P>This question comes up constantly and gets answered almost never, and the reason is worth stating up front: <strong>the Ministry of Corporate Affairs has issued no clarification that names carbon credits.</strong> There is no circular, no FAQ entry, no ruling to cite. Anyone who tells you flatly that CSR money can or cannot fund carbon-credit projects is giving you an opinion dressed as a rule.</P>
+      <P>What does exist is a well-established framework of tests that any CSR spend has to pass. Applied carefully, those tests do give a usable answer for most structures, and they explain why the answer flips depending on one specific detail: <em>who ends up owning the credits</em>.</P>
+
+      <KeyTakeaways items={[
+        "MCA has issued no clarification naming carbon credits, so the analysis runs off the general CSR tests plus a legal opinion, not a citable ruling.",
+        "Schedule VII does cover environmental sustainability, ecological balance and conservation of natural resources, and MCA has said its entries should be read liberally.",
+        "The decisive question is who takes the credits: a tradable asset accruing to the company is a benefit to the company, which is what CSR spend must not produce.",
+        "Nothing here is legal advice. Get an opinion on your specific structure before the board approves the spend.",
+      ]} />
+
+      <H2>Why the question keeps coming up</H2>
+      <P>Two pressures meet. A company has a mandatory 2% CSR obligation under Section 135 of the Companies Act 2013 and needs credible projects to spend it on. The same company has a decarbonisation commitment, growing BRSR and investor scrutiny of its emissions, and, if it is in an obligated CCTS sector, a compliance target as well. Funding tree-planting or community renewables out of the CSR budget looks like it solves both at once. That is precisely what makes it a trap.</P>
+
+      <H2>The three tests any CSR spend must pass</H2>
+      <P>Strip away the detail and CSR eligibility comes down to three questions, all of which have to be answered the right way.</P>
+      <H3>1. Is it relatable to Schedule VII?</H3>
+      <P>CSR expenditure cannot be incurred on activities outside Schedule VII of the Companies Act 2013. The relevant entry for environmental work covers ensuring environmental sustainability, ecological balance, protection of flora and fauna, animal welfare, agroforestry, conservation of natural resources, and maintaining the quality of soil, air and water. MCA has said the Schedule VII entries are broad-based and should be interpreted liberally to capture the essence of the subjects listed.</P>
+      <P>So afforestation, watershed restoration, ecosystem conservation, and clean-energy access for a community all read comfortably onto that entry. This test is usually the easy one.</P>
+      <H3>2. Is it outside the normal course of business, and not a statutory obligation?</H3>
+      <P>CSR cannot fund activities undertaken in the normal course of the company&apos;s business, and it cannot fund compliance with a statutory obligation already imposed by Indian law. This is where a lot of proposed structures fail quietly.</P>
+      <P>If the company is an obligated entity under CCTS and needs Carbon Credit Certificates to meet its greenhouse gas emission intensity target, buying or generating them is <strong>discharging a statutory obligation</strong>. Funding that from CSR is the clearest failure case in this whole analysis. The same logic applies to anything a Pollution Control Board consent already requires.</P>
+      <H3>3. Does the benefit flow to the community rather than the company?</H3>
+      <P>This is the decisive test, and it is where carbon credits are structurally awkward. CSR spend is not permitted where it produces a benefit to the company: activities benefiting only employees and their families are excluded, and sponsorship undertaken for marketing benefit is excluded.</P>
+      <P>A carbon credit is a tradable asset. If a CSR-funded project generates credits and the company takes them, whether to retire against its own footprint, to sell, or to hold, the company has converted CSR expenditure into an asset on its own side of the ledger. That is very difficult to reconcile with a spending obligation whose entire premise is that the benefit flows outward.</P>
+
+      <Callout title="Where the answer actually turns" color="blue">
+        Not on the project type. Afforestation is uncontroversially within Schedule VII. It turns on the credit arrangement: who is entitled to the credits the project generates, and what happens to them.
+      </Callout>
+
+      <H2>Three structures, and how each fares</H2>
+      <H3>Buying credits to offset the company&apos;s own emissions</H3>
+      <P>The weakest position of the three. The company purchases credits and retires them against its own footprint. The benefit is entirely the company&apos;s: a lower reported net figure, a better rating outcome, or a compliance position. It fails the benefit test squarely, and if the credits go towards a CCTS obligation it fails the statutory-obligation test as well.</P>
+      <H3>Funding a community project, with the company taking the credits</H3>
+      <P>Better on Schedule VII, still problematic. The project genuinely benefits a community, so the first test is met. But if the company is entitled to the credits the project generates, it has funded an asset for itself with CSR money. Structuring the credit entitlement in the company&apos;s favour is what breaks it, not the project.</P>
+      <H3>Funding a community project and taking no credits</H3>
+      <P>The most defensible. The company funds afforestation, watershed work or community renewable access through an eligible implementing agency, the community or the implementing agency holds any credits generated, and the company makes no offset claim and books no asset. The environmental benefit is real, the beneficiary is the community, and nothing tradable comes back. This looks like ordinary Schedule VII environmental CSR, because that is what it is.</P>
+
+      <H2>What to do before the board approves anything</H2>
+      <UL items={[
+        <><strong>Get a written legal opinion on the specific structure</strong>, not on the question in the abstract. The facts that matter are narrow: who owns the credits, whether any offset claim is made, and whether the company has a statutory emissions obligation the project could be read as serving.</>,
+        <><strong>Document the credit position explicitly</strong> in the CSR project documentation and the implementing-agency agreement. Silence on credit ownership is the gap an auditor or regulator will probe.</>,
+        <><strong>Keep the CSR project and the company&apos;s own decarbonisation programme separate</strong>, in governance, in reporting and in the annual report narrative. Presenting a CSR-funded project as part of the company&apos;s emissions reduction is the fastest way to make it look like a benefit to the company.</>,
+        <><strong>Take the CSR committee and board approval on the structure</strong>, with the opinion on file, rather than on the project alone.</>,
+      ]} />
+
+      <H2>Where this leaves the BRSR filing</H2>
+      <P>Whatever the structure, the disclosure has to be consistent. CSR spend is reported under Principle 8 and in Section A, while emissions sit under Principle 6. A project funded from the CSR budget belongs in the Principle 8 disclosure. If the company also claims the resulting emissions reduction under Principle 6, that inconsistency is visible on the face of the filing, and it is the kind of thing an assurer notices.</P>
+
+      <Callout title="Not legal advice" color="amber">
+        This post sets out the framework and names what is and is not on the record. It is not a legal opinion and cannot substitute for one. Because MCA has issued no clarification naming carbon credits, the position for any specific structure has to be established with counsel.
+      </Callout>
+
+      <PostFaq slug="csr-funds-carbon-credits-india" />
+    </>
+  ),
+
+  /* ── GRI Requirement 9 notification ───────────────────────────────────── */
+  "gri-notification-requirement-9": (
+    <>
+      <P>If your client publishes a sustainability report in accordance with the GRI Standards, there is a step at the end that takes five minutes and is quietly missed by a lot of Indian reporters: <strong>notifying GRI that the Standards were used.</strong> It is not a formality of the optional kind. It is Requirement 9 of GRI 1: Foundation 2021, one of the nine requirements an organisation must meet to report in accordance with the Standards.</P>
+
+      <KeyTakeaways items={[
+        "Requirement 9 of GRI 1: Foundation 2021 obliges an organisation to notify GRI of its use of the Standards.",
+        "You do it by emailing reportregistration@globalreporting.org. There is no form.",
+        "It is free. Notification is registration, not certification, and GRI does not review or approve the report.",
+        "It applies to the GRI report, not to BRSR. SEBI's format has no equivalent step.",
+      ]} />
+
+      <H2>What Requirement 9 says</H2>
+      <P>GRI 1: Foundation 2021 sets out nine requirements for reporting in accordance with the GRI Standards. Eight of them concern how you report: applying the reporting principles, determining material topics, providing the disclosures, publishing a GRI content index, providing a statement of use, and so on. The ninth concerns telling GRI you have done it.</P>
+      <P>The obligation is to notify GRI of the use of the GRI Standards, and it is discharged by sending an email. An organisation that satisfies the other eight requirements but skips this one has not fully met the in-accordance conditions, which matters because the statement of use in the report asserts that it has.</P>
+
+      <H2>Exactly what to send</H2>
+      <P>Email <Mono>reportregistration@globalreporting.org</Mono> with:</P>
+      <UL items={[
+        <>The <strong>legal name of the organisation</strong>, as it appears in the report.</>,
+        <>The <strong>statement of use</strong>, the sentence in the report declaring the reporting period and whether the report is in accordance with, or with reference to, the GRI Standards.</>,
+        <>A <strong>link to the GRI content index</strong>.</>,
+        <>A <strong>link to the report</strong>, where it is published as a standalone document.</>,
+        <>A <strong>contact person</strong> at the organisation, with their contact details.</>,
+      ]} />
+      <P>There is no template to complete and no portal to log into. A plain email carrying those five things is the whole of it.</P>
+
+      <Callout title="There is no fee" color="green">
+        Notification under Requirement 9 costs nothing. It is sometimes confused with GRI Community membership or with licensing, neither of which it is. GRI does not review, approve or certify the report as part of notification.
+      </Callout>
+
+      <H2>When to do it</H2>
+      <P>After the report is published, since the notification carries links to the published content index and report. Make it the last item on the publication checklist, alongside uploading the report and updating the website, rather than something you intend to get to later. In practice, &ldquo;later&rdquo; is when it gets lost.</P>
+      <P>If the organisation publishes annually, this recurs annually. Each report requires its own notification.</P>
+
+      <H2>In accordance with, or with reference to</H2>
+      <P>Worth settling before you draft the statement of use, because reporters get this wrong in both directions. <strong>In accordance with</strong> means the organisation has met all nine requirements of GRI 1 and reported all disclosures for its material topics. <strong>With reference to</strong> is the lighter option, used where an organisation applies selected GRI Standards without meeting the full set of requirements. The statement of use must say which, accurately, and it is one of the first things a reader who knows GRI will check.</P>
+
+      <H2>How this relates to BRSR</H2>
+      <P>It does not, directly, and that is worth being clear about because the two get conflated. BRSR is SEBI&apos;s mandatory format, filed inside the annual report under LODR Regulation 34(2)(f). It has no notification step and no relationship with GRI.</P>
+      <P>The two meet only in practice: many Indian listed companies publish a GRI-referenced sustainability report alongside the annual report containing the BRSR. That GRI report is what triggers Requirement 9. If your client publishes both, the notification concerns the GRI report only.</P>
+      <P>The underlying data does overlap heavily, which is the useful part. Most BRSR disclosures map onto a GRI Standard, so a company collecting once can report to both. Our <A href="/tools/brsr-framework-mapping">cross-framework mapping tool</A> sets out the crosswalk and exports it, and <A href="/blog/brsr-vs-gri">BRSR vs GRI</A> covers where the two frameworks genuinely differ.</P>
+
+      <PostFaq slug="gri-notification-requirement-9" />
+    </>
+  ),
+
+  /* ── ISO 14001 / 45001 document register ──────────────────────────────── */
+  "iso-14001-45001-document-register": (
+    <>
+      <P>Both standards did something helpful in their current editions and then created a new problem by doing it. ISO 14001:2015 and ISO 45001:2018 dropped the old obligation to write a documented procedure for nearly everything, replacing it with a shorter list of <em>documented information</em> that must be kept. That was a genuine simplification. It also means teams now routinely lose track of what is actually mandatory, and either over-document out of anxiety or discover a gap during a surveillance audit.</P>
+      <P>This is the register: clause by clause, split into what you <strong>maintain</strong> and what you <strong>retain</strong>, and with a note on how the same evidence feeds a BRSR filing.</P>
+
+      <KeyTakeaways items={[
+        "Maintain means a living, version-controlled document. Retain means a record of something that happened, which is not edited afterwards. Auditors test the two differently.",
+        "ISO 14001:2015 requires seven maintained documents and seven categories of retained records.",
+        "ISO 45001:2018 shares the management-system scaffolding and adds the OH&S-specific items: consultation and participation, hazard identification, procurement and contractor control, and incident investigation.",
+        "The same register is among the strongest BRSR evidence a company has: the environmental side feeds Principle 6, the safety side feeds Principle 3.",
+      ]} />
+
+      <H2>Maintain versus retain</H2>
+      <P>Both standards use the two words deliberately and the distinction is the thing most registers get wrong.</P>
+      <P><strong>Maintain</strong> means a document that is kept current: the policy, the scope, the aspects register. It has a version, an owner and a review date, and an auditor will check that it reflects the organisation as it is now.</P>
+      <P><strong>Retain</strong> means a record of something that occurred: an audit result, a training certificate, a monitoring reading. It is not revised after the fact, and an auditor will check completeness and traceability rather than currency.</P>
+      <P>Build the register with a column for which of the two applies to each item. It changes how each is stored and reviewed.</P>
+
+      <H2>ISO 14001:2015, documents to maintain</H2>
+      <Table
+        headers={["Clause", "Documented information"]}
+        rows={[
+          ["4.3", "Scope of the environmental management system"],
+          ["5.2", "Environmental policy"],
+          ["6.1.2", "Environmental aspects, and the criteria used to determine significance"],
+          ["6.1.3", "Compliance obligations"],
+          ["6.2", "Environmental objectives and the plans to achieve them"],
+          ["8.1", "Information needed to have confidence that processes are carried out as planned (operational control)"],
+          ["8.2", "Emergency preparedness and response"],
+        ]}
+      />
+
+      <H2>ISO 14001:2015, records to retain</H2>
+      <Table
+        headers={["Clause", "Record"]}
+        rows={[
+          ["7.2", "Evidence of competence: training, skills, experience, qualifications"],
+          ["7.4", "Evidence of communications, internal and external"],
+          ["9.1", "Results of monitoring, measurement, analysis and evaluation"],
+          ["9.1.2", "Results of the evaluation of compliance"],
+          ["9.2", "The internal audit programme and the audit results"],
+          ["9.3", "Results of management review"],
+          ["10.2", "Nature of nonconformities, actions taken, and the results of corrective action"],
+        ]}
+      />
+      <Callout title="The two auditors ask for first" color="blue">
+        The compliance obligations register (6.1.3) and the evaluation of compliance records (9.1.2). They are also the two most commonly out of date, because they depend on tracking regulatory change rather than on anything the site does day to day.
+      </Callout>
+
+      <H2>ISO 45001:2018, what it adds</H2>
+      <P>The management-system scaffolding is structurally the same: scope, policy, objectives, competence, communications, monitoring, internal audit, management review, nonconformity. That shared structure is what makes an integrated register practical. The additions are the occupational health and safety specifics:</P>
+      <UL items={[
+        <><strong>Worker consultation and participation</strong> (5.4). Evidence that workers and, where they exist, their representatives were consulted, not merely informed. Committee minutes, consultation records, attendance.</>,
+        <><strong>Hazard identification and risk assessment</strong> (6.1.2). The methodology and criteria as maintained documents, and the assessments themselves as records.</>,
+        <><strong>Eliminating hazards and reducing risk</strong> (8.1.2). Evidence that the hierarchy of controls was applied, rather than jumping straight to personal protective equipment.</>,
+        <><strong>Procurement, contractors and outsourcing</strong> (8.1.4). How OH&amp;S requirements are imposed on contractors and suppliers, and evidence they were applied. In Indian manufacturing this is frequently the weakest area, and it is also exactly where BRSR Principle 3 asks about contractor safety.</>,
+        <><strong>Emergency preparedness and response</strong> (8.2), including drill records.</>,
+        <><strong>Incident investigation</strong> (10.2). Investigation records, findings, and corrective actions taken.</>,
+      ]} />
+
+      <H2>Running one register for both</H2>
+      <P>Where a site is certified to both, the shared clauses should produce one document, not two near-identical ones that drift apart. In practice that means a combined policy, one scope statement covering both systems, a single competence and training record set, one internal audit programme covering both, and one management review that addresses both agendas.</P>
+      <P>Keep separate only what is genuinely standard-specific: the environmental aspects register and compliance obligations on one side, hazard identification and consultation records on the other. A register that shows which items are shared and which are specific is the artefact that makes an integrated audit go smoothly.</P>
+
+      <H2>Why this register is BRSR evidence</H2>
+      <P>This is the part most teams miss, and it is worth raising with a client in the kickoff meeting. A company certified to ISO 14001 and 45001 has already built much of the evidence trail BRSR asks for, and it is sitting in a system nobody thought to point at the filing.</P>
+      <UL items={[
+        <>The <strong>compliance obligations register</strong> and <strong>evaluation of compliance</strong> records map onto Principle 6 environmental compliance disclosures, and onto Principle 1 on fines and penalties.</>,
+        <>The <strong>monitoring and measurement</strong> records are the source data for Principle 6 energy, water, waste and emissions, and they usually already carry the meter-level granularity an assurer wants.</>,
+        <>The <strong>incident and investigation</strong> records feed Principle 3 safety disclosures directly.</>,
+        <>The <strong>competence and training</strong> records feed Principle 3 training disclosures and Principle 1 training on the principles.</>,
+        <>The <strong>consultation and participation</strong> records support Principle 3 and Principle 4 stakeholder engagement.</>,
+      ]} />
+      <P>That last point is the practical takeaway: an ISO-certified client is usually much further along on BRSR than the client believes. Our <A href="/start">free gap analysis</A> cross-references what a company already files and documents against all 108 BRSR fields, which is the fastest way to find out how much of the work is already done.</P>
+
+      <PostFaq slug="iso-14001-45001-document-register" />
+    </>
+  ),
+
+  /* ── ACVA accreditation under CCTS ────────────────────────────────────── */
+  "ccts-accredited-carbon-verifier-india": (
+    <>
+      <P>India&apos;s Carbon Credit Trading Scheme created a new professional role and, with it, a genuine capacity question. Every obligated entity&apos;s greenhouse gas emission intensity report has to be verified before it reaches the Bureau of Energy Efficiency. With roughly 490 entities obligated across nine sectors in the first compliance year, and reports due by 31 July 2026, demand for accredited verifiers is concentrated into a narrow window.</P>
+      <P>This is what the role is, what BEE&apos;s accreditation asks for, and the prerequisite that stops most would-be applicants.</P>
+
+      <KeyTakeaways items={[
+        "Validation and verification under CCTS must be carried out by an Accredited Carbon Verification Agency, accredited by BEE.",
+        "The prerequisite that catches applicants out: prior empanelment as an Accredited Energy Auditor firm, which is a separate, earlier process.",
+        "BEE also assesses an established formal verification system, safeguards for impartiality, and systems for managing personnel competence.",
+        "BEE runs accreditation in rounds and publishes provisionally eligible agencies for comment, so check the current window on BEE's site rather than any summary, this one included.",
+      ]} />
+
+      <H2>What an ACVA is</H2>
+      <P>An Accredited Carbon Verification Agency is a body accredited by BEE to conduct validation and verification activities under CCTS. Under the compliance mechanism, an obligated entity measures its greenhouse gas emission intensity for the financial year, has that report verified by an ACVA, and submits the verified report to BEE. BEE then assesses performance against the entity&apos;s sector target, issuing Carbon Credit Certificates to those that beat it and requiring purchases from those that do not.</P>
+      <P>The verifier therefore sits between the obligated entity and a financial consequence. That is why accreditation is gated, and why impartiality is one of the things BEE assesses directly.</P>
+
+      <H2>The prerequisite most applicants discover too late</H2>
+      <Callout title="Accredited Energy Auditor empanelment comes first" color="amber">
+        BEE&apos;s eligibility criteria require prior empanelment as an Accredited Energy Auditor firm, and applicants must provide their empanelment details as part of the application. This is a separate, earlier process. An organisation that does not already hold it cannot simply apply for ACVA accreditation in the current round.
+      </Callout>
+      <P>If you are an independent consultant or a small firm considering this route, that is the first thing to check, before spending any time on the rest. The energy-auditor empanelment route has its own qualification and examination requirements and its own timelines, so treat it as the long pole rather than a formality to clear later.</P>
+
+      <H2>What else BEE assesses</H2>
+      <P>Beyond the prerequisite, the eligibility criteria look for the things any accreditation body would expect of a verification body, evidenced rather than asserted:</P>
+      <OL items={[
+        <><strong>An established formal system for conducting verification activities.</strong> Not an intention to build one. BEE asks how long the system has been implemented, who has been trained on it, and which personnel operate it.</>,
+        <><strong>Systems to safeguard impartiality.</strong> How conflicts of interest are identified and managed, given that the agency is paid by the entity whose figures it verifies. Independence between consulting and verification work matters here.</>,
+        <><strong>Systems for determining and managing personnel competence.</strong> How the agency establishes that a given verifier is competent for a given sector and scope, and how that competence is maintained.</>,
+      ]} />
+      <P>The pattern across all three is that BEE is assessing an <em>operating system</em>, not a credential. Documented processes with an implementation history behind them are what the application is built on.</P>
+
+      <H2>How the process runs</H2>
+      <P>BEE publishes the accreditation procedure and eligibility criteria for Accredited Carbon Verification Agencies, together with an instruction document for applicants, in the carbon market section of its site. It has run accreditation in rounds, and between them has published lists of provisionally eligible agencies and sought stakeholder comments on them before confirming.</P>
+      <P>That rhythm matters for planning. If a round is closed, the useful work is preparing the underlying eligibility, particularly the energy-auditor empanelment and the documented verification system, so that the next opening is a matter of applying rather than building.</P>
+
+      <Callout title="Check BEE directly" color="blue">
+        Accreditation criteria, application windows and the list of accredited agencies all change as the scheme matures. Treat this post as orientation and BEE&apos;s own published documents as the authority. Anything you are relying on commercially should be confirmed against the current BEE document, not a secondary summary.
+      </Callout>
+
+      <H2>Where this sits next to BRSR work</H2>
+      <P>For a consultant already doing BRSR, the overlap in underlying data is substantial and the roles are nonetheless distinct. The fuel, electricity and production figures behind a CCTS emission intensity report are largely the same inputs BRSR Principle 6 asks for, which is why a client in an obligated sector should be collecting once for both. Our guide to <A href="/blog/ccts-india-2025-26">CCTS in 2025-26</A> covers the obligation itself, and <A href="/blog/brsr-for-textile-companies">BRSR for textile companies</A> works through a sector facing both at once.</P>
+      <P>But note the boundary. Verification is an independence role. A firm that prepares an entity&apos;s emission intensity report is not the firm that should verify it, and impartiality is something BEE assesses explicitly. If you are building towards accreditation, think early about how consulting and verification work will be separated inside the practice.</P>
+
+      <PostFaq slug="ccts-accredited-carbon-verifier-india" />
+    </>
+  ),
 
   /* ── BRSR vs CSRD / ESRS ──────────────────────────────────────────────── */
   "brsr-vs-csrd-esrs": (
