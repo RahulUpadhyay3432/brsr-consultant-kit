@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { BLOG_POSTS, lastTouched } from "@/data/blog-posts";
 import { INDUSTRY_LABELS, type IndustryType } from "@/lib/types";
+import { BRSR_FIELDS } from "@/lib/brsr-fields";
 
 const BASE = "https://saaksh.co";
 
@@ -17,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/about`, lastModified: now, changeFrequency: "yearly", priority: 0.6 },
     { url: `${BASE}/community`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${BASE}/directory`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
+    { url: `${BASE}/brsr`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     // Free tools
     { url: `${BASE}/tools/audit-readiness`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     { url: `${BASE}/tools/xbrl-preflight`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
@@ -58,5 +60,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter((k) => k !== "other")
     .map((k) => ({ url: `${BASE}/brsr-for/${k}`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.7 }));
 
-  return [...staticRoutes, ...blogRoutes, ...industryRoutes];
+  // The per-disclosure reference pages: one per BRSR Section C field.
+  const fieldRoutes: MetadataRoute.Sitemap = BRSR_FIELDS.map((f) => ({
+    url: `${BASE}/brsr/${f.code}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  return [...staticRoutes, ...blogRoutes, ...industryRoutes, ...fieldRoutes];
 }

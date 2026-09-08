@@ -27,6 +27,7 @@ export const RESOURCES_NAV_ITEMS: { label: string; sub: string; href: string }[]
   { label: "Brief",                 sub: "30-second swipeable ESG digest for your phone", href: "/brief" },
   { label: "ESG jobs & gigs",       sub: "Curated roles, plus one-off freelance assignments", href: "/jobs" },
   { label: "Consultant directory", sub: "Find an ESG consultant by what they take on",       href: "/directory" },
+  { label: "All 108 BRSR disclosures", sub: "Every Section C field, explained and cited",  href: "/brsr" },
   { label: "Latest updates",        sub: "SEBI, BRSR, CBAM & CCTS moves that matter", href: "/latest" },
   { label: "Blog",                  sub: "Practical, cited BRSR & ESG guides",        href: "/blog" },
   { label: "Methodology & sources", sub: "How we calculate, every figure cited",      href: "/methodology" },
