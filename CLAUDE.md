@@ -260,9 +260,17 @@ at phone width).
 
 The user is using **Lovable** to generate UI/UX design directions, starting with the calculators,
 then possibly a whole-site pass. Workflow: user feeds Lovable screenshots + a prompt, brings the
-output back, and **Claude Code reimplements it against the real token system** (Lovable returns
-React/Tailwind/shadcn; Saaksh is inline styles + CSS custom properties, so its output is
-**direction, not code**). Prompts already supplied in-session: a context primer (what the product
+output back, and **Claude Code reimplements it against the real token system**. Corrected
+2026-09-09: an earlier note here said Saaksh is inline styles + CSS custom properties — that is
+DevSignal's architecture, not this one. **Saaksh is Tailwind** (4,366 `className` vs 491 inline
+`style`, and those are dynamic values like bar widths), with the palette defined as custom tokens
+in `tailwind.config.ts` + `globals.css` and **no component library installed** (no shadcn, Radix,
+cva or tailwind-merge). So Lovable's React/Tailwind output is closer to usable than "direction,
+not code" implied: **layout and structure port over; the class vocabulary does not.** What must be
+translated on the way in: generic colors (`bg-slate-900`, `text-gray-500`) to Saaksh tokens
+(`forest`, `ink`/`ink-body`/`ink-muted`, `brand-*`, `ember`, `tint`, `line`); any shadcn component
+to a plain element; the type stack to Hanken + Newsreader via `.font-editorial` with **no mono**;
+and motion to `.anim-up-*` / `.pressable`, which are already reduced-motion safe. Prompts already supplied in-session: a context primer (what the product
 is, who the customer is), a calculator-redesign brief, and a two-step whole-site audit that first
 forces Lovable to prove it can actually load saaksh.co (5 verification questions with known
 answers) before accepting any audit — the confabulation risk is real.
