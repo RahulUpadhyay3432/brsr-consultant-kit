@@ -14,15 +14,20 @@ The "100% on-device / no data stored" framing applies to **(1) only**. Collect d
 
 Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUpadhyay3432/brsr-consultant-kit
 
-## Project Status — last updated 2026-09-08
+## Project Status — last updated 2026-09-09
 
-### ⚠️ DEPLOY STATE: 6 commits committed locally, NOT pushed, NOT deployed
+### ✅ DEPLOY STATE: pushed and live. origin/master == local == saaksh.co
 
-`saaksh.co` is 6 commits behind. Everything in this section exists only on this machine.
-**First action for a new session:** `git rev-list --count origin/master..HEAD` (expect 6), then
-`git push origin master`, then `$env:NODE_TLS_REJECT_UNAUTHORIZED="0"; vercel --prod --yes`.
-Deploys ship the WORKING TREE, so run `git status` first. Build is clean (206 pages) and every
-claim below was verified against the built output.
+Resolved 2026-09-09. The SEO + AEO sprint below is **live** — 10 commits pushed
+(`1ee19da..7cb0b0c`) and deployed to `saaksh.co` (206 pages, clean build). Verified live after
+deploy: `/brsr/p6-e1` renders in full, `/llms.txt` now serves the generated route listing every
+post plus the 108 disclosures, the glossary and the statistics page, and `robots.txt` carries all
+17 named crawler groups including OAI-SearchBot, ChatGPT-User, Claude-SearchBot, Claude-User,
+Perplexity-User, Google-Extended, Applebot, Amazonbot and Bingbot.
+
+Deploys ship the WORKING TREE, so run `git status` before deploying. The deploy loop on this
+machine is `npx next build` → `git push origin master` →
+`$env:NODE_TLS_REJECT_UNAUTHORIZED="0"; vercel --prod --yes`.
 
 ### The SEO + AEO sprint (2026-09-08)
 
@@ -99,7 +104,10 @@ answers) before accepting any audit — the confabulation risk is real.
 
 ### Open, in priority order
 
-1. **Push + deploy the 6 commits.** Nothing above is live.
+1. ~~Push + deploy the sprint.~~ **Done 2026-09-09 — it is live.** The next move is to re-run
+   the AI-visibility audit in ~30 days (`docs/ai-visibility/saaksh-2026-09-09.md` is the dated
+   baseline; the skill runs in delta mode against it) and see whether the five gaps the deploy
+   was supposed to close actually closed.
 2. **Distribution** — `docs/distribution-playbook.md` is the plan. The 2-hour version: Bing
    Webmaster Tools + sitemap (ChatGPT's search leans on Bing's index), Google Search Console +
    sitemap + request indexing on `/brsr` and `/glossary`, answer the 3 zero-competition Quora
@@ -109,6 +117,22 @@ answers) before accepting any audit — the confabulation risk is real.
    scrape the WhatsApp group.
 4. Lovable output → reimplement against Saaksh tokens.
 5. Send the ECS approach (`docs/ECS-proposal.html`, written since July, still not sent).
+
+### AI visibility baseline (2026-09-09)
+
+Ran the `seo-intel` AI-visibility play against nine buyer questions. Saaksh is cited on 2 of 9
+(1 of 8 excluding the brand query) — and where it appears it is *cited*, not merely mentioned, and
+described accurately, so the failure mode is absence rather than misrepresentation. Five of the
+seven misses were content already built and undeployed, which is what triggered the push above.
+The two that the deploy does not fix: **BRSR Core assurance** (`/tools/audit-readiness` is live but
+lost to nine competitors with dedicated pages — an answer-shape and titling problem, not an
+absence) and **the consultant directory** (cannot compete while empty; Upwork and Guru own it).
+Dated snapshot and method caveats in `docs/ai-visibility/saaksh-2026-09-09.md`; re-run in delta
+mode, do not re-baseline.
+
+The gtm-skills SEO set is now installed alongside the AEO set already present
+(`~/.claude/skills/`): `seo-intel`, `seo-topic-research-pipeline` and its seven standalone phases,
+and `patent-backed-seo-quick-wins`.
 
 ## Project history — moved out of this file
 
