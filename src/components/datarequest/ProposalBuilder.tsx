@@ -119,7 +119,7 @@ export default function ProposalBuilder() {
           <div className="bg-white border border-line rounded-xl p-5 shadow-[0_1px_2px_rgba(16,33,26,0.05)] space-y-4">
             <div>
               <p className="text-[15.5px] font-bold text-ink font-display">Engagement rates</p>
-              <p className="text-[13.5px] text-ink-body leading-relaxed mt-0.5">Your rate card. Every proposal is generated from these figures, adjust to your market.</p>
+              <p className="text-[13.5px] text-ink-body leading-relaxed mt-0.5">Your rate card. Every proposal is generated from these figures, so replace them with your own, the pre-filled numbers are placeholders to edit, not a benchmark, no published benchmark for Indian BRSR consulting fees exists. Save them on your <a href="/requests/profile" className="text-brand-700 font-semibold underline decoration-line hover:decoration-brand-500">profile</a> and they seed every proposal.</p>
             </div>
             <div className="space-y-2">
               <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-ink-muted">Scope</p>

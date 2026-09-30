@@ -37,10 +37,61 @@ acceptance test.**
 | `CLAUDE.md`: Collect has "No AI narrative (that would risk fabrication)" | `narrative.ts`, `NarrativePanel.tsx` and three `generateNarrative` call sites exist. **Fixed** in `CLAUDE.md`. |
 | `CLAUDE.md`: the report has "two tabs, with two more outputs as accordions" | Seven views: overview, checklist, materiality, alignment, beyond-brsr, templates, sources. **Fixed** in `CLAUDE.md`. |
 
-**Still to audit:** whether AI importing, the assurance ledger, XBRL pre-flight, the fee builder
-and multi-client workspaces work end to end, are gated, or are partial. Extraction accuracy is
-**unverified** (Gemini credits were exhausted). Also label free/on-device versus Pro/backend per
-feature — **"nothing leaves your browser" must never describe Pro.**
+### Second pass — the five unverified features (audited 2026-09-30)
+
+Each was read end to end against what the site advertises. Verified statically: typecheck clean,
+**145 tests, 19 files**, `next build` clean at 207 pages. **Nothing was runtime-verified** — this
+container has no `.env.local`, so no Supabase, Groq or Gemini key. Extraction *accuracy* remains
+unverified, as before.
+
+| Feature | Verdict |
+|---|---|
+| **XBRL pre-flight** | **Matches.** Pure on-device conversion (`lakh 1e5`, `crore 1e7`), 7 cited checks, and it explicitly says "not a full taxonomy validator". Cites the **May 2024** NSE/BSE circulars, so it does not imply XBRL is a new FY 2025-26 obligation. No action. |
+| **Multi-client workspaces** | **Matches.** `/requests` is a real cross-client dashboard whose tiles are computed from live data, scoped by `listCampaigns(org.id)`. `/clients` is a separate free, genuinely on-device list. No action. |
+| **Proposal / fee builder** | **Works.** Pure functions, client-side PDF, profile in `localStorage`, so "generated on your device" is true. **One mismatch:** it claims it "never asserts a market price" while shipping a pre-filled rate card (₹1,50,000 base, ₹25,000/framework…). A consultant who never edits it gets a proposal we priced. **Fixed:** the rate card now says the numbers are placeholders to replace, not a benchmark. |
+| **AI importing** | **Real and better-built than advertised** — grounded extract-only prompt, and a verifier that *drops* any suggestion whose value does not literally appear in its own source text. Gemini primary, Groq fallback, per-chunk, never auto-writes. **Two mismatches, both fixed** (below). |
+| **Assurance ledger** | **Real and honest as a pure function** (one row per received item, owner + evidence + cited basis + methodology footnote) — but it was **emitting AI-extracted figures under a named person's name**. Fixed. |
+
+**The substantive bug — false provenance in the assurance ledger.**
+`applyBulkImportAction` looked up an existing item for the accepted `fieldId` and called
+`db.updateItem()`, which writes the value **and flips `status` to `received`**. When that item
+belonged to a real data owner, the AI-extracted figure landed on **that owner's** item, so the
+assurance ledger — the one artifact built to be handed to an assurance provider — printed it under
+their name and email, the Data tab labelled it "Submitted by: <person>", and the printed draft said
+"every figure below is your client's submitted value". Nothing in the schema could tell the two
+apart. This is precisely the exit condition below, and no static check could have caught it.
+
+Fixed by recording provenance rather than by blocking the write (the importer is the product's best
+feature; the defect was the silence):
+
+- **Migration `003-item-value-source.sql`** adds `brsr_request_items.value_source`. Reads are
+  best-effort and the write path retries without the column, so it degrades before the migration runs.
+- Every write site is now tagged: `'owner'` for a submission through the owner's own link, `'import'`
+  for an importer value the consultant accepted.
+- The ledger carries a **"Value source"** column and a footnote defining each label. Rows predating
+  the migration read **"Not recorded"** — deliberately *not* "Owner-submitted", because any value
+  imported before this fix is indistinguishable from a submission in the old data. **No backfill is
+  possible.**
+- The Data tab shows an **"Imported"** tag on the row and "Assigned to" (not "Submitted by") in the
+  detail panel; the printed draft no longer calls every figure a submitted value.
+- `assurance.test.ts` (7 tests) pins the regression, including that an imported row never reads
+  "Owner-submitted".
+
+**Two false privacy claims — "on your device" describing a Pro AI feature (both fixed).**
+
+| Where | Claimed | Reality |
+|---|---|---|
+| `BulkImportPanel.tsx` | "Each is read in your browser; **nothing is sent until you apply**." | The *file* stays local (pdf.js), but the extracted **text is sent to Gemini/Groq at extraction time**, long before "apply". Only *saving* waits for apply. The file's own header comment had it right; the user-facing line did not. |
+| `/requests/cbam` + `CbamCalculator` | "**Fully on your device**, nothing is stored", and the AI auto-fill labelled "On your device". | The estimate is on-device, but `cbamExtractAction` sends the uploaded document's text to Groq. |
+
+Checked and **correct**, for the record: the sub-processor list already names Groq and Gemini with
+the Pro scoping; `PricingTable` keeps "on your device / nothing stored" strictly in the Free column;
+the free `/features/cbam-ccts` page has no AI path; `/clients`, the profile and the proposal builder
+are genuinely `localStorage`.
+
+**Still not verified, and not verifiable from here:** extraction *accuracy* (needs live Gemini/Groq
+credit), and every Collect path against a real database — the firm tier still **has never served an
+HTTP request**. Both need the deploy plus a driven session.
 
 Exit condition: promises match behaviour, and synthetic wrong data cannot quietly become a
 confidently "ready" report.

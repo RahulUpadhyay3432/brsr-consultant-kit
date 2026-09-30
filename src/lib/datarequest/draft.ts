@@ -1,7 +1,10 @@
 // Builds a draft of BRSR responses from COLLECTED data only, deterministic,
-// no fabrication. Every line is a value an owner actually submitted (or a figure
-// computed from those values via the cited calculators). Pure function so it's
-// easy to reason about / test.
+// no fabrication. Every line is a value actually recorded against that disclosure,
+// either submitted by an owner or accepted by the consultant from the document
+// importer (or a figure computed from those values via the cited calculators). The
+// per-figure provenance lives on Item.valueSource and is printed by the assurance
+// ledger; the draft is a filing document, not the evidence trail. Pure function so
+// it's easy to reason about / test.
 import type { Campaign, Item } from "./types";
 import { campaignEmissions, emissionInputs, type EmissionInput } from "./emissions";
 import { SECTION_LABELS, PRINCIPLE_LABELS, PRINCIPLE_ORDER } from "./brsr-meta";

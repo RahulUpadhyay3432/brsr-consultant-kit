@@ -3,7 +3,9 @@
 // Covered-good dropdown + production tonnage + optional override factor →
 // a live result card (total embedded tCO₂e + per-tonne intensity) with a cited
 // methodology footnote and a prominent honest "screening, not the declaration" note.
-// Fully on-device; nothing is stored.
+// The estimate is computed on-device and nothing is stored. The OPTIONAL auto-fill
+// is NOT on-device: pdf.js reads the text locally, but that text goes to the server
+// (Groq) via cbamExtractAction, so the copy here must not claim otherwise.
 import { useRef, useState } from "react";
 import {
   CBAM_GOODS, estimateCbam,
@@ -94,7 +96,7 @@ export default function CbamCalculator() {
           <div className="flex flex-wrap items-center justify-between gap-2.5">
             <div className="min-w-0">
               <p className="text-[13.5px] font-semibold text-ink">Auto-fill from a document</p>
-              <p className="text-[12.5px] text-ink-body leading-snug">Upload a production or export report, the AI reads the good + quantity. On your device; verify before relying on it.</p>
+              <p className="text-[12.5px] text-ink-body leading-snug">Upload a production or export report, the AI reads the good + quantity. The file stays in your browser; the text in it is sent to our AI provider. Verify before relying on it.</p>
             </div>
             <button
               type="button"

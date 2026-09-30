@@ -21,3 +21,14 @@ export const PRINCIPLE_LABELS: Record<string, string> = {
 };
 
 export const PRINCIPLE_ORDER = ["P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9"];
+
+// How a collected figure came to be recorded, for the Data tab and the assurance
+// ledger. An assurer (and the consultant) needs to know whose word a number rests
+// on, so the import case names itself rather than hiding behind the owner the
+// disclosure happens to be assigned to. "unrecorded" covers rows written before
+// migration 003 added brsr_request_items.value_source.
+export const VALUE_SOURCE_LABEL: Record<"owner" | "import" | "unrecorded", string> = {
+  owner: "Owner-submitted",
+  import: "Document import (AI-extracted, consultant-accepted)",
+  unrecorded: "Not recorded",
+};

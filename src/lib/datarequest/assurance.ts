@@ -4,8 +4,13 @@
 // already captures all of that (who submitted what, the attached document, and the
 // cited factor behind any computed figure), this turns it into one exportable
 // artifact the consultant hands to the assurance provider. Pure: no DB, no fabrication.
+//
+// It also carries the "Value source" column, because an owner submitting a figure
+// through their own link and the AI importer reading one off an uploaded document are
+// different evidence, and the ledger used to present both under the owner's name.
 import type { Campaign } from "./types";
 import { emissionInputs, GHG_METHODOLOGY } from "./emissions";
+import { VALUE_SOURCE_LABEL } from "./brsr-meta";
 
 // One row per RECEIVED data point (the data that's actually assurable), with the
 // owner who submitted it, the supporting document, and the cited calculation basis.
@@ -20,6 +25,7 @@ export function buildAssuranceLedger(campaign: Campaign): string[][] {
   const header = [
     "BRSR code", "Disclosure", "Section", "Principle",
     "Value", "Unit", "Prior year",
+    "Value source",
     "Data owner", "Owner email",
     "Evidence document", "Evidence attached",
     "Calculation basis",
@@ -38,6 +44,7 @@ export function buildAssuranceLedger(campaign: Campaign): string[][] {
         it.value,
         it.unit ?? "",
         it.priorValue ?? "",
+        VALUE_SOURCE_LABEL[it.valueSource ?? "unrecorded"],
         owner,
         c.email,
         it.evidenceName ?? "",
@@ -47,10 +54,19 @@ export function buildAssuranceLedger(campaign: Campaign): string[][] {
     }
   }
 
-  // Trailing methodology + no-fabrication note (one cell, so it reads as a footnote
-  // row in the spreadsheet).
+  // Trailing methodology + provenance note (one cell, so it reads as a footnote
+  // row in the spreadsheet). It states what the ledger can and cannot vouch for:
+  // nothing is estimated, but a document-imported figure was read by a model and
+  // accepted by the consultant, not submitted by the named owner.
   const note = [
-    `Methodology: ${GHG_METHODOLOGY} Every figure above is a value an owner submitted or computed from one via a cited factor; nothing is estimated.`,
+    `Methodology: ${GHG_METHODOLOGY} No figure above is estimated: each is a value ` +
+      `recorded against this disclosure, or computed from one via the cited factor. ` +
+      `"Value source" states how it was recorded, ` +
+      `"${VALUE_SOURCE_LABEL.owner}" means the named data owner submitted it through their own link; ` +
+      `"${VALUE_SOURCE_LABEL.import}" means it was read out of an uploaded document by the AI importer ` +
+      `and accepted by the consultant, so the named owner is the person the disclosure is assigned to, ` +
+      `not the person who reported the figure; ` +
+      `"${VALUE_SOURCE_LABEL.unrecorded}" means the provenance predates provenance tracking and should be confirmed with the consultant.`,
   ];
 
   return [header, ...rows, [], note];

@@ -7,7 +7,9 @@ Written to end a long session cleanly. Everything a fresh chat needs is here or 
 
 ## State of the repo
 
-- `master` = **`afd233a`**, 8 commits ahead of what is deployed.
+- `master` = **`3f2a406`**, **9 commits ahead** of what is deployed (confirmed against the Vercel
+  API 2026-09-30: the newest production deployment is still `7cb0b0c`). The P0 audit work sits on
+  `claude/busy-curie-ij42lc` on top of that.
 - **Production is `7cb0b0c`** (2026-09-09). **Nothing from this session is live.**
 - Verified on `master`: typecheck clean · **138 tests, 18 files** · `next build` clean · **207 pages**.
 - `master` and `claude/busy-curie-ij42lc` point at the same tree (master then took 3 more commits).
@@ -62,9 +64,14 @@ This is the argument for doing the dossier's **P0 audit** before more features.
 ## Still open, roughly in priority order
 
 1. **Deploy** (above).
-2. **Finish the P0 audit** — `docs/product-dossier-2026-09-30.md` lists what is verified and what
-   is not. AI importing, the assurance ledger, XBRL pre-flight, the fee builder and multi-client
-   workspaces are all **advertised but unverified end to end**.
+2. ~~**Finish the P0 audit**~~ — **second pass done 2026-09-30.** All five features audited; see
+   the "Second pass" table in `docs/product-dossier-2026-09-30.md`. XBRL pre-flight and multi-client
+   workspaces matched their copy with no action. Three real mismatches found and fixed: the
+   assurance ledger was **printing AI-imported figures under a named data owner's name**, and two
+   surfaces claimed "on your device"/"nothing is sent" for Pro features that send document text to
+   Groq/Gemini. **Migration 003 must be run** for the provenance column to do anything. Still
+   unverified and not verifiable without the deploy: extraction *accuracy*, and any Collect path
+   against a real database.
 3. **Runtime-verify the firm tier.** It has **never served an HTTP request** — all confidence is
    static. After deploying, drive `saaksh.co` with Playwright and the SAGE passcode: sign in,
    confirm the rail reads SAGE, confirm the client list is empty and separate from the 9.

@@ -359,7 +359,7 @@ export async function applyImportAction(campaignId: string, formData: FormData):
   for (const itemId of itemIds) {
     const value = String(formData.get(`value_${itemId}`) || "").trim();
     if (!value) continue;
-    try { await db.updateItem(itemId, value); } catch { /* best-effort per row */ }
+    try { await db.updateItem(itemId, value, "import"); } catch { /* best-effort per row */ }
   }
   redirect(`/requests/${campaignId}`);
 }
@@ -421,12 +421,12 @@ export async function applyBulkImportAction(
     try {
       const itemId = existing.get(fieldId);
       if (itemId) {
-        await db.updateItem(itemId, v);
+        await db.updateItem(itemId, v, "import");
       } else {
         const field = fieldById.get(fieldId);
         if (!field) continue;
         if (!importContactId) importContactId = await db.getOrCreateImportContact(campaignId);
-        await db.addItemWithValue(importContactId, field, v);
+        await db.addItemWithValue(importContactId, field, v, "import");
       }
     } catch { /* best-effort per row */ }
   }
@@ -477,7 +477,7 @@ export async function loadSampleClientAction(): Promise<void> {
       for (const it of items) {
         const v = valueFor[it.fieldId];
         if (v == null) continue;
-        try { await db.updateItem(it.id, v); } catch { /* best-effort */ }
+        try { await db.updateItem(it.id, v, "owner"); } catch { /* best-effort */ }
       }
     }
   }
@@ -543,7 +543,7 @@ export async function submitDataAction(token: string, formData: FormData): Promi
     const pv = formData.get(`pf_${item.id}`);
     const prior = pv == null ? "" : String(pv).trim();
     if (val !== "") {
-      await db.updateItem(item.id, val);
+      await db.updateItem(item.id, val, "owner");
       received++;
     } else if (item.status === "received") {
       received++; // already had a value, left unchanged

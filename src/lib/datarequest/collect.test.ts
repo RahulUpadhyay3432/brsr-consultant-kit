@@ -14,6 +14,7 @@ function item(p: Partial<Item>): Item {
     section: p.section ?? null, principle: p.principle ?? null, indicatorType: p.indicatorType ?? null,
     value: p.value ?? null, priorValue: p.priorValue ?? null,
     status: p.status ?? "pending", evidencePath: p.evidencePath ?? null, evidenceName: p.evidenceName ?? null,
+    valueSource: p.valueSource ?? null,
   };
 }
 function contact(items: Item[], p: Partial<Contact> = {}): Contact {

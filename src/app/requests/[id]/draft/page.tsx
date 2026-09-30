@@ -49,8 +49,10 @@ export default async function DraftPage({ params }: { params: { id: string } }) 
       {/* Honesty note, prints with the draft */}
       <div className="mt-4 bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
         <p className="text-[12.5px] text-amber-800 leading-relaxed">
-          <strong>Drafted from your collected data.</strong> Every figure below is your client&apos;s submitted value
-          (emissions are computed from those values using cited CEA / IPCC factors). Nothing is invented. Review,
+          <strong>Drafted from your collected data.</strong> Every figure below is a value collected against that
+          disclosure, either submitted by a data owner or read out of a document you uploaded and accepted
+          (emissions are computed from those values using cited CEA / IPCC factors). Nothing is invented, but the
+          two are not the same evidence, and the assurance ledger records which is which per figure. Review,
           edit, and write the qualitative narrative before filing.
         </p>
       </div>

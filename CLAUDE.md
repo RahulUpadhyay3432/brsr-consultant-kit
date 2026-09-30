@@ -55,7 +55,8 @@ principle-level only), and **GRESB at any level** (blog and glossary copy only).
 **Supabase MCP is connected**, so migrations can be applied directly. `brsr_` tables live in
 project **`girogiauxecthlxxspyi`** ("neo-san-signal-intelligence"), a shared DB holding several
 other apps — always scope changes to `brsr_`-prefixed tables. Migrations now live in
-`docs/migrations/`, run in order; 001 and 002 were applied 2026-09-30.
+`docs/migrations/`, run in order; 001 and 002 were applied 2026-09-30. **003 (`value_source`) is
+written but NOT yet applied.**
 ⚠️ `list_tables` row counts are stale estimates (reported 0 campaigns when there were 9) —
 `select count(*)` when the number matters.
 
@@ -225,6 +226,11 @@ Carried forward from earlier sessions; each is still open unless you've since do
   `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections jsonb;`
 - ~~`ALTER TABLE brsr_contacts ADD COLUMN received_at timestamptz;`~~ — **done 2026-09-30**
   (`docs/migrations/002-contacts-received-at.sql`).
+- **Run `docs/migrations/003-item-value-source.sql`** — adds `brsr_request_items.value_source`,
+  the provenance of a collected figure. Until it runs, the code degrades (writes retry without the
+  column) and every ledger row reads **"Not recorded"** instead of distinguishing an owner
+  submission from an AI-imported figure. **No backfill is possible**, so any value imported before
+  this migration stays unrecorded for good.
 - **Firm tier follow-up:** to add a firm, insert its `brsr_orgs` row **and** add a matching
   `slug|Name|passcode` line to `CONSULTANT_PASSCODES` (`.env.local` + Vercel production). Both are
   required — see `docs/migrations/001-firm-tier-orgs.sql`.
@@ -260,6 +266,11 @@ written to degrade gracefully before a migration lands, so a missing table or co
 - **Don't move the free on-device modules behind Pro** (Scope 3, cross-framework export, CBAM/CCTS
   readiness, templates). Free = understand & prepare on your device; Pro = the workspace that does
   the work. The free modules are the funnel and cost nothing to serve.
+- **Never let an on-device privacy claim describe a Pro feature.** "Nothing leaves your browser",
+  "nothing is sent", "fully on your device" belong to the free tool only. The AI importer, the OCR
+  bill reader, the CBAM auto-fill and the narrative drafter all send extracted **text** to Groq or
+  Gemini — the *file* stays local, the text does not, and only *saving* waits for "apply". The P0
+  audit found this exact overclaim twice (`BulkImportPanel`, `/requests/cbam`), both fixed 2026-09-30.
 - **Don't commit** the untracked root `*.png`/`*.jpeg` screenshots or a temp `_shoot.mjs`.
 
 ## The Report Outputs
@@ -339,7 +350,7 @@ The killer feature from Priya's feedback: collecting BRSR data from a client's t
 - **Draft:** `draft.ts → buildDraft()` + `/requests/[id]/draft` — a **deterministic, printable** draft of BRSR responses from collected data (grouped by section + the emissions block with basis + a "nothing is invented" disclaimer). ⚠️ **Corrected 2026-09-30: AI narrative drafting DOES exist** — `narrative.ts`, `NarrativePanel.tsx` and `generateNarrative` (3 call sites in `actions.ts`), persisted to `brsr_requests.narrative` jsonb. This file previously said "No AI narrative", which was the stance before it shipped. The deterministic figures and the AI prose are separate: every number still comes from a submitted value or a cited factor, and the prose is per-principle qualitative text layered on top. Don't describe Collect as narrative-free.
 - **Shell:** `/requests/*` are wrapped in `src/app/requests/layout.tsx` (+ `components/datarequest/CollectNav.tsx`) so Collect uses the same sidebar/chrome as the report — one product. `/submit` and `/login` keep standalone layouts.
 
-**Invariants:** drafts/calcs never fabricate (every figure is a submitted value or computed from one via cited factors); email is **best-effort** (never throws — Vercel FS is read-only, Resend rejects unverified recipients); the request-field list is the **full BRSR format** built by `brsrRequestFields()` in `fields.ts` (flattened from `brsr_data_points.json` — Section A + B + C, 133 fields, each with its coordinates), with the two `P6-E1-elec` / `P6-E1-diesel` activity inputs preserved for the GHG calc. Static display labels (principle short names, section labels) live in `brsr-meta.ts` so the client picker imports them without pulling in the KB JSON.
+**Invariants:** drafts/calcs never fabricate (every figure is a collected value or computed from one via cited factors) — and since the P0 audit, **every collected value carries its provenance**: `Item.valueSource` is `'owner'` (submitted through the owner's own link) or `'import'` (read from an uploaded document by the AI importer and accepted by the consultant), written by `db.updateItem()` / `addItemWithValue()` and printed as the assurance ledger's **"Value source"** column. ⚠️ **Don't reintroduce copy that calls every collected figure "submitted"** — applying an importer suggestion overwrites the item belonging to whichever owner the disclosure is assigned to, so the owner column names who it is *assigned to*, not who reported it. Rows predating migration 003 read "Not recorded", never "Owner-submitted"; email is **best-effort** (never throws — Vercel FS is read-only, Resend rejects unverified recipients); the request-field list is the **full BRSR format** built by `brsrRequestFields()` in `fields.ts` (flattened from `brsr_data_points.json` — Section A + B + C, 133 fields, each with its coordinates), with the two `P6-E1-elec` / `P6-E1-diesel` activity inputs preserved for the GHG calc. Static display labels (principle short names, section labels) live in `brsr-meta.ts` so the client picker imports them without pulling in the KB JSON.
 
 ## Intake Form Fields (in `IntakeForm.tsx`)
 

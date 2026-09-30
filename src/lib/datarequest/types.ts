@@ -37,11 +37,19 @@ export interface Item {
   value: string | null;
   priorValue: string | null; // previous-FY figure (BRSR needs year-on-year)
   status: "pending" | "received";
+  // Where the value came from. "owner" = a data owner submitted it through their
+  // secure link; "import" = the AI document importer extracted it and the consultant
+  // accepted it. null = not recorded (rows written before migration 003). The
+  // assurance ledger prints this, so an AI-extracted figure is never presented as
+  // something the named owner submitted.
+  valueSource: ValueSource;
   // Supporting document the owner attached (the bill / invoice / register that
   // backs the figure), for assurance-readiness. Null when none uploaded.
   evidencePath: string | null;   // private Storage object path (bucket-relative)
   evidenceName: string | null;   // original filename, shown to the consultant
 }
+
+export type ValueSource = "owner" | "import" | null;
 
 export type ContactStatus = "pending" | "partial" | "received";
 

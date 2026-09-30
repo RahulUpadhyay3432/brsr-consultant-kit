@@ -21,7 +21,9 @@ export default function CbamPage() {
           <p className="text-[14.5px] text-ink-body mt-1.5 max-w-[68ch] leading-relaxed">
             A quick screening estimate of the embedded emissions of CBAM-covered goods, using the EU&apos;s
             published default values. It helps you ballpark a client&apos;s EU-border exposure before the heavier,
-            installation-verified declaration. Fully on your device, nothing is stored.
+            installation-verified declaration. The estimate itself is computed in your browser and nothing is
+            stored; the optional auto-fill below sends the text of the document you upload to our AI provider
+            to read the good and quantity off it.
           </p>
         </header>
 

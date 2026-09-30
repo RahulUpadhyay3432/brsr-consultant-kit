@@ -3,7 +3,7 @@
 //
 // Tables: brsr_requests (campaign) → brsr_contacts (owner) → brsr_request_items.
 import "server-only";
-import type { Campaign, Contact, Item, CompanyContact } from "./types";
+import type { Campaign, Contact, Item, CompanyContact, ValueSource } from "./types";
 import type { RequestField } from "./types";
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -38,6 +38,7 @@ interface ItemRow {
   prior_value?: string | null;
   field_section?: string | null; field_principle?: string | null; field_indicator_type?: string | null;
   evidence_path?: string | null; evidence_name?: string | null;
+  value_source?: string | null;
 }
 interface ContactRow {
   id: string; name: string | null; email: string; token: string; status: string;
@@ -49,6 +50,13 @@ interface CampaignRow {
   id: string; client_name: string; reporting_period: string | null; deadline: string | null; created_at: string;
   narrative?: Record<string, string> | null;
   brsr_contacts?: ContactRow[];
+}
+
+// Provenance of a value, read best-effort: the column only exists once migration
+// 003 has run, and anything unrecognised is treated as unrecorded rather than
+// guessed at.
+function normSource(v: unknown): ValueSource {
+  return v === "owner" || v === "import" ? v : null;
 }
 
 function mapItem(r: ItemRow): Item {
@@ -65,6 +73,7 @@ function mapItem(r: ItemRow): Item {
     status: (r.status === "received" ? "received" : "pending"),
     evidencePath: r.evidence_path ?? null,
     evidenceName: r.evidence_name ?? null,
+    valueSource: normSource(r.value_source),
   };
 }
 function mapContact(r: ContactRow): Contact {
@@ -251,11 +260,22 @@ export async function getContactByToken(
   };
 }
 
-export async function updateItem(itemId: string, value: string): Promise<void> {
-  await rest(`brsr_request_items?id=eq.${encodeURIComponent(itemId)}`, {
-    method: "PATCH",
-    body: JSON.stringify({ value, status: "received" }),
-  });
+// Writes a value and marks the item received. `source` records WHERE the figure came
+// from ("owner" = submitted through the owner's secure link, "import" = extracted from
+// a document by the AI importer and accepted by the consultant), so the assurance
+// ledger never attributes an AI-extracted number to a named person. If
+// `value_source` does not exist yet (migration 003 not run), the write is retried
+// without it, so the value still lands.
+export async function updateItem(itemId: string, value: string, source?: ValueSource): Promise<void> {
+  const path = `brsr_request_items?id=eq.${encodeURIComponent(itemId)}`;
+  const base = { value, status: "received" };
+  if (source) {
+    try {
+      await rest(path, { method: "PATCH", body: JSON.stringify({ ...base, value_source: source }) });
+      return;
+    } catch { /* column missing → fall through to the column-free write */ }
+  }
+  await rest(path, { method: "PATCH", body: JSON.stringify(base) });
 }
 
 // Prior-year figure, written separately from the value so it can be best-effort
@@ -359,17 +379,26 @@ export async function getOrCreateImportContact(campaignId: string): Promise<stri
 
 // Inserts a single already-valued item under a contact (used by bulk import).
 // Writes the value + status 'received' + the field's BRSR coordinates.
-export async function addItemWithValue(contactId: string, field: RequestField, value: string): Promise<void> {
-  await rest("brsr_request_items", {
-    method: "POST",
-    body: JSON.stringify([{
-      contact_id: contactId,
-      field_id: field.id, field_label: field.label, field_unit: field.unit ?? null,
-      field_kind: field.kind, field_category: field.category ?? null,
-      field_section: field.section, field_principle: field.principle, field_indicator_type: field.indicatorType,
-      value, status: "received",
-    }]),
-  });
+export async function addItemWithValue(
+  contactId: string, field: RequestField, value: string, source?: ValueSource
+): Promise<void> {
+  const row: Record<string, unknown> = {
+    contact_id: contactId,
+    field_id: field.id, field_label: field.label, field_unit: field.unit ?? null,
+    field_kind: field.kind, field_category: field.category ?? null,
+    field_section: field.section, field_principle: field.principle, field_indicator_type: field.indicatorType,
+    value, status: "received",
+  };
+  if (source) {
+    try {
+      await rest("brsr_request_items", {
+        method: "POST",
+        body: JSON.stringify([{ ...row, value_source: source }]),
+      });
+      return;
+    } catch { /* column missing → fall through to the column-free insert */ }
+  }
+  await rest("brsr_request_items", { method: "POST", body: JSON.stringify([row]) });
 }
 
 // A reasonably-unguessable token for a synthetic contact (the link is never sent,

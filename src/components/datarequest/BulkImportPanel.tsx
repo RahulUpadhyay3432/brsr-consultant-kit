@@ -378,8 +378,9 @@ export default function BulkImportPanel({
             Already have the client&apos;s documents? Upload any of them, last year&apos;s
             BRSR, the annual report, bills, HR sheets, policies, anything, and the AI
             reads each one and fills the matching BRSR fields for you to verify, across
-            all 9 principles. You don&apos;t sort them; the AI does. Files stay in your
-            browser; only values it finds are suggested, with the source shown.
+            all 9 principles. You don&apos;t sort them; the AI does. Your files stay in your
+            browser, the text read out of them is sent to the AI, and every figure it
+            finds stays a suggestion with its source line shown.
           </p>
         </div>
       </div>
@@ -456,7 +457,7 @@ export default function BulkImportPanel({
               {staged.length ? "Add more documents" : "Choose documents"}
             </button>
             <p className="mt-2.5 text-[13px] text-ink-muted leading-relaxed">
-              Upload one or several PDFs at once, any client document works. Each is read in your browser; nothing is sent until you apply. Optionally tag a file&apos;s type above to sharpen accuracy.
+              Upload one or several PDFs at once, any client document works. The file itself stays in your browser, pdf.js reads the text out of it here; that text is then sent to our AI provider to find the figures, and nothing is saved against this client until you apply what you&apos;ve checked. Optionally tag a file&apos;s type above to sharpen accuracy.
             </p>
             <p className="mt-1.5 text-[12.5px] text-ink-faint leading-relaxed">
               You can also add a <b className="font-semibold text-ink-muted">photo of a bill, invoice or meter reading</b> (JPG/PNG), it&apos;s read on the server and every figure stays a suggestion you verify. <span className="text-ink-faint">Beta.</span>

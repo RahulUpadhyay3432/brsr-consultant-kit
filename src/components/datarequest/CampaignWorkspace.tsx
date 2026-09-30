@@ -20,7 +20,7 @@ import AddOwnerPanel from "@/components/datarequest/AddOwnerPanel";
 import DirectoryPanel from "@/components/datarequest/DirectoryPanel";
 import BulkImportPanel from "@/components/datarequest/BulkImportPanel";
 import CampaignSettingsButton from "@/components/datarequest/CampaignSettingsButton";
-import { PRINCIPLE_LABELS, SECTION_LABELS, PRINCIPLE_ORDER } from "@/lib/datarequest/brsr-meta";
+import { PRINCIPLE_LABELS, SECTION_LABELS, PRINCIPLE_ORDER, VALUE_SOURCE_LABEL } from "@/lib/datarequest/brsr-meta";
 import type { Campaign, Contact, Item, ContactStatus, CompanyContact, RequestField } from "@/lib/datarequest/types";
 import type { EmissionInput } from "@/lib/datarequest/emissions";
 import type { BulkImportResult, DocCategory } from "@/lib/datarequest/importer";
@@ -769,6 +769,14 @@ function DataFieldRow({ item, owner, evidenceUrl }: { item: Item; owner: string;
           {item.label}
           <span className="text-ink-muted"> · {owner}</span>
         </span>
+        {item.valueSource === "import" && (
+          <span
+            title="Read from an uploaded document by the AI importer and accepted by you, not submitted by this data owner."
+            className="inline-flex items-center gap-1 flex-shrink-0 text-[12px] font-medium text-amber-800 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded-md"
+          >
+            Imported
+          </span>
+        )}
         {item.evidencePath && (
           evidenceUrl ? (
             <a href={evidenceUrl} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} title={item.evidenceName ?? "View evidence"}
@@ -795,8 +803,9 @@ function DataFieldRow({ item, owner, evidenceUrl }: { item: Item; owner: string;
             <DetailField label="Field code" value={item.fieldId} mono />
             <DetailField label="Section" value={item.section ? SECTION_LABELS[item.section] : ", "} />
             <DetailField label="Principle" value={item.principle ? `${item.principle}${PRINCIPLE_LABELS[item.principle] ? ` · ${PRINCIPLE_LABELS[item.principle]}` : ""}` : ", "} />
-            <DetailField label="Submitted by" value={owner} />
+            <DetailField label={item.valueSource === "import" ? "Assigned to" : "Submitted by"} value={owner} />
             <DetailField label="Status" value={st.label} />
+            <DetailField label="Value source" value={VALUE_SOURCE_LABEL[item.valueSource ?? "unrecorded"]} />
             <DetailField label="Value" value={item.value ? `${item.value}${item.unit ? ` ${item.unit}` : ""}` : "Not submitted yet"} />
             <DetailField label="Prior-year value" value={item.priorValue ? `${item.priorValue}${item.unit ? ` ${item.unit}` : ""}` : ", "} />
             {item.indicatorType && <DetailField label="Indicator" value={item.indicatorType === "essential" ? "Essential" : "Leadership"} />}
