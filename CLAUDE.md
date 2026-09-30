@@ -35,9 +35,18 @@ first. Now a firm (org) owns its campaigns and every campaign-level query filter
   in the environment and resolves it **by slug**, so a live secret never lands in a table.
 - `requireConsultant()` (already in all 17 sensitive server actions) now returns the firm.
 
+**Field-level CDP + EcoVadis shipped for Principle 6** (`src/data/cdp_ecovadis_mappings.json`, 26 of
+27 P6 crosswalk rows, surfaced in the Alignment tab). It follows the existing TNFD/ESRS overlay
+pattern and **invents no vocabulary** — every term comes from the sourced sets in
+`esg_ratings_mapping.json`, asserted by `cdp-ecovadis-mappings.test.ts`, which also pins the
+deliberate sparseness (no CDP waste module; no EcoVadis scenario-analysis or carbon-pricing criterion).
+⚠️ **`framework_mappings.json` uses a FINER-GRAINED `brsr_id` than `brsr_data_points.json`** (27 P6
+rows vs 13+8 indicators) — overlays key off the crosswalk ids, and getting it wrong yields mappings
+that resolve to nothing.
+
 **Not built, and don't claim them:** per-person **seats** inside a firm (SAGE's 17 people would
-share one passcode and all see all SAGE clients) and **field-level BRSR → CDP/EcoVadis/GRESB**
-(the crosswalk is GRI/TCFD/IFRS; CDP+EcoVadis are principle-level only; GRESB is blog copy only).
+share one passcode and all see all SAGE clients), **CDP/EcoVadis for P1–P5 and P7–P9** (still
+principle-level only), and **GRESB at any level** (blog and glossary copy only).
 **Known gap:** contact/item-level writes are still only passcode-gated — row-level hardening next.
 
 **Supabase MCP is connected**, so migrations can be applied directly. `brsr_` tables live in

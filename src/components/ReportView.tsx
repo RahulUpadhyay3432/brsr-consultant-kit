@@ -955,6 +955,8 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
   const withIFRS = mappings.filter(m => isMapped(m.ifrs_reference)).length;
   const withTNFD = mappings.filter(m => isMapped(m.tnfd_pillar)).length;
   const withESRS = mappings.filter(m => isMapped(m.esrs_standard)).length;
+  const withCDP = mappings.filter(m => isMapped(m.cdp_area)).length;
+  const withEcoVadis = mappings.filter(m => isMapped(m.ecovadis_criterion)).length;
   const ratingsCount = (esgRatingsData as { mappings?: unknown[] }).mappings?.length ?? 9;
 
   const subTabs = [
@@ -969,6 +971,9 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
     { n: withIFRS, label: "IFRS S1/S2",     tone: "text-emerald-600" },
     { n: withTNFD, label: "TNFD (nature)",  tone: "text-teal-600"    },
     { n: withESRS, label: "ESRS (CSRD)",    tone: "text-indigo-600"  },
+    // P6 only so far, so these read lower than the reporting frameworks by design.
+    { n: withCDP,      label: "CDP (P6)",      tone: "text-sky-600"   },
+    { n: withEcoVadis, label: "EcoVadis (P6)", tone: "text-amber-600" },
   ];
 
   return (
@@ -977,10 +982,11 @@ function AlignmentWorkspace({ mappings, clientName }: { mappings: FrameworkMappi
       <ViewHeader
         tabId="alignment"
         title="Alignment"
-        subtitle="How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2, TNFD (nature) and ESRS (CSRD), and how each principle feeds the MSCI, DJSI, CDP and EcoVadis assessments. Collect once, report across all."
+        subtitle="How each BRSR disclosure maps to GRI, TCFD, IFRS S1/S2, TNFD (nature) and ESRS (CSRD), plus the CDP questionnaire area and EcoVadis criterion each Principle 6 figure feeds. Collect once, report across all."
         info={
           <InfoPopover title="Collect once, report across frameworks">
-            <p>BRSR overlaps heavily with the global frameworks. This crosswalk maps every disclosure to its counterpart in GRI, TCFD, IFRS S1/S2, TNFD and ESRS (the standards behind the EU's CSRD), and shows how each principle feeds the MSCI, S&amp;P/DJSI, CDP and EcoVadis assessments, so one round of BRSR data can feed the client&apos;s other reports, disclosures and rating submissions.</p>
+            <p>BRSR overlaps heavily with the global frameworks. This crosswalk maps every disclosure to its counterpart in GRI, TCFD, IFRS S1/S2, TNFD and ESRS (the standards behind the EU&apos;s CSRD), so one round of BRSR data can feed the client&apos;s other reports and disclosures.</p>
+            <p><strong>CDP and EcoVadis are mapped per disclosure for Principle 6</strong> — the environment figures (energy, water, GHG, waste, biodiversity) a client is asked for over and over. So the same collected number carries its CDP questionnaire area and EcoVadis criterion with it. The mapping is deliberately sparse: CDP has no waste module, and EcoVadis assesses management systems rather than scenario analysis or carbon pricing, so a disclosure can map to one and not the other. Principles 1&ndash;5 and 7&ndash;9 are still crosswalked to CDP and EcoVadis at principle level only, on the ESG ratings tab.</p>
             <p><strong className="text-white">How to use it:</strong> switch between Reporting frameworks and ESG ratings, pick the one framework you're reporting to for a focused crosswalk, expand any row for the exact reference (e.g. GRI 305, IFRS S2, ESRS E1), and export to CSV or Word.</p>
             <p className="text-white/55">Indicative, not a certified equivalence, confirm the exact clause against each framework&apos;s current version before a filing.</p>
           </InfoPopover>

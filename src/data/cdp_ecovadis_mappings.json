@@ -1,0 +1,178 @@
+{
+  "_meta": {
+    "title": "BRSR ↔ CDP / EcoVadis indicative crosswalk",
+    "frameworks": {
+      "cdp": "CDP corporate questionnaire (integrated climate / water / forests / biodiversity / plastics structure, 2024 onward)",
+      "ecovadis": "EcoVadis supplier sustainability rating — 4 themes, 21 criteria, each scored on Policies (25%), Actions (40%), Results (35%)"
+    },
+    "note": "Indicative mapping of the BRSR Principle 6 (environment) disclosures to the CDP questionnaire areas and EcoVadis criteria a consultant would reuse them for. A consultant aid, not an official SEBI / CDP / EcoVadis crosswalk. Deliberately SPARSE: a row is absent where there is no clean counterpart rather than stretched to fill the grid. The vocabulary is not invented here — every cdp_area and ecovadis_criterion below is drawn verbatim from the already-sourced principle-level sets in esg_ratings_mapping.json.",
+    "scope": "Principle 6 only. CDP is environmental-only, so it never reaches BRSR's workforce, human-rights, community or consumer principles; EcoVadis does, and extending this overlay to P1-P5 and P7-P9 is the obvious next increment.",
+    "known_gaps": "CDP has no waste module, so waste generation/diversion/disposal carry no cdp_area. CDP's Forests area has no BRSR P6 counterpart and is therefore unused here. India-specific instruments (the PAT scheme) have no CDP equivalent. EcoVadis assesses management systems rather than scenario analysis or internal carbon pricing, so those rows carry no ecovadis_criterion.",
+    "id_convention": "keyed by the framework_mappings.json brsr_id (finer-grained than brsr_data_points.json, which groups multi-part disclosures into one row)"
+  },
+  "mappings": {
+    "P6-E1": {
+      "cdp_area": "Environmental performance – Climate change",
+      "cdp_detail": "Purchased electricity is the activity data behind the Scope 2 figure CDP asks for",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Energy consumption & GHGs",
+      "ecovadis_detail": "Reported as a Results metric under the Energy & GHG criterion"
+    },
+    "P6-E2": {
+      "cdp_area": "Environmental performance – Climate change",
+      "cdp_detail": "Fuel consumption is the activity data behind Scope 1 combustion emissions",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Energy consumption & GHGs",
+      "ecovadis_detail": "Results metric; fuel mix also evidences Actions on energy transition"
+    },
+    "P6-E3": {
+      "cdp_area": "Environmental performance – Climate change",
+      "cdp_detail": "Biomass and recovered waste heat feed CDP's energy consumption breakdown",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Energy consumption & GHGs",
+      "ecovadis_detail": "Evidences Actions on energy efficiency and alternative sources"
+    },
+    "P6-E4": {
+      "cdp_area": "Environmental performance – Climate change",
+      "cdp_detail": "Total energy and intensity per unit turnover align with CDP's energy and intensity metrics",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Energy consumption & GHGs",
+      "ecovadis_detail": "Intensity normalisation is what lets EcoVadis compare across suppliers"
+    },
+    "P6-E5": {
+      "cdp_area": "Environmental performance – Climate change",
+      "cdp_detail": "Renewable share maps to CDP's low-carbon energy consumption question",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Energy consumption & GHGs",
+      "ecovadis_detail": "A headline Results indicator for the Energy & GHG criterion"
+    },
+    "P6-E6": {
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Energy consumption & GHGs",
+      "ecovadis_detail": "PAT compliance is usable as third-party evidence of an energy-management Action. No CDP counterpart: PAT is an India-specific instrument CDP does not ask about."
+    },
+    "P6-E7": {
+      "cdp_area": "Environmental performance – Water security",
+      "cdp_detail": "Withdrawal by source is a core CDP water question",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Water",
+      "ecovadis_detail": "Results metric under the Water criterion"
+    },
+    "P6-E8": {
+      "cdp_area": "Environmental performance – Water security",
+      "cdp_detail": "Consumption and intensity align with CDP's water accounting metrics",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Water",
+      "ecovadis_detail": "Results metric; intensity supports cross-supplier comparison"
+    },
+    "P6-E9": {
+      "cdp_area": "Environmental performance – Water security",
+      "cdp_detail": "Discharge by destination and treatment level maps to CDP's discharge questions",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Water",
+      "ecovadis_detail": "Discharge quality evidences Actions on effluent management"
+    },
+    "P6-E10": {
+      "cdp_area": "Environmental performance – Water security",
+      "cdp_detail": "ZLD is reportable as a water-management Action in CDP's water module",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Local & accidental pollution",
+      "ecovadis_detail": "ZLD is strong evidence of an Action preventing local water pollution"
+    },
+    "P6-E11": {
+      "cdp_area": "Environmental performance – Climate change",
+      "cdp_detail": "Gross global Scope 1 emissions, a CDP core metric",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Energy consumption & GHGs",
+      "ecovadis_detail": "Headline Results metric under Energy & GHG"
+    },
+    "P6-E12": {
+      "cdp_area": "Environmental performance – Climate change",
+      "cdp_detail": "Gross global Scope 2 emissions; CDP asks for both location- and market-based figures",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Energy consumption & GHGs",
+      "ecovadis_detail": "Headline Results metric under Energy & GHG"
+    },
+    "P6-E13": {
+      "cdp_area": "Environmental performance – Climate change",
+      "cdp_detail": "Scope 3 by relevant category, the largest part of CDP's emissions accounting",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Energy consumption & GHGs",
+      "ecovadis_detail": "Increasingly requested by EcoVadis customers running their own value-chain accounting"
+    },
+    "P6-E14": {
+      "cdp_area": "Environmental performance – Climate change",
+      "cdp_detail": "Emissions intensity, which CDP asks for alongside absolute figures",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Energy consumption & GHGs",
+      "ecovadis_detail": "Intensity is how EcoVadis normalises across supplier size"
+    },
+    "P6-E15": {
+      "cdp_area": "Business strategy",
+      "cdp_detail": "Emissions reduction targets and progress against them sit in CDP's strategy and targets questions",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Energy consumption & GHGs",
+      "ecovadis_detail": "A published, dated target is core Policy evidence; progress is Results"
+    },
+    "P6-E16": {
+      "cdp_area": "Environmental performance – Climate change",
+      "cdp_detail": "Offsets and credits are reported separately from gross emissions in CDP",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Energy consumption & GHGs",
+      "ecovadis_detail": "Treated as an Action, and never as a substitute for gross reductions"
+    },
+    "P6-E17": {
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Materials, chemicals & waste",
+      "ecovadis_detail": "Total waste by stream is the Results metric for this criterion. No cdp_area: CDP's scored modules are climate, water and forests — it has no waste module."
+    },
+    "P6-E18": {
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Materials, chemicals & waste",
+      "ecovadis_detail": "Diversion and recovery rates evidence circularity Actions. No CDP waste module."
+    },
+    "P6-E19": {
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Materials, chemicals & waste",
+      "ecovadis_detail": "Disposal routes (landfill, incineration) are the counterpart Results metric. No CDP waste module."
+    },
+    "P6-E20": {
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Local & accidental pollution",
+      "ecovadis_detail": "NOx, SOx and particulate matter are local air-quality pollutants. No cdp_area: CDP covers greenhouse gases, not local air quality."
+    },
+    "P6-E21": {
+      "cdp_area": "Identification, assessment & management of dependencies, impacts, risks & opportunities",
+      "cdp_detail": "An EIA process is reportable as the mechanism for identifying and assessing project-level environmental impacts"
+    },
+    "P6-E22": {
+      "cdp_area": "Environmental performance – Biodiversity",
+      "cdp_detail": "Operations in or adjacent to ecologically sensitive areas map to CDP's biodiversity area (disclosed, unscored)",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Biodiversity",
+      "ecovadis_detail": "Site sensitivity and mitigation are the evidence base for this criterion"
+    },
+    "P6-E23": {
+      "cdp_area": "Environmental performance – Plastics",
+      "cdp_detail": "Single-use plastic reduction maps to CDP's plastics area (disclosed, unscored)",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Materials, chemicals & waste",
+      "ecovadis_detail": "Packaging and single-use plastic reduction are Actions under this criterion"
+    },
+    "P6-E25": {
+      "cdp_area": "Identification, assessment & management of dependencies, impacts, risks & opportunities",
+      "cdp_detail": "Identified climate risks and opportunities, with financial effect, are the substance of this CDP area",
+      "ecovadis_theme": "Environment",
+      "ecovadis_criterion": "Energy consumption & GHGs",
+      "ecovadis_detail": "Supports Policy evidence of a managed, risk-aware climate approach"
+    },
+    "P6-E26": {
+      "cdp_area": "Business strategy",
+      "cdp_detail": "Climate scenario analysis is a named CDP strategy question. No ecovadis_criterion: EcoVadis assesses management systems rather than scenario analysis."
+    },
+    "P6-E27": {
+      "cdp_area": "Business strategy",
+      "cdp_detail": "Internal carbon pricing is a named CDP strategy question. No ecovadis_criterion: EcoVadis does not assess carbon pricing mechanisms."
+    }
+  }
+}

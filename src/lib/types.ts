@@ -120,6 +120,17 @@ export interface FrameworkMapping {
   // turnover/headcount thresholds the intake doesn't collect.
   esrs_standard?: string;
   esrs_detail?: string;
+  // CDP questionnaire area and EcoVadis criterion this disclosure feeds; from
+  // the indicative cdp_ecovadis_mappings.json overlay. P6 only so far, and
+  // sparse on both sides independently: CDP has no waste module, EcoVadis does
+  // not assess scenario analysis or carbon pricing, so a row can carry one and
+  // not the other. This is what makes "collect once, report to several
+  // frameworks" concrete rather than a claim.
+  cdp_area?: string;
+  cdp_detail?: string;
+  ecovadis_theme?: string;
+  ecovadis_criterion?: string;
+  ecovadis_detail?: string;
   notes: string;
 }
 

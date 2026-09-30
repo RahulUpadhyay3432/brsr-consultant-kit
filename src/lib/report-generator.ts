@@ -14,6 +14,7 @@ import complianceData from "@/data/compliance_overlaps.json";
 import frameworkData from "@/data/framework_mappings.json";
 import tnfdData from "@/data/tnfd_mappings.json";
 import esrsData from "@/data/esrs_mappings.json";
+import cdpEcoData from "@/data/cdp_ecovadis_mappings.json";
 import industryData from "@/data/industry_material_topics.json";
 
 // Normalize compliance overlaps (JSON has inconsistent nesting)
@@ -419,6 +420,10 @@ export function generateFrameworkMappings(_formData?: IntakeFormData): Framework
   const mappings = (frameworkData as any).mappings as FrameworkMapping[];
   const tnfd = (tnfdData as any).mappings as Record<string, { pillar: string; detail: string }>;
   const esrs = (esrsData as any).mappings as Record<string, { standard: string; detail: string }>;
+  const cdpEco = (cdpEcoData as any).mappings as Record<string, {
+    cdp_area?: string; cdp_detail?: string;
+    ecovadis_theme?: string; ecovadis_criterion?: string; ecovadis_detail?: string;
+  }>;
 
   // Return all mappings, the UI will handle filtering. Attach the indicative
   // TNFD crosswalk where the disclosure is nature-related, and the indicative
@@ -437,6 +442,11 @@ export function generateFrameworkMappings(_formData?: IntakeFormData): Framework
     tnfd_detail: tnfd[m.brsr_id]?.detail,
     esrs_standard: esrs[m.brsr_id]?.standard,
     esrs_detail: esrs[m.brsr_id]?.detail,
+    cdp_area: cdpEco[m.brsr_id]?.cdp_area,
+    cdp_detail: cdpEco[m.brsr_id]?.cdp_detail,
+    ecovadis_theme: cdpEco[m.brsr_id]?.ecovadis_theme,
+    ecovadis_criterion: cdpEco[m.brsr_id]?.ecovadis_criterion,
+    ecovadis_detail: cdpEco[m.brsr_id]?.ecovadis_detail,
     notes: m.notes,
   }));
 }

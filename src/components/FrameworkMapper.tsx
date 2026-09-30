@@ -19,7 +19,7 @@ const has = isMapped;
 // buried filter: picking one renders a focused two-column crosswalk instead of a
 // row of five competing badges. "All" stays the browse/overview mode.
 // Full class strings only, Tailwind's JIT can't see interpolated ones.
-type FwKey = "all" | "gri" | "tcfd" | "ifrs" | "tnfd" | "esrs";
+type FwKey = "all" | "gri" | "tcfd" | "ifrs" | "tnfd" | "esrs" | "cdp" | "ecovadis";
 
 const FRAMEWORKS: {
   key: Exclude<FwKey, "all">;
@@ -47,6 +47,16 @@ const FRAMEWORKS: {
   { key: "esrs", label: "ESRS (CSRD)", short: "ESRS",
     chip: "bg-indigo-50 text-indigo-700 border-indigo-100", label_cls: "text-indigo-600",
     ref: (m) => (has(m.esrs_standard) ? m.esrs_standard : undefined), detail: (m) => m.esrs_detail },
+  // CDP and EcoVadis are assessments rather than reporting standards: the same
+  // P6 figure a client collects for BRSR is what these two ask for. P6 only so
+  // far, so their coverage counts read lower than the reporting frameworks'.
+  { key: "cdp",  label: "CDP",         short: "CDP",
+    chip: "bg-sky-50 text-sky-700 border-sky-100",          label_cls: "text-sky-600",
+    ref: (m) => (has(m.cdp_area) ? m.cdp_area : undefined), detail: (m) => m.cdp_detail },
+  { key: "ecovadis", label: "EcoVadis", short: "EcoVadis",
+    chip: "bg-amber-50 text-amber-700 border-amber-100",    label_cls: "text-amber-600",
+    ref: (m) => (has(m.ecovadis_criterion) ? m.ecovadis_criterion : undefined),
+    detail: (m) => m.ecovadis_detail },
 ];
 
 export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
@@ -69,7 +79,7 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
     return mappings.filter((m) => {
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
-        const searchable = `${m.brsr_id} ${m.brsr_label} ${m.gri_standard} ${m.gri_label} ${m.tcfd_detail} ${m.ifrs_reference} ${m.tnfd_detail ?? ""} ${m.esrs_standard ?? ""} ${m.esrs_detail ?? ""} ${m.notes}`.toLowerCase();
+        const searchable = `${m.brsr_id} ${m.brsr_label} ${m.gri_standard} ${m.gri_label} ${m.tcfd_detail} ${m.ifrs_reference} ${m.tnfd_detail ?? ""} ${m.esrs_standard ?? ""} ${m.esrs_detail ?? ""} ${m.cdp_area ?? ""} ${m.cdp_detail ?? ""} ${m.ecovadis_criterion ?? ""} ${m.ecovadis_detail ?? ""} ${m.notes}`.toLowerCase();
         if (!searchable.includes(q)) return false;
       }
       if (filterPillar !== "all" && m.tcfd_pillar !== filterPillar) return false;
