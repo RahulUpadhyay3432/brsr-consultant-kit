@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { findOrgByPasscode, findOrgBySlug } from "./db";
@@ -41,7 +42,12 @@ const AUTH_COOKIE = "bk_auth";
 // by docs/migrations/001-firm-tier-orgs.sql.
 const DEFAULT_ORG_SLUG = "saaksh";
 
-async function resolve(): Promise<{ org: Org } | { error: OrgError }> {
+// Memoised for the lifetime of one request. The Collect layout and the page it
+// wraps both need the firm, and so does every server action, so without this a
+// single render costs two or more Supabase round trips just to resolve who is
+// signed in. React's cache() dedupes per request, not across requests, so a
+// passcode change still takes effect on the next one.
+const resolve = cache(async (): Promise<{ org: Org } | { error: OrgError }> => {
   const passcode = cookies().get(AUTH_COOKIE)?.value;
   if (!passcode) return { error: "anonymous" };
 
@@ -66,7 +72,7 @@ async function resolve(): Promise<{ org: Org } | { error: OrgError }> {
   }
 
   return { error: "unknown-passcode" };
-}
+});
 
 /** The firm for this request, or null when it cannot be resolved. */
 export async function currentOrg(): Promise<Org | null> {
