@@ -18,7 +18,10 @@ Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUp
 
 ### Current: the firm tier, built for the SAGE Sustainability call (Mon 2026-10-05)
 
-**Full context, strategy and the ask ladder: `docs/sage-call-2026-10-05.md`. Read it first.**
+**Start here, in order:** `docs/session-2026-09-30-handoff.md` (repo state, what shipped, what is
+blocking, the traps) → `docs/sage-call-2026-10-05.md` (the SAGE call this work serves) →
+`docs/product-dossier-2026-09-30.md` (evidence-graded research that should drive the backlog, and
+the regulatory wordings to enforce).
 
 Collect was single-tenant in a way that mattered: `listCampaigns()` ran
 `select * from brsr_requests` with **no WHERE clause** and one shared `CONSULTANT_PASSCODE` let
@@ -199,7 +202,10 @@ scanned-bill OCR live once Gemini billing is topped up · run the `brsr_jobs` CR
 switch the jobs scraper on · optional `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections
 jsonb;` for structured JDs on scraped roles.
 
-**Key docs:** `docs/sage-call-2026-10-05.md` (the SAGE call: context, product reality, ask ladder) ·
+**Key docs:** `docs/session-2026-09-30-handoff.md` (latest session handoff — read first) ·
+`docs/product-dossier-2026-09-30.md` (research, P0-P3 build order, regulatory corrections,
+competitor pricing, the "stop claiming uniqueness" list) ·
+`docs/sage-call-2026-10-05.md` (the SAGE call: context, product reality, ask ladder) ·
 `docs/migrations/` (hand-run SQL, in order) · `docs/PRODUCT.md` (product principles + IA + ship-gate) · `docs/DECISIONS.md` (the
 *why* behind each feature, from consultant feedback — read before changing things) ·
 `docs/HISTORY.md` (everything shipped, newest first) · `docs/distribution-playbook.md` (the
@@ -258,7 +264,7 @@ written to degrade gracefully before a migration lands, so a missing table or co
 
 ## The Report Outputs
 
-After the intake form is submitted, `ReportView` shows a header (client identity + gap-analysis stats) and **two tabs**, with two more outputs as accordions below them:
+After the intake form is submitted, `ReportView` shows a header (client identity + gap-analysis stats) and a **left rail of seven views** — `overview`, `checklist`, `materiality`, `alignment`, `beyond-brsr`, `templates`, `sources` (see the `activeTab ===` switch in `ReportView.tsx`). ⚠️ **Corrected 2026-09-30:** this section used to say "two tabs, with two more outputs as accordions", which described a much earlier shape. The four numbered items below are still accurate about the *content* of the checklist, materiality, framework-mapping and ratings surfaces; they are just no longer laid out as 2 tabs + 2 accordions, and `overview`, `beyond-brsr` (`RegulatoryReadiness`), `templates` (`TemplatesPanel`) and `sources` (`SourcesPanel`) are undocumented here:
 
 1. **Action Plan (BRSR Data Collection Checklist)** — Tab 1. Covers the **full BRSR**: a **Sections A & B card** at the top (collapsible "Section A · General disclosures" + "Section B · Management & process" — the ~23 entity/policy disclosures from `brsr_data_points.json`, rendered verbatim with SEBI page citations and a "where to collect" hint; these are *not* gap-analysed and are **excluded from the readiness gauge / status counts**, and hidden when a gap filter is active — but they **do** carry a per-row **"mark collected"** toggle and, for **Section B policies**, the same **"Last year"** detection as Section C (policies recur year-to-year, so they're the strongest auto-detect case; `SB-*` signals live in `report-extractor.ts`). The card header shows collected + last-year counts, and the **Overview** surfaces an "General disclosures · A & B" progress card (collected / detected — read from the persisted checklist state, framed as collection progress, **not** folded into the Section-C readiness gauge)), then the **Section C** principle-wise gap analysis (P1–P9, Essential + Leadership), grouped by principle in collapsible sections. The UI surfaces **108 Section-C fields**. Each Section-C field has a status:
    - `already_tracked` → **"Ready to pull"** (emerald) — data exists in an existing filing
@@ -330,7 +336,7 @@ The killer feature from Priya's feedback: collecting BRSR data from a client's t
 - **Recipient** opens `/submit/[token]` (no login), fills values → **`submitDataAction`** writes them, sets contact status, and fires **`sendSubmissionAlert`** to `CONSULTANT_NOTIFY_EMAIL`.
 - **Reminders:** `/api/cron/reminders` (GET, `CRON_SECRET`-gated; `vercel.json` runs it daily) iterates campaigns; `cadence.ts → dueReminder()` decides (3-day interval, max 3, "final" near deadline); sends a reminder variant and `markReminded()`.
 - **Emissions:** `emissions.ts` — `campaignEmissions()` (totals via the existing cited `calcGhg`) + `emissionInputs()` (per-input **attribution**: value → factor + source → who submitted) + `GHG_METHODOLOGY` (the statement surfaced under every figure). Only Scope 1 (diesel) + Scope 2 (grid electricity) are wired so far (fields `P6-E1-diesel`, `P6-E1-elec`).
-- **Draft:** `draft.ts → buildDraft()` + `/requests/[id]/draft` — a **deterministic, printable** draft of BRSR responses from collected data (grouped by section + the emissions block with basis + a "nothing is invented" disclaimer). No AI narrative (that would risk fabrication; it'd be a clearly-labelled opt-in later).
+- **Draft:** `draft.ts → buildDraft()` + `/requests/[id]/draft` — a **deterministic, printable** draft of BRSR responses from collected data (grouped by section + the emissions block with basis + a "nothing is invented" disclaimer). ⚠️ **Corrected 2026-09-30: AI narrative drafting DOES exist** — `narrative.ts`, `NarrativePanel.tsx` and `generateNarrative` (3 call sites in `actions.ts`), persisted to `brsr_requests.narrative` jsonb. This file previously said "No AI narrative", which was the stance before it shipped. The deterministic figures and the AI prose are separate: every number still comes from a submitted value or a cited factor, and the prose is per-principle qualitative text layered on top. Don't describe Collect as narrative-free.
 - **Shell:** `/requests/*` are wrapped in `src/app/requests/layout.tsx` (+ `components/datarequest/CollectNav.tsx`) so Collect uses the same sidebar/chrome as the report — one product. `/submit` and `/login` keep standalone layouts.
 
 **Invariants:** drafts/calcs never fabricate (every figure is a submitted value or computed from one via cited factors); email is **best-effort** (never throws — Vercel FS is read-only, Resend rejects unverified recipients); the request-field list is the **full BRSR format** built by `brsrRequestFields()` in `fields.ts` (flattened from `brsr_data_points.json` — Section A + B + C, 133 fields, each with its coordinates), with the two `P6-E1-elec` / `P6-E1-diesel` activity inputs preserved for the GHG calc. Static display labels (principle short names, section labels) live in `brsr-meta.ts` so the client picker imports them without pulling in the KB JSON.
