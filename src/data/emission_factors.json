@@ -6,8 +6,9 @@
     "note": "Factors use IPCC AR5 100-yr GWPs (CH4=28, N2O=265) aligned with GHG Protocol. Verify against latest CEA publication and BEE guidance each filing year. Annual upkeep of the grid factor is the consultant's responsibility."
   },
   "scope2_grid": {
-    "factor_kg_co2_per_kwh": 0.710,
+    "factor_kg_co2_per_kwh": 0.71,
     "factor_display": "0.710 kgCO₂/kWh",
+    "version": "21.0",
     "fy": "2024-25",
     "source": "Central Electricity Authority, CO2 Baseline Database for the Indian Power Sector, Version 21.0 (November 2025), FY 2024-25, National Grid weighted-average emission factor (incl. renewables, adjusted for cross-border transfers). This is the grid-average factor CEA itself applies for electricity-consumption footprinting (User Guide §6.2); it is the correct basis for corporate Scope 2, not the CDM combined margin.",
     "source_short": "CEA Version 21.0, FY 2024-25"
@@ -29,7 +30,7 @@
       "unit": "litres",
       "co2e_per_unit": 2.31,
       "co2e_display": "2.31 kgCO₂e/litre",
-      "ncv_gj_per_unit": 0.03330,
+      "ncv_gj_per_unit": 0.0333,
       "ncv_display": "33.3 MJ/litre",
       "source": "IPCC 2006 Vol.2 Table 1.4, CO₂: 69.3 tCO₂/TJ; NCV Table 1.2, 44.3 MJ/kg × 0.752 kg/L. GHG Protocol."
     },
@@ -39,7 +40,7 @@
       "unit": "m³",
       "co2e_per_unit": 1.96,
       "co2e_display": "1.96 kgCO₂e/m³",
-      "ncv_gj_per_unit": 0.03430,
+      "ncv_gj_per_unit": 0.0343,
       "ncv_display": "34.3 MJ/m³",
       "source": "IPCC 2006 Vol.2 Table 1.4, CO₂: 56.1 tCO₂/TJ; NCV Table 1.2, 34.3 MJ/m³ (standard conditions). GHG Protocol."
     },
@@ -49,7 +50,7 @@
       "unit": "kg",
       "co2e_per_unit": 3.02,
       "co2e_display": "3.02 kgCO₂e/kg",
-      "ncv_gj_per_unit": 0.04730,
+      "ncv_gj_per_unit": 0.0473,
       "ncv_display": "47.3 MJ/kg",
       "source": "IPCC 2006 Vol.2 Table 1.4, CO₂: 63.1 tCO₂/TJ; NCV Table 1.2, 47.3 MJ/kg."
     },
@@ -59,7 +60,7 @@
       "unit": "kg",
       "co2e_per_unit": 2.42,
       "co2e_display": "2.42 kgCO₂e/kg",
-      "ncv_gj_per_unit": 0.02620,
+      "ncv_gj_per_unit": 0.0262,
       "ncv_display": "26.2 MJ/kg",
       "source": "IPCC 2006 Vol.2 Table 1.4, CO₂: 94.6 tCO₂/TJ; NCV: CEA/BEE India-average bituminous coal (26.2 MJ/kg)."
     },
@@ -75,10 +76,45 @@
     }
   ],
   "scope1_fugitive": [
-    { "id": "r134a", "label": "R-134a (HFC-134a)",       "unit": "kg", "co2e_per_unit": 1300,  "co2e_display": "GWP 1,300 (kgCO₂e/kg)",  "source": "IPCC Fifth Assessment Report (AR5), 100-year GWP: HFC-134a = 1,300." },
-    { "id": "r410a", "label": "R-410A (AC refrigerant)",  "unit": "kg", "co2e_per_unit": 1924,  "co2e_display": "GWP 1,924 (kgCO₂e/kg)",  "source": "IPCC AR5 100-year GWP, mass-weighted blend of R-32 (677) and R-125 (3,170), 50/50 = 1,924." },
-    { "id": "r32",   "label": "R-32 (HFC-32)",            "unit": "kg", "co2e_per_unit": 677,   "co2e_display": "GWP 677 (kgCO₂e/kg)",    "source": "IPCC AR5 100-year GWP: HFC-32 = 677." },
-    { "id": "r404a", "label": "R-404A (refrigeration)",   "unit": "kg", "co2e_per_unit": 3943,  "co2e_display": "GWP 3,943 (kgCO₂e/kg)",  "source": "IPCC AR5 100-year GWP, blend of R-125/R-143a/R-134a (44/52/4 by mass) = 3,943." },
-    { "id": "sf6",   "label": "SF₆ (switchgear)",         "unit": "kg", "co2e_per_unit": 23500, "co2e_display": "GWP 23,500 (kgCO₂e/kg)", "source": "IPCC AR5 100-year GWP: SF₆ = 23,500." }
+    {
+      "id": "r134a",
+      "label": "R-134a (HFC-134a)",
+      "unit": "kg",
+      "co2e_per_unit": 1300,
+      "co2e_display": "GWP 1,300 (kgCO₂e/kg)",
+      "source": "IPCC Fifth Assessment Report (AR5), 100-year GWP: HFC-134a = 1,300."
+    },
+    {
+      "id": "r410a",
+      "label": "R-410A (AC refrigerant)",
+      "unit": "kg",
+      "co2e_per_unit": 1924,
+      "co2e_display": "GWP 1,924 (kgCO₂e/kg)",
+      "source": "IPCC AR5 100-year GWP, mass-weighted blend of R-32 (677) and R-125 (3,170), 50/50 = 1,924."
+    },
+    {
+      "id": "r32",
+      "label": "R-32 (HFC-32)",
+      "unit": "kg",
+      "co2e_per_unit": 677,
+      "co2e_display": "GWP 677 (kgCO₂e/kg)",
+      "source": "IPCC AR5 100-year GWP: HFC-32 = 677."
+    },
+    {
+      "id": "r404a",
+      "label": "R-404A (refrigeration)",
+      "unit": "kg",
+      "co2e_per_unit": 3943,
+      "co2e_display": "GWP 3,943 (kgCO₂e/kg)",
+      "source": "IPCC AR5 100-year GWP, blend of R-125/R-143a/R-134a (44/52/4 by mass) = 3,943."
+    },
+    {
+      "id": "sf6",
+      "label": "SF₆ (switchgear)",
+      "unit": "kg",
+      "co2e_per_unit": 23500,
+      "co2e_display": "GWP 23,500 (kgCO₂e/kg)",
+      "source": "IPCC AR5 100-year GWP: SF₆ = 23,500."
+    }
   ]
 }

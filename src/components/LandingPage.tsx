@@ -10,6 +10,7 @@ import { TierCards } from "@/components/PricingTable";
 import { SubscribeForm } from "@/components/SubscribeForm";
 import { MobileNav } from "@/components/MobileNav";
 import { useScrollReveal } from "@/lib/useScrollReveal";
+import FACTORS from "@/data/emission_factors.json";
 import { GlowOrb, Contours } from "@/components/brand/Decor";
 import { computeTimeline, defaultDeadline, timelineCsvRows } from "@/lib/engagement-timeline";
 import { downloadCsv } from "@/lib/export";
@@ -329,11 +330,21 @@ function AlignmentPanel() {
 }
 
 /* ── GHG calculator panel ──────────────────────────────────────────────────── */
+// Factors and their citation come from emission_factors.json, never from
+// literals here. This panel previously computed Scope 2 with 0.716 and labelled
+// it "CEA v18 (FY24)", while the product's own cited factor was 0.710 from CEA
+// Version 21.0, FY 2024-25 — a marketing calculator disagreeing with the
+// product is the one mistake a tool selling cited data cannot make.
+const GRID = FACTORS.scope2_grid;
+const DIESEL = FACTORS.scope1_fuels.find((f: { label: string }) => f.label.includes("Diesel"))!;
+
 function GhgCalculatorPanel() {
   const [diesel, setDiesel] = useState("12000");
   const [elec, setElec] = useState("84000");
   const d = parseFloat(diesel) || 0, e = parseFloat(elec) || 0;
-  const s1 = (d * 2.68) / 1000, s2 = (e * 0.716) / 1000, total = s1 + s2;
+  const s1 = (d * DIESEL.co2e_per_unit) / 1000;
+  const s2 = (e * GRID.factor_kg_co2_per_kwh) / 1000;
+  const total = s1 + s2;
   const fmt = (n: number) => n.toLocaleString("en-IN", { maximumFractionDigits: 1 });
   return (
     <PanelCard className="p-5">
@@ -342,10 +353,14 @@ function GhgCalculatorPanel() {
         <span className="font-mono text-[10px] uppercase tracking-wide text-[#10A572]">live</span>
       </div>
       <div className="mt-3 space-y-3">
-        <CalcField label="Diesel consumed (litres / year)" value={diesel} onChange={setDiesel} factor="× 2.68 kg/L" />
-        <CalcField label="Grid electricity (kWh / year)" value={elec} onChange={setElec} factor="× 0.716 t/MWh" />
+        <CalcField label="Diesel consumed (litres / year)" value={diesel} onChange={setDiesel} factor={`× ${DIESEL.co2e_per_unit} kg/L`} />
+        <CalcField label="Grid electricity (kWh / year)" value={elec} onChange={setElec} factor={`× ${GRID.factor_kg_co2_per_kwh} t/MWh`} />
       </div>
-      <p className="font-mono text-[10px] text-ink-faint mt-2.5">Factors · IPCC 2006 · CEA v18 (FY24)</p>
+      {/* The factor's own vintage, not a generic "latest" badge: which CEA
+          version, and the reporting year it applies to. */}
+      <p className="font-mono text-[10px] text-ink-faint mt-2.5">
+        Factors · IPCC 2006 · CEA v{GRID.version} · applies to FY {GRID.fy}
+      </p>
       <div className="mt-3 rounded-xl bg-forest text-white p-4">
         <div className="flex items-center justify-between text-[12.5px] text-[#BFD3CA]"><span>Scope 1 (fuel)</span><span className="font-mono text-white">{fmt(s1)} t</span></div>
         <div className="flex items-center justify-between text-[12.5px] text-[#BFD3CA] mt-1"><span>Scope 2 (electricity)</span><span className="font-mono text-white">{fmt(s2)} t</span></div>
