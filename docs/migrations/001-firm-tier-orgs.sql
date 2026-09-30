@@ -1,49 +1,60 @@
 -- 001 · Firm tier: per-firm isolation for Collect
 --
--- Run this in the Supabase SQL editor (PostgREST can't do DDL).
--- Safe to run on a live database: every statement is additive and idempotent.
+-- Additive and idempotent; safe to re-run. Verified against the live schema
+-- before first application (brsr_requests.id is uuid default gen_random_uuid(),
+-- pgcrypto present, no org_id column, no brsr_orgs table).
 --
--- Before this migration Collect is single-tenant: one CONSULTANT_PASSCODE, and
--- listCampaigns() returned every campaign to whoever signed in. After it, each
--- firm gets a row in brsr_orgs with its own passcode, and every campaign query
--- is filtered by org_id. Code degrades gracefully either side of this, so
--- running it late breaks nothing.
+-- Before this, Collect was single-tenant in a way that mattered: listCampaigns()
+-- ran `select * from brsr_requests` with no WHERE clause and one shared
+-- CONSULTANT_PASSCODE let in everyone, so any consultant who signed in saw every
+-- other consultant's clients. After it, each firm owns its campaigns and every
+-- campaign query is filtered by org_id.
 
 -- ─── 1. The firms ───────────────────────────────────────────────────────────
+-- passcode is NULLABLE on purpose. The default firm below signs in with the
+-- original CONSULTANT_PASSCODE, which stays in the environment: a live secret
+-- should not be copied into a table. org.ts resolves that firm by slug instead.
 create table if not exists brsr_orgs (
   id         uuid primary key default gen_random_uuid(),
   slug       text not null unique,          -- url-safe key, e.g. 'sage'
   name       text not null,                 -- display name, e.g. 'SAGE Sustainability'
-  passcode   text not null unique,          -- this firm's sign-in passcode
+  passcode   text unique,                   -- this firm's own passcode, or null
   created_at timestamptz not null default now()
 );
 
 alter table brsr_orgs enable row level security;
--- No policies: only the server's service_role key touches this table.
+-- No policies, matching every other brsr_ table: only the server's service_role
+-- key touches this. RLS on with no policies means the anon key can read nothing.
 
 -- ─── 2. Scope campaigns to a firm ───────────────────────────────────────────
+-- Note: brsr_requests also has an older, unused `consultant_id` column (0 of 9
+-- rows populated, referenced nowhere in the app). Left untouched — it is the
+-- natural home for per-person attribution when seats land, which is a different
+-- thing from firm isolation.
 alter table brsr_requests
   add column if not exists org_id uuid references brsr_orgs(id) on delete cascade;
 
 create index if not exists brsr_requests_org_id_idx on brsr_requests (org_id);
 
--- ─── 3. Seed ────────────────────────────────────────────────────────────────
--- A home for the campaigns that already exist. Its passcode is the one you are
--- using today, so your current sign-in keeps working unchanged.
--- Replace 'CHANGE_ME' with the current value of CONSULTANT_PASSCODE.
+-- ─── 3. The default firm, and adopting what already exists ──────────────────
 insert into brsr_orgs (slug, name, passcode)
-values ('saaksh', 'Saaksh', 'CHANGE_ME')
+values ('saaksh', 'Saaksh', null)
 on conflict (slug) do nothing;
 
--- Adopt every pre-existing campaign into that firm.
 update brsr_requests
    set org_id = (select id from brsr_orgs where slug = 'saaksh')
  where org_id is null;
 
--- ─── 4. Add a firm ──────────────────────────────────────────────────────────
--- One row per firm. Give each its own passcode; they see only their own clients.
---   insert into brsr_orgs (slug, name, passcode)
---   values ('sage', 'SAGE Sustainability', 'a-long-random-passcode');
+-- ─── 4. Adding a firm ───────────────────────────────────────────────────────
+-- Two steps, and BOTH are needed:
+--   a) the row here, which carries the org id that isolates its data:
+--        insert into brsr_orgs (slug, name, passcode)
+--        values ('sage', 'SAGE Sustainability', '<long-random-passcode>');
+--   b) a matching line in the CONSULTANT_PASSCODES env var, which is what
+--      middleware checks in the edge runtime without a database round trip:
+--        sage|SAGE Sustainability|<the same long-random-passcode>
+-- With only (b), requireOrg() fails closed and /login says the row is missing,
+-- rather than falling through and showing that firm everyone else's clients.
 
 -- ─── Rollback ───────────────────────────────────────────────────────────────
 --   alter table brsr_requests drop column if exists org_id;

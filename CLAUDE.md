@@ -14,7 +14,40 @@ The "100% on-device / no data stored" framing applies to **(1) only**. Collect d
 
 Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUpadhyay3432/brsr-consultant-kit
 
-## Project Status — last updated 2026-09-09
+## Project Status — last updated 2026-09-30
+
+### Current: the firm tier, built for the SAGE Sustainability call (Mon 2026-10-05)
+
+**Full context, strategy and the ask ladder: `docs/sage-call-2026-10-05.md`. Read it first.**
+
+Collect was single-tenant in a way that mattered: `listCampaigns()` ran
+`select * from brsr_requests` with **no WHERE clause** and one shared `CONSULTANT_PASSCODE` let
+in everyone, so any consultant who signed in saw **every other consultant's** clients, contacts,
+submitted values and evidence. That ruled out selling to a firm — and a consultancy asks about it
+first. Now a firm (org) owns its campaigns and every campaign-level query filters by `org_id`.
+
+- `CONSULTANT_PASSCODES` (env, `lib/datarequest/passcodes.ts`) is the edge fast path middleware
+  checks: still a real comparison, still fails closed, just against every firm's passcode.
+- `brsr_orgs` carries the `org_id` the queries filter on — that is what isolates the data.
+- **Adding a firm needs BOTH** an env line and a table row; env-only fails closed
+  (`/login?error=setup`) instead of showing that firm everyone else's clients.
+- The default firm (`slug='saaksh'`) has **no passcode in the DB** — `CONSULTANT_PASSCODE` stays
+  in the environment and resolves it **by slug**, so a live secret never lands in a table.
+- `requireConsultant()` (already in all 17 sensitive server actions) now returns the firm.
+
+**Not built, and don't claim them:** per-person **seats** inside a firm (SAGE's 17 people would
+share one passcode and all see all SAGE clients) and **field-level BRSR → CDP/EcoVadis/GRESB**
+(the crosswalk is GRI/TCFD/IFRS; CDP+EcoVadis are principle-level only; GRESB is blog copy only).
+**Known gap:** contact/item-level writes are still only passcode-gated — row-level hardening next.
+
+**Supabase MCP is connected**, so migrations can be applied directly. `brsr_` tables live in
+project **`girogiauxecthlxxspyi`** ("neo-san-signal-intelligence"), a shared DB holding several
+other apps — always scope changes to `brsr_`-prefixed tables. Migrations now live in
+`docs/migrations/`, run in order; 001 and 002 were applied 2026-09-30.
+⚠️ `list_tables` row counts are stale estimates (reported 0 campaigns when there were 9) —
+`select count(*)` when the number matters.
+
+### Previous status — 2026-09-09
 
 ### ✅ DEPLOY STATE: pushed and live. origin/master == local == saaksh.co
 
@@ -149,7 +182,8 @@ scanned-bill OCR live once Gemini billing is topped up · run the `brsr_jobs` CR
 switch the jobs scraper on · optional `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections
 jsonb;` for structured JDs on scraped roles.
 
-**Key docs:** `docs/PRODUCT.md` (product principles + IA + ship-gate) · `docs/DECISIONS.md` (the
+**Key docs:** `docs/sage-call-2026-10-05.md` (the SAGE call: context, product reality, ask ladder) ·
+`docs/migrations/` (hand-run SQL, in order) · `docs/PRODUCT.md` (product principles + IA + ship-gate) · `docs/DECISIONS.md` (the
 *why* behind each feature, from consultant feedback — read before changing things) ·
 `docs/HISTORY.md` (everything shipped, newest first) · `docs/distribution-playbook.md` (the
 current GTM plan).
@@ -163,11 +197,21 @@ current GTM plan).
 
 Carried forward from earlier sessions; each is still open unless you've since done it.
 
-- **Run the `brsr_jobs` CREATE TABLE SQL** in the Supabase SQL editor — the jobs scraper stays dark
-  until then (all its GitHub repo secrets are already set). Optional follow-up for structured JDs on
-  scraped roles: `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections jsonb;`
-- **`ALTER TABLE brsr_contacts ADD COLUMN received_at timestamptz;`** — until then the owner card
-  shows the sent date but never a received date.
+- ~~Run the `brsr_jobs` CREATE TABLE SQL~~ — **done.** Verified 2026-09-30: the table exists and
+  holds 7 rows. Still open, optional, for structured JDs on scraped roles:
+  `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections jsonb;`
+- ~~`ALTER TABLE brsr_contacts ADD COLUMN received_at timestamptz;`~~ — **done 2026-09-30**
+  (`docs/migrations/002-contacts-received-at.sql`).
+- **Firm tier follow-up:** to add a firm, insert its `brsr_orgs` row **and** add a matching
+  `slug|Name|passcode` line to `CONSULTANT_PASSCODES` (`.env.local` + Vercel production). Both are
+  required — see `docs/migrations/001-firm-tier-orgs.sql`.
+- **Security, unrelated to Saaksh but in the same database:** Supabase's advisor flags **11 tables
+  with RLS disabled** (`startups`, `investors`, `funding_rounds`, `round_investors`,
+  `community_signals`, `user_tech_stack`, `ingestion_log`, `ecosystem_signals`,
+  `ecosystem_insights`, `vp_maintenance_log`, `seller_pulse_state`) — fully readable and writable
+  by anyone with the anon key. No `brsr_` table is affected. Also: view `fbx_feed` is
+  SECURITY DEFINER, and 9 SECURITY DEFINER functions are callable by `anon`. Deliberately not
+  auto-fixed: enabling RLS without policies would break those apps.
 - **Mark the 4 GA4 key events** (`report_generated`, `pro_access_requested`, `newsletter_subscribed`,
   `gig_submitted`) in GA4 Admin — events have been firing since 2026-09-04.
 - **Paste the real WhatsApp invite** into `COMMUNITY_WHATSAPP_URL` (`src/lib/links.ts`) — the join

@@ -1,7 +1,7 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { findOrgByPasscode } from "./db";
+import { findOrgByPasscode, findOrgBySlug } from "./db";
 import { orgFromEnvPasscode } from "./passcodes";
 
 // Which firm the signed-in consultant belongs to.
@@ -36,6 +36,11 @@ export type OrgError = "anonymous" | "unknown-passcode" | "missing-org-row";
 // Cookie name is shared with auth.ts and middleware.ts — keep all three in sync.
 const AUTH_COOKIE = "bk_auth";
 
+// The firm that owns the campaigns created before the firm tier existed, and
+// the one the original CONSULTANT_PASSCODE signs in to. Matches the slug seeded
+// by docs/migrations/001-firm-tier-orgs.sql.
+const DEFAULT_ORG_SLUG = "saaksh";
+
 async function resolve(): Promise<{ org: Org } | { error: OrgError }> {
   const passcode = cookies().get(AUTH_COOKIE)?.value;
   if (!passcode) return { error: "anonymous" };
@@ -49,11 +54,15 @@ async function resolve(): Promise<{ org: Org } | { error: OrgError }> {
   //    firm every other firm's clients, so refuse instead.
   if (orgFromEnvPasscode(passcode)) return { error: "missing-org-row" };
 
-  // 3. The original single passcode, with no firms set up at all. Unchanged
-  //    single-tenant behaviour: unscoped, because there is nothing to separate.
+  // 3. The original single passcode. It has no row of its own — the secret
+  //    stays in the environment — so resolve the default firm by slug and scope
+  //    to it. Before the migration there is no such row, and we fall back to
+  //    unscoped, which is exactly the old single-tenant behaviour.
   const single = process.env.CONSULTANT_PASSCODE;
   if (single && passcode === single) {
-    return { org: { id: null, slug: "saaksh", name: "My practice", legacy: true } };
+    const home = await findOrgBySlug(DEFAULT_ORG_SLUG);
+    if (home) return { org: { ...home, legacy: false } };
+    return { org: { id: null, slug: DEFAULT_ORG_SLUG, name: "My practice", legacy: true } };
   }
 
   return { error: "unknown-passcode" };

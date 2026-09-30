@@ -115,6 +115,23 @@ export async function findOrgByPasscode(passcode: string): Promise<OrgRecord | n
   }
 }
 
+// The firm with this slug, or null when absent / pre-migration. Used for the
+// default firm, which has no passcode of its own in the database: the original
+// CONSULTANT_PASSCODE stays in the environment and resolves here by slug, so a
+// live secret never has to be copied into a table.
+export async function findOrgBySlug(slug: string): Promise<OrgRecord | null> {
+  if (!slug) return null;
+  try {
+    const res = await rest(
+      `brsr_orgs?slug=eq.${encodeURIComponent(slug)}&select=id,slug,name&limit=1`
+    );
+    const rows = (await res.json()) as OrgRow[];
+    return rows[0] ?? null;
+  } catch {
+    return null;
+  }
+}
+
 // Set once we learn brsr_requests has no org_id column, so we only pay for the
 // failed scoped request once per process rather than on every query.
 let orgColumnMissing = false;
