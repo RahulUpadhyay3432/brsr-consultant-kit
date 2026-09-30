@@ -71,6 +71,14 @@ Deploys ship the WORKING TREE, so run `git status` before deploying. The deploy 
 machine is `npx next build` → `git push origin master` →
 `$env:NODE_TLS_REJECT_UNAUTHORIZED="0"; vercel --prod --yes`.
 
+⚠️ **Pushing to `master` does NOT deploy.** The Vercel project has **no Git repository connected**
+(`get_project` returns no `link`, there are no preview deployments, and every production deployment
+was created by the CLI). Deployments carry `githubCommitRef`/`githubCommitSha` because the CLI
+writes that metadata from the local checkout — it is NOT evidence of a GitHub integration. So the
+final `vercel --prod --yes` is the only thing that ships, and it can only run from a machine with
+the Vercel CLI logged in. A cloud session can push code and set env vars but cannot deploy.
+Project `prj_ULQZIOqBPXlIceEbKOOImIjJqdxw`; domains `saaksh.co`, `www.saaksh.co`.
+
 ### The SEO + AEO sprint (2026-09-08)
 
 Driven by the GA4 finding from 2026-09-04: **AI assistants are now 49% of 28-day sessions but
