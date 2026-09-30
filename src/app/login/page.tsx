@@ -18,11 +18,17 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
             Enter your passcode to manage data collections.
           </p>
 
-          {searchParams.error && (
+          {searchParams.error === "setup" ? (
+            <p className="mt-4 text-[13px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3.5 py-2.5">
+              That passcode belongs to a firm that hasn&apos;t been set up yet. Its row in{" "}
+              <span className="font-semibold">brsr_orgs</span> is missing, so we can&apos;t tell its
+              client data apart from anyone else&apos;s. Run the firm-tier migration, then try again.
+            </p>
+          ) : searchParams.error ? (
             <p className="mt-4 text-[13px] text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-3.5 py-2.5">
               Incorrect passcode. Try again.
             </p>
-          )}
+          ) : null}
 
           <form action={loginAction} className="mt-5 space-y-3">
             <input

@@ -4,6 +4,7 @@ import CollectNav from "@/components/datarequest/CollectNav";
 import { SaakshMark } from "@/components/SaakshMark";
 import { logoutAction } from "@/lib/datarequest/auth";
 import { listCampaigns } from "@/lib/datarequest/db";
+import { requireOrg } from "@/lib/datarequest/org";
 import type { Campaign } from "@/lib/datarequest/types";
 
 // The passcode-gated Pro workspace: an app surface, not a content page, so it
@@ -16,9 +17,12 @@ export const metadata: Metadata = {
 // workspace chrome so the two halves read as one product. (Recipient /submit
 // and /login keep their own standalone layouts.)
 export default async function RequestsLayout({ children }: { children: React.ReactNode }) {
+  // The firm this session belongs to. Everything below is scoped to it.
+  const org = await requireOrg();
+
   let campaigns: Campaign[] = [];
   try {
-    campaigns = await listCampaigns();
+    campaigns = await listCampaigns(org.id);
   } catch {
     campaigns = [];
   }
@@ -39,7 +43,11 @@ export default async function RequestsLayout({ children }: { children: React.Rea
               <p className="text-[13px] font-semibold text-white tracking-[-0.01em]">Saaksh</p>
               <span className="font-mono text-[8.5px] font-semibold uppercase tracking-[0.08em] text-brand-500 bg-white/10 rounded px-1 py-px leading-none">Pro</span>
             </div>
-            <p className="text-[10.5px] text-white/60">Data collection</p>
+            {/* The firm, once one is configured. On the original single
+                passcode this stays the generic label it always was. */}
+            <p className="text-[10.5px] text-white/60 truncate" title={org.legacy ? "Data collection" : org.name}>
+              {org.legacy ? "Data collection" : org.name}
+            </p>
           </div>
         </Link>
 
@@ -58,7 +66,9 @@ export default async function RequestsLayout({ children }: { children: React.Rea
           </form>
           <div className="flex items-center gap-1.5 px-2.5 pt-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0" />
-            <span className="text-[10.5px] text-white/55 tracking-tight">Client data · encrypted</span>
+            <span className="text-[10.5px] text-white/55 tracking-tight">
+              {org.legacy ? "Client data · encrypted" : "Your firm's clients only"}
+            </span>
           </div>
         </div>
       </aside>

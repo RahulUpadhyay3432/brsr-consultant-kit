@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCampaign } from "@/lib/datarequest/db";
+import { requireOrg } from "@/lib/datarequest/org";
 import { buildDraft } from "@/lib/datarequest/draft";
 import { GHG_METHODOLOGY } from "@/lib/datarequest/emissions";
 import { fmtNum } from "@/lib/emissions-calculator";
@@ -10,7 +11,8 @@ import NarrativePanel from "@/components/datarequest/NarrativePanel";
 export const dynamic = "force-dynamic";
 
 export default async function DraftPage({ params }: { params: { id: string } }) {
-  const campaign = await getCampaign(params.id);
+  const org = await requireOrg();
+  const campaign = await getCampaign(params.id, org.id);
   if (!campaign) notFound();
 
   const draft = buildDraft(campaign);

@@ -88,26 +88,105 @@ function mapCampaign(r: CampaignRow): Campaign {
 
 const SELECT = "*,brsr_contacts(*,brsr_request_items(*))";
 
+// ─── Orgs: the firm tier ────────────────────────────────────────────────────
+// A firm (org) owns its campaigns. Every campaign query below is filtered by
+// org_id so one firm can never see another's clients. Both halves of this
+// degrade gracefully, because the migration (docs/migrations/001-firm-tier-orgs.sql)
+// is run by hand and may not have happened yet:
+//   · brsr_orgs missing        → findOrgByPasscode() returns null, and the caller
+//                                falls back to the single CONSULTANT_PASSCODE gate.
+//   · brsr_requests.org_id     → the scoped query 400s, we retry unscoped once and
+//     missing                    remember it, i.e. the old single-tenant behaviour.
+
+interface OrgRow { id: string; slug: string; name: string }
+export interface OrgRecord { id: string; slug: string; name: string }
+
+// The firm whose passcode this is, or null when unknown / pre-migration.
+export async function findOrgByPasscode(passcode: string): Promise<OrgRecord | null> {
+  if (!passcode) return null;
+  try {
+    const res = await rest(
+      `brsr_orgs?passcode=eq.${encodeURIComponent(passcode)}&select=id,slug,name&limit=1`
+    );
+    const rows = (await res.json()) as OrgRow[];
+    return rows[0] ?? null;
+  } catch {
+    return null; // table absent (pre-migration) or unreachable
+  }
+}
+
+// Set once we learn brsr_requests has no org_id column, so we only pay for the
+// failed scoped request once per process rather than on every query.
+let orgColumnMissing = false;
+
+function isMissingOrgColumn(e: unknown): boolean {
+  const m = e instanceof Error ? e.message : String(e);
+  return m.includes("org_id") && (m.includes("42703") || m.includes("does not exist"));
+}
+
+// Runs a campaign query with the org filter applied, falling back to the
+// unscoped query when the column isn't there yet. `build` receives the filter
+// fragment to splice into its querystring ("" when unscoped).
+async function restScoped(
+  build: (orgFilter: string) => string,
+  orgId: string | null,
+  init?: RequestInit & { prefer?: string },
+): Promise<Response> {
+  if (!orgId || orgColumnMissing) return rest(build(""), init);
+  try {
+    return await rest(build(`&org_id=eq.${encodeURIComponent(orgId)}`), init);
+  } catch (e) {
+    if (!isMissingOrgColumn(e)) throw e;
+    orgColumnMissing = true;
+    return rest(build(""), init);
+  }
+}
+
+// Throws unless this campaign belongs to this firm. Used by the mutating calls,
+// which take an id the caller could otherwise have guessed. A no-op before the
+// migration, when there are no orgs to separate.
+async function assertOwned(id: string, orgId: string | null): Promise<void> {
+  if (!orgId || orgColumnMissing) return;
+  const res = await restScoped(
+    (f) => `brsr_requests?id=eq.${encodeURIComponent(id)}${f}&select=id`,
+    orgId,
+  );
+  const rows = (await res.json()) as { id: string }[];
+  if (!rows[0]) throw new Error("Campaign not found for this firm");
+}
+
 // ─── Queries ────────────────────────────────────────────────────────────────
 export async function createCampaign(
-  clientName: string, deadline: string | null, reportingPeriod: string | null
+  clientName: string, deadline: string | null, reportingPeriod: string | null,
+  orgId: string | null = null,
 ): Promise<string> {
+  const insert: Record<string, unknown> = {
+    client_name: clientName, deadline, reporting_period: reportingPeriod,
+  };
+  // Omitted pre-migration, when the column doesn't exist.
+  if (orgId && !orgColumnMissing) insert.org_id = orgId;
   const res = await rest("brsr_requests", {
     method: "POST",
     prefer: "return=representation",
-    body: JSON.stringify({ client_name: clientName, deadline, reporting_period: reportingPeriod }),
+    body: JSON.stringify(insert),
   });
   const [row] = (await res.json()) as CampaignRow[];
   return row.id;
 }
 
-export async function listCampaigns(): Promise<Campaign[]> {
-  const res = await rest(`brsr_requests?select=${SELECT}&order=created_at.desc`);
+export async function listCampaigns(orgId: string | null = null): Promise<Campaign[]> {
+  const res = await restScoped(
+    (f) => `brsr_requests?select=${SELECT}${f}&order=created_at.desc`,
+    orgId,
+  );
   return ((await res.json()) as CampaignRow[]).map(mapCampaign);
 }
 
-export async function getCampaign(id: string): Promise<Campaign | null> {
-  const res = await rest(`brsr_requests?id=eq.${encodeURIComponent(id)}&select=${SELECT}`);
+export async function getCampaign(id: string, orgId: string | null = null): Promise<Campaign | null> {
+  const res = await restScoped(
+    (f) => `brsr_requests?id=eq.${encodeURIComponent(id)}${f}&select=${SELECT}`,
+    orgId,
+  );
   const rows = (await res.json()) as CampaignRow[];
   return rows[0] ? mapCampaign(rows[0]) : null;
 }
@@ -183,7 +262,10 @@ export async function setItemEvidence(itemId: string, path: string, name: string
 // Persists the AI-drafted per-principle narrative on the campaign. Caller wraps
 // this best-effort: the `narrative jsonb` column may not exist until the user runs
 // the migration, in which case the draft still shows the freshly-generated prose.
-export async function setNarrative(campaignId: string, narrative: Record<string, string>): Promise<void> {
+export async function setNarrative(
+  campaignId: string, narrative: Record<string, string>, orgId: string | null = null,
+): Promise<void> {
+  await assertOwned(campaignId, orgId);
   await rest(`brsr_requests?id=eq.${encodeURIComponent(campaignId)}`, {
     method: "PATCH",
     body: JSON.stringify({ narrative }),
@@ -219,7 +301,9 @@ export async function markReceived(contactId: string): Promise<void> {
 export async function updateCampaign(
   id: string,
   fields: { deadline?: string | null; reportingPeriod?: string | null },
+  orgId: string | null = null,
 ): Promise<void> {
+  await assertOwned(id, orgId);
   const body: Record<string, unknown> = {};
   if ("deadline" in fields) body.deadline = fields.deadline ?? null;
   if ("reportingPeriod" in fields) body.reporting_period = fields.reportingPeriod ?? null;
@@ -364,7 +448,10 @@ export async function recentAccessRequestExists(email: string, sinceIso: string)
 // child FKs are ON DELETE CASCADE, no migration required): the items under the
 // campaign's contacts → the contacts → the saved-contacts directory → the
 // campaign row. The directory delete is best-effort (the table may not exist yet).
-export async function deleteCampaign(id: string): Promise<void> {
+export async function deleteCampaign(id: string, orgId: string | null = null): Promise<void> {
+  // 0. Refuse outright if this campaign isn't this firm's.
+  await assertOwned(id, orgId);
+
   // 1. Collect the campaign's contact ids so their items can be cleared first.
   const cres = await rest(`brsr_contacts?request_id=eq.${encodeURIComponent(id)}&select=id`);
   const contactIds = ((await cres.json()) as { id: string }[]).map((r) => r.id);

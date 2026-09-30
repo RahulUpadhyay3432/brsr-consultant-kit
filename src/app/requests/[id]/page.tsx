@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getCampaign, listCompanyContacts } from "@/lib/datarequest/db";
+import { requireOrg } from "@/lib/datarequest/org";
 import { campaignEmissions, emissionInputs, GHG_METHODOLOGY } from "@/lib/datarequest/emissions";
 import { buildAssuranceLedger, assuranceStats } from "@/lib/datarequest/assurance";
 import { exportFilename } from "@/lib/export";
@@ -21,8 +22,9 @@ export const maxDuration = 60; // chunked document extraction calls can run a wh
 export default async function CampaignDetailPage({
   params, searchParams,
 }: { params: { id: string }; searchParams: { error?: string } }) {
+  const org = await requireOrg();
   const [campaign, directory] = await Promise.all([
-    getCampaign(params.id),
+    getCampaign(params.id, org.id),
     listCompanyContacts(params.id), // best-effort → [] before the migration
   ]);
   if (!campaign) notFound();

@@ -5,18 +5,12 @@
 // action unauthenticated. Each consultant-only action calls requireConsultant() as a
 // defence-in-depth layer on top of the middleware.
 import "server-only";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-
-// Keep in sync with the same literal in middleware.ts and auth.ts.
-const AUTH_COOKIE = "bk_auth";
+import { requireOrg, type Org } from "./org";
 
 // Redirects to /login (throwing NEXT_REDIRECT, which aborts the action) when the
-// request doesn't carry a valid passcode cookie. No-op when authenticated.
-export function requireConsultant(): void {
-  const expected = process.env.CONSULTANT_PASSCODE;
-  const cookie = cookies().get(AUTH_COOKIE)?.value;
-  if (!expected || cookie !== expected) {
-    redirect("/login");
-  }
+// request doesn't carry a passcode cookie belonging to a firm. On success it
+// returns that firm, so the action can scope its queries: pass `org.id` into the
+// db helpers and a consultant can only ever touch their own firm's campaigns.
+export async function requireConsultant(): Promise<Org> {
+  return requireOrg();
 }

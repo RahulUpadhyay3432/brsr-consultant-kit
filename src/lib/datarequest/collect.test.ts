@@ -20,7 +20,8 @@ function contact(items: Item[], p: Partial<Contact> = {}): Contact {
   return {
     id: p.id ?? "c1", name: p.name ?? "Owner", email: p.email ?? "o@x.com",
     token: p.token ?? "t", status: p.status ?? "pending",
-    lastEmailedAt: p.lastEmailedAt ?? null, remindersSent: p.remindersSent ?? 0, items,
+    lastEmailedAt: p.lastEmailedAt ?? null, remindersSent: p.remindersSent ?? 0,
+    receivedAt: p.receivedAt ?? null, items,
   };
 }
 function campaign(contacts: Contact[], p: Partial<Campaign> = {}): Campaign {

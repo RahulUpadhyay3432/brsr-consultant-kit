@@ -21,13 +21,13 @@ function baseUrl(): string {
 
 // 1) Consultant creates a campaign (one client). Owners are added next.
 export async function createCampaignAction(formData: FormData): Promise<void> {
-  requireConsultant();
+  const org = await requireConsultant();
   const clientName = String(formData.get("clientName") || "").trim();
   const deadline = (String(formData.get("deadline") || "").trim() || null) as string | null;
   const reportingPeriod = (String(formData.get("reportingPeriod") || "").trim() || null) as string | null;
   if (!clientName) redirect("/requests/new?error=missing");
 
-  const id = await db.createCampaign(clientName, deadline, reportingPeriod);
+  const id = await db.createCampaign(clientName, deadline, reportingPeriod, org.id);
   // Land on the Auto-fill tab so a consultant who already has the client's documents
   // can drop them straight away (instead of always emailing owners).
   redirect(`/requests/${id}?view=autofill`);
@@ -39,12 +39,12 @@ export async function updateCampaignAction(
   deadline: string | null,
   reportingPeriod: string | null,
 ): Promise<void> {
-  requireConsultant();
+  const org = await requireConsultant();
   if (!campaignId) return;
   await db.updateCampaign(campaignId, {
     deadline: deadline && deadline.trim() ? deadline.trim() : null,
     reportingPeriod: reportingPeriod && reportingPeriod.trim() ? reportingPeriod.trim() : null,
-  });
+  }, org.id);
   revalidatePath(`/requests/${campaignId}`);
 }
 
@@ -52,9 +52,9 @@ export async function updateCampaignAction(
 // Guarded; refreshes the collections list in place. Irreversible by design, the
 // UI confirms before calling this.
 export async function deleteCampaignAction(campaignId: string): Promise<void> {
-  requireConsultant();
+  const org = await requireConsultant();
   if (!campaignId) return;
-  await db.deleteCampaign(campaignId);
+  await db.deleteCampaign(campaignId, org.id);
   revalidatePath("/requests");
 }
 
@@ -62,15 +62,16 @@ export async function deleteCampaignAction(campaignId: string): Promise<void> {
 // exact fields each was asked for, as a FRESH chase (no values carried, no emails
 // sent). The stickiest retention hook, the year-on-year re-collection in one click.
 export async function cloneCampaignAction(sourceId: string): Promise<void> {
-  requireConsultant();
+  const org = await requireConsultant();
   if (!sourceId) redirect("/requests");
-  const src = await db.getCampaign(sourceId);
+  const src = await db.getCampaign(sourceId, org.id);
   if (!src) redirect("/requests");
 
   const newId = await db.createCampaign(
     src.clientName,
     bumpYear(src.deadline),
     nextReportingPeriod(src.reportingPeriod),
+    org.id,
   );
 
   // Recreate every real data owner with the same assigned fields; skip the synthetic
@@ -93,7 +94,7 @@ export async function cloneCampaignAction(sourceId: string): Promise<void> {
       for (const it of c.items) if (it.value) priorByKey.set(`${c.email}::${it.fieldId}`, it.value);
     }
     if (priorByKey.size) {
-      const cloned = await db.getCampaign(newId);
+      const cloned = await db.getCampaign(newId, org.id);
       for (const c of cloned?.contacts || []) {
         for (const it of c.items) {
           const prior = priorByKey.get(`${c.email}::${it.fieldId}`);
@@ -117,7 +118,7 @@ export async function extractBillImageAction(
   mimeType: string,
   sourceDoc = "photo",
 ): Promise<{ configured: boolean; aiError: boolean; suggestions: BulkSuggestion[] }> {
-  requireConsultant();
+  await requireConsultant();
   if (!geminiConfigured()) return { configured: false, aiError: false, suggestions: [] };
   const b64 = (imageBase64 || "").trim();
   if (!b64 || !campaignId) return { configured: true, aiError: false, suggestions: [] };
@@ -186,7 +187,7 @@ STRICT RULES:
 export async function cbamExtractAction(
   text: string,
 ): Promise<{ configured: boolean; suggestion: CbamSuggestion | null }> {
-  requireConsultant();
+  await requireConsultant();
   if (!groqConfigured()) return { configured: false, suggestion: null };
   const t = (text || "").trim();
   if (!t) return { configured: true, suggestion: null };
@@ -207,7 +208,7 @@ export async function extractChunkAction(
   excludeFieldIds: string[] = [],
   sourceDoc = "document",
 ): Promise<{ configured: boolean; suggestions: BulkSuggestion[] }> {
-  requireConsultant();
+  await requireConsultant();
   if (!geminiConfigured() && !groqConfigured()) return { configured: false, suggestions: [] };
   const text = (chunkText || "").trim();
   if (!text) return { configured: true, suggestions: [] };
@@ -228,7 +229,7 @@ export async function addContactAction(
   campaignId: string, clientName: string, deadline: string | null,
   reportingPeriod: string | null, formData: FormData
 ): Promise<void> {
-  requireConsultant();
+  await requireConsultant();
   const name = String(formData.get("name") || "").trim();
   const email = String(formData.get("email") || "").trim();
   const fieldIds = formData.getAll("fields").map(String);
@@ -283,7 +284,7 @@ function parseContactLines(text: string): { name: string | null; email: string; 
 
 // Add one contact (name/email/role) and/or a pasted list to the client's roster.
 export async function addDirectoryContactsAction(campaignId: string, formData: FormData): Promise<void> {
-  requireConsultant();
+  await requireConsultant();
   const rows: { name: string | null; email: string; role: string | null }[] = [];
 
   const email = String(formData.get("email") || "").trim().toLowerCase();
@@ -304,7 +305,7 @@ export async function addDirectoryContactsAction(campaignId: string, formData: F
 }
 
 export async function deleteDirectoryContactAction(campaignId: string, formData: FormData): Promise<void> {
-  requireConsultant();
+  await requireConsultant();
   const contactId = String(formData.get("contactId") || "");
   if (contactId) {
     try { await db.deleteCompanyContact(contactId); } catch { /* best-effort */ }
@@ -317,12 +318,12 @@ export async function deleteDirectoryContactAction(campaignId: string, formData:
 // best-effort (the column may not exist until the migration runs), but always
 // returned so the draft can render it immediately.
 export async function generateNarrativeAction(campaignId: string): Promise<NarrativeResult> {
-  requireConsultant();
-  const campaign = await db.getCampaign(campaignId);
+  const org = await requireConsultant();
+  const campaign = await db.getCampaign(campaignId, org.id);
   if (!campaign) return {};
   const narrative = await generateNarrative(campaign);
   if (Object.keys(narrative).length > 0) {
-    try { await db.setNarrative(campaignId, narrative); } catch { /* column missing, still return it */ }
+    try { await db.setNarrative(campaignId, narrative, org.id); } catch { /* column missing, still return it */ }
   }
   return narrative;
 }
@@ -334,11 +335,11 @@ export async function generateNarrativeAction(campaignId: string): Promise<Narra
 // action (the client passes the locally-extracted text; the document stays on the
 // consultant's device, only the text reaches the grounded model).
 export async function importDocumentAction(campaignId: string, extractedText: string): Promise<ImportResult> {
-  requireConsultant();
+  const org = await requireConsultant();
   if (!groqConfigured()) return { suggestions: [], truncated: false, configured: false };
 
   const text = (extractedText || "").trim();
-  const campaign = await db.getCampaign(campaignId);
+  const campaign = await db.getCampaign(campaignId, org.id);
   if (!campaign || !text) return { suggestions: [], truncated: false, configured: true };
 
   const candidates = campaign.contacts.flatMap((c) =>
@@ -353,7 +354,7 @@ export async function importDocumentAction(campaignId: string, extractedText: st
 // Apply the imported figures the consultant ticked. Each accepted itemId gets its
 // (possibly edited) value written, same path as a collected value (status → received).
 export async function applyImportAction(campaignId: string, formData: FormData): Promise<void> {
-  requireConsultant();
+  await requireConsultant();
   const itemIds = formData.getAll("apply").map(String);
   for (const itemId of itemIds) {
     const value = String(formData.get(`value_${itemId}`) || "").trim();
@@ -372,7 +373,7 @@ export async function applyImportAction(campaignId: string, formData: FormData):
 export async function bulkImportAction(
   campaignId: string, docs: BulkDoc[]
 ): Promise<BulkImportResult> {
-  requireConsultant();
+  await requireConsultant();
   if (!groqConfigured()) return { suggestions: [], truncated: false, configured: false };
 
   const ALLOWED: DocCategory[] = ["auto", "brsr", "annual", "energy", "hr", "water", "policies", "other"];
@@ -400,8 +401,8 @@ export async function bulkImportAction(
 export async function applyBulkImportAction(
   campaignId: string, accepted: { fieldId: string; value: string }[]
 ): Promise<void> {
-  requireConsultant();
-  const campaign = await db.getCampaign(campaignId);
+  const org = await requireConsultant();
+  const campaign = await db.getCampaign(campaignId, org.id);
   if (!campaign) redirect(`/requests/${campaignId}`);
 
   // fieldId → existing item id (first match across all owners).
@@ -436,16 +437,16 @@ export async function applyBulkImportAction(
 // (dashboard + emissions + ledger + draft) without setting up real owners. Idempotent:
 // reuses an existing "Sample, " campaign. No emails are sent (we go straight via db).
 export async function loadSampleClientAction(): Promise<void> {
-  requireConsultant();
+  const org = await requireConsultant();
 
   // Reuse an existing sample rather than duplicating.
-  const all = await db.listCampaigns();
+  const all = await db.listCampaigns(org.id);
   const prior = all.find((c) => c.clientName.startsWith("Sample, "));
   if (prior) redirect(`/requests/${prior.id}`);
 
   const deadline = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
   const reportingPeriod = mostRecentCompletedFy();
-  const id = await db.createCampaign("Sample, Acme Manufacturing (demo)", deadline, reportingPeriod);
+  const id = await db.createCampaign("Sample, Acme Manufacturing (demo)", deadline, reportingPeriod, org.id);
 
   const pick = (ids: string[]) => fieldsByIds(ids);
   // Owner 1, EHS / energy: the activity inputs so GHG computes + a few P6 fields.
@@ -460,7 +461,7 @@ export async function loadSampleClientAction(): Promise<void> {
   await db.addContact(id, "Neha Rao", "neha@acme.example", randToken(), pick(owner3Ids));
 
   // Re-read to get the generated item ids, then fill realistic values.
-  const seeded = await db.getCampaign(id);
+  const seeded = await db.getCampaign(id, org.id);
   if (seeded) {
     const valueFor: Record<string, string> = {
       "P6-E1-elec": "4200000", "P6-E1-diesel": "85000",
@@ -488,8 +489,8 @@ export async function loadSampleClientAction(): Promise<void> {
 // (same shape as addContactAction) and bump each contact's reminder cadence. Owners
 // who already submitted ("received") are skipped. Best-effort per contact.
 export async function remindAllPendingAction(campaignId: string): Promise<void> {
-  requireConsultant();
-  const campaign = await db.getCampaign(campaignId);
+  const org = await requireConsultant();
+  const campaign = await db.getCampaign(campaignId, org.id);
   if (!campaign) redirect(`/requests/${campaignId}`);
 
   for (const contact of campaign!.contacts) {

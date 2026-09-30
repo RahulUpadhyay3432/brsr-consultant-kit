@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { listCampaigns } from "@/lib/datarequest/db";
+import { requireOrg } from "@/lib/datarequest/org";
 import { loadSampleClientAction, deleteCampaignAction, cloneCampaignAction } from "@/lib/datarequest/actions";
 import CompanyAvatar from "@/components/CompanyAvatar";
 import CampaignRowMenu from "@/components/datarequest/CampaignRowMenu";
@@ -17,7 +18,8 @@ function DashTile({ label, value, sub, accent }: { label: string; value: string;
 }
 
 export default async function RequestsPage() {
-  const campaigns = await listCampaigns();
+  const org = await requireOrg();
+  const campaigns = await listCampaigns(org.id);
 
   // Cross-client summary for the dashboard tiles (all computed from real data).
   const allItems = campaigns.flatMap((c) => c.contacts.flatMap((ct) => ct.items));
