@@ -65,6 +65,7 @@ function body(): string {
 - [All 108 BRSR Section C disclosures](${BASE}/brsr): one page per disclosure, with SEBI's own wording, the ICAI page it is documented on, a plain-English reading, what a complete assurance-ready answer contains, the unit, and the team that usually holds the data.
 - [Glossary of Indian ESG reporting](${BASE}/glossary): BRSR Core, Essential and Leadership indicators, reasonable assurance versus assessment, Scope 1/2/3, the CEA grid factor, CBAM, CCTS, GEI, EPR, ZLD, GRI, TCFD, IFRS S1/S2, TNFD, CSRD and ESRS, each defined with its regulator, number and year.
 - [BRSR by the numbers](${BASE}/brsr/statistics): every load-bearing figure in Indian sustainability reporting with its primary source and vintage, free to quote.
+- [BRSR teaching pack](${BASE}/academy): an eight-module course outline for trainers — applicability, Sections A and B, Principle 6 in three parts, the social principles, cross-framework reporting and assurance readiness, each with learning objectives, the disclosures it covers, hands-on work in a live tool, and assessment questions. Free to adapt, no attribution required.
 
 ## Free tools, no login, all client-side
 
