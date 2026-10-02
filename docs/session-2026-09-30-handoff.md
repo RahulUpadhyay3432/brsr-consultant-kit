@@ -69,9 +69,12 @@ This is the argument for doing the dossier's **P0 audit** before more features.
    workspaces matched their copy with no action. Three real mismatches found and fixed: the
    assurance ledger was **printing AI-imported figures under a named data owner's name**, and two
    surfaces claimed "on your device"/"nothing is sent" for Pro features that send document text to
-   Groq/Gemini. **Migration 003 must be run** for the provenance column to do anything. Still
-   unverified and not verifiable without the deploy: extraction *accuracy*, and any Collect path
-   against a real database.
+   Groq/Gemini. ~~Migration 003 must be run~~ — **applied 2026-10-02.** `value_source` exists; all
+   51 items carry NULL, 23 of them with a value, so those 23 read **"Not recorded"** in the ledger
+   rather than being credited to an owner. That is the intended outcome: no backfill is possible,
+   because a pre-fix importer value is indistinguishable from an owner submission in the old data.
+   Still unverified and not verifiable without the deploy: extraction *accuracy*, and any Collect
+   path against a real database.
 3. **Runtime-verify the firm tier.** It has **never served an HTTP request** — all confidence is
    static. After deploying, drive `saaksh.co` with Playwright and the SAGE passcode: sign in,
    confirm the rail reads SAGE, confirm the client list is empty and separate from the 9.
@@ -80,7 +83,11 @@ This is the argument for doing the dossier's **P0 audit** before more features.
    no scoped listing hands out, but it is not true isolation. **If asked how client data is
    separated, say: firm-level separation on collections is in; row-level hardening is next.**
 5. **The validation workbench** (dossier P1) plus the three QMS primitives.
-6. **The Sunday call brief** (was owed 2026-10-04 for the Monday call).
+6. ~~**The Sunday call brief**~~ — **written 2026-10-02: `docs/sage-call-brief.md`.** The
+   30-minute arc, what to show, the questions to ask, the ask ladder, a never-say list and
+   prepared answers to the hard questions. It leads with the deploy, because the live homepage
+   still computes Scope 2 with the stale 0.716 factor captioned "CEA v18" and **Shashi is certified
+   in CDP and GRI** — that is the one thing on that page she is most qualified to catch.
 7. **Per-person seats.** SAGE's 17 people would share one passcode. **Never say "seats" — they do
    not exist.**
 8. `.env.local` on Rahul's machine still lacks `CONSULTANT_PASSCODES` (production has it).
