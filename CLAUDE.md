@@ -54,9 +54,9 @@ principle-level only), and **GRESB at any level** (blog and glossary copy only).
 
 **Supabase MCP is connected**, so migrations can be applied directly. `brsr_` tables live in
 project **`girogiauxecthlxxspyi`** ("neo-san-signal-intelligence"), a shared DB holding several
-other apps — always scope changes to `brsr_`-prefixed tables. Migrations now live in
-`docs/migrations/`, run in order; 001 and 002 were applied 2026-09-30. **003 (`value_source`) is
-written but NOT yet applied.**
+other apps — always scope changes to `brsr_`-prefixed tables. Migrations live in
+`docs/migrations/`, run in order. **001–004 are all applied** (001 + 002 on 2026-09-30, 003 + 004
+on 2026-10-02). Nothing there is pending.
 ⚠️ `list_tables` row counts are stale estimates (reported 0 campaigns when there were 9) —
 `select count(*)` when the number matters.
 
@@ -221,16 +221,19 @@ current GTM plan).
 
 Carried forward from earlier sessions; each is still open unless you've since done it.
 
-- ~~Run the `brsr_jobs` CREATE TABLE SQL~~ — **done.** Verified 2026-09-30: the table exists and
-  holds 7 rows. Still open, optional, for structured JDs on scraped roles:
-  `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections jsonb;`
+- ~~Run the `brsr_jobs` CREATE TABLE SQL~~ — **done.** Verified 2026-10-02: the table holds **46
+  rows**, so the scraper is running. ~~Optional `sections jsonb` for structured JDs~~ — **applied
+  2026-10-02** (`docs/migrations/004-jobs-sections.sql`). `src/lib/jobs/db.ts` already read the
+  column and fell back to the plain-text description while it was missing.
 - ~~`ALTER TABLE brsr_contacts ADD COLUMN received_at timestamptz;`~~ — **done 2026-09-30**
   (`docs/migrations/002-contacts-received-at.sql`).
-- **Run `docs/migrations/003-item-value-source.sql`** — adds `brsr_request_items.value_source`,
-  the provenance of a collected figure. Until it runs, the code degrades (writes retry without the
-  column) and every ledger row reads **"Not recorded"** instead of distinguishing an owner
-  submission from an AI-imported figure. **No backfill is possible**, so any value imported before
-  this migration stays unrecorded for good.
+- ~~Run `docs/migrations/003-item-value-source.sql`~~ — **applied 2026-10-02.**
+  `brsr_request_items.value_source` exists. All 51 existing items carry NULL and 23 of those hold
+  a value, so those 23 render **"Not recorded"** in the assurance ledger rather than being credited
+  to a named owner. Intended: no backfill is possible, because a value applied through the importer
+  before the fix is indistinguishable from an owner submission in the old rows. New writes record
+  `'owner'` or `'import'`.
+- **ALL schema migrations are now applied** (001–004). Nothing in `docs/migrations/` is pending.
 - **Firm tier follow-up:** to add a firm, insert its `brsr_orgs` row **and** add a matching
   `slug|Name|passcode` line to `CONSULTANT_PASSCODES` (`.env.local` + Vercel production). Both are
   required — see `docs/migrations/001-firm-tier-orgs.sql`.
