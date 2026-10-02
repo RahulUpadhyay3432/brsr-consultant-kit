@@ -42,13 +42,13 @@ export default function AuditReadinessPage() {
         <ToolHero
           eyebrow="Filing & audit tools · on-device"
           title="What the BRSR Core assurer will ask you for"
-          subtitle="The exact source documents a reasonable-assurance engagement requests, listed per KPI and grouped by principle. Hand your client one checklist and the engagement runs weeks shorter."
+          subtitle="The exact source documents a BRSR Core assessment or assurance engagement requests, listed per KPI and grouped by principle. Hand your client one checklist and the engagement runs weeks shorter."
           benefits={[
             "Every KPI mapped to the evidence an assurer expects, and where it lives",
-            `The ${coreCount()} BRSR Core attributes flagged, so you prepare those first`,
+            `${coreCount()} evidence items flagged against SEBI's BRSR Core attributes, so you prepare those first`,
             "Download the whole checklist as a working CSV to share with the client",
           ]}
-          whoFor="For the consultant scoping a BRSR Core reasonable-assurance engagement. Illustrative; the assurer's own evidence request governs."
+          whoFor="For the consultant scoping a BRSR Core assessment or assurance engagement — SEBI's 28 Mar 2025 circular allows either, depending on the client's cohort and year. Illustrative; the provider's own evidence request governs."
         />
 
         <div className="anim-up-sm mx-auto w-full px-5 sm:px-8 py-10" style={{ maxWidth: 1180 }}>
