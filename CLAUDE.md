@@ -18,10 +18,18 @@ Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUp
 
 ### Current: the firm tier, built for the SAGE Sustainability call (Mon 2026-10-05)
 
-**Start here, in order:** `docs/session-2026-09-30-handoff.md` (repo state, what shipped, what is
-blocking, the traps) → `docs/sage-call-2026-10-05.md` (the SAGE call this work serves) →
-`docs/product-dossier-2026-09-30.md` (evidence-graded research that should drive the backlog, and
-the regulatory wordings to enforce).
+**Start here, in order:** `docs/traction-and-strategy-2026-10-02.md` (**the numbers and the
+diagnosis — read this first, it outranks the feature backlog**) →
+`docs/session-2026-09-30-handoff.md` (repo state, what shipped, the traps) →
+`docs/sage-call-brief.md` (the Monday call) → `docs/product-dossier-2026-09-30.md` (evidence-graded
+research and the regulatory wordings to enforce).
+
+⚠️ **The governing fact, as of 2026-10-02: retention is effectively zero.** 241 active users over
+five months, **241 of them new**, **2 Pro access requests**, and **9 collections in Collect, all
+created between 12 and 27 June, none since**. It is not a UI problem (bounce 36–48%, ~14 events per
+user). It is a frequency problem: a gap analysis is done once per client per year, and the
+recurring work lives in Collect, which nobody outside has used. **More one-shot features will not
+change this.** Full reasoning in the traction doc.
 
 Collect was single-tenant in a way that mattered: `listCampaigns()` ran
 `select * from brsr_requests` with **no WHERE clause** and one shared `CONSULTANT_PASSCODE` let
@@ -214,7 +222,10 @@ scanned-bill OCR live once Gemini billing is topped up · run the `brsr_jobs` CR
 switch the jobs scraper on · optional `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections
 jsonb;` for structured JDs on scraped roles.
 
-**Key docs:** `docs/session-2026-09-30-handoff.md` (latest session handoff — read first) ·
+**Key docs:** `docs/traction-and-strategy-2026-10-02.md` (**traction numbers, the retention
+diagnosis, the four product ideas assessed, the keyword-map assessment, the SAGE tech-arm reframe,
+and the verified ChatGPT Apps SDK scoping — read first**) ·
+`docs/session-2026-09-30-handoff.md` (session handoff) ·
 `docs/product-dossier-2026-09-30.md` (research, P0-P3 build order, regulatory corrections,
 competitor pricing, the "stop claiming uniqueness" list) ·
 `docs/sage-call-2026-10-05.md` (the SAGE call: context, product reality, ask ladder) ·
