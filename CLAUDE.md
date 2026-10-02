@@ -75,13 +75,24 @@ Deploys ship the WORKING TREE, so run `git status` before deploying. The deploy 
 machine is `npx next build` → `git push origin master` →
 `$env:NODE_TLS_REJECT_UNAUTHORIZED="0"; vercel --prod --yes`.
 
-⚠️ **Pushing to `master` does NOT deploy.** The Vercel project has **no Git repository connected**
+⚠️ **SUPERSEDED 2026-10-02 — the Git repository is now connected** (Vercel → brsr-consultant-kit →
+Settings → Git → RahulUpadhyay3432/brsr-consultant-kit, production branch `master`). Pushing to
+`master` now deploys, and a cloud session can also trigger a production build through the Vercel
+API with a `gitSource` pointing at `master` — which is how `4137ce5` shipped. The CLI is no longer
+the only path. The note below is kept because the reasoning still matters: deployment git metadata
+is written by the CLI from the local checkout, so its presence never proved an integration existed.
+
+~~**Pushing to `master` does NOT deploy.** The Vercel project has **no Git repository connected**
 (`get_project` returns no `link`, there are no preview deployments, and every production deployment
 was created by the CLI). Deployments carry `githubCommitRef`/`githubCommitSha` because the CLI
 writes that metadata from the local checkout — it is NOT evidence of a GitHub integration. So the
 final `vercel --prod --yes` is the only thing that ships, and it can only run from a machine with
 the Vercel CLI logged in. A cloud session can push code and set env vars but cannot deploy.
+A cloud session can push code and set env vars but cannot run the CLI.~~
 Project `prj_ULQZIOqBPXlIceEbKOOImIjJqdxw`; domains `saaksh.co`, `www.saaksh.co`.
+**Live as of 2026-10-02: production is `4137ce5`** (deployment `dpl_7AYitBCubm8HiQnWcATJLZEoVZQy`).
+⚠️ The cloud container's network policy **denies `saaksh.co:443`**, so a session cannot verify the
+live site over HTTP unless Network access is widened in the environment settings.
 
 ### The SEO + AEO sprint (2026-09-08)
 
