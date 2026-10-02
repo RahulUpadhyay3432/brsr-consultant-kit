@@ -33,6 +33,53 @@ idempotent and re-adopts any collection created while the old code was still ins
 
 ---
 
+## The aim — revised 2026-10-02, after reading the analytics
+
+Earlier versions of this brief aimed at "a good critique plus one small next step". The numbers
+have since sharpened it.
+
+**241 active users over five months. 241 of them new. 2 Pro access requests. 4 newsletter
+subscribers. 9 collections ever created in Collect, all between 12 and 27 June, none since.**
+
+What Saaksh lacks is not features, traffic or polish. It is **one practice actually running the
+recurring loop** — real clients, real data owners, real chasing. SAGE is close to exactly that
+practice: ten years old, ~17 people, 65+ clients, running BRSR alongside CDP, EcoVadis, GRESB and
+GRI.
+
+**So aim at one live engagement. Not a sale, not a partnership.**
+
+The line to build the call around, close to verbatim:
+
+> "241 people have used the free tool and almost none have come back. I think that is because a gap
+> analysis is a once-a-year job — and the part that actually recurs, chasing the numbers out of a
+> client's team, is the part nobody has tried yet. I'd like to find out whether I'm right, on one of
+> your engagements."
+
+It answers the exact question she asked ("how will that tool be of use to us or anyone") with *I am
+not certain yet, and you are the person who could tell me*. It concedes the weakness before she
+finds it, which is the move that earned a same-day reply. And it maps onto SAGE's own
+**guided traverse → independent traverse** model, because Collect *is* a handover mechanism.
+
+**The ask:** *"Is there one client where SAGE is chasing BRSR data right now? I'll set the
+collection up myself, free. You keep the relationship and the output — I get to watch where it
+breaks."*
+
+⚠️ **One honesty check.** The only external signal in the dataset is **16 data owners invited, 7
+responded (44%)** to a cold no-login link. Use it **only if those were real client-side people**.
+All 9 collections fall inside a two-week window in June, which looks like building and testing.
+If they were test contacts, do not cite the number — with her, that is exactly the thing that
+costs everything if it surfaces later.
+
+**Drop the "build your tech arm" framing.** With 2 Pro requests and flat retention, pitching
+yourself as a product partner to a ten-year-old firm negotiates from weakness. Pocket it; follow it
+only if she raises tooling frustration herself.
+
+**Green Skills Academy stays as the second ask** — still the biggest long-term prize, still free to
+offer, still her territory. It just does not fix retention, so it is no longer the primary aim.
+
+**Revised win condition: one named client, and a date to set it up.** A critique and warmth without
+a client is a decent outcome. An Academy conversation is a bonus on a different timeline.
+
 ## Her, in sixty seconds
 
 **Dr. Shashi Kad — she/her.** Founder & Chief Sustainability Strategist, SAGE Sustainability
