@@ -189,6 +189,48 @@ Company-direct prices do not prove what an adviser pays per engagement. Earlier 
 suggestions were **hypotheses**. Neither the top-1,000 filing cohort nor a vendor's "50,000
 suppliers" figure is a verified paying-customer count.
 
+### Second competitor read — 2026-10-03, and what is actually copyable
+
+An external list arrived naming **RSustain (closest), ZOEI, Sustainability Cloud, EcoActive,
+FileBRSR**, with the hypothesis that they are *"mostly built for companies doing their own
+reporting — the consultant-workspace angle looks open."*
+
+**The hypothesis agrees with our own research and is still unproven.** `docs/market-research.md`
+reached the same conclusion from a different angle (enterprise pricing locks out the long tail;
+the default tool for solos is Excel). But **"open" is not the same as "in demand"** — and our own
+numbers are the counter-evidence: 241 users, 2 Pro requests, no Collect use since 27 June. A niche
+can be open because nobody has built it, or open because the buyer does not pay for it. Nothing in
+a competitor list distinguishes those two, and only talking to the 2 Pro requesters does.
+
+**Worth copying — three things, in order:**
+
+1. **The free-tool funnel as a deliberate acquisition machine, not a feature set.** RSustain's
+   Basic Autopilot is free and monetised through advisory; FileBRSR's free tier is **5 supplier
+   assessments** — a quantity limit on the *paid* workflow, not a separate lesser product. We have
+   nine free tools and a free report, but the free tier and Collect are **two unconnected
+   products**. The copyable move is FileBRSR's shape: make the free tier a metered slice of the
+   paid loop (e.g. one live collection free) so using the free thing is already using Collect.
+   This is the same build the traction doc ranks #4, arrived at independently.
+2. **"Autopilot" as the packaging verb.** Their framing sells an outcome ("it files") where ours
+   sells an artifact ("a readiness report"). We should **not** copy the claim — Saaksh does not
+   file and must not imply it — but the lesson holds: name the workflow, not the document.
+3. **Supplier/value-chain as a distinct, cheaper entry point.** FileBRSR markets no-signup
+   supplier questionnaires separately from full BRSR preparation. We already have the mechanism
+   (`/submit/[token]`, no login) but market it only as part of consultant-led collection. A
+   supplier answering one customer's questionnaire is a different job, and a cheaper first yes.
+   ⚠️ Keep the regulatory line straight: value-chain disclosure is **voluntary** for the top 250
+   from FY25-26. FileBRSR's own description of the rule conflicts with the SEBI 2025 circular.
+
+**Not worth copying:** their buyer. All five sell to the reporting company. Copying that puts us
+against funded platforms on their ground, and abandons the one position our own research supports.
+Also do not copy their pricing — company-direct prices say nothing about what a consultant pays
+per engagement.
+
+⚠️ **ZOEI, EcoActive and Sustainability Cloud were not researched for this entry** beyond
+Sustainability Cloud already appearing in `docs/market-research.md`'s player list. Prices and
+features above are FileBRSR's and RSustain's, checked 2026-09-30 and not re-checked. Do not cite
+the three unresearched names as analysed competitors.
+
 ## Not justified by this research alone
 
 A giant narrative generator · autonomous filing · arbitrary ESG badges · universal certification ·

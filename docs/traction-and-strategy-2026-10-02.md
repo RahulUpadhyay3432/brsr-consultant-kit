@@ -79,6 +79,13 @@ Proposed externally; checked, not accepted.
 **Return triggers:** only white-labelling (per engagement) and the validation workbench (per
 number) create a reason to come back. The other two create none.
 
+**Competitors, re-read 2026-10-03** (RSustain, ZOEI, Sustainability Cloud, EcoActive, FileBRSR):
+the "consultant-workspace angle is open" hypothesis matches our own research and is **still
+unproven** — our 2 Pro requests are the counter-evidence, and open is not the same as in demand.
+One copyable move, and it is the same as #4 below: FileBRSR's free tier is a **metered slice of
+the paid workflow** (5 supplier assessments), not a separate lesser product. Full read in
+`docs/product-dossier-2026-09-30.md` → "Second competitor read".
+
 ## The keyword map, assessed
 
 Three of its Saaksh recommendations were **already satisfied**: all 10 sector pages exist
