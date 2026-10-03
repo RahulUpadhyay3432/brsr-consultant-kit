@@ -14,9 +14,35 @@ The "100% on-device / no data stored" framing applies to **(1) only**. Collect d
 
 Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUpadhyay3432/brsr-consultant-kit
 
-## Project Status — last updated 2026-09-30
+## Project Status — last updated 2026-10-03
 
-### Current: the firm tier, built for the SAGE Sustainability call (Mon 2026-10-05)
+### Current: competitor parity + the distribution finding (SAGE call Mon 2026-10-05)
+
+**`master` = `30388f4`, pushed and LIVE** (deployment `dpl_6dVXRQUStK7GedB9KNaATcW2Q8BE`, READY).
+Auto-deploy from `master` works. 208 pages, **166 tests, 21 files**, clean build.
+Session handoff: **`docs/session-2026-10-03-handoff.md`**.
+
+Shipped 2026-10-03: **`/tools/emission-factors`** (34 cited, versioned factors, searchable, CSV,
+`Dataset` schema — `src/lib/emission-factor-index.ts` restates nothing, a test pins that the page
+and the calculators read identical numbers) and **FAQ blocks on all nine tool pages** that lacked
+one (`src/lib/tool-faq.ts` + `ToolFaq.tsx` + `src/data/tool-faqs.ts`; `tool-faqs.test.ts` reads
+the filesystem so a new `/tools/*` page without an FAQ fails the suite).
+
+⚠️ **THE FINDING THAT OUTRANKS THE PARITY BACKLOG: two external advisers in two days each
+recommended work that already existed** (the keyword map: 3 items; Instinct AI: 2 of 3 — we have
+10 standalone tool landing pages and FAQs on 35 posts + 108 disclosure pages). Saaksh now has the
+free-tool funnel, the FAQ-heavy pages, the landing pages and the consultant angle — **and still
+241 users, 241 of them new, 2 Pro requests.** The missing piece is **indexing and authority, not
+the playbook.** Build parity because it is cheap; **Google Search Console is the highest-value
+open item and is not a build.**
+
+⚠️ **Our free tier already exceeds RSustain's paid tier** — they paywall BRSR Sections B and C at
+a reported ₹29,999/yr; ours are free. So the metered free tier must **meter the collection loop,
+never the BRSR sections** (that would also break the standing don't). And **never put a
+competitor's price in product copy** — unverified by us. Full reasoning in
+`docs/competitor-parity-plan.md`.
+
+### Previously: the firm tier, built for the SAGE Sustainability call (Mon 2026-10-05)
 
 **Start here, in order:** `docs/traction-and-strategy-2026-10-02.md` (**the numbers and the
 diagnosis — read this first, it outranks the feature backlog**) →
@@ -222,7 +248,8 @@ scanned-bill OCR live once Gemini billing is topped up · run the `brsr_jobs` CR
 switch the jobs scraper on · optional `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections
 jsonb;` for structured JDs on scraped roles.
 
-**Key docs:** `docs/competitor-parity-plan.md` (**the free-feature parity checklist and build order
+**Key docs:** `docs/session-2026-10-03-handoff.md` (**latest session handoff — read after the
+traction doc**) · `docs/competitor-parity-plan.md` (**the free-feature parity checklist and build order
 — active work**) · `docs/traction-and-strategy-2026-10-02.md` (**traction numbers, the retention
 diagnosis, the four product ideas assessed, the keyword-map assessment, the SAGE tech-arm reframe,
 and the verified ChatGPT Apps SDK scoping — read first**) ·
