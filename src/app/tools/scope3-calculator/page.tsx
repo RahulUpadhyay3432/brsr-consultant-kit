@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { BlogFooter } from "@/components/blog/BlogFooter";
+import { ToolFaq } from "@/components/tools/ToolFaq";
+import { TOOL_FAQS } from "@/data/tool-faqs";
 import { ToolHero } from "@/components/tools/ToolHero";
 import Scope3Calculator from "@/components/checklist/Scope3Calculator";
 import { DEFAULT_SCOPE3_INPUTS, type Scope3Inputs } from "@/lib/scope3-calculator";
@@ -210,6 +212,7 @@ export default function Scope3CalculatorPage() {
             </div>
           </div>
         </section>
+        <ToolFaq items={TOOL_FAQS["scope3-calculator"]} />
       </main>
       <BlogFooter />
     </div>

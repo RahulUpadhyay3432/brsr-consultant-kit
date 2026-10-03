@@ -29,6 +29,65 @@ Two findings that change the shape of the list:
 
 So the real parity targets are **RSustain, FileBRSR and ESGPulse.ai.**
 
+### RSustain's actual pages and ladder — relayed 2026-10-03
+
+A second external read (Instinct AI) **did** fetch the vendor pages this session could not, and
+reports specifics that correct our record. Relayed, not verified here — the egress block above
+still applies — but it is first-hand page data rather than search summary, so it outranks what
+the dossier had:
+
+- **₹29,999/year**, which the dossier listed as "not confirmed as current", is reported as the
+  live price. More useful than the number is the **shape**: Section A free, **Sections B and C
+  behind the paywall**, together with benchmarks and XBRL output. Premium features come "with
+  advisory engagement."
+- **The ladder:** free readiness check → free tier (Section A) → ₹29,999/yr (B + C, benchmarks,
+  XBRL) → advisory. Each rung qualifies the buyer for the next.
+- **The real business is advisory.** The software is lead generation and the ₹30k plan is a
+  filter.
+- **Buyer:** they sell a *filing platform to companies*; we are a *workspace for consultants*.
+  Same Google searches, different customer. This matches our own conclusion.
+
+**Two things follow, and the second is the more important.**
+
+**1. Our free tier already exceeds their paid tier.** They charge for Sections B and C; our free
+report covers Section A, Section B and all 108 Section C disclosures, with the SEBI wording and
+an ICAI page citation on each. That is a real positioning fact and it is checkable.
+⚠️ Do **not** put a competitor's price in product copy — we have not verified it ourselves, and
+the standing rule against unprovable comparative claims applies. State what we give away; let
+the reader compare.
+
+**2. ⚠️ This directly constrains parity item 7, the metered free tier.** FileBRSR meters by
+*count* (5 supplier assessments); RSustain meters by *BRSR section* (A free, B+C paid). Copying
+RSustain's axis would mean **walling off Sections B and C — which are free today.** That would
+destroy the one advantage above and breaks the standing don't ("Don't move the free on-device
+modules behind Pro"). Meter the **recurring collection loop** instead: the gap analysis stays
+wholly free, and the free allowance is one live collection in Collect.
+
+**3. The advisory insight has a Saaksh-shaped version.** "Software is lead gen for consulting"
+cannot be copied straight — our user *is* the consultant, so we cannot sell them advisory. But it
+is exactly the SAGE tech-arm reframe in `docs/traction-and-strategy-2026-10-02.md`: Saaksh is the
+portfolio piece, and the revenue is paid build work for firms. Same model, one layer up. Worth
+holding in mind on Monday.
+
+### Its three recommendations, checked against the repo
+
+Two of the three were **already shipped**, which is now the second time an external adviser has
+recommended work that exists (the keyword map did the same — three of its items were already
+satisfied). The pattern matters: **our problem is not that we lack the playbook.**
+
+| Recommendation | Status |
+|---|---|
+| "Make the calculators standalone landing pages" | **Already done** — 10 standalone `/tools/*` pages, plus 10 sector pages at `/brsr-for/[industry]`. |
+| "FAQ-heavy SEO pages" | **Mostly done, one real gap found.** All 35 blog posts carry FAQs (137 Q&A pairs), and the 108 `/brsr/<code>` pages and 10 sector pages emit `FAQPage`. But **only 1 of 10 tool pages had an FAQ** — the pages with the most intent. ✅ **Closed: all 9 now carry grounded FAQs** (`src/data/tool-faqs.ts`), with a test asserting a new tool page cannot ship without one. |
+| "The consultant angle they don't cover" | **Already our position** — it is what the whole product is. |
+
+**So the honest conclusion:** we now have the free-tool funnel, the FAQ-heavy pages, the
+standalone landing pages and the consultant angle — and still have 241 users, 241 of them new,
+and 2 Pro requests. The missing piece is not the playbook, it is **indexing and authority**, which
+is what the traction doc already concluded and why **Google Search Console remains the highest-
+value open item.** Build parity because it is cheap and it removes excuses; do not expect it to
+move retention.
+
 ## The parity matrix
 
 | Their free feature | Who | Saaksh today | Verdict |
@@ -101,6 +160,8 @@ So the real parity targets are **RSustain, FileBRSR and ESGPulse.ai.**
 
 7. **Metered free tier** — one live collection, free. This is FileBRSR's shape and independently
    the #1 retention build in `docs/traction-and-strategy-2026-10-02.md`. Two routes, same build.
+   ⚠️ **Meter the collection loop, never the BRSR sections.** RSustain puts Sections B and C
+   behind ₹29,999/yr; those are free here, and that is the advantage. See the relayed read above.
 8. **Academy course shell** — turn the 8 `/academy` modules into enrollable units with progress.
    ⚠️ Claim no certification. RSustain's free tier works because a paid certificate sits behind it;
    ours has nothing behind it yet, and `/academy` deliberately names no institute.

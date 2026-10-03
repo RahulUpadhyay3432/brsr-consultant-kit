@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { BlogFooter } from "@/components/blog/BlogFooter";
+import { ToolFaq } from "@/components/tools/ToolFaq";
+import { TOOL_FAQS } from "@/data/tool-faqs";
 import { ToolHero } from "@/components/tools/ToolHero";
 import { ToolLearn } from "@/components/tools/ToolLearn";
 import { downloadCsv } from "@/lib/export";
@@ -164,6 +166,7 @@ export default function AuditReadinessPage() {
           ]}
           maxWidth={1180}
         />
+        <ToolFaq items={TOOL_FAQS["audit-readiness"]} />
       </main>
       <BlogFooter />
     </div>

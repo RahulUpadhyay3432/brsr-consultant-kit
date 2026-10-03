@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { BlogFooter } from "@/components/blog/BlogFooter";
+import { ToolFaq } from "@/components/tools/ToolFaq";
+import { TOOL_FAQS } from "@/data/tool-faqs";
 import { ToolHero } from "@/components/tools/ToolHero";
 import { ToolLearn } from "@/components/tools/ToolLearn";
 import {
@@ -154,6 +156,7 @@ export default function BrsrApplicabilityPage() {
           ]}
           maxWidth={1180}
         />
+        <ToolFaq items={TOOL_FAQS["brsr-applicability"]} />
       </main>
       <BlogFooter />
     </div>

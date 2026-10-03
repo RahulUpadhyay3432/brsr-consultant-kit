@@ -3,6 +3,8 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { BlogFooter } from "@/components/blog/BlogFooter";
+import { ToolFaq } from "@/components/tools/ToolFaq";
+import { TOOL_FAQS } from "@/data/tool-faqs";
 import { ToolHero } from "@/components/tools/ToolHero";
 import { ToolLearn } from "@/components/tools/ToolLearn";
 import MaterialityMatrix from "@/components/MaterialityMatrix";
@@ -63,6 +65,7 @@ export default function MaterialityToolPage() {
           ]}
           maxWidth={1100}
         />
+        <ToolFaq items={TOOL_FAQS["materiality"]} />
       </main>
       <BlogFooter />
     </div>

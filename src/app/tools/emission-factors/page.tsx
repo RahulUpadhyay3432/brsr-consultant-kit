@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { BlogFooter } from "@/components/blog/BlogFooter";
+import { ToolFaq } from "@/components/tools/ToolFaq";
+import { TOOL_FAQS } from "@/data/tool-faqs";
 import { ToolHero } from "@/components/tools/ToolHero";
 import { ToolLearn } from "@/components/tools/ToolLearn";
 import { FactorTable } from "@/components/tools/FactorTable";
@@ -175,6 +177,7 @@ export default function EmissionFactorsPage() {
             },
           ]}
         />
+        <ToolFaq items={TOOL_FAQS["emission-factors"]} />
       </main>
 
       <BlogFooter />

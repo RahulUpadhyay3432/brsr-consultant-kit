@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { BlogFooter } from "@/components/blog/BlogFooter";
+import { ToolFaq } from "@/components/tools/ToolFaq";
+import { TOOL_FAQS } from "@/data/tool-faqs";
 import { ToolHero } from "@/components/tools/ToolHero";
 import EmissionsCalculator from "@/components/checklist/EmissionsCalculator";
 import { DEFAULT_CALC_INPUTS, type CalcInputs } from "@/lib/emissions-calculator";
@@ -231,6 +233,7 @@ export default function GhgCalculatorPage() {
             </div>
           </div>
         </section>
+        <ToolFaq items={TOOL_FAQS["ghg-calculator"]} />
       </main>
       <BlogFooter />
     </div>

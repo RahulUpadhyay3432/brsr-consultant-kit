@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { BlogFooter } from "@/components/blog/BlogFooter";
+import { ToolFaq } from "@/components/tools/ToolFaq";
+import { TOOL_FAQS } from "@/data/tool-faqs";
 import { ToolHero } from "@/components/tools/ToolHero";
 import { ToolLearn } from "@/components/tools/ToolLearn";
 import { SEBI_BRSR_FORMAT_URL } from "@/components/checklist/constants";
@@ -136,6 +138,7 @@ export default function WellbeingSchedulePage() {
           ]}
           maxWidth={1080}
         />
+        <ToolFaq items={TOOL_FAQS["wellbeing-schedule"]} />
       </main>
       <BlogFooter />
     </div>
