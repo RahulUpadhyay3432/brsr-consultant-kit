@@ -5,6 +5,7 @@ export const FILING_AUDIT_ITEMS: { label: string; sub: string; href: string }[] 
   { label: "XBRL pre-flight check",      sub: "Rupee-scale converter + why filings get rejected",   href: "/tools/xbrl-preflight" },
   { label: "Audit-readiness checklist",  sub: "Evidence a BRSR Core assurer asks for, per KPI",      href: "/tools/audit-readiness" },
   { label: "PPP-adjusted intensity",     sub: "Intensity comparable with global peers, WB PPP cited", href: "/tools/ppp-intensity" },
+  { label: "Emission factor database",   sub: "Every factor we compute with, cited and versioned",   href: "/tools/emission-factors" },
   { label: "Well-being expense schedule", sub: "P3 welfare heads mapped to P&L lines, CSV",          href: "/tools/wellbeing-schedule" },
 ];
 

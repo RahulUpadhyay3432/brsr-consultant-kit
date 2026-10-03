@@ -26,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/tools/audit-readiness`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     { url: `${BASE}/tools/xbrl-preflight`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     { url: `${BASE}/tools/scope3-calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE}/tools/emission-factors`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
     { url: `${BASE}/tools/ppp-intensity`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/tools/wellbeing-schedule`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/tools/ghg-calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },

@@ -79,6 +79,7 @@ function body(): string {
 - [Materiality shortlist](${BASE}/tools/materiality): sector-informed suggested material topics.
 - [PPP-adjusted intensity](${BASE}/tools/ppp-intensity): restates emissions or energy intensity against PPP-adjusted turnover, so an Indian figure compares like-for-like with global peers.
 - [Principle 3 wellbeing schedule](${BASE}/tools/wellbeing-schedule): the 11 Principle 3 welfare heads mapped to the P&L lines they come from.
+- [India emission factor database](${BASE}/tools/emission-factors): every emission factor Saaksh computes with, each with its primary source and vintage - the CEA grid factor with its version and applicable FY, IPCC 2006 combustion factors with calorific values, IPCC AR5 refrigerant GWPs, and DEFRA Scope 3 factors for travel, commuting, freight and waste. Free to quote; carry the version with the number.
 
 ## Guides
 
