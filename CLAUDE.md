@@ -83,7 +83,10 @@ that resolve to nothing.
 
 **Not built, and don't claim them:** per-person **seats** inside a firm (SAGE's 17 people would
 share one passcode and all see all SAGE clients), **CDP/EcoVadis for P1–P5 and P7–P9** (still
-principle-level only), and **GRESB at any level** (blog and glossary copy only).
+principle-level only), and **GRESB at any level** — corrected 2026-10-04: it appears **nowhere in `src/`**, not even blog or
+glossary copy (the earlier "blog and glossary copy only" note was wrong). ⚠️ **But it WAS named in
+the 29 Sep email to SAGE**, in the sentence that won the meeting. See
+`docs/sage-email-claim-audit.md`.
 **Known gap:** contact/item-level writes are still only passcode-gated — row-level hardening next.
 
 **Supabase MCP is connected**, so migrations can be applied directly. `brsr_` tables live in
@@ -248,7 +251,9 @@ scanned-bill OCR live once Gemini billing is topped up · run the `brsr_jobs` CR
 switch the jobs scraper on · optional `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections
 jsonb;` for structured JDs on scraped roles.
 
-**Key docs:** `docs/sage-call-run-sheet-2026-10-05.md` (**the sheet to hold on the day of the
+**Key docs:** `docs/sage-email-claim-audit.md` (**every claim in the SAGE emails checked against
+the repo — 12 of 13 true, GRESB is the one false one; and why we did not build it**) ·
+`docs/sage-call-run-sheet-2026-10-05.md` (**the sheet to hold on the day of the
 SAGE call — checklist, the opening, demo narration, the four questions, prepared answers, guard
 rails, thank-you email**) · `docs/session-2026-10-03-handoff.md` (**latest session handoff — read after the
 traction doc**) · `docs/competitor-parity-plan.md` (**the free-feature parity checklist and build order
