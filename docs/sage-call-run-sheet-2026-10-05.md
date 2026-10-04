@@ -34,55 +34,100 @@ versioned factors, one person. Say that without flinching if the moment comes.
 
 ---
 
-## 0a. Email 1, verbatim — and the one word the whole call turns on
+## 0a. The full thread — and the two things in it that change the call
 
-Recovered from the thread 2026-10-04. This is what she actually read before replying:
+All five messages recovered 2026-10-04. The sequence matters more than any single message.
 
-> Hi Shashi,
->
-> Hope you are doing well.
->
-> I read your piece on **the balance between regulatory disclosure and voluntary leadership**.
-> Your point that companies should tell their whole story, not just the required part, stayed
-> with me.
->
-> I'm building Saaksh (https://saaksh.co) **with a practising ESG consultant**. Its free,
-> no-login first check sorts **108 BRSR Section C disclosures into ready, verify and collect,
-> with source citations**. It can help start the evidence work, **but it should not make the
-> wider sustainability story look finished**. If useful, I'd be glad to show you an anonymised
-> example and hear **where the first pass gets that balance wrong**.
->
-> Would you be open to a short call this week or next?
+**1 · You → her, Sep 28.** You named her piece on *"the balance between regulatory disclosure and
+voluntary leadership"*, said the free check sorts **108 Section C disclosures into ready, verify
+and collect, with source citations**, and wrote the thesis line: *"It can help start the evidence
+work, but it should not make the wider sustainability story look finished."* Asked to show an
+anonymised example and hear **where the first pass gets that balance wrong**.
 
-**Four things this locks in.**
+**2 · Her, Sep 28, 4 hours later.** *"Thanks for your note and for reading my piece. Great to know
+about your work. If you'd help me understand how that tool will be of use to us or anyone, that
+would be of help."*
 
-**1. "That balance" is not vague — it has a referent, and it is hers.** It means *the balance
-between regulatory disclosure and voluntary leadership*. Asking "where does the first pass get
-the balance wrong?" with no referent sounds like a generic feedback request. **Name it**, and it
-lands as *he read my piece and still remembers what it argued.* Every question in this sheet that
-says "the balance" now carries the referent — use the longer form.
+**3 · You → her, Sep 29.** Answered the question in two parts. Today: a cited first gap view
+across the 108 disclosures. **Next: *"a shared workspace where a client collects each number once
+(energy, water, people) and it maps across BRSR, CDP, EcoVadis and GRESB, instead of being chased
+separately for every framework. For a practice like SAGE, with clients reporting under several of
+these, that is where I hope it saves real hours."*** Quoted her *"led by ambition, not compliance"*
+line. Asked about Green Skills Academy learning material, and asked for *"a line on where you see
+the same data collected twice."*
 
-**2. You already told her exactly what the demo is:** 108 Section C disclosures sorted into
-ready / verify / collect, with source citations. So the demo must be **precisely that**, in that
-order, with the citations visible. Nothing extra. If you open anything she wasn't promised, you
-are spending her goodwill on a surprise she didn't ask for.
-⚠️ On screen the product says **"Ready to pull" / "Needs verification" / "Collect fresh."** Use
-the product's words when pointing at them, not the email's shorthand, so screen and voice agree.
+**4 · Her, Sep 29, 2 hours later.** *"Thanks for explaining. Please share a calendar link for next
+week. Sunitha, please block."*
 
-**3. Your thesis sentence is already written, and she replied to it.** *"It can help start the
-evidence work, but it should not make the wider sustainability story look finished."* That is the
-line to deliver almost verbatim at the "where it deliberately stops" moment. It is not a new
-claim — it is the sentence that earned the meeting, demonstrated instead of asserted.
+**5 · You, Sep 29.** Confirmed the time with Sunitha. Invite titled **"BRSR-Discussion."**
 
-**4. "With a practising ESG consultant"** is the phrasing she has already seen. Keep it, and name
-Priya Ranjan when asked. Do not upgrade it to anything that sounds like a team.
+---
 
-⚠️ **The thread has five messages and only this one is recovered verbatim.** The docs reconstruct
-her reply (*"If you'd help me understand how that tool will be of use to us or anyone, that would
-be of help"*) and email 2 (collect-once-map-across-frameworks, plus the Green Skills Academy
-question). **Messages 4 and 5 are unread** — most likely the EA scheduling exchange, but unread
-is unread. Skim them before the call; if either contains anything from Shashi herself, it
-outranks this sheet.
+### ⚠️ Change #1 — her question is already answered. Do not re-ask it.
+
+She said **"Thanks for explaining"** and went straight to booking. She did not push back, did not
+ask a follow-up, did not raise a doubt. **The "how is this useful" question is closed.**
+
+So the old Beat 1 — *"you asked how this would be of use"* — is now a **mistake**. Restating a
+question she has already marked answered makes it sound like you didn't read message 4. Rewritten
+below.
+
+**And this tells you what she booked on.** Message 3's new content was almost entirely the
+workspace: *collect each number once, map it across frameworks, for a practice like SAGE.* That is
+the claim that converted her — **not** the gap analysis, which she had already had in message 1 and
+which drew only a question. **She is coming to see the thing you described as "next I am
+building."**
+
+Two consequences:
+
+- **The demo weighting shifts.** The gap analysis is what you *promised* in email 1 and you must
+  show it — but Collect is what she *came for*. Give Collect more than the 90 seconds in §2b;
+  take it to three or four minutes if she is engaged, and cut the materiality and framework
+  detours entirely.
+- **The concession gets sharper and more necessary.** She booked on a roadmap sentence. The
+  workspace is the least-proven thing you own: nine collections, all inside two weeks in June,
+  none run by an outside practice. Say that before she asks.
+
+### ⚠️ Change #2 — you already named GRESB in writing. In the sentence that won the meeting.
+
+Message 3 says the workspace *"maps across BRSR, CDP, EcoVadis and GRESB."* **GRESB is not built
+at any level** — it appears nowhere in the product but blog and glossary copy.
+
+The old guard rail said *"never say GRESB."* **That rail is now void** — you cannot un-write it,
+and SAGE works with GRESB (it is in their own framework list). She may well have read that word
+as the reason this is relevant to her.
+
+**So raise it yourself, early, unprompted.** Fifteen seconds, no apology, no hedging:
+
+> "One correction to my own email, before anything else. I listed four frameworks — BRSR, CDP,
+> EcoVadis and GRESB. The field-level mapping exists for Principle 6 against CDP and EcoVadis.
+> **GRESB I named too early** — it's a real-estate and infrastructure benchmark, it needs its own
+> vocabulary, and I haven't built it. I'd rather tell you that now than have you find it."
+
+**Why this is the strongest thing you can do in the first two minutes.** Her entire professional
+brand is defensible disclosure; she is certified in GRI, SBTi, CDP and Integrated Reporting. A
+founder who audits his own claim before being asked is the single most credible thing she will see
+all call. And the alternative — her discovering it in minute 20 — undoes everything else.
+
+⚠️ **Do not soften it into "partially mapped" or "on the roadmap."** The word is *"I named it too
+early."*
+
+### ⚠️ Change #3 — do not quote "ambition, not compliance" again
+
+You already used it in message 3. Quoting a person's own line back to them twice reads as
+flattery. **Once was good. Twice is a tell.** If it comes up, let *her* say it.
+
+### Change #4 — Q2 and Q3 are not new questions, they are unanswered ones
+
+You asked both in writing — *where the same data gets collected twice*, and whether the guides
+could work as Green Skills Academy material. **She answered neither**; message 4 went straight to
+scheduling. So don't introduce them as fresh. Introduce them as owed:
+
+> "I asked you two things in that email and then we sensibly went to scheduling instead. Can I
+> actually get them?"
+
+That is accurate, it is light, and it makes both questions easier to answer than if they arrive
+cold.
 
 ---
 
@@ -199,14 +244,23 @@ clicked since the deploy.
 
 Three beats. Target **90 seconds**, then stop talking.
 
-### Beat 1 — her question, restated (≈15s)
+### Beat 1 — the self-correction, then the frame (≈30s)
 
-> "Thanks for making the time. You asked one question in your reply — how this tool would be of
-> use to you or to anyone. I'd rather show you than describe it, and then I mostly want to be
-> corrected."
+**Not** "you asked how this is useful" — she already said *thanks for explaining.* Lead with the
+GRESB correction instead. It does the same job (shows you read the thread) and buys far more.
 
-Why it works: it's her agenda, verbatim, inside the first fifteen seconds. And "corrected" is the
-register that earned the same-day reply.
+> "Thanks for making the time. Before I show you anything — one correction to my own email.
+>
+> I listed four frameworks: BRSR, CDP, EcoVadis and GRESB. The field-level mapping is real for
+> Principle 6 against CDP and EcoVadis. **GRESB I named too early.** It's a real-estate and
+> infrastructure benchmark, it needs its own vocabulary, and I haven't built it. I'd rather say
+> that now than have you find it.
+>
+> Beyond that — I'd rather show you than describe it, and then I mostly want to be corrected."
+
+Why it works: she booked on that sentence, so auditing it yourself in the first thirty seconds is
+the highest-credibility move available to you. And "corrected" is the register that earned the
+same-day reply.
 
 ### Beat 2 — the concession, before she finds it (≈40s)
 
@@ -215,7 +269,8 @@ register that earned the same-day reply.
 >
 > I think I know why. A gap analysis is a once-a-year job per client. Even someone who likes it has
 > no reason to return next week. The part that actually recurs — chasing the numbers out of a
-> client's team — is the part I've built and nobody outside has really run yet.
+> client's team — is the part I described to you as 'next I am building.' It is built, it works,
+> and **no practice outside mine has run a real collection through it.**
 >
 > So I'm not here to tell you it works. I'd like to find out whether I'm right, on something real."
 
@@ -255,6 +310,11 @@ back."* If that lands flat or apologetic, the concession reads as weakness inste
 
 Eight minutes. **The report is already generated before you share** (checklist Tier A), so there
 is no typing and no loading. Walk it in exactly this order.
+
+⚠️ **Re-weighted after reading the full thread (§0a).** She booked on the *workspace*, not the gap
+analysis. So (a)–(c) below are the promise you must keep, delivered briskly in about four minutes
+— and **(d) Collect is what she came for.** If she engages there, give it three or four minutes and
+let the rest go. Skip materiality and the framework crosswalk entirely unless she asks.
 
 **(a) The three statuses — 60 seconds**
 
@@ -308,6 +368,10 @@ have not personally clicked that morning.
 Print these. In `11–23` you are writing, not talking. **Ask one, then wait.** The silence after is
 doing the work.
 
+⚠️ **Open the block by naming that two of these are owed, not new** (§0a, change #4):
+*"I asked you two things in that email and then we sensibly went to scheduling instead. Can I
+actually get them?"*
+
 **Q1. "Where does the first pass get that balance wrong — between the required part and the
 fuller story a company should be telling?"**
 → ⚠️ **Say the second half.** "That balance" alone is the vague version; the referent is from her
@@ -346,7 +410,9 @@ outcome. Don't manufacture a bigger yes.
 ### Guard rails you may not cross, however well it's going
 
 - **Never say "seats"** — per-person accounts don't exist; her 17 people would share one passcode.
-- **Never say "GRESB"** — it's in blog and glossary copy only, nowhere in the product.
+- **GRESB — the old "never say it" rail is VOID.** You named it in message 3, in the sentence that
+  won the meeting. Raise it yourself in Beat 1 and own it: *"I named it too early."* Never claim
+  it is built, partially built, or on the roadmap.
 - **Never state a price.** *"Priced per engagement, onboarded manually."*
 - **Never say "only" or "first"** — FileBRSR, SustainableX and RSustain overlap on all of it.
 - **Never put a competitor's price in your mouth** — ₹29,999 is relayed, not verified by you.
