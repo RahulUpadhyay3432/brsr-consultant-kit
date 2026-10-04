@@ -34,6 +34,38 @@ versioned factors, one person. Say that without flinching if the moment comes.
 
 ---
 
+## 0b. What you are pitching, and how
+
+**You are not pitching the product. You are pitching a test.**
+
+> *"I want to run one of your live BRSR engagements through this, free, so I can find out where
+> it breaks."*
+
+That is the entire pitch. Everything else in this sheet exists to earn the right to say it and
+to make it easy for her to say yes. **You are a builder bringing her a question, not a vendor
+bringing her a solution.**
+
+Four rules for the whole thirty minutes:
+
+1. **Concede first, always.** Every claim arrives with its own limitation attached. "It's built
+   and working — and nobody outside has run it on a real client yet."
+2. **Let her correct you.** The call succeeds if she talks more than you. When she criticises
+   something, the only correct replies are *"say more about that"*, *"where have you seen that
+   go wrong?"* and *"if I did X instead, does that fix it or just move it?"* **Never "yes, but."
+   Never "that's actually already handled."** If she misread a screen, the screen is wrong.
+3. **Use her language.** Her practice runs on **guided traverse → independent traverse.** Collect
+   *is* a handover mechanism. Say that in her words and she'll see the fit faster than a demo
+   can show it.
+4. **Never lead with the ask.** A pitch before a diagnosis is a worse pitch.
+
+**Energy:** calm, specific, curious — not eager. She has no demand problem. Anyone who arrives
+needing something from her feels like a risk to a reputation she spent ten years building.
+
+**And what you are not doing:** not selling, not quoting a price, **not asking for a job.** A job
+converts the thing you own into labour and turns you from a founder-peer into an applicant.
+
+---
+
 ## 1. Click-through checklist
 
 You have to do this — the container can't reach `saaksh.co`. Ordered by **what costs you the call
@@ -166,6 +198,57 @@ back."* If that lands flat or apologetic, the concession reads as weakness inste
 
 ---
 
+## 2b. The demo — what to say at each screen
+
+Eight minutes. **The report is already generated before you share** (checklist Tier A), so there
+is no typing and no loading. Walk it in exactly this order.
+
+**(a) The three statuses — 60 seconds**
+
+> "This is a mid-size textile exporter, first-time filer, anonymised. It's gone through all one
+> hundred and eight Section C disclosures and sorted them into three buckets: what they can pull
+> from filings they already make, what's partly there and needs verification, and what they have
+> to collect fresh.
+>
+> That sorting is really the whole product. The value isn't the list — it's knowing which third
+> of the list you don't have to chase."
+
+**(b) One expanded row — 3 minutes. The most important minute of the call.**
+
+Expand a **Principle 6** row (energy or GHG).
+
+> "Here's what's under one row. The SEBI wording, verbatim. The ICAI page it's on. Where the data
+> usually lives inside the company. What a complete answer actually contains. And the emission
+> factor — with its version and the financial year it applies to.
+>
+> That last one is the reason the product exists. A Scope 2 number computed on last year's grid
+> factor still adds up. It's just computed on a basis nobody can cite now. So the version travels
+> with the number everywhere."
+
+**Then pause.** If she engages with anything, it's this — she is CDP- and GRI-certified and
+citation discipline is her native language.
+
+**(c) Where it deliberately stops — 90 seconds.** The three-things paragraph in section 2 above.
+Say it out loud; do not skip it.
+
+**(d) Collect, in her language — 90 seconds**
+
+> "The second half is the bit I'd want your view on. You assign the fields to the people inside
+> the client who actually hold them. They get their own link, no login, and fill in their own
+> numbers. It chases them on a cadence. And every figure comes back with who it came from, and
+> whether it was typed by that person or read out of a document.
+>
+> The reason I think it might fit SAGE specifically: it's a handover mechanism. Your
+> guided-to-independent traverse — that's the shape I've been building without having a name
+> for it."
+
+Then stop and hand over: *"That's the tour. Where does the first pass get the balance wrong?"*
+
+**Do not show:** Collect with real campaigns in it, the proposal/fee builder, or any screen you
+have not personally clicked that morning.
+
+---
+
 ## 3. Your four questions
 
 Print these. In `11–23` you are writing, not talking. **Ask one, then wait.** The silence after is
@@ -219,6 +302,75 @@ outcome. Don't manufacture a bigger yes.
 - **Isolation question, if asked:** *"Firm-level separation on collections is in — each firm owns
   its campaigns and every campaign query filters by it. Row-level hardening on individual field
   writes is the next commit."* Exactly that. She'll respect the precision more than confidence.
+
+---
+
+## 3b. If she asks — answers, close to verbatim
+
+The isolation answer is in the guard rails above. These are the rest.
+
+**"Do you have per-user accounts for a team?"**
+> "No. One passcode per firm today. Real per-person accounts with attribution are the next build
+> after row-level hardening."
+
+**"Does it map to CDP and EcoVadis?"**
+> "At field level for Principle 6 — the environment figures clients get asked for repeatedly.
+> Every other principle is principle-level only. And nothing's invented: the vocabulary comes from
+> the published CDP questionnaire areas and EcoVadis' documented criteria, not from me."
+
+**"What about GRESB?"**
+> "Not built. It's a real-estate and infrastructure benchmark — it would need its own vocabulary
+> and I didn't want to fake a mapping."
+
+**"Is the data assured?"**
+> "No, and the product never claims it is. It's built so a figure can be defended — source, owner,
+> evidence, factor version. That's a different thing from assured."
+
+**"Who else is using it?"**
+> "More than two hundred and twenty users, mostly independent consultants. No firm is a customer.
+> SAGE would be the first — which is exactly why a pilot is worth more to me than a licence fee."
+
+**"Did you build this alone?"**
+> "I built it with a practising ESG consultant, Priya Ranjan. She shaped what it collects and in
+> what order."
+
+**"What does it cost?"**
+> "There's no public pricing and I haven't validated any. Priced per engagement, onboarded
+> manually. I'd rather set a price after someone has run a full cycle on it than guess now."
+
+**"Do you want to work for us?" / "Are you looking for a job?"**
+> "I'm not looking for a role — I'd rather build. If SAGE ever wanted something built to your
+> spec, that's a conversation I'd love to have. But today I just want one engagement to test
+> against."
+
+**"We have our own tools" / "we're happy with spreadsheets."**
+> "Useful to know — and honestly spreadsheets are what most of my users compare against too. My
+> question is narrower: not whether you'd replace anything, but whether the chasing part costs you
+> hours you'd rather not spend."
+
+---
+
+## 3c. If it goes sideways
+
+**She joins late, or cuts it to 15 minutes.** Drop the demo to 3 minutes — statuses, one expanded
+row, where it stops. Then Q1 and Q2 only, then the ask. **Protect the ask.**
+
+**She brings a colleague.** Good sign. Re-ask the opening question to the room, and point "where
+does it get the balance wrong" at whoever does the hands-on work.
+
+**She's lukewarm and non-specific.** Don't push up the ladder. Take the smallest ask — *"could I
+send you the next version when the thing you flagged is fixed, and get ten more minutes?"* A
+second call you earned beats a pilot she half-agreed to.
+
+**She finds a real error on screen.** Say so immediately: *"That's wrong. Thank you — I'll fix it
+today and tell you when it's out."* Then actually do it, and put it in the note. A found-and-fixed
+error inside 24 hours demonstrates more than a clean demo would have.
+
+**She asks something you don't know.** *"I don't know. Let me check and come back to you in the
+note."* **Never guess at a regulatory fact** in front of someone certified in four frameworks.
+
+**It drifts into general ESG conversation.** Let it, for a while — rapport is the point and she's
+interesting. But protect the last three minutes for the ask.
 
 ---
 

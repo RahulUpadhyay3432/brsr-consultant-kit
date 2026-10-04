@@ -248,8 +248,9 @@ scanned-bill OCR live once Gemini billing is topped up · run the `brsr_jobs` CR
 switch the jobs scraper on · optional `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections
 jsonb;` for structured JDs on scraped roles.
 
-**Key docs:** `docs/sage-call-script.md` (**what to actually say on the SAGE call — the
-minute-by-minute script, the answers, the never-say list**) · `docs/session-2026-10-03-handoff.md` (**latest session handoff — read after the
+**Key docs:** `docs/sage-call-run-sheet-2026-10-05.md` (**the sheet to hold on the day of the
+SAGE call — checklist, the opening, demo narration, the four questions, prepared answers, guard
+rails, thank-you email**) · `docs/session-2026-10-03-handoff.md` (**latest session handoff — read after the
 traction doc**) · `docs/competitor-parity-plan.md` (**the free-feature parity checklist and build order
 — active work**) · `docs/traction-and-strategy-2026-10-02.md` (**traction numbers, the retention
 diagnosis, the four product ideas assessed, the keyword-map assessment, the SAGE tech-arm reframe,
