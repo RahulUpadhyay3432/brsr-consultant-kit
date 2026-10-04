@@ -131,6 +131,13 @@ export interface FrameworkMapping {
   ecovadis_theme?: string;
   ecovadis_criterion?: string;
   ecovadis_detail?: string;
+  /** GRESB Component and Aspect, Real Estate Assessment. Absent where that
+   *  Assessment has no counterpart aspect (e.g. air pollution, biodiversity). */
+  gresb_re?: string;
+  /** GRESB Component and Aspect, Infrastructure Asset Assessment. The two
+   *  Assessments use different aspect vocabularies, so both are carried. */
+  gresb_infra?: string;
+  gresb_detail?: string;
   notes: string;
 }
 

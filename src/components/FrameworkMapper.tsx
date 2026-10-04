@@ -19,7 +19,7 @@ const has = isMapped;
 // buried filter: picking one renders a focused two-column crosswalk instead of a
 // row of five competing badges. "All" stays the browse/overview mode.
 // Full class strings only, Tailwind's JIT can't see interpolated ones.
-type FwKey = "all" | "gri" | "tcfd" | "ifrs" | "tnfd" | "esrs" | "cdp" | "ecovadis";
+type FwKey = "all" | "gri" | "tcfd" | "ifrs" | "tnfd" | "esrs" | "cdp" | "ecovadis" | "gresb";
 
 const FRAMEWORKS: {
   key: Exclude<FwKey, "all">;
@@ -57,6 +57,23 @@ const FRAMEWORKS: {
     chip: "bg-amber-50 text-amber-700 border-amber-100",    label_cls: "text-amber-600",
     ref: (m) => (has(m.ecovadis_criterion) ? m.ecovadis_criterion : undefined),
     detail: (m) => m.ecovadis_detail },
+  // GRESB runs two Assessments with DIFFERENT aspect vocabularies, so one
+  // column would have to pick a winner or silently merge them. Both are shown.
+  // Coverage is deliberately low and uneven: GRESB has no product-lifecycle,
+  // human-rights, advocacy or statutory-CSR aspect, and several of its own
+  // aspects (Air Pollution, Biodiversity & Habitat) exist only in Infrastructure.
+  { key: "gresb", label: "GRESB", short: "GRESB",
+    chip: "bg-teal-50 text-teal-700 border-teal-100",       label_cls: "text-teal-600",
+    ref: (m) => (has(m.gresb_re) ? m.gresb_re : has(m.gresb_infra) ? m.gresb_infra : undefined),
+    detail: (m) => {
+      // Name which Assessment each aspect belongs to; without that the two
+      // different vocabularies read as a contradiction.
+      const parts: string[] = [];
+      if (has(m.gresb_re)) parts.push(`Real Estate: ${m.gresb_re}`);
+      if (has(m.gresb_infra)) parts.push(`Infrastructure: ${m.gresb_infra}`);
+      const where = parts.join(" · ");
+      return has(m.gresb_detail) ? (where ? `${where} — ${m.gresb_detail}` : m.gresb_detail) : where || undefined;
+    } },
 ];
 
 export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
@@ -79,7 +96,7 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
     return mappings.filter((m) => {
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
-        const searchable = `${m.brsr_id} ${m.brsr_label} ${m.gri_standard} ${m.gri_label} ${m.tcfd_detail} ${m.ifrs_reference} ${m.tnfd_detail ?? ""} ${m.esrs_standard ?? ""} ${m.esrs_detail ?? ""} ${m.cdp_area ?? ""} ${m.cdp_detail ?? ""} ${m.ecovadis_criterion ?? ""} ${m.ecovadis_detail ?? ""} ${m.notes}`.toLowerCase();
+        const searchable = `${m.brsr_id} ${m.brsr_label} ${m.gri_standard} ${m.gri_label} ${m.tcfd_detail} ${m.ifrs_reference} ${m.tnfd_detail ?? ""} ${m.esrs_standard ?? ""} ${m.esrs_detail ?? ""} ${m.cdp_area ?? ""} ${m.cdp_detail ?? ""} ${m.ecovadis_criterion ?? ""} ${m.ecovadis_detail ?? ""} ${m.gresb_re ?? ""} ${m.gresb_infra ?? ""} ${m.gresb_detail ?? ""} ${m.notes}`.toLowerCase();
         if (!searchable.includes(q)) return false;
       }
       if (filterPillar !== "all" && m.tcfd_pillar !== filterPillar) return false;
@@ -126,6 +143,27 @@ export default function FrameworkMapper({ mappings }: FrameworkMapperProps) {
           })}
         </div>
       </div>
+
+      {/* GRESB is the one framework here that is scope-limited by asset class
+          rather than by company size or geography. A GRESB column shown without
+          this caveat would imply a textile or pharma client has a GRESB
+          obligation, which is simply untrue, so the caveat is tied to the
+          filter rather than buried in a methodology page. */}
+      {filterFramework === "gresb" && (
+        <div className="rounded-xl border border-teal-200 bg-teal-50/60 px-4 py-3">
+          <p className="text-[13px] text-ink-body leading-relaxed">
+            <span className="font-semibold text-teal-800">GRESB applies to real-estate and
+            infrastructure entities and funds.</span>{" "}
+            It is not a general-purpose corporate ESG benchmark, so most BRSR filers do not
+            participate in it at all — check that your client is in scope before using this view.
+            GRESB also runs <span className="font-semibold">two separate Assessments with different
+            aspect names</span>, so each row names which one it belongs to. Mapped at Component and
+            Aspect level, not indicator codes, because codes are revised each Assessment year.
+            Indicative only, and not a submission aid: GRESB collects asset-level data on its own
+            templates and boundaries, while a BRSR figure is entity-level.
+          </p>
+        </div>
+      )}
 
       {/* Search + TCFD pillar narrowing, secondary to the selector above. The
           pillar filter only makes sense while TCFD is in view, so it's hidden

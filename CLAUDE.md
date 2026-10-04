@@ -83,10 +83,16 @@ that resolve to nothing.
 
 **Not built, and don't claim them:** per-person **seats** inside a firm (SAGE's 17 people would
 share one passcode and all see all SAGE clients), **CDP/EcoVadis for P1–P5 and P7–P9** (still
-principle-level only), and **GRESB at any level** — corrected 2026-10-04: it appears **nowhere in `src/`**, not even blog or
-glossary copy (the earlier "blog and glossary copy only" note was wrong). ⚠️ **But it WAS named in
-the 29 Sep email to SAGE**, in the sentence that won the meeting. See
-`docs/sage-email-claim-audit.md`.
+principle-level only), and ~~**GRESB at any level**~~ — **BUILT 2026-10-04.** `src/data/gresb_mappings.json` maps **40 of the
+77 crosswalk rows** to GRESB Components and Aspects, **separately for the Real Estate and
+Infrastructure Assessments** because their vocabularies differ. Aspect-level, not indicator codes
+(codes are revised yearly). `gresb-mappings.test.ts` (12 tests) asserts every term comes from the
+published Assessment structure and that the gaps stay gaps — **P2, P5, P7 and P8 map nowhere**
+(GRESB has no product-lifecycle, human-rights, advocacy or statutory-CSR aspect), and PAT, ZLD,
+penalties, single-use plastic, EIA and internal carbon pricing carry no mapping.
+⚠️ **GRESB is scope-limited by asset class** — a caveat renders whenever the GRESB filter is on,
+because most BRSR filers do not participate in GRESB at all. It was named in the 29 Sep SAGE email
+before it existed; see `docs/sage-email-claim-audit.md`.
 **Known gap:** contact/item-level writes are still only passcode-gated — row-level hardening next.
 
 **Supabase MCP is connected**, so migrations can be applied directly. `brsr_` tables live in

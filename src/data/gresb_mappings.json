@@ -1,0 +1,215 @@
+{
+  "_meta": {
+    "description": "Sparse BRSR -> GRESB overlay, keyed by framework_mappings.json brsr_id. Maps a BRSR disclosure to the GRESB Component and Aspect that asks for the same underlying data.",
+    "granularity": "Component and Aspect, NOT indicator codes. Aspects are the stable, published vocabulary of the GRESB Standards; individual indicator codes are revised each Assessment year, so pinning them would rot and would risk citing a code that no longer exists.",
+    "assessments": "GRESB runs two separate Assessments with DIFFERENT aspect vocabularies, so each row carries them separately. A row may map to one and not the other, which is a real difference and not an omission - e.g. Air Pollution and Biodiversity & Habitat exist only in Infrastructure, and Tenants & Community only in Real Estate.",
+    "real_estate_structure": "Three Components. Management: 35 indicators across 5 Aspects (Leadership, Policies, ESG Reporting, Risk Management, Employee Engagement). Performance: 10 Aspects (Reporting Characteristics, Risk Assessment, Targets, Tenants & Community, Energy, GHG, Water, Waste, Data Monitoring & Review, Building Certifications). Development: measures sustainability in design, construction and renovation.",
+    "infrastructure_structure": "Infrastructure Asset Assessment. Management: 24 indicators across 6 Aspects (Leadership, Policies, Targets, Reporting, Risk Management, Stakeholder Engagement). Performance: 12 Aspects (Implementation, Output & Impact, Health & Safety, Energy, Greenhouse Gas Emissions, Air Pollution, Water, Waste, Biodiversity & Habitat, Employees, Customers, Certifications & Awards).",
+    "applicability_warning": "GRESB assesses REAL ESTATE AND INFRASTRUCTURE entities and funds. It is not a general-purpose corporate ESG benchmark. Most BRSR filers - a textile exporter, a pharmaceutical manufacturer, an IT services firm - do not participate in GRESB at all. This overlay is only meaningful for a real-estate or infrastructure client, and the UI must say so.",
+    "status": "Indicative crosswalk for orienting work, NOT a certified equivalence and not a GRESB submission aid. GRESB collects asset-level data on its own templates with its own boundaries and reporting period rules; a BRSR figure is entity-level. Confirm every mapping against the current Assessment year's Reference Guide before relying on it.",
+    "invents_no_vocabulary": "Every component and aspect name below is drawn verbatim from the published GRESB Assessment structure cited in sources. Nothing is coined here. gresb-mappings.test.ts asserts this against an allowlist.",
+    "deliberate_gaps": "BRSR Principles 2, 5, 7 and 8 are mapped NOWHERE, on purpose. GRESB has no product-lifecycle aspect (P2), no human-rights aspect (P5), no policy-advocacy aspect (P7) and no statutory-CSR aspect (P8). Within P6, the India-specific disclosures (PAT scheme, Zero Liquid Discharge), environmental penalties, single-use plastic and internal carbon pricing have no GRESB counterpart and carry no mapping. 40 of the 77 crosswalk rows are mapped.",
+    "sources": [
+      "GRESB Real Estate Assessment Reference Guide (current and prior years), https://documents.gresb.com/generated_files/real_estate/2025/real_estate/reference_guide/complete.html",
+      "GRESB Infrastructure Asset Assessment Reference Guide, https://documents.gresb.com/generated_files/infrastructure/2025/asset/reference_guide/complete.html",
+      "GRESB Infrastructure Fund Assessment Reference Guide, https://documents.gresb.com/generated_files/infrastructure/2025/fund/reference_guide/complete.html",
+      "GRESB, What is the GRESB Real Estate Assessment, https://www.gresb.com/faq/what-is-the-gresb-real-estate-assessment/",
+      "GRESB Infrastructure Asset Standard 2025 Updates, https://www.gresb.com/wp-content/uploads/2024/11/resources-2025-updates-to-infrastructure-asset-standard.pdf"
+    ],
+    "compiled": "2026-10-04"
+  },
+  "mappings": {
+    "P1-G1": {
+      "gresb_re": "Management – Leadership",
+      "gresb_infra": "Management – Leadership",
+      "gresb_detail": "Both Assessments open with oversight: who at board or equivalent level holds ESG accountability."
+    },
+    "P1-G2": {
+      "gresb_re": "Management – Leadership",
+      "gresb_infra": "Management – Leadership",
+      "gresb_detail": "A designated ESG committee or responsible body is the Leadership evidence in both Assessments."
+    },
+    "P1-G4": {
+      "gresb_re": "Management – Policies",
+      "gresb_infra": "Management – Policies",
+      "gresb_detail": "Anti-bribery and anti-corruption sits in the Policies aspect; GRESB asks for coverage, not just existence."
+    },
+    "P1-G5": {
+      "gresb_re": "Management – Policies",
+      "gresb_infra": "Management – Policies",
+      "gresb_detail": "Conflict-of-interest provisions are part of the governance policy set GRESB scores under Policies."
+    },
+    "P1-G6": {
+      "gresb_re": "Management – Employee Engagement",
+      "gresb_detail": "Ethics awareness training for board, KMPs and employees is Employee Engagement evidence in Real Estate. Infrastructure has no equivalent Management aspect for internal ethics training."
+    },
+    "P1-G7": {
+      "gresb_infra": "Management – Stakeholder Engagement",
+      "gresb_detail": "A grievance mechanism open to external stakeholders maps to Infrastructure's Stakeholder Engagement aspect. Real Estate's Management engagement aspect covers employees only, so no mapping there."
+    },
+    "P1-G8": {
+      "gresb_re": "Management – ESG Reporting",
+      "gresb_infra": "Management – Reporting",
+      "gresb_detail": "The BRSR filing itself, plus any Annual or Sustainability Report, is what both Reporting aspects ask you to disclose. Note the aspects carry different names in the two Assessments."
+    },
+
+    "P3-L1": {
+      "gresb_infra": "Performance – Employees",
+      "gresb_detail": "Headcount split by employment type and gender is Employees performance data in Infrastructure. Real Estate collects no equivalent workforce metric."
+    },
+    "P3-L2": {
+      "gresb_infra": "Performance – Employees",
+      "gresb_detail": "Gender composition of the workforce and of management is reported under the Employees aspect."
+    },
+    "P3-L7": {
+      "gresb_infra": "Performance – Health & Safety",
+      "gresb_detail": "Occupational health and safety management system coverage is the core of the Health & Safety aspect."
+    },
+    "P3-L8": {
+      "gresb_infra": "Performance – Health & Safety",
+      "gresb_detail": "Recordable injuries and fatalities are the headline Health & Safety performance figures."
+    },
+    "P3-L9": {
+      "gresb_infra": "Performance – Health & Safety",
+      "gresb_detail": "Work-related ill health is reported alongside injury data under Health & Safety."
+    },
+    "P3-L10": {
+      "gresb_re": "Management – Employee Engagement",
+      "gresb_infra": "Performance – Employees",
+      "gresb_detail": "Training hours evidence employee development: an engagement input in Real Estate's Management Component, a workforce metric in Infrastructure's Performance Component."
+    },
+    "P3-L13": {
+      "gresb_infra": "Performance – Health & Safety",
+      "gresb_detail": "Complaints raised on working conditions and safety, filed against resolved, support the Health & Safety aspect."
+    },
+
+    "P4-Q1": {
+      "gresb_infra": "Management – Stakeholder Engagement",
+      "gresb_detail": "Identifying the stakeholder groups is the first Stakeholder Engagement question in Infrastructure."
+    },
+    "P4-Q2": {
+      "gresb_re": "Performance – Tenants & Community",
+      "gresb_infra": "Management – Stakeholder Engagement",
+      "gresb_detail": "Channels and frequency of engagement: Real Estate asks this about tenants and the surrounding community; Infrastructure asks it as a Management practice."
+    },
+    "P4-Q3": {
+      "gresb_infra": "Management – Stakeholder Engagement",
+      "gresb_detail": "Material issues surfaced through engagement are the output Stakeholder Engagement asks you to evidence."
+    },
+
+    "P6-E1": {
+      "gresb_re": "Performance – Energy",
+      "gresb_infra": "Performance – Energy",
+      "gresb_detail": "Purchased electricity is the primary energy consumption input in both Assessments. GRESB wants it asset by asset, where BRSR reports it entity-wide."
+    },
+    "P6-E2": {
+      "gresb_re": "Performance – Energy",
+      "gresb_infra": "Performance – Energy",
+      "gresb_detail": "Fuel consumption completes the energy picture and is also the activity data behind Scope 1."
+    },
+    "P6-E3": {
+      "gresb_re": "Performance – Energy",
+      "gresb_infra": "Performance – Energy",
+      "gresb_detail": "Biomass and recovered waste heat are reported within the energy consumption breakdown."
+    },
+    "P6-E4": {
+      "gresb_re": "Performance – Energy",
+      "gresb_infra": "Performance – Energy",
+      "gresb_detail": "Total energy is the Energy aspect's headline figure. ⚠️ GRESB normalises by floor area or asset output, not by rupee of turnover, so the BRSR intensity does not transfer - only the absolute total does."
+    },
+    "P6-E5": {
+      "gresb_re": "Performance – Energy",
+      "gresb_infra": "Performance – Energy",
+      "gresb_detail": "Renewable share is part of the energy mix both Assessments collect."
+    },
+    "P6-E7": {
+      "gresb_re": "Performance – Water",
+      "gresb_infra": "Performance – Water",
+      "gresb_detail": "Withdrawal by source is the Water aspect's consumption input."
+    },
+    "P6-E8": {
+      "gresb_re": "Performance – Water",
+      "gresb_infra": "Performance – Water",
+      "gresb_detail": "Water consumption is the Water aspect's headline figure. The same intensity caveat as energy applies: GRESB normalises differently."
+    },
+    "P6-E9": {
+      "gresb_re": "Performance – Water",
+      "gresb_infra": "Performance – Water",
+      "gresb_detail": "Discharge by destination and treatment method is collected under Water."
+    },
+    "P6-E11": {
+      "gresb_re": "Performance – GHG",
+      "gresb_infra": "Performance – Greenhouse Gas Emissions",
+      "gresb_detail": "Scope 1 is reported directly. Note the aspect is named GHG in Real Estate and Greenhouse Gas Emissions in Infrastructure."
+    },
+    "P6-E12": {
+      "gresb_re": "Performance – GHG",
+      "gresb_infra": "Performance – Greenhouse Gas Emissions",
+      "gresb_detail": "Scope 2. ⚠️ GRESB asks for both location-based and market-based where available; BRSR asks for one figure, so check which basis your number uses."
+    },
+    "P6-E13": {
+      "gresb_re": "Performance – GHG",
+      "gresb_infra": "Performance – Greenhouse Gas Emissions",
+      "gresb_detail": "Scope 3. Voluntary as a BRSR Leadership indicator, and reported by category in GRESB."
+    },
+    "P6-E14": {
+      "gresb_re": "Performance – GHG",
+      "gresb_infra": "Performance – Greenhouse Gas Emissions",
+      "gresb_detail": "Emission intensity. Same normalisation caveat: the BRSR per-rupee basis is not the GRESB basis."
+    },
+    "P6-E15": {
+      "gresb_re": "Performance – Targets",
+      "gresb_infra": "Management – Targets",
+      "gresb_detail": "Reduction targets and progress against them. ⚠️ Targets sits in the Performance Component in Real Estate but in the Management Component in Infrastructure."
+    },
+    "P6-E16": {
+      "gresb_re": "Performance – GHG",
+      "gresb_infra": "Performance – Greenhouse Gas Emissions",
+      "gresb_detail": "Offsets purchased or retired are disclosed alongside gross emissions, never netted into them."
+    },
+    "P6-E17": {
+      "gresb_re": "Performance – Waste",
+      "gresb_infra": "Performance – Waste",
+      "gresb_detail": "Total waste generated, split hazardous and non-hazardous, is the Waste aspect's input."
+    },
+    "P6-E18": {
+      "gresb_re": "Performance – Waste",
+      "gresb_infra": "Performance – Waste",
+      "gresb_detail": "Waste diverted from disposal - reused, recycled, other recovery - is the diversion rate GRESB scores."
+    },
+    "P6-E19": {
+      "gresb_re": "Performance – Waste",
+      "gresb_infra": "Performance – Waste",
+      "gresb_detail": "Waste directed to disposal by method completes the Waste aspect."
+    },
+    "P6-E20": {
+      "gresb_infra": "Performance – Air Pollution",
+      "gresb_detail": "NOx, SOx and particulate matter map to Infrastructure's Air Pollution aspect. Real Estate has no air-pollution aspect, so there is no mapping there."
+    },
+    "P6-E22": {
+      "gresb_infra": "Performance – Biodiversity & Habitat",
+      "gresb_detail": "Operations in or adjacent to ecologically sensitive areas map to Biodiversity & Habitat, which exists only in the Infrastructure Assessment."
+    },
+    "P6-E25": {
+      "gresb_re": "Performance – Risk Assessment",
+      "gresb_infra": "Management – Risk Management",
+      "gresb_detail": "Climate-related risks and opportunities. ⚠️ Real Estate assesses this as Performance Risk Assessment; Infrastructure as Management Risk Management."
+    },
+    "P6-E26": {
+      "gresb_re": "Performance – Risk Assessment",
+      "gresb_infra": "Management – Risk Management",
+      "gresb_detail": "Scenario analysis for climate resilience is the deepest part of both risk aspects."
+    },
+
+    "P9-C1": {
+      "gresb_re": "Performance – Tenants & Community",
+      "gresb_infra": "Performance – Customers",
+      "gresb_detail": "Complaints received and resolved: tenants and community in Real Estate, customers in Infrastructure."
+    },
+    "P9-C6": {
+      "gresb_re": "Performance – Tenants & Community",
+      "gresb_infra": "Performance – Customers",
+      "gresb_detail": "Satisfaction surveys and their outcomes are collected by both aspects."
+    }
+  }
+}
