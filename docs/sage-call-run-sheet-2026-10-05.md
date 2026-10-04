@@ -34,6 +34,58 @@ versioned factors, one person. Say that without flinching if the moment comes.
 
 ---
 
+## 0a. Email 1, verbatim — and the one word the whole call turns on
+
+Recovered from the thread 2026-10-04. This is what she actually read before replying:
+
+> Hi Shashi,
+>
+> Hope you are doing well.
+>
+> I read your piece on **the balance between regulatory disclosure and voluntary leadership**.
+> Your point that companies should tell their whole story, not just the required part, stayed
+> with me.
+>
+> I'm building Saaksh (https://saaksh.co) **with a practising ESG consultant**. Its free,
+> no-login first check sorts **108 BRSR Section C disclosures into ready, verify and collect,
+> with source citations**. It can help start the evidence work, **but it should not make the
+> wider sustainability story look finished**. If useful, I'd be glad to show you an anonymised
+> example and hear **where the first pass gets that balance wrong**.
+>
+> Would you be open to a short call this week or next?
+
+**Four things this locks in.**
+
+**1. "That balance" is not vague — it has a referent, and it is hers.** It means *the balance
+between regulatory disclosure and voluntary leadership*. Asking "where does the first pass get
+the balance wrong?" with no referent sounds like a generic feedback request. **Name it**, and it
+lands as *he read my piece and still remembers what it argued.* Every question in this sheet that
+says "the balance" now carries the referent — use the longer form.
+
+**2. You already told her exactly what the demo is:** 108 Section C disclosures sorted into
+ready / verify / collect, with source citations. So the demo must be **precisely that**, in that
+order, with the citations visible. Nothing extra. If you open anything she wasn't promised, you
+are spending her goodwill on a surprise she didn't ask for.
+⚠️ On screen the product says **"Ready to pull" / "Needs verification" / "Collect fresh."** Use
+the product's words when pointing at them, not the email's shorthand, so screen and voice agree.
+
+**3. Your thesis sentence is already written, and she replied to it.** *"It can help start the
+evidence work, but it should not make the wider sustainability story look finished."* That is the
+line to deliver almost verbatim at the "where it deliberately stops" moment. It is not a new
+claim — it is the sentence that earned the meeting, demonstrated instead of asserted.
+
+**4. "With a practising ESG consultant"** is the phrasing she has already seen. Keep it, and name
+Priya Ranjan when asked. Do not upgrade it to anything that sounds like a team.
+
+⚠️ **The thread has five messages and only this one is recovered verbatim.** The docs reconstruct
+her reply (*"If you'd help me understand how that tool will be of use to us or anyone, that would
+be of help"*) and email 2 (collect-once-map-across-frameworks, plus the Green Skills Academy
+question). **Messages 4 and 5 are unread** — most likely the EA scheduling exchange, but unread
+is unread. Skim them before the call; if either contains anything from Shashi herself, it
+outranks this sheet.
+
+---
+
 ## 0b. What you are pitching, and how
 
 **You are not pitching the product. You are pitching a test.**
@@ -174,7 +226,8 @@ to it. And it pre-frames the ask so you never have to pitch.
 ### Beat 3 — hand over, then go quiet (≈15s)
 
 > "Let me show you the first pass on an anonymised textile exporter — about eight minutes — and
-> then I'd really like the rest of the time to be you telling me where it gets the balance wrong."
+> then I'd really like the rest of the time to be you telling me where it gets that balance
+> wrong — between the required part and the fuller story."
 
 Then share screen. **Beats 1–3 are the last time you talk uninterrupted.**
 
@@ -242,7 +295,8 @@ Say it out loud; do not skip it.
 > guided-to-independent traverse — that's the shape I've been building without having a name
 > for it."
 
-Then stop and hand over: *"That's the tour. Where does the first pass get the balance wrong?"*
+Then stop and hand over: *"That's the tour. Where does the first pass get that balance wrong —
+between the required part and the story they should actually be telling?"*
 
 **Do not show:** Collect with real campaigns in it, the proposal/fee builder, or any screen you
 have not personally clicked that morning.
@@ -254,7 +308,11 @@ have not personally clicked that morning.
 Print these. In `11–23` you are writing, not talking. **Ask one, then wait.** The silence after is
 doing the work.
 
-**Q1. "Where does the first pass get that balance wrong?"**
+**Q1. "Where does the first pass get that balance wrong — between the required part and the
+fuller story a company should be telling?"**
+→ ⚠️ **Say the second half.** "That balance" alone is the vague version; the referent is from her
+own piece and from your email, and naming it is the difference between a feedback request and a
+conversation she already started.
 → The question you already promised in writing. Ask it first because it's the one you owe her.
 → Listen for: over-weighted environment, missing social nuance, anything that reads as
 compliance-first when her position is *"led by ambition, not compliance."*
@@ -356,7 +414,7 @@ The isolation answer is in the guard rails above. These are the rest.
 row, where it stops. Then Q1 and Q2 only, then the ask. **Protect the ask.**
 
 **She brings a colleague.** Good sign. Re-ask the opening question to the room, and point "where
-does it get the balance wrong" at whoever does the hands-on work.
+does it get that balance wrong" at whoever does the hands-on work.
 
 **She's lukewarm and non-specific.** Don't push up the ladder. Take the smallest ask — *"could I
 send you the next version when the thing you flagged is fixed, and get ten more minutes?"* A
