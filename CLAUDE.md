@@ -77,6 +77,13 @@ first. Now a firm (org) owns its campaigns and every campaign-level query filter
 pattern and **invents no vocabulary** — every term comes from the sourced sets in
 `esg_ratings_mapping.json`, asserted by `cdp-ecovadis-mappings.test.ts`, which also pins the
 deliberate sparseness (no CDP waste module; no EcoVadis scenario-analysis or carbon-pricing criterion).
+⚠️ **MEASURED 2026-10-04: the two id sets share only 19 of 108 keys, AND the shared keys mean
+DIFFERENT disclosures** — `P6-E7` is GHG emissions in `brsr_data_points.json` but water withdrawal
+in `framework_mappings.json`; `P6-E1` is total energy vs electricity. **So Collect's collected
+values CANNOT be joined to the crosswalk by id.** Doing so would render a client's GHG figure
+under a water heading. Wiring "collect once → map across frameworks" needs a hand-reconciled
+bridge between the 108 KB ids and the 77 crosswalk ids first — about a day, every row checked.
+This is the single blocker on the product's headline claim.
 ⚠️ **`framework_mappings.json` uses a FINER-GRAINED `brsr_id` than `brsr_data_points.json`** (27 P6
 rows vs 13+8 indicators) — overlays key off the crosswalk ids, and getting it wrong yields mappings
 that resolve to nothing.
@@ -257,7 +264,9 @@ scanned-bill OCR live once Gemini billing is topped up · run the `brsr_jobs` CR
 switch the jobs scraper on · optional `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections
 jsonb;` for structured JDs on scraped roles.
 
-**Key docs:** `docs/sage-email-claim-audit.md` (**every claim in the SAGE emails checked against
+**Key docs:** `docs/frameworks-explained-for-the-call.md` (**what BRSR/CDP/EcoVadis/GRESB
+actually are, what we built in plain language, and ⚠️ where the "collect once, map across" claim
+stops being true — read before the run sheet**) · `docs/sage-email-claim-audit.md` (**every claim in the SAGE emails checked against
 the repo — 12 of 13 true, GRESB is the one false one; and why we did not build it**) ·
 `docs/sage-call-run-sheet-2026-10-05.md` (**the sheet to hold on the day of the
 SAGE call — checklist, the opening, demo narration, the four questions, prepared answers, guard
