@@ -264,7 +264,8 @@ scanned-bill OCR live once Gemini billing is topped up · run the `brsr_jobs` CR
 switch the jobs scraper on · optional `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections
 jsonb;` for structured JDs on scraped roles.
 
-**Key docs:** `docs/frameworks-explained-for-the-call.md` (**what BRSR/CDP/EcoVadis/GRESB
+**Key docs:** `docs/terminology-full-forms.md` (**every acronym spelled out, and ⚠️ the three
+that must NOT be expanded — CDP, EcoVadis, GRESB**) · `docs/frameworks-explained-for-the-call.md` (**what BRSR/CDP/EcoVadis/GRESB
 actually are, what we built in plain language, and ⚠️ where the "collect once, map across" claim
 stops being true — read before the run sheet**) · `docs/sage-email-claim-audit.md` (**every claim in the SAGE emails checked against
 the repo — 12 of 13 true, GRESB is the one false one; and why we did not build it**) ·
