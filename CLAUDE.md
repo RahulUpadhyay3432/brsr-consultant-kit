@@ -264,7 +264,11 @@ scanned-bill OCR live once Gemini billing is topped up · run the `brsr_jobs` CR
 switch the jobs scraper on · optional `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections
 jsonb;` for structured JDs on scraped roles.
 
-**Key docs:** `docs/terminology-full-forms.md` (**every acronym spelled out, and ⚠️ the three
+**Key docs:** **`docs/THE-ONLY-DOC-YOU-NEED.md`** (**START HERE for anything SAGE-call or
+framework-related. Self-contained, written from zero: why sustainability reporting exists, every
+acronym with full forms, BRSR/CDP/EcoVadis/GRESB properly, who Shashi and SAGE are, what we built,
+⚠️ where the "collect once, map across" claim stops being true, and the full call script. Supersedes
+the four docs below for reading order**) · `docs/terminology-full-forms.md` (**every acronym spelled out, and ⚠️ the three
 that must NOT be expanded — CDP, EcoVadis, GRESB**) · `docs/frameworks-explained-for-the-call.md` (**what BRSR/CDP/EcoVadis/GRESB
 actually are, what we built in plain language, and ⚠️ where the "collect once, map across" claim
 stops being true — read before the run sheet**) · `docs/sage-email-claim-audit.md` (**every claim in the SAGE emails checked against
