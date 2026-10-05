@@ -239,8 +239,9 @@ story.append(Spacer(1, 14))
 story.append(box("The three things that matter most", [
     "<b>1.</b> This field turns &ldquo;we care about the environment&rdquo; into numbers somebody can check. "
     "That is also what Saaksh is for — and the one thing you and she already agree on.",
-    "<b>2.</b> Your email's &ldquo;collect once, map across four frameworks&rdquo; is <b>half built</b>. "
-    "Part 7 gives you the exact sentence to say.",
+    "<b>2.</b> Your email's &ldquo;collect once, map across four frameworks&rdquo; is <b>now built for "
+    "the three things the email named &mdash; energy, water and people.</b> Part 7 gives you the exact "
+    "sentence to say, and names what is still not covered.",
     "<b>3.</b> <b>Go and read her article before the call.</b> Ten minutes. Part 6 explains why this "
     "outranks everything else in this document.",
 ], tone="warn"))
@@ -857,7 +858,8 @@ story.append(table(
     [("&ldquo;a shared workspace where a client collects each number once&rdquo;",
       "<b>TRUE.</b> That is Collect."),
      ("&ldquo;and it maps across BRSR, CDP, EcoVadis and GRESB&rdquo;",
-      "<b>The knowledge existed. The plumbing did not.</b> Now built for <b>Principle 6</b>.")],
+      "<b>The knowledge existed. The plumbing did not. Now BUILT</b> for environment (Principle 6) "
+      "and people (Principle 3 + the Section A employee rows) &mdash; the three things your email named.")],
     [245, CW - 245]))
 story.append(Spacer(1, 8))
 story.append(Paragraph(
@@ -865,17 +867,34 @@ story.append(Paragraph(
     "number answers.</i> It could not take the number your client typed into Collect and <b>put it "
     "into a CDP answer</b>. The map was drawn; the pipe was not built.", S["body"]))
 story.append(Paragraph(
-    "<b>Now built for Principle 6</b> — energy, water, emissions, waste, biodiversity. A figure "
-    "submitted by the client's team is shown alongside its GRI standard, TCFD pillar, IFRS reference, "
-    "CDP questionnaire area, EcoVadis criterion and GRESB aspect. <b>The other eight principles still "
-    "have the crosswalk but not the pipe.</b>", S["body"]))
+    "<b>That is now built for the three things your email named.</b> A figure submitted by the "
+    "client's team is shown alongside its GRI standard, TCFD pillar, IFRS reference, CDP "
+    "questionnaire area, EcoVadis criterion and GRESB aspect.", S["body"]))
+story.append(table(
+    ["What the email named", "Status"],
+    [("<b>Energy</b><br/>Principle 6",
+      "<b>BUILT.</b> Electricity, fuel, renewables, total energy and intensity"),
+     ("<b>Water</b><br/>Principle 6",
+      "<b>BUILT.</b> Withdrawal, consumption, discharge, Zero Liquid Discharge"),
+     ("<b>People</b><br/>Principle 3 + Section A",
+      "<b>BUILT.</b> Headcount and turnover (from Section A, where BRSR actually asks for them), plus "
+      "training, safety incidents, benefits, unions, complaints and return-to-work"),
+     ("<i>Also built, in P6</i>",
+      "Emissions (Scope 1, 2 and 3), waste, air pollution, biodiversity")],
+    [128, CW - 128]))
+story.append(Spacer(1, 7))
+story.append(Paragraph(
+    "<b>What is still NOT carried across:</b> ethics (P1), products (P2), stakeholders (P4), human "
+    "rights (P5), advocacy (P7), community (P8) and consumers (P9). Those have the crosswalk as "
+    "reference, but a collected value does not flow into it yet. <b>The screen says so, so you cannot "
+    "overclaim it by accident.</b>", S["body"]))
 story.append(Spacer(1, 4))
 story.append(box("The sentence to say, close to verbatim", [
-    "&ldquo;I should be precise about one thing, because it's the sentence you booked this call on. "
-    "The workspace collects each number once &mdash; that part is real and working. And the mapping "
-    "across CDP, EcoVadis and GRESB now carries the actual figure, for Principle 6: energy, water, "
-    "emissions, waste. The other eight principles have the crosswalk but not the pipe yet. "
-    "That's the next build.&rdquo;",
+    "&ldquo;The workspace collects each number once, and that number now carries across &mdash; for "
+    "energy, water and people, which are the three things I named in my email. A figure your team "
+    "submits shows up with its GRI standard, its CDP questionnaire area, the EcoVadis criterion it "
+    "evidences and the GRESB aspect. Ethics, human rights, community and consumers have the crosswalk "
+    "but not the pipe yet. That's the next build.&rdquo;",
     "<b>Your email said &ldquo;Next I am building.&rdquo; Future tense. You are not caught out.</b>",
 ], tone="good"))
 
@@ -958,8 +977,9 @@ story.append(Paragraph(
     "Before I show you anything &mdash; one thing from my email I want to be precise about. I said the "
     "workspace maps across BRSR, CDP, EcoVadis and GRESB. The field-level mapping is real for "
     "Principle 6 against CDP and EcoVadis, I built the GRESB crosswalk this week, and the collected "
-    "figure now actually carries across for Principle 6. The other eight principles have the "
-    "crosswalk but not the pipe yet.<br/><br/>"
+    "figure now actually carries across &mdash; for energy, water and people, which are the three "
+    "things I named. Ethics, human rights, community and consumers have the crosswalk but not the "
+    "pipe yet.<br/><br/>"
     "And the honest state of the rest: about two hundred and forty consultants have used the free tool "
     "over five months, and almost none have come back. I think I know why &mdash; a gap analysis is a "
     "once-a-year job per client. The part that actually recurs, chasing the numbers out of a client's "
@@ -1176,9 +1196,9 @@ recall = [
     "<b>Collect is a handover mechanism.</b>",
     "<b>She has a PhD in Earth Sciences and is certified in GRI, SBTi, CDP and Integrated "
     "Reporting.</b> She leads <b>Green Skills Academy</b>, backed by <b>NSDC</b>.",
-    "<b>&ldquo;Collects each number once&rdquo; is TRUE.</b> &ldquo;Maps across CDP, EcoVadis and "
-    "GRESB&rdquo; now carries the real figure <b>for Principle 6 only</b>; the other eight have the "
-    "crosswalk but not the pipe.",
+    "<b>&ldquo;Collects each number once&rdquo; is TRUE</b>, and it now <b>carries across for energy, "
+    "water and people</b> &mdash; the three things your email named. Ethics, products, stakeholders, "
+    "human rights, advocacy, community and consumers have the crosswalk but not the pipe.",
     "<b>Nine collections, all yours, all from June. No outside practice has run it.</b> Say it.",
     "<b>Read her article before the call.</b> Ten minutes. Write down one agreement and one question. "
     "Nothing in this document substitutes for it.",

@@ -72,8 +72,9 @@ export default async function FrameworkCoveragePage({ params }: { params: { id: 
       {cov.covered.length === 0 ? (
         <div className="mt-4 rounded-xl border border-line bg-white px-6 py-8 text-center">
           <p className="text-[14.5px] text-ink-body">
-            No Principle 6 figures have come back yet. Once an owner submits energy, water,
-            emissions or waste data, it will appear here with everything it answers.
+            Nothing has come back yet. Once an owner submits an environment figure (energy, water,
+            emissions, waste) or a people figure (headcount, training, safety, benefits), it will
+            appear here with everything it answers.
           </p>
         </div>
       ) : (
@@ -161,8 +162,8 @@ export default async function FrameworkCoveragePage({ params }: { params: { id: 
             Still waiting ({cov.awaiting.length})
           </h2>
           <p className="text-[13px] text-ink-muted leading-relaxed mt-1.5 mb-3">
-            Principle 6 fields assigned but not yet answered. Each one will light up several
-            frameworks at once when it arrives.
+            Fields assigned but not yet answered. Each one will light up several frameworks at once
+            when it arrives.
           </p>
           <ul className="space-y-1.5">
             {cov.awaiting.map((a) => (

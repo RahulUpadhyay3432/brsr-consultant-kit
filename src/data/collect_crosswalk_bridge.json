@@ -3,89 +3,215 @@
     "purpose": "Joins what Collect ASKS a client for to what the framework crosswalk MAPS. Without this file a value submitted in Collect can never be shown as a CDP, EcoVadis, GRESB, GRI, TCFD or IFRS answer — which is the product's headline claim.",
     "why_it_is_needed": "The product carries two BRSR numbering conventions and they COLLIDE. brsr_data_points.json follows SEBI's actual question numbering (P6-E7 = greenhouse gas emissions). framework_mappings.json splits those questions into individual metrics and renumbers (P6-E7 = water withdrawal by source). Of 108 ids, only 19 appear in both set AND the shared ones mean different disclosures. Joining by id would show a client's GHG figure under a water heading.",
     "direction": "key = the Collect / brsr_data_points.json question id. crosswalk_ids = the framework_mappings.json rows that question's answer feeds. One SEBI question usually feeds SEVERAL crosswalk metrics, because SEBI asks for a table and the crosswalk splits it per metric.",
-    "scope": "PRINCIPLE 6 ONLY, deliberately. P6 is energy, water, emissions, waste and biodiversity — the figures clients get asked for repeatedly by every framework, and the only principle where CDP and EcoVadis are mapped at field level. The other eight principles are NOT bridged, and the UI says so rather than implying full coverage.",
-    "method": "Hand-reconciled 2026-10-05 by reading the full label text on both sides, one row at a time. Not generated, not inferred from id similarity. collect-crosswalk-bridge.test.ts asserts every id on both sides resolves, and that no bridge entry crosses subject matter (no water question feeding a GHG metric).",
-    "coverage": "13 of the 21 Collect P6 questions are bridged, reaching 22 of the 27 P6 crosswalk rows. The 8 unbridged questions are listed in `unmapped` with the reason for each — most are narrative answers with no metric counterpart, which is a real gap and not an oversight.",
+    "scope": "PRINCIPLE 6 (environment) AND PEOPLE - Principle 3 plus the Section A employee rows, because BRSR asks for headcount and turnover in Section A rather than Principle 3. Together these are the three things the outbound email named: energy, water, people. The remaining principles (P1, P2, P4, P5, P7, P8, P9) are NOT bridged, and the UI says so.",
+    "method": "Hand-reconciled 2026-10-05 (P6, then people) by reading the full label text on both sides, one row at a time. Not generated, not inferred from id similarity. collect-crosswalk-bridge.test.ts asserts every id on both sides resolves, and that no bridge entry crosses subject matter (no water question feeding a GHG metric).",
+    "coverage": "P6: 13 of 21 Collect questions bridged, reaching 22 of 27 P6 crosswalk rows. People: 10 Principle 3 questions plus 2 Section A questions bridged, reaching 12 of the 14 P3 crosswalk rows. Every unbridged question carries a reason in `unmapped`.",
     "compiled": "2026-10-05"
   },
-
   "bridge": {
     "P6-E1": {
-      "crosswalk_ids": ["P6-E1", "P6-E2", "P6-E3", "P6-E4", "P6-E5"],
+      "crosswalk_ids": [
+        "P6-E1",
+        "P6-E2",
+        "P6-E3",
+        "P6-E4",
+        "P6-E5"
+      ],
       "note": "SEBI asks for one energy table. The crosswalk splits it into electricity, fuel, other sources, the total with intensity, and the renewable share — so this single answer feeds five framework metrics."
     },
     "P6-E2": {
-      "crosswalk_ids": ["P6-E6"],
+      "crosswalk_ids": [
+        "P6-E6"
+      ],
       "note": "Designated-consumer status under the PAT scheme. India-specific, so it maps to the crosswalk's PAT row and to no international framework."
     },
     "P6-E3": {
-      "crosswalk_ids": ["P6-E7", "P6-E8"],
+      "crosswalk_ids": [
+        "P6-E7",
+        "P6-E8"
+      ],
       "note": "SEBI's water table covers withdrawal by source plus consumption and intensity, which the crosswalk holds as two separate metrics."
     },
     "P6-E4": {
-      "crosswalk_ids": ["P6-E9"],
+      "crosswalk_ids": [
+        "P6-E9"
+      ],
       "note": "Water discharged, by destination and treatment level."
     },
     "P6-E5": {
-      "crosswalk_ids": ["P6-E10"],
+      "crosswalk_ids": [
+        "P6-E10"
+      ],
       "note": "Zero Liquid Discharge status and coverage."
     },
     "P6-E6": {
-      "crosswalk_ids": ["P6-E20"],
+      "crosswalk_ids": [
+        "P6-E20"
+      ],
       "note": "Air emissions OTHER than greenhouse gases — NOx, SOx, particulate matter. Distinct from the GHG rows; conflating the two is a common error."
     },
     "P6-E7": {
-      "crosswalk_ids": ["P6-E11", "P6-E12", "P6-E14"],
+      "crosswalk_ids": [
+        "P6-E11",
+        "P6-E12",
+        "P6-E14"
+      ],
       "note": "SEBI asks for Scope 1, Scope 2 and intensity in one table. The crosswalk holds them separately, which is also how CDP wants them."
     },
     "P6-E8": {
-      "crosswalk_ids": ["P6-E15"],
+      "crosswalk_ids": [
+        "P6-E15"
+      ],
       "note": "GHG reduction projects are the evidence behind the crosswalk's reduction-targets-and-progress row."
     },
     "P6-E9": {
-      "crosswalk_ids": ["P6-E17", "P6-E18", "P6-E19"],
+      "crosswalk_ids": [
+        "P6-E17",
+        "P6-E18",
+        "P6-E19"
+      ],
       "note": "SEBI's waste table covers total generated, diverted from disposal, and directed to disposal — three crosswalk metrics from one answer."
     },
     "P6-E11": {
-      "crosswalk_ids": ["P6-E22"],
+      "crosswalk_ids": [
+        "P6-E22"
+      ],
       "note": "Operations in or adjacent to ecologically sensitive areas. Maps to the crosswalk's biodiversity row."
     },
     "P6-E12": {
-      "crosswalk_ids": ["P6-E21"],
+      "crosswalk_ids": [
+        "P6-E21"
+      ],
       "note": "Environmental Impact Assessments carried out in the year."
     },
     "P6-E13": {
-      "crosswalk_ids": ["P6-E24"],
+      "crosswalk_ids": [
+        "P6-E24"
+      ],
       "note": "Compliance with Indian environmental law. The crosswalk row is non-compliances and penalties — the same disclosure stated from the failure side."
     },
     "P6-L1": {
-      "crosswalk_ids": ["P6-E7", "P6-E8", "P6-E9"],
+      "crosswalk_ids": [
+        "P6-E7",
+        "P6-E8",
+        "P6-E9"
+      ],
       "note": "The same three water metrics as P6-E3 and P6-E4, but restricted to water-stressed areas. Kept because CDP Water Security asks specifically about stressed catchments, so the water-stress cut is the more valuable one there. Overlaps P6-E3/E4 by design — this is a narrower slice of the same metrics, not a duplicate figure."
     },
     "P6-L2": {
-      "crosswalk_ids": ["P6-E13"],
+      "crosswalk_ids": [
+        "P6-E13"
+      ],
       "note": "Total Scope 3 emissions. Voluntary under BRSR as a Leadership indicator, but one of CDP's central asks."
     },
     "P6-L3": {
-      "crosswalk_ids": ["P6-E22"],
+      "crosswalk_ids": [
+        "P6-E22"
+      ],
       "note": "Direct and indirect biodiversity impacts in the sensitive areas named under the essential indicator. Same crosswalk row as P6-E11, at greater depth."
+    },
+    "P3-E1": {
+      "crosswalk_ids": [
+        "P3-L11"
+      ],
+      "note": "SEBI's well-being table (health insurance, accident insurance, maternity, paternity, day care, % covered) is exactly the crosswalk's employee-benefits row."
+    },
+    "P3-E2": {
+      "crosswalk_ids": [
+        "P3-L11"
+      ],
+      "note": "Retirement benefits - PF, gratuity, ESI - are named inside the same employee-benefits row. Shares the row with P3-E1 by design: SEBI splits benefits across two questions, the crosswalk holds one metric."
+    },
+    "P3-E5": {
+      "crosswalk_ids": [
+        "P3-L6"
+      ],
+      "note": "Return-to-work and retention rates after parental leave. An exact one-to-one match."
+    },
+    "P3-E7": {
+      "crosswalk_ids": [
+        "P3-L12"
+      ],
+      "note": "Membership of employees and workers in recognised associations or unions."
+    },
+    "P3-E8": {
+      "crosswalk_ids": [
+        "P3-L10"
+      ],
+      "note": "Training given to employees and workers, which the crosswalk holds as training hours per employee by gender and category."
+    },
+    "P3-E10": {
+      "crosswalk_ids": [
+        "P3-L7"
+      ],
+      "note": "Occupational health and safety management system coverage - the OHSMS question in both."
+    },
+    "P3-E11": {
+      "crosswalk_ids": [
+        "P3-L8",
+        "P3-L9"
+      ],
+      "note": "SEBI's safety-incident table covers recordable injuries and fatalities as well as work-related ill health, which the crosswalk holds as two separate metrics."
+    },
+    "P3-E13": {
+      "crosswalk_ids": [
+        "P3-L13"
+      ],
+      "note": "Complaints on working conditions and health and safety, filed against resolved."
+    },
+    "P3-L1": {
+      "crosswalk_ids": [
+        "P3-L11"
+      ],
+      "note": "Life insurance or a compensatory package on death in service is an employee benefit. WARNING: this id collides - P3-L1 is life insurance in SEBI's numbering but total employees by gender in the crosswalk's."
+    },
+    "P3-L3": {
+      "crosswalk_ids": [
+        "P3-L8"
+      ],
+      "note": "High-consequence work-related injuries and rehabilitation sit inside the crosswalk's recordable-injuries metric."
+    },
+    "SA-20 to SA-21": {
+      "crosswalk_ids": [
+        "P3-L1",
+        "P3-L2",
+        "P3-L3"
+      ],
+      "note": "BRSR asks for headcount in SECTION A, not Principle 3. This one Section A answer carries total employees and workers by type and gender, the share of women, and differently abled employees - three crosswalk metrics."
+    },
+    "SA-22": {
+      "crosswalk_ids": [
+        "P3-L4"
+      ],
+      "note": "Turnover rate for permanent employees and workers, by gender. Also a Section A disclosure rather than a Principle 3 one."
     }
   },
-
   "unmapped": {
     "P6-E10": "Narrative description of waste-management practices and the strategy for reducing hazardous and toxic chemicals. The crosswalk holds metrics, not narratives; its nearest row (single-use plastic initiatives) is one specific initiative and not this question, so linking them would be loose.",
     "P6-L4": "Narrative on resource-efficiency initiatives and innovative technology. No metric counterpart in the crosswalk.",
     "P6-L5": "Business continuity and disaster management plan. ⚠️ Deliberately NOT mapped to the crosswalk's climate scenario-analysis row — operational continuity planning and climate scenario analysis are different exercises, and conflating them is exactly the kind of error an assurer catches.",
     "P6-L6": "Significant adverse environmental impact arising from the value chain. Broader than Scope 3 emissions, so mapping it to the Scope 3 row would understate it.",
     "P6-L7": "Percentage of value chain partners assessed for environmental impacts. EcoVadis' Sustainable Procurement theme asks for this, but the crosswalk has no row for it, so there is nothing to bridge to yet.",
-    "P6-L8": "Green Credits generated or procured. ⚠️ Deliberately NOT mapped to the carbon-offsets row: Green Credits under India's Green Credit Programme are a different instrument from carbon offsets, and treating them as interchangeable would be wrong."
+    "P6-L8": "Green Credits generated or procured. ⚠️ Deliberately NOT mapped to the carbon-offsets row: Green Credits under India's Green Credit Programme are a different instrument from carbon offsets, and treating them as interchangeable would be wrong.",
+    "P3-E3": "Accessibility of premises for differently abled visitors. The crosswalk's nearest row counts differently abled EMPLOYEES, which is a different disclosure - premises accessibility is not a headcount.",
+    "P3-E4": "Whether an equal-opportunity policy exists under the Rights of Persons with Disabilities Act. A policy question; the crosswalk holds metrics.",
+    "P3-E6": "Whether a grievance redressal mechanism exists for each worker category. The mechanism, not the complaint figures - those are P3-E13, which is bridged.",
+    "P3-E9": "Performance and career development reviews. No counterpart metric in the crosswalk.",
+    "P3-E12": "Narrative on measures taken to ensure a safe and healthy workplace. No metric counterpart.",
+    "P3-E14": "Share of plants and offices assessed for health, safety and working conditions. An assessment-coverage percentage with no crosswalk row.",
+    "P3-E15": "Narrative on corrective actions arising from those assessments.",
+    "P3-L2": "Measures to ensure statutory dues were deducted and deposited by value chain partners. DELIBERATELY not mapped to the minimum-wage row: statutory dues and minimum wage are different obligations.",
+    "P3-L4": "Transition assistance programmes for continued employability. No crosswalk row.",
+    "P3-L5": "Assessment of value chain partners on health, safety and working conditions. No crosswalk row.",
+    "P3-L6": "Narrative on corrective actions following value chain assessments."
   },
-
   "crosswalk_rows_not_reachable": {
     "P6-E16": "Carbon offsets purchased or retired — BRSR P6 has no question asking for this directly.",
     "P6-E23": "Single-use plastic reduction initiatives — only reachable via the narrative waste question, which is unmapped above.",
     "P6-E25": "Climate-related financial risks and opportunities — a TCFD/IFRS-style disclosure that BRSR asks for outside P6, not as a P6 data field.",
     "P6-E26": "Scenario analysis for climate resilience — same reason.",
-    "P6-E27": "Internal carbon pricing — same reason; BRSR does not ask for it."
+    "P6-E27": "Internal carbon pricing — same reason; BRSR does not ask for it.",
+    "P3-L5": "Median remuneration and the male-to-female remuneration ratio - BRSR asks for this in Section A's remuneration table, which Collect does not yet request as a discrete field.",
+    "P3-L14": "Wages paid at or above minimum wage - BRSR asks for it under Principle 5 (human rights), which is not bridged."
   }
 }

@@ -14,13 +14,14 @@ import type { Campaign, Item } from "./types";
 // client's GHG figure under a water heading — the ids collide, and the shared
 // ones mean different disclosures.
 //
-// PRINCIPLE 6 ONLY, deliberately and visibly. P6 is where every framework asks
-// the same questions, and the only principle where CDP and EcoVadis are mapped
-// at field level. Callers must surface `scopeNote` so nobody reads a partial
-// view as full coverage.
+// Scope is whatever the bridge file reconciles — today environment (P6) and
+// people (P3 plus the Section A employee rows, because BRSR puts headcount and
+// turnover in Section A, not Principle 3). Those are the three things the
+// outbound email named: energy, water, people. Callers must surface `scopeNote`
+// so a partial view is never read as full coverage.
 
 export const COVERAGE_SCOPE_NOTE =
-  "Principle 6 only — energy, water, emissions, waste and biodiversity. These are the figures every framework asks for repeatedly. The other eight BRSR principles are not yet carried across; their crosswalk exists as reference, but a collected value does not flow into it.";
+  "Covers environment (Principle 6 — energy, water, emissions, waste, biodiversity) and people (Principle 3 plus the Section A employee rows, because BRSR asks for headcount and turnover in Section A). The remaining principles — ethics, products, stakeholders, human rights, advocacy, community and consumers — are not yet carried across: their crosswalk exists as reference, but a collected value does not flow into it.";
 
 type BridgeEntry = { crosswalk_ids: string[]; note: string };
 const bridge = (BRIDGE as { bridge: Record<string, BridgeEntry> }).bridge;
@@ -157,7 +158,9 @@ export function frameworkCoverage(campaign: Campaign): FrameworkCoverage {
     // The GHG calculator's two activity inputs carry suffixed ids
     // (P6-E1-elec, P6-E1-diesel); strip the suffix to find the BRSR question.
     const baseId = item.fieldId.replace(/-(elec|diesel)$/, "");
-    if (!baseId.startsWith("P6-")) continue;
+    // In scope if the bridge either maps it or explicitly explains why it does
+    // not. Anything else belongs to a principle that has not been reconciled.
+    if (!bridge[baseId] && !unmapped[baseId]) continue;
 
     const hasValue = Boolean(item.value && item.value.trim());
     if (!hasValue) {
@@ -167,8 +170,7 @@ export function frameworkCoverage(campaign: Campaign): FrameworkCoverage {
 
     const entry = bridge[baseId];
     if (!entry) {
-      const reason = unmapped[baseId];
-      if (reason) collectedButUnmapped.push({ fieldId: item.fieldId, label: item.label, reason });
+      collectedButUnmapped.push({ fieldId: item.fieldId, label: item.label, reason: unmapped[baseId] });
       continue;
     }
 

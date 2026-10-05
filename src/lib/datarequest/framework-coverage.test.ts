@@ -23,6 +23,10 @@ const crosswalk = new Map(
   (FRAMEWORKS as { mappings: { brsr_id: string; brsr_label: string }[] }).mappings.map((m) => [m.brsr_id, m.brsr_label]),
 );
 
+const sectionAIds = new Set(
+  (KB as { section_a_general_disclosures: { id: string }[] }).section_a_general_disclosures.map((d) => d.id),
+);
+
 const kbLabels = new Map<string, string>();
 for (const p of (KB as { principles: { id: string; essential_indicators: { id: string; label: string }[]; leadership_indicators: { id: string; label: string }[] }[] }).principles) {
   for (const i of [...p.essential_indicators, ...p.leadership_indicators]) kbLabels.set(i.id, i.label);
@@ -38,6 +42,13 @@ function subjects(label: string): Set<string> {
   if (/waste|hazardous|recycl|landfill|incinerat/.test(l)) s.add("waste");
   if (/biodiversity|ecologically sensitive|national park|sanctuar|wetland/.test(l)) s.add("bio");
   if (/air emission|nox|sox|particulate/.test(l)) s.add("air");
+  if (/safety|injur|fatalit|ill health|occupational health/.test(l)) s.add("safety");
+  if (/training|career development/.test(l)) s.add("training");
+  if (/union|association/.test(l)) s.add("union");
+  if (/insurance|retirement|gratuity|provident|maternity|paternity|day care|benefit|well-being|wellbeing/.test(l)) s.add("benefit");
+  if (/parental leave|return to work|return-to-work/.test(l)) s.add("parental");
+  if (/complaint|grievance/.test(l)) s.add("complaint");
+  if (/employees and workers|headcount|turnover rate|women|differently abled/.test(l)) s.add("headcount");
   return s;
 }
 
@@ -66,8 +77,19 @@ function campaign(items: Item[]): Campaign {
 describe("the bridge between Collect and the crosswalk", () => {
   it("resolves every key against what Collect can actually ask for", () => {
     for (const id of Object.keys(bridge)) {
-      expect(kbLabels.has(id), `${id} is not a brsr_data_points.json indicator`).toBe(true);
-      expect(id.startsWith("P6-"), `${id} is outside the declared P6 scope`).toBe(true);
+      // Section A ids are grouped ("SA-20 to SA-21") and live outside the
+      // principles array, so they are checked against the request fields.
+      const known = kbLabels.has(id) || sectionAIds.has(id);
+      expect(known, `${id} is neither an indicator nor a Section A disclosure`).toBe(true);
+    }
+  });
+
+  it("stays inside the principles it claims to cover", () => {
+    // Environment, people, and the Section A rows that carry headcount. Adding
+    // another principle means reconciling it by hand first.
+    for (const id of Object.keys(bridge)) {
+      const ok = id.startsWith("P6-") || id.startsWith("P3-") || id.startsWith("SA-");
+      expect(ok, `${id} is outside the declared scope (P6, P3, Section A)`).toBe(true);
     }
   });
 
@@ -85,7 +107,9 @@ describe("the bridge between Collect and the crosswalk", () => {
     // heading. If a Collect question is about water, every crosswalk row it
     // feeds must also be about water.
     for (const [id, entry] of Object.entries(bridge)) {
-      const from = subjects(kbLabels.get(id)!);
+      const label = kbLabels.get(id);
+      if (!label) continue; // grouped Section A row; label text is a summary, not a metric
+      const from = subjects(label);
       if (from.size === 0) continue; // narrative or unclassifiable; nothing to assert
       for (const target of entry.crosswalk_ids) {
         const to = subjects(crosswalk.get(target)!);
@@ -111,10 +135,12 @@ describe("the bridge between Collect and the crosswalk", () => {
     }
   });
 
-  it("accounts for every P6 question — bridged or explained, never silently dropped", () => {
-    const p6 = Array.from(kbLabels.keys()).filter((k) => k.startsWith("P6-"));
-    const missing = p6.filter((id) => !bridge[id] && !unmapped[id]);
-    expect(missing, "P6 questions neither bridged nor explained").toEqual([]);
+  it("accounts for every P6 and P3 question — bridged or explained, never silently dropped", () => {
+    for (const prefix of ["P6-", "P3-"]) {
+      const ids = Array.from(kbLabels.keys()).filter((k) => k.startsWith(prefix));
+      const missing = ids.filter((id) => !bridge[id] && !unmapped[id]);
+      expect(missing, `${prefix} questions neither bridged nor explained`).toEqual([]);
+    }
   });
 });
 
@@ -161,11 +187,31 @@ describe("framework coverage over a campaign", () => {
     expect(cov.collectedButUnmapped[0].reason).toMatch(/Green Credit/);
   });
 
-  it("ignores everything outside Principle 6, because only P6 is bridged", () => {
-    const cov = frameworkCoverage(campaign([item("P3-L1", "Total employees and workers", "420")]));
+  it("ignores principles that have not been reconciled yet", () => {
+    // P5 (human rights) is not bridged, so a value there must not appear at all
+    // rather than appear with a guessed mapping.
+    const cov = frameworkCoverage(campaign([item("P5-E1", "Human rights training coverage", "88")]));
     expect(cov.covered).toHaveLength(0);
     expect(cov.awaiting).toHaveLength(0);
     expect(cov.collectedButUnmapped).toHaveLength(0);
+  });
+
+  it("carries a PEOPLE figure across frameworks — the third thing the email named", () => {
+    const cov = frameworkCoverage(campaign([
+      item("P3-E11", "Details of safety related incidents", "3"),
+    ]));
+    expect(cov.covered).toHaveLength(1);
+    // The safety-incident table feeds both injuries and ill-health metrics.
+    expect(cov.covered[0].metrics.length).toBe(2);
+    expect(cov.frameworksReached.length).toBeGreaterThan(0);
+  });
+
+  it("reaches headcount through Section A, where BRSR actually asks for it", () => {
+    const cov = frameworkCoverage(campaign([
+      item("SA-20 to SA-21", "Employees and Workers: details by type, by gender", "1240"),
+    ]));
+    expect(cov.covered).toHaveLength(1);
+    expect(cov.covered[0].metrics.length).toBe(3);
   });
 
   it("resolves the GHG calculator's suffixed activity inputs to their BRSR question", () => {
@@ -187,8 +233,10 @@ describe("framework coverage over a campaign", () => {
   it("always states the P6-only scope so a partial view is never read as full", () => {
     const cov = frameworkCoverage(campaign([]));
     expect(cov.scopeNote).toBe(COVERAGE_SCOPE_NOTE);
-    expect(cov.scopeNote).toMatch(/Principle 6 only/);
-    expect(cov.scopeNote).toMatch(/other eight/);
+    expect(cov.scopeNote).toMatch(/Principle 6/);
+    expect(cov.scopeNote).toMatch(/Principle 3/);
+    expect(cov.scopeNote).toMatch(/Section A/);
+    expect(cov.scopeNote, "must name what is NOT covered").toMatch(/not yet carried across/);
     expect(cov.covered).toEqual([]);
   });
 
