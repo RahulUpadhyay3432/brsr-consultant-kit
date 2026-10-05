@@ -1,0 +1,91 @@
+{
+  "_meta": {
+    "purpose": "Joins what Collect ASKS a client for to what the framework crosswalk MAPS. Without this file a value submitted in Collect can never be shown as a CDP, EcoVadis, GRESB, GRI, TCFD or IFRS answer — which is the product's headline claim.",
+    "why_it_is_needed": "The product carries two BRSR numbering conventions and they COLLIDE. brsr_data_points.json follows SEBI's actual question numbering (P6-E7 = greenhouse gas emissions). framework_mappings.json splits those questions into individual metrics and renumbers (P6-E7 = water withdrawal by source). Of 108 ids, only 19 appear in both set AND the shared ones mean different disclosures. Joining by id would show a client's GHG figure under a water heading.",
+    "direction": "key = the Collect / brsr_data_points.json question id. crosswalk_ids = the framework_mappings.json rows that question's answer feeds. One SEBI question usually feeds SEVERAL crosswalk metrics, because SEBI asks for a table and the crosswalk splits it per metric.",
+    "scope": "PRINCIPLE 6 ONLY, deliberately. P6 is energy, water, emissions, waste and biodiversity — the figures clients get asked for repeatedly by every framework, and the only principle where CDP and EcoVadis are mapped at field level. The other eight principles are NOT bridged, and the UI says so rather than implying full coverage.",
+    "method": "Hand-reconciled 2026-10-05 by reading the full label text on both sides, one row at a time. Not generated, not inferred from id similarity. collect-crosswalk-bridge.test.ts asserts every id on both sides resolves, and that no bridge entry crosses subject matter (no water question feeding a GHG metric).",
+    "coverage": "13 of the 21 Collect P6 questions are bridged, reaching 22 of the 27 P6 crosswalk rows. The 8 unbridged questions are listed in `unmapped` with the reason for each — most are narrative answers with no metric counterpart, which is a real gap and not an oversight.",
+    "compiled": "2026-10-05"
+  },
+
+  "bridge": {
+    "P6-E1": {
+      "crosswalk_ids": ["P6-E1", "P6-E2", "P6-E3", "P6-E4", "P6-E5"],
+      "note": "SEBI asks for one energy table. The crosswalk splits it into electricity, fuel, other sources, the total with intensity, and the renewable share — so this single answer feeds five framework metrics."
+    },
+    "P6-E2": {
+      "crosswalk_ids": ["P6-E6"],
+      "note": "Designated-consumer status under the PAT scheme. India-specific, so it maps to the crosswalk's PAT row and to no international framework."
+    },
+    "P6-E3": {
+      "crosswalk_ids": ["P6-E7", "P6-E8"],
+      "note": "SEBI's water table covers withdrawal by source plus consumption and intensity, which the crosswalk holds as two separate metrics."
+    },
+    "P6-E4": {
+      "crosswalk_ids": ["P6-E9"],
+      "note": "Water discharged, by destination and treatment level."
+    },
+    "P6-E5": {
+      "crosswalk_ids": ["P6-E10"],
+      "note": "Zero Liquid Discharge status and coverage."
+    },
+    "P6-E6": {
+      "crosswalk_ids": ["P6-E20"],
+      "note": "Air emissions OTHER than greenhouse gases — NOx, SOx, particulate matter. Distinct from the GHG rows; conflating the two is a common error."
+    },
+    "P6-E7": {
+      "crosswalk_ids": ["P6-E11", "P6-E12", "P6-E14"],
+      "note": "SEBI asks for Scope 1, Scope 2 and intensity in one table. The crosswalk holds them separately, which is also how CDP wants them."
+    },
+    "P6-E8": {
+      "crosswalk_ids": ["P6-E15"],
+      "note": "GHG reduction projects are the evidence behind the crosswalk's reduction-targets-and-progress row."
+    },
+    "P6-E9": {
+      "crosswalk_ids": ["P6-E17", "P6-E18", "P6-E19"],
+      "note": "SEBI's waste table covers total generated, diverted from disposal, and directed to disposal — three crosswalk metrics from one answer."
+    },
+    "P6-E11": {
+      "crosswalk_ids": ["P6-E22"],
+      "note": "Operations in or adjacent to ecologically sensitive areas. Maps to the crosswalk's biodiversity row."
+    },
+    "P6-E12": {
+      "crosswalk_ids": ["P6-E21"],
+      "note": "Environmental Impact Assessments carried out in the year."
+    },
+    "P6-E13": {
+      "crosswalk_ids": ["P6-E24"],
+      "note": "Compliance with Indian environmental law. The crosswalk row is non-compliances and penalties — the same disclosure stated from the failure side."
+    },
+    "P6-L1": {
+      "crosswalk_ids": ["P6-E7", "P6-E8", "P6-E9"],
+      "note": "The same three water metrics as P6-E3 and P6-E4, but restricted to water-stressed areas. Kept because CDP Water Security asks specifically about stressed catchments, so the water-stress cut is the more valuable one there. Overlaps P6-E3/E4 by design — this is a narrower slice of the same metrics, not a duplicate figure."
+    },
+    "P6-L2": {
+      "crosswalk_ids": ["P6-E13"],
+      "note": "Total Scope 3 emissions. Voluntary under BRSR as a Leadership indicator, but one of CDP's central asks."
+    },
+    "P6-L3": {
+      "crosswalk_ids": ["P6-E22"],
+      "note": "Direct and indirect biodiversity impacts in the sensitive areas named under the essential indicator. Same crosswalk row as P6-E11, at greater depth."
+    }
+  },
+
+  "unmapped": {
+    "P6-E10": "Narrative description of waste-management practices and the strategy for reducing hazardous and toxic chemicals. The crosswalk holds metrics, not narratives; its nearest row (single-use plastic initiatives) is one specific initiative and not this question, so linking them would be loose.",
+    "P6-L4": "Narrative on resource-efficiency initiatives and innovative technology. No metric counterpart in the crosswalk.",
+    "P6-L5": "Business continuity and disaster management plan. ⚠️ Deliberately NOT mapped to the crosswalk's climate scenario-analysis row — operational continuity planning and climate scenario analysis are different exercises, and conflating them is exactly the kind of error an assurer catches.",
+    "P6-L6": "Significant adverse environmental impact arising from the value chain. Broader than Scope 3 emissions, so mapping it to the Scope 3 row would understate it.",
+    "P6-L7": "Percentage of value chain partners assessed for environmental impacts. EcoVadis' Sustainable Procurement theme asks for this, but the crosswalk has no row for it, so there is nothing to bridge to yet.",
+    "P6-L8": "Green Credits generated or procured. ⚠️ Deliberately NOT mapped to the carbon-offsets row: Green Credits under India's Green Credit Programme are a different instrument from carbon offsets, and treating them as interchangeable would be wrong."
+  },
+
+  "crosswalk_rows_not_reachable": {
+    "P6-E16": "Carbon offsets purchased or retired — BRSR P6 has no question asking for this directly.",
+    "P6-E23": "Single-use plastic reduction initiatives — only reachable via the narrative waste question, which is unmapped above.",
+    "P6-E25": "Climate-related financial risks and opportunities — a TCFD/IFRS-style disclosure that BRSR asks for outside P6, not as a P6 data field.",
+    "P6-E26": "Scenario analysis for climate resilience — same reason.",
+    "P6-E27": "Internal carbon pricing — same reason; BRSR does not ask for it."
+  }
+}

@@ -77,13 +77,16 @@ first. Now a firm (org) owns its campaigns and every campaign-level query filter
 pattern and **invents no vocabulary** — every term comes from the sourced sets in
 `esg_ratings_mapping.json`, asserted by `cdp-ecovadis-mappings.test.ts`, which also pins the
 deliberate sparseness (no CDP waste module; no EcoVadis scenario-analysis or carbon-pricing criterion).
-⚠️ **MEASURED 2026-10-04: the two id sets share only 19 of 108 keys, AND the shared keys mean
-DIFFERENT disclosures** — `P6-E7` is GHG emissions in `brsr_data_points.json` but water withdrawal
-in `framework_mappings.json`; `P6-E1` is total energy vs electricity. **So Collect's collected
-values CANNOT be joined to the crosswalk by id.** Doing so would render a client's GHG figure
-under a water heading. Wiring "collect once → map across frameworks" needs a hand-reconciled
-bridge between the 108 KB ids and the 77 crosswalk ids first — about a day, every row checked.
-This is the single blocker on the product's headline claim.
+⚠️ **The two id sets share only 19 of 108 keys, AND the shared keys mean DIFFERENT disclosures** —
+`P6-E7` is GHG emissions in `brsr_data_points.json` but water withdrawal in
+`framework_mappings.json`; `P6-E1` is total energy vs electricity. Never join them by id.
+✅ **RESOLVED FOR P6 2026-10-05:** `src/data/collect_crosswalk_bridge.json` reconciles them **by
+hand** — 13 of 21 Collect P6 questions bridged, reaching 22 of 27 P6 crosswalk rows, with the 8
+unbridged ones carrying a documented reason. `framework-coverage.ts` + `/requests/[id]/frameworks`
+now show a **collected value** alongside everything it answers in GRI/TCFD/IFRS/CDP/EcoVadis/GRESB.
+`framework-coverage.test.ts` (15 tests) includes a **subject-matter crossing check** so a water
+question can never feed a GHG metric. ⚠️ **P6 ONLY** — the other eight principles are still
+map-without-pipe, and the page states that prominently.
 ⚠️ **`framework_mappings.json` uses a FINER-GRAINED `brsr_id` than `brsr_data_points.json`** (27 P6
 rows vs 13+8 indicators) — overlays key off the crosswalk ids, and getting it wrong yields mappings
 that resolve to nothing.

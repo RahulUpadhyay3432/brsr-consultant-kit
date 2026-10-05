@@ -161,6 +161,15 @@ export default function CampaignWorkspace(props: CampaignWorkspaceProps) {
           )}
           {allItems.length > 0 && (
             <Link
+              href={`/requests/${campaign.id}/frameworks`}
+              className="inline-flex items-center gap-1.5 text-[14.5px] font-semibold text-ink-body bg-white border border-line hover:border-brand-400 px-3.5 py-2 rounded-lg transition-colors pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><path d="M4 7h16M4 12h16M4 17h10" /></svg>
+              Frameworks
+            </Link>
+          )}
+          {allItems.length > 0 && (
+            <Link
               href={`/requests/${campaign.id}/draft`}
               className="inline-flex items-center gap-1.5 text-[14.5px] font-semibold text-white bg-forest hover:bg-forest-light px-3.5 py-2 rounded-lg transition-colors pressable focus:outline-none focus:ring-2 focus:ring-brand-400"
             >

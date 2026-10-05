@@ -53,6 +53,7 @@ function CampaignRow({ campaign }: { campaign: Campaign }) {
   const expanded = open || onThis;
   const rowActive = path === `/requests/${campaign.id}`;
   const onDraft = path === `/requests/${campaign.id}/draft`;
+  const onFrameworks = path === `/requests/${campaign.id}/frameworks`;
   const currentView = searchParams.get("view") || "overview";
 
   return (
@@ -94,6 +95,7 @@ function CampaignRow({ campaign }: { campaign: Campaign }) {
           {SECTIONS.map((s) => (
             <Item key={s.key} href={`/requests/${campaign.id}?view=${s.key}`} active={rowActive && currentView === s.key} depth={1}>{s.label}</Item>
           ))}
+          <Item href={`/requests/${campaign.id}/frameworks`} active={onFrameworks} depth={1}>Frameworks</Item>
           <Item href={`/requests/${campaign.id}/draft`} active={onDraft} depth={1}>Draft</Item>
         </div>
       )}
