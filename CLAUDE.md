@@ -14,9 +14,38 @@ The "100% on-device / no data stored" framing applies to **(1) only**. Collect d
 
 Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUpadhyay3432/brsr-consultant-kit
 
-## Project Status — last updated 2026-10-03
+## Project Status — last updated 2026-10-05
 
-### Current: competitor parity + the distribution finding (SAGE call Mon 2026-10-05)
+### Current: the collect-once claim is now real for energy, water and people
+
+**`master` = `0d073a2`.** 208 pages, **196 tests, 23 files**, clean build. Session handoff:
+**`docs/session-2026-10-05-handoff.md`**. ⚠️ **Read `docs/THE-ONLY-DOC-YOU-NEED.md` first for
+anything SAGE- or framework-related** — it is self-contained and written from zero.
+
+⚠️ **THE USER DOES NOT KNOW THIS DOMAIN.** The SAGE emails were written and sent by another agent,
+not by him. He asked "what is EcoVadis, I have no idea", and he has not read the article he told
+Dr. Kad he read. So: **spell out every acronym the first time**, and **never leave a status
+ambiguous** — he was angrier about a document saying "half built" in one place and "built" in
+another than about the gap itself. Say BUILT or NOT BUILT and make every artifact agree. He also
+asks for a **TLDR after every message** carrying all the important points.
+
+**SHIPPED 4–5 Oct — the email's headline claim, made real.** `src/data/collect_crosswalk_bridge.json`
++ `framework-coverage.ts` + **`/requests/[id]/frameworks`**: a figure a client's team submits is now
+shown alongside everything it answers in GRI, TCFD, IFRS, CDP, EcoVadis and GRESB.
+✅ **energy, water and people** (the three things the email named) — people reaches through
+**Principle 3 PLUS the Section A employee rows, because BRSR asks for headcount and turnover in
+Section A, not P3.** ❌ P1, P2, P4, P5, P7, P8, P9 have the crosswalk but **not** the pipe; the
+screen states this. **27 bridge entries, 17 documented refusals.** Also shipped: the **GRESB
+crosswalk** (`f98ebea`, 40 of 77 rows, Real Estate and Infrastructure separately, sourced not
+guessed) and a designed **26-page PDF briefing** (`docs/SAGE-call-briefing.pdf`, rebuilt by
+`scripts/build-sage-briefing-pdf.py`).
+
+⚠️ **NEVER GENERATE BRIDGE ENTRIES.** They are hand-reconciled label by label.
+`framework-coverage.test.ts` has a **subject-matter crossing check** that fails if a water question
+ever feeds a GHG metric. Scope comes from the bridge file, so adding a principle is a data change
+**plus hand reconciliation**, never a code change.
+
+### Previously: competitor parity + the distribution finding
 
 **`master` = `30388f4`, pushed and LIVE** (deployment `dpl_6dVXRQUStK7GedB9KNaATcW2Q8BE`, READY).
 Auto-deploy from `master` works. 208 pages, **166 tests, 21 files**, clean build.
@@ -80,13 +109,14 @@ deliberate sparseness (no CDP waste module; no EcoVadis scenario-analysis or car
 ⚠️ **The two id sets share only 19 of 108 keys, AND the shared keys mean DIFFERENT disclosures** —
 `P6-E7` is GHG emissions in `brsr_data_points.json` but water withdrawal in
 `framework_mappings.json`; `P6-E1` is total energy vs electricity. Never join them by id.
-✅ **RESOLVED FOR P6 2026-10-05:** `src/data/collect_crosswalk_bridge.json` reconciles them **by
+✅ **RESOLVED for ENERGY, WATER and PEOPLE 2026-10-05:** `src/data/collect_crosswalk_bridge.json` reconciles them **by
 hand** — 13 of 21 Collect P6 questions bridged, reaching 22 of 27 P6 crosswalk rows, with the 8
 unbridged ones carrying a documented reason. `framework-coverage.ts` + `/requests/[id]/frameworks`
 now show a **collected value** alongside everything it answers in GRI/TCFD/IFRS/CDP/EcoVadis/GRESB.
-`framework-coverage.test.ts` (15 tests) includes a **subject-matter crossing check** so a water
-question can never feed a GHG metric. ⚠️ **P6 ONLY** — the other eight principles are still
-map-without-pipe, and the page states that prominently.
+Extended the same day to **Principle 3 + the Section A employee rows** (headcount and turnover live
+in Section A, not P3). `framework-coverage.test.ts` (18 tests) includes a **subject-matter crossing
+check** so a water question can never feed a GHG metric. ⚠️ **P1, P2, P4, P5, P7, P8, P9 are still
+map-without-pipe**, and the page states that prominently.
 ⚠️ **`framework_mappings.json` uses a FINER-GRAINED `brsr_id` than `brsr_data_points.json`** (27 P6
 rows vs 13+8 indicators) — overlays key off the crosswalk ids, and getting it wrong yields mappings
 that resolve to nothing.
@@ -267,7 +297,9 @@ scanned-bill OCR live once Gemini billing is topped up · run the `brsr_jobs` CR
 switch the jobs scraper on · optional `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections
 jsonb;` for structured JDs on scraped roles.
 
-**Key docs:** **`docs/THE-ONLY-DOC-YOU-NEED.md`** (**START HERE for anything SAGE-call or
+**Key docs:** `docs/session-2026-10-05-handoff.md` (**latest handoff — the engineering record,
+the id-collision finding, the deliberate refusals, and how to work with this user**) ·
+**`docs/THE-ONLY-DOC-YOU-NEED.md`** (**START HERE for anything SAGE-call or
 framework-related. Self-contained, written from zero: why sustainability reporting exists, every
 acronym with full forms, BRSR/CDP/EcoVadis/GRESB properly, who Shashi and SAGE are, what we built,
 ⚠️ where the "collect once, map across" claim stops being true, and the full call script. Supersedes
