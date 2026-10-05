@@ -18,9 +18,26 @@ Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUp
 
 ### Current: the collect-once claim is now real for energy, water and people
 
-**`master` = `0d073a2`.** 208 pages, **196 tests, 23 files**, clean build. Session handoff:
-**`docs/session-2026-10-05-handoff.md`**. ⚠️ **Read `docs/THE-ONLY-DOC-YOU-NEED.md` first for
-anything SAGE- or framework-related** — it is self-contained and written from zero.
+**`master` = `0d073a2`** (+ `99fc4f9` on `claude/busy-curie-ij42lc`). 208 pages, **200 tests, 23
+files**, clean build. Session handoff: **`docs/session-2026-10-05-handoff.md`**.
+⚠️ **Read `docs/THE-ONLY-DOC-YOU-NEED.md` first for anything SAGE- or framework-related** — it is
+self-contained and written from zero. ⚠️ **For the call itself, hold `docs/DEMO-SHEET.md`** — the
+exact URLs to open in order, and the screens not to open.
+
+⚠️ **Two things found 2026-10-05, after the handoff was written.** (1) `framework-coverage.ts`
+rendered the crosswalk's em-dash placeholders as real references, so every **people** row on
+`/requests/[id]/frameworks` carried false **`TCFD —`** and **`IFRS S1/S2 —`** badges — asserting
+that headcount answers into a climate framework. Fixed in `99fc4f9` with a `present()` filter and
+4 tests. (2) `THE-ONLY-DOC-YOU-NEED.md` still said **"the pipe isn't built"** in four places
+including the rehearsed opening script, contradicting the PDF, which had been corrected. The
+markdown is now rewritten to agree: **BUILT for energy/water/people, NOT BUILT for the other seven
+principles.**
+
+⚠️ **Demo hazard:** 8 of the 9 Collect collections are named after **real companies that are not
+clients** (Tata Motors ×4, Tata Steel ×2, etc.), and `requests/layout.tsx` renders **every**
+campaign name in the sidebar on **every** `/requests/*` page — so a direct URL does not hide them.
+The only safely-named collection with data is **`df6bb338-0b9e-476d-9ae0-012305e7fe7f`**
+("Sample — Acme Manufacturing (demo)", 7 bridged figures reaching all 6 frameworks).
 
 ⚠️ **THE USER DOES NOT KNOW THIS DOMAIN.** The SAGE emails were written and sent by another agent,
 not by him. He asked "what is EcoVadis, I have no idea", and he has not read the article he told
@@ -297,7 +314,8 @@ scanned-bill OCR live once Gemini billing is topped up · run the `brsr_jobs` CR
 switch the jobs scraper on · optional `ALTER TABLE brsr_jobs ADD COLUMN IF NOT EXISTS sections
 jsonb;` for structured JDs on scraped roles.
 
-**Key docs:** `docs/session-2026-10-05-handoff.md` (**latest handoff — the engineering record,
+**Key docs:** **`docs/DEMO-SHEET.md`** (**what to show on the SAGE call, in order, with the exact
+URLs and the screens to avoid — hold this on the day**) · `docs/session-2026-10-05-handoff.md` (**latest handoff — the engineering record,
 the id-collision finding, the deliberate refusals, and how to work with this user**) ·
 **`docs/THE-ONLY-DOC-YOU-NEED.md`** (**START HERE for anything SAGE-call or
 framework-related. Self-contained, written from zero: why sustainability reporting exists, every
