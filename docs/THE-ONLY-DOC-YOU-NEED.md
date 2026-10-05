@@ -530,7 +530,7 @@ PPP-adjusted intensity calculator, and — new — a **published database of eve
 product uses, with its citation and version.** Plus reference pages for all 108 disclosures, a
 50-term glossary, and an 8-module teaching pack at `/academy`.
 
-## ⚠️⚠️ THE ONE THING IN YOUR EMAIL THAT IS NOT TRUE YET
+## ✅ THE CLAIM IN YOUR EMAIL IS NOW TRUE — for the three things it named
 
 Your second email said:
 
@@ -538,34 +538,75 @@ Your second email said:
 > water, people) and it maps across BRSR, CDP, EcoVadis and GRESB, instead of being chased
 > separately for every framework."*
 
-| Half of the claim | Reality |
+⚠️ **This section said the opposite until 5 October. It was true then and it is wrong now — the
+pipe was built on 4–5 October.** If you have read an earlier copy of this document or the PDF,
+**this is the paragraph that changed.**
+
+| Half of the claim | Status |
 |---|---|
-| "a shared workspace where a client collects each number once" | ✅ **TRUE.** That's Collect. |
-| "and it maps across BRSR, CDP, EcoVadis and GRESB" | ⚠️ **The knowledge exists. The plumbing does not.** |
+| "a shared workspace where a client collects each number once" | ✅ **BUILT.** That's Collect. |
+| "and it maps across BRSR, CDP, EcoVadis and GRESB" | ✅ **BUILT for energy, water and people** — the three the email named. Also emissions, waste, air pollution, biodiversity. |
+| The other seven principles | ❌ **NOT BUILT.** The crosswalk exists; a collected value does not flow into it. **The screen says so itself.** |
 
-**In plain terms:** the crosswalk can tell you *which CDP question your client's energy number
-answers.* It **cannot** take the number your client typed into Collect and **put it into a CDP
-answer**. **The map is drawn. The pipe is not built.**
+**What it now does, concretely:** a figure the client's team submits appears on one screen
+alongside **every other framework's question it already answers** — GRI, TCFD, IFRS S1/S2, CDP,
+EcoVadis and GRESB. One electricity reading shows as GRI 302-1, a TCFD Metrics and Targets
+disclosure, IFRS S2 Para 29(a), CDP's Climate Change performance module, EcoVadis' *Energy
+consumption & GHGs* criterion under Environment, and the **Energy** aspect in both the GRESB Real
+Estate and Infrastructure Assessments.
 
-**Why I did not build it last night, even though you asked:** the product carries two different
-numbering systems for BRSR disclosures and **they collide.** In Collect, `P6-E7` means *greenhouse
-gas emissions*. In the crosswalk, `P6-E7` means *water withdrawal*. A pipe built by matching those
-codes would display **your client's GHG number under a water heading, on screen, to someone
-certified in CDP and GRI.** Fixing it properly means hand-checking 108 disclosures against 77
-crosswalk rows — a day's careful work. **A wrong mapping is worse than an honest gap.**
+**The surface: `/requests/[id]/frameworks`.** This is the screen your email bought you the meeting
+to see.
 
-**Your email said "Next I am building." Future tense. You are not caught out.** You just have to
-say where the line falls — and saying it precisely is worth more than the feature.
+### What is still NOT built, and say it plainly
+
+It shows you **where each number lands in each framework.** It does **not** generate a submitted
+CDP response or a filled-in EcoVadis questionnaire. You still answer those in CDP's and EcoVadis'
+own portals — but you are no longer re-asking the client's facilities manager for a number you
+already hold, and you are not re-deriving the mapping by hand for every client, every year.
+
+**And seven of the nine principles are not carried across at all:** P1 ethics, P2 products,
+P4 stakeholders, P5 human rights, P7 advocacy, P8 community, P9 consumers. Each one needs the same
+hand reconciliation the first two got. **The screen states this itself, in a bordered panel, above
+the data** — point at it rather than explaining it.
+
+### Why it took hand work, and why that story is worth telling her
+
+The product carries **two different numbering systems for BRSR disclosures, and they collide.** In
+Collect, `P6-E7` means *greenhouse gas emissions*. In the crosswalk, `P6-E7` means *water
+withdrawal*. **Only 19 of 108 codes appear in both, and the shared ones mean different
+disclosures.** A pipe built by matching codes would have displayed **a client's GHG figure under a
+water heading** — on screen, to someone certified in CDP and GRI.
+
+So the reconciliation was done **by hand, label by label**: 27 bridged entries and
+**17 documented refusals** — places where two things look like a match and are not. Among them:
+a business continuity plan is **not** climate scenario analysis; Green Credits are **not** carbon
+offsets; premises accessibility is **not** a count of differently abled employees; statutory dues
+are **not** minimum wage. A test fails the build if a water question ever feeds a greenhouse-gas
+metric.
+
+⚠️ **This is your best story on the call, and it is better than the feature.** She is certified
+in GRI and CDP; she has seen tools assert mappings that were not true. **Tell her you found the
+collision, chose not to auto-generate, and wrote down the seventeen places you refused to map.**
+That is citation discipline, which is her native language and your brand's whole premise.
 
 **The sentence, close to verbatim:**
 
-> "I should be precise about one thing, because it's the sentence you booked this call on. The
-> workspace collects each number once — that part is real and working. The mapping across CDP,
-> EcoVadis and GRESB exists as knowledge: I can tell you which CDP question your client's
-> electricity figure answers, and which EcoVadis criterion it sits under. What I **cannot** yet do
-> is take the number your team submitted and hand you a filled-in CDP response. **The map is drawn.
-> The pipe isn't built.** That's the next thing — and it's why I'd rather test on something real
-> before building more of it."
+> "One thing I want to be precise about, because it's the sentence you booked this call on. It's
+> built — for energy, water and people, which were the three I named. A figure the client's team
+> submits now shows up next to everything it answers in GRI, TCFD, IFRS, CDP, EcoVadis and GRESB.
+> What it does **not** do is hand you a submitted CDP response — you still answer in CDP's own
+> portal. And seven of the nine principles aren't carried across yet; the screen says so itself.
+>
+> The reason it took a day rather than an evening: the product had two BRSR numbering systems and
+> they collide — `P6-E7` is greenhouse gases in one and water withdrawal in the other, and only
+> nineteen of a hundred and eight codes even appear in both. Matching by code would have put a
+> client's GHG number under a water heading. So I reconciled it by hand and wrote down the
+> seventeen places I refused to map. **I'd rather show you the refusals than the coverage.**"
+
+⚠️ **Do not over-claim this.** Say **"for energy, water and people"** every single time you say
+it is built. Dropping that qualifier turns a true statement into the same kind of overclaim the
+email already cost you.
 
 ---
 
@@ -628,12 +669,16 @@ into an applicant.
 
 > "Thanks for making the time.
 >
-> Before I show you anything — one thing from my email I want to be precise about. I said the
-> workspace maps across BRSR, CDP, EcoVadis and GRESB. The field-level mapping is real for
-> Principle 6 against CDP and EcoVadis, and I built the GRESB crosswalk this week — forty of the
-> seventy-seven rows, separately for the Real Estate and Infrastructure Assessments, because the
-> aspect names differ. What I can't yet do is take a number your team submitted and hand you a
-> filled-in CDP response. The map is drawn; the pipe isn't built.
+> Before I show you anything — one thing from my email I want to be precise about, in both
+> directions. I said I was next building a workspace where a client collects each number once and
+> it maps across BRSR, CDP, EcoVadis and GRESB. **That is built now, for energy, water and people**
+> — the three I named. A figure the client's team submits shows up next to everything it answers
+> in GRI, TCFD, IFRS, CDP, EcoVadis and GRESB, and I built the GRESB crosswalk this week, forty of
+> the seventy-seven rows, separately for the Real Estate and Infrastructure Assessments because the
+> aspect names differ.
+>
+> What it does **not** do is hand you a submitted CDP response — you still answer in CDP's own
+> portal. And seven of the nine principles aren't carried across yet. The screen says that itself.
 >
 > And the honest state of the rest: about two hundred and forty consultants have used the free tool
 > over five months, and almost none have come back. I think I know why — a gap analysis is a
@@ -677,8 +722,37 @@ it came from, and whether a person typed it or a document was read for it. The r
 might fit SAGE: it's a handover mechanism. Your guided-to-independent traverse — that's the shape
 I've been building without having a name for it."*
 
-⚠️ **Skip materiality and the framework crosswalk unless she asks.** **Never show** Collect with
-real campaigns in it, the fee builder, or any screen you haven't clicked that morning.
+**(e) The frameworks screen — 3 minutes. THIS IS THE ONE SHE BOOKED THE CALL FOR. Do not skip it,
+do not leave it to the end if you are running short.**
+
+**URL: `/requests/<the demo collection>/frameworks`.** Use the **"Sample — Acme Manufacturing
+(demo)"** collection — it has seven submitted figures and is the only one that fills this screen.
+
+*"This is the part my email was about, and it's built for energy, water and people. That
+electricity figure — the facilities manager submitted it once. Here's every framework question it
+already answers: GRI 302-1, TCFD Metrics and Targets, IFRS S2 Para 29(a), CDP's climate module,
+EcoVadis' Energy consumption and GHGs criterion under Environment, and the Energy aspect in both
+GRESB Assessments — Real Estate and Infrastructure separately, because the aspect names differ."*
+
+**Then point at the bordered panel at the top and read it out loud:** *"And that panel is the
+product telling you what it does not cover. Seven of the nine principles aren't carried across —
+ethics, products, stakeholders, human rights, advocacy, community, consumers. The crosswalk exists;
+the figure doesn't flow into it yet."*
+
+**Then the refusals — this is the strongest thirty seconds in the whole demo:** *"The reason this
+took a day: the product had two BRSR numbering systems and they collide. `P6-E7` is greenhouse
+gases in one and water withdrawal in the other — nineteen of a hundred and eight codes appear in
+both and mean different things. Matching by code would have shown you a client's GHG number under a
+water heading. So I did it by hand and wrote down the seventeen places I refused to map — a
+business continuity plan isn't scenario analysis, Green Credits aren't carbon offsets, premises
+accessibility isn't a count of differently abled employees. I'd rather show you the refusals than
+the coverage."*
+
+⚠️ **Skip materiality unless she asks.** **Never show** the **free report's** generic framework
+crosswalk table — it has no client data in it and will muddle the point the screen above just
+made. **Never show** the Collect collections list (the other eight are named after real companies
+that are not clients — see the warning in the pre-call checklist), the fee builder, or any screen
+you haven't clicked that morning.
 
 Then stop: *"That's the tour. Where does the first pass get that balance wrong — between the
 required part and the fuller story a company should be telling?"*
@@ -843,9 +917,13 @@ If you remember nothing else:
     is **"guided traverse → independent traverse"** — and **Collect is a handover mechanism.**
 12. **She has a PhD in Earth Sciences and is certified in GRI, SBTi, CDP and Integrated
     Reporting.** She leads **Green Skills Academy**, backed by **NSDC**.
-13. ⚠️ **"Collects each number once" is TRUE. "Maps across CDP, EcoVadis and GRESB" is knowledge,
-    not plumbing.** The map is drawn; the pipe isn't built. Your email said *"Next I am building"* —
-    the tense covers you.
+13. ✅ **"Collects each number once" is BUILT. "Maps across CDP, EcoVadis and GRESB" is BUILT too —
+    for energy, water and people**, the three the email named, plus emissions, waste, air pollution
+    and biodiversity. ❌ **The other seven principles are NOT built** — crosswalk yes, pipe no, and
+    the screen says so. ⚠️ **Always say "for energy, water and people" when you say it is built.**
+    The surface is **`/requests/[id]/frameworks`**. And the story worth more than the feature:
+    **two BRSR numbering systems collide, so it was reconciled by hand — 27 entries and 17
+    documented refusals.**
 14. ⚠️ **Nine collections, all yours, all from June. No outside practice has run it.** Say it.
 15. ⚠️ **Read her article before the call.** Ten minutes. Write down one agreement and one question.
     Nothing in this document substitutes for it.

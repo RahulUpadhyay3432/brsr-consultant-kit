@@ -245,3 +245,65 @@ describe("framework coverage over a campaign", () => {
     expect(() => frameworkCoverage(c)).not.toThrow();
   });
 });
+
+// The crosswalk records "no counterpart in this framework" as a dash, not an
+// empty string. Rendering that as a reference put a badge reading "TCFD —" on
+// every people row — asserting, to anyone certified in the frameworks, that
+// headcount and retirement benefits map into a climate-risk framework. An
+// absent mapping must produce no answer at all.
+describe("absent mappings render as absent, not as a dash", () => {
+  it("emits no answer for a framework whose crosswalk cell is a placeholder", () => {
+    const cov = frameworkCoverage(
+      campaign([item("P3-E1", "Measures for the well-being of employees", "640")]),
+    );
+    expect(cov.covered).toHaveLength(1);
+    const refs = cov.covered[0].answers.map((a) => a.reference);
+    for (const r of refs) {
+      expect(r.trim()).not.toBe("—");
+      expect(r.trim()).not.toBe("–");
+      expect(r.trim()).not.toBe("-");
+      expect(r.trim()).not.toBe("");
+    }
+  });
+
+  it("does not claim a people figure answers into TCFD", () => {
+    // TCFD is climate-risk reporting. Employee wellbeing has no TCFD pillar,
+    // and the crosswalk says so with a dash.
+    const cov = frameworkCoverage(
+      campaign([
+        item("P3-E1", "Measures for the well-being of employees", "640"),
+        item("P3-E2", "Details of retirement benefits", "37"),
+      ]),
+    );
+    const frameworks = cov.covered.flatMap((c) => c.answers.map((a) => a.framework));
+    expect(frameworks).not.toContain("TCFD");
+    expect(frameworks).not.toContain("IFRS S1/S2");
+    // It does legitimately answer GRI 401-2 (benefits provided to employees).
+    expect(frameworks).toContain("GRI");
+  });
+
+  it("still carries the real P6 mappings, so the filter is not over-broad", () => {
+    const cov = frameworkCoverage(
+      campaign([item("P6-E7", "Greenhouse gas emissions (Scope 1 and Scope 2)", "5200")]),
+    );
+    expect(cov.covered).toHaveLength(1);
+    const fw = new Set(cov.covered[0].answers.map((a) => a.framework));
+    expect(fw).toContain("GRI");
+    expect(fw).toContain("TCFD");
+    expect(fw).toContain("CDP");
+    expect(fw).toContain("EcoVadis");
+    expect(fw).toContain("GRESB");
+  });
+
+  it("never emits an answer whose reference is blank or a lone dash, for any bridged field", () => {
+    for (const fieldId of Object.keys(bridge)) {
+      const cov = frameworkCoverage(campaign([item(fieldId, `label for ${fieldId}`, "1")]));
+      for (const row of cov.covered) {
+        for (const a of row.answers) {
+          expect(a.reference.trim().length).toBeGreaterThan(1);
+          expect(["—", "–", "-"]).not.toContain(a.reference.trim());
+        }
+      }
+    }
+  });
+});

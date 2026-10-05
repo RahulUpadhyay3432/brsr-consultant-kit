@@ -87,6 +87,17 @@ export interface FrameworkCoverage {
   scopeNote: string;
 }
 
+// The crosswalk marks "this framework has no counterpart" with a dash rather
+// than an empty string, in 71 fields. Those are absences, not references: a
+// people row rendered them as a badge reading "TCFD \u2014", which to anyone who
+// knows the frameworks asserts that headcount maps into a climate-risk
+// framework. An absent mapping must render as nothing at all.
+const PLACEHOLDERS = new Set(["\u2014", "\u2013", "-", "", "n/a", "N/A", "\u2014\u2014"]);
+function present(v: string | undefined): string | null {
+  const t = (v ?? "").trim();
+  return t && !PLACEHOLDERS.has(t) ? t : null;
+}
+
 function answersFor(crosswalkIds: string[]): FrameworkAnswer[] {
   const out: FrameworkAnswer[] = [];
   const seen = new Set<string>();
@@ -102,23 +113,31 @@ function answersFor(crosswalkIds: string[]): FrameworkAnswer[] {
   for (const id of crosswalkIds) {
     const row = rows.get(id);
     if (row) {
-      if (row.gri_standard) {
-        push({ framework: "GRI", reference: row.gri_standard, detail: row.gri_label });
+      const gri = present(row.gri_standard);
+      if (gri) {
+        push({ framework: "GRI", reference: gri, detail: present(row.gri_label) ?? undefined });
       }
-      if (row.tcfd_pillar) {
-        push({ framework: "TCFD", reference: row.tcfd_pillar, detail: row.tcfd_detail });
+      const tcfd = present(row.tcfd_pillar);
+      if (tcfd) {
+        push({ framework: "TCFD", reference: tcfd, detail: present(row.tcfd_detail) ?? undefined });
       }
-      if (row.ifrs_reference) {
-        push({ framework: "IFRS S1/S2", reference: row.ifrs_reference });
+      const ifrs = present(row.ifrs_reference);
+      if (ifrs) {
+        push({ framework: "IFRS S1/S2", reference: ifrs });
       }
     }
     const ce = cdpEco[id];
-    if (ce?.cdp_area) push({ framework: "CDP", reference: ce.cdp_area, detail: ce.cdp_detail });
-    if (ce?.ecovadis_criterion) {
+    const cdpArea = present(ce?.cdp_area);
+    if (cdpArea) {
+      push({ framework: "CDP", reference: cdpArea, detail: present(ce?.cdp_detail) ?? undefined });
+    }
+    const ecoCriterion = present(ce?.ecovadis_criterion);
+    if (ecoCriterion) {
+      const theme = present(ce?.ecovadis_theme);
       push({
         framework: "EcoVadis",
-        reference: `${ce.ecovadis_theme ? `${ce.ecovadis_theme} — ` : ""}${ce.ecovadis_criterion}`,
-        detail: ce.ecovadis_detail,
+        reference: `${theme ? `${theme} — ` : ""}${ecoCriterion}`,
+        detail: present(ce?.ecovadis_detail) ?? undefined,
       });
     }
     const g = gresb[id];
@@ -126,10 +145,12 @@ function answersFor(crosswalkIds: string[]): FrameworkAnswer[] {
       // The two GRESB Assessments use different aspect vocabularies, so each is
       // named rather than merged — merging them would read as a contradiction.
       const parts: string[] = [];
-      if (g.gresb_re) parts.push(`Real Estate: ${g.gresb_re}`);
-      if (g.gresb_infra) parts.push(`Infrastructure: ${g.gresb_infra}`);
+      const re = present(g.gresb_re);
+      const infra = present(g.gresb_infra);
+      if (re) parts.push(`Real Estate: ${re}`);
+      if (infra) parts.push(`Infrastructure: ${infra}`);
       if (parts.length) {
-        push({ framework: "GRESB", reference: parts.join(" · "), detail: g.gresb_detail });
+        push({ framework: "GRESB", reference: parts.join(" · "), detail: present(g.gresb_detail) ?? undefined });
       }
     }
   }
