@@ -44,7 +44,7 @@ export function CalcPanel({
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-700 mb-1">{eyebrow}</p>
             )}
             {title && (
-              <H className={`font-editorial text-ink leading-snug ${compact ? "text-[18px]" : "text-[19px] sm:text-[21px]"}`}>
+              <H className={`font-serif-display text-ink leading-snug ${compact ? "text-[18px]" : "text-[19px] sm:text-[21px]"}`}>
                 {title}
               </H>
             )}
@@ -114,7 +114,7 @@ export function ResultRow({
           {sub && <p className="mt-0.5 text-[12px] text-ink-muted leading-snug">{sub}</p>}
         </div>
         <p className={`shrink-0 text-right tabular-nums whitespace-nowrap ${
-          strong ? "font-editorial text-[28px] leading-none text-ink"
+          strong ? "font-serif-display text-[28px] leading-none text-ink"
             : muted ? "text-[13px] text-ink-muted"
             : "text-[14px] font-medium text-ink"}`}>
           {value}
@@ -168,7 +168,7 @@ export function FactorLog({
   return (
     <details className="glass group/log rounded-3xl p-5">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
-        <span className="font-editorial text-[18px] text-ink">
+        <span className="font-serif-display text-[18px] text-ink">
           Factor log <span className="font-sans text-[12.5px] text-ink-muted ml-1">{items.length} factors, each with its source</span>
         </span>
         <svg className="h-4 w-4 shrink-0 text-ink-muted transition-transform duration-200 group-open/log:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>

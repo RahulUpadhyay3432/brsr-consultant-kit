@@ -36,7 +36,7 @@ function Converter() {
       <div className="mt-5 rounded-2xl border border-[#D6E6F7] bg-white/70 px-4 py-4">
         <p className="text-[12px] font-semibold text-brand-700 mb-2">Enter this in the numeric XBRL cell</p>
         {show ? (
-          <p className="font-editorial text-[28px] text-ink tabular-nums leading-none">
+          <p className="font-serif-display text-[28px] text-ink tabular-nums leading-none">
             {formatInr(absolute)}
             <span className="font-sans text-[13px] font-normal text-ink-muted ml-2">₹ (absolute)</span>
           </p>
@@ -114,7 +114,7 @@ export default function XbrlPreflightPage() {
 
             {/* Checklist */}
             <div>
-              <h2 className="font-editorial text-[1.6rem] text-ink mb-1.5">The 7 checks before you upload</h2>
+              <h2 className="font-editorial font-semibold text-[1.5rem] text-ink mb-1.5">The 7 checks before you upload</h2>
               <p className="text-[14px] text-ink-muted leading-relaxed mb-4 max-w-[640px]">
                 Clear each of these before generating the instance document. They are the mistakes that most often trip the validation, ordered by how frequently they appear.
               </p>

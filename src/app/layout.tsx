@@ -6,15 +6,17 @@ import ConsentBanner from "@/components/ConsentBanner";
 import { jsonLdHtml } from "@/lib/jsonld";
 import "./globals.css";
 
-// Self-hosted (no next/font/google on this machine). Fraunces = display serif for
-// headings + big figures; Newsreader = long-form blog body text only;
-// Hanken Grotesk = body sans (also what `font-mono` now resolves to; the product
-// uses no monospace typeface). Files fetched once by scripts/fetch-fonts.mjs.
+// Self-hosted (no next/font/google on this machine). Hanken Grotesk = body + titles
+// (also what `font-mono` now resolves to; the product uses no monospace typeface);
+// Newsreader = the blog's serif; Fraunces = calculator panel titles and result figures
+// only (not preloaded, so other pages never download it). Files fetched once by
+// scripts/fetch-fonts.mjs.
 const fraunces = localFont({
   src: "./fonts/Fraunces-var.woff2",
   weight: "400 600",
   variable: "--font-fraunces",
   display: "swap",
+  preload: false,
 });
 const newsreader = localFont({
   src: [

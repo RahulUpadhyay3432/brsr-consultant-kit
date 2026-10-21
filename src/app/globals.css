@@ -47,21 +47,24 @@
   letter-spacing: -0.02em;
 }
 
-/* Editorial serif — Fraunces — for headings, calculator panel titles and big result
-   figures. Warmth + a premium editorial voice; body + functional/table headers stay
-   Hanken sans. Fraunces is a variable font (opsz 9-144, wght 400-600), so the optical
-   size tracks the font size on its own. Beats the * rule via class specificity. */
+/* Site titles — Apple-style sans: Hanken Grotesk, semibold, tight tracking (the
+   homepage hero's voice, carried to every section title). Apple's own SF can't be
+   embedded on the web, and most visitors are on Windows/Android where it wouldn't
+   render anyway. The class name predates this; it was a serif until 2026-10-21.
+   Defined after `@tailwind utilities`, so its tracking wins over per-heading ones. */
 .font-editorial {
+  font-family: var(--font-hanken), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  letter-spacing: -0.025em;
+  font-feature-settings: "kern" 1;
+}
+
+/* Fraunces — the soft display serif from the Lovable calculator study. Calculator
+   panel titles and big result figures only; never site titles. */
+.font-serif-display {
   font-family: var(--font-fraunces), Georgia, Cambria, 'Times New Roman', serif;
   font-optical-sizing: auto;
-  letter-spacing: -0.015em;
-  font-feature-settings: "liga" 1, "kern" 1;
+  letter-spacing: -0.01em;
 }
-/* Fraunces turns chunky above 500, and most editorial headings carry font-semibold or
-   font-bold from the Newsreader era. Cap them at 500 (the Lovable reference reads at
-   400-500); headings with no weight class keep the lighter 400. */
-.font-editorial.font-semibold,
-.font-editorial.font-bold { font-weight: 500; }
 
 html { scroll-behavior: smooth; }
 
