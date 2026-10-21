@@ -10,7 +10,7 @@ import { BlogFooter } from "@/components/blog/BlogFooter";
 const ALL_CATEGORIES: BlogCategory[] = ["BRSR", "Regulation", "GHG & Emissions", "How-to", "Case Studies"];
 
 // Editorial serif (Newsreader, loaded app-wide) for titles + display headings.
-const SERIF: CSSProperties = { fontFamily: "var(--font-newsreader), Georgia, serif" };
+const SERIF: CSSProperties = { fontFamily: "var(--font-fraunces), Georgia, serif" };
 
 function CategoryChip({ category }: { category: BlogCategory }) {
   const c = CATEGORY_COLORS[category];
@@ -47,7 +47,7 @@ function FeaturedCard({ post }: { post: BlogPost }) {
         </div>
         <h2
           className="text-[#0F172A] leading-[1.18] tracking-[-0.01em] group-hover:text-[#0B6FD4] transition-colors duration-150"
-          style={{ ...SERIF, fontWeight: 600, fontSize: "clamp(1.5rem, 2.4vw, 2.05rem)" }}
+          style={{ ...SERIF, fontWeight: 500, fontSize: "clamp(1.5rem, 2.4vw, 2.05rem)" }}
         >
           {post.title}
         </h2>
@@ -82,7 +82,7 @@ function InsightCard({ post }: { post: BlogPost }) {
         </div>
         <h3
           className="text-[#0F172A] leading-[1.25] tracking-[-0.005em] group-hover:text-[#0B6FD4] transition-colors duration-150"
-          style={{ ...SERIF, fontWeight: 600, fontSize: "1.22rem" }}
+          style={{ ...SERIF, fontWeight: 500, fontSize: "1.22rem" }}
         >
           {post.title}
         </h3>
@@ -110,7 +110,7 @@ function CompactRow({ post }: { post: BlogPost }) {
         </div>
         <h3
           className="text-[#0F172A] leading-snug group-hover:text-[#0B6FD4] transition-colors duration-150 line-clamp-1"
-          style={{ ...SERIF, fontWeight: 600, fontSize: "1.05rem" }}
+          style={{ ...SERIF, fontWeight: 500, fontSize: "1.05rem" }}
         >
           {post.title}
         </h3>
@@ -162,7 +162,7 @@ export default function BlogIndexPage() {
               </div>
               <h1
                 className="text-[#0F172A] leading-[1.05] tracking-[-0.02em]"
-                style={{ ...SERIF, fontWeight: 600, fontSize: "clamp(2.1rem, 4.2vw, 3.3rem)", textWrap: "balance" }}
+                style={{ ...SERIF, fontWeight: 500, fontSize: "clamp(2.1rem, 4.2vw, 3.3rem)", textWrap: "balance" }}
               >
                 BRSR &amp; ESG, made clear for Indian consultants.
               </h1>
@@ -242,7 +242,7 @@ export default function BlogIndexPage() {
                 <section className="mb-16">
                   <h2
                     className="text-[#0F172A] tracking-[-0.01em] mb-6"
-                    style={{ ...SERIF, fontWeight: 600, fontSize: "1.5rem" }}
+                    style={{ ...SERIF, fontWeight: 500, fontSize: "1.5rem" }}
                   >
                     {isFiltering ? "Articles" : "Latest insights"}
                   </h2>
@@ -257,7 +257,7 @@ export default function BlogIndexPage() {
                 <section>
                   <h2
                     className="text-[#0F172A] tracking-[-0.01em] mb-3"
-                    style={{ ...SERIF, fontWeight: 600, fontSize: "1.5rem" }}
+                    style={{ ...SERIF, fontWeight: 500, fontSize: "1.5rem" }}
                   >
                     More articles
                   </h2>

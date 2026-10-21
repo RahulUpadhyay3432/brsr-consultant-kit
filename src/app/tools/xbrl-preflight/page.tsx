@@ -7,6 +7,7 @@ import { ToolFaq } from "@/components/tools/ToolFaq";
 import { TOOL_FAQS } from "@/data/tool-faqs";
 import { ToolHero } from "@/components/tools/ToolHero";
 import { ToolLearn } from "@/components/tools/ToolLearn";
+import { CalcPanel, NumberField, SegmentedTabs } from "@/components/calc/CalcKit";
 import preflight from "@/data/xbrl_preflight.json";
 import {
   parseAmount, toAbsoluteInr, formatInr,
@@ -23,64 +24,32 @@ function Converter() {
   const show = raw.trim() !== "" && amount > 0;
 
   return (
-    <div className="border border-[#CDE2F6] rounded-2xl shadow-[0_1px_6px_rgba(15,30,51,0.08)] overflow-hidden">
-      <div className="flex items-center gap-3 px-4 py-3 bg-[#EAF4FE] border-b border-[#CDE2F6]">
-        <div className="w-7 h-7 rounded-lg bg-brand-500/15 flex items-center justify-center flex-shrink-0">
-          <svg className="w-3.5 h-3.5 text-brand-600" viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M2 5h11M2 10h11M6 2l-1 11M10 2l-1 11" />
-          </svg>
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-[13.5px] font-semibold text-ink leading-snug">Rupee-scale converter</p>
-          <p className="text-[13px] text-ink-muted leading-snug hidden sm:block">
-            The XBRL taxonomy wants absolute rupees. Convert Lakhs / Crores before you type.
-          </p>
-        </div>
+    <CalcPanel level={2} title="Rupee-scale converter">
+      <p className="-mt-3 mb-5 text-[13px] text-ink-muted leading-relaxed">
+        The XBRL taxonomy wants absolute rupees. Convert Lakhs and Crores before you type.
+      </p>
+      <NumberField label="Amount as entered in the accounts" unit={SCALE_LABEL[scale]} value={raw} onChange={setRaw} placeholder="e.g. 500" />
+      <div className="mt-3">
+        <SegmentedTabs full ariaLabel="Scale" options={SCALES.map((s) => ({ id: s, label: SCALE_LABEL[s] }))} value={scale} onChange={setScale} />
       </div>
 
-      <div className="px-5 py-5">
-        <label className="block text-[11px] font-bold text-brand-800 uppercase tracking-[0.05em] mb-1.5">
-          Amount as entered in the accounts
-        </label>
-        <input
-          type="text"
-          inputMode="decimal"
-          value={raw}
-          onChange={(e) => setRaw(e.target.value)}
-          placeholder="e.g. 500"
-          className="w-full h-11 px-3 text-[16px] font-mono text-ink border border-[#CDE2F6] rounded-lg
-            bg-white focus:outline-none focus:ring-2 focus:ring-brand-200 focus:border-brand-400
-            transition-[border-color,box-shadow] placeholder:text-ink-faint"
-        />
-        <div className="flex gap-1 bg-band rounded-lg p-0.5 mt-2.5">
-          {SCALES.map((s) => (
-            <button key={s} onClick={() => setScale(s)}
-              className={`flex-1 text-[13px] font-medium px-2.5 py-2 rounded-md transition-colors ${scale === s ? "bg-white text-ink shadow-sm" : "text-ink-muted hover:text-ink"}`}>
-              {SCALE_LABEL[s]}
-            </button>
-          ))}
-        </div>
-
-        <div className="mt-4 rounded-xl border border-[#CDE2F6] bg-[#EAF4FE] px-4 py-3.5">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-700 mb-1.5">
-            Enter this in the numeric XBRL cell
+      <div className="mt-5 rounded-2xl border border-[#D6E6F7] bg-white/70 px-4 py-4">
+        <p className="text-[12px] font-semibold text-brand-700 mb-2">Enter this in the numeric XBRL cell</p>
+        {show ? (
+          <p className="font-editorial text-[28px] text-ink tabular-nums leading-none">
+            {formatInr(absolute)}
+            <span className="font-sans text-[13px] font-normal text-ink-muted ml-2">₹ (absolute)</span>
           </p>
-          {show ? (
-            <p className="text-[27px] font-bold text-ink tabular-nums leading-none font-mono">
-              {formatInr(absolute)}
-              <span className="text-[13px] font-sans font-normal text-ink-muted ml-2">₹ (absolute)</span>
-            </p>
-          ) : (
-            <p className="text-[14px] text-ink-muted">Type an amount to see the absolute-rupee value.</p>
-          )}
-          {show && (
-            <p className="text-[13px] text-ink-muted mt-2.5 leading-relaxed">
-              {formatInr(amount)} {SCALE_LABEL[scale].replace("₹ ", "").replace("Absolute ₹", "rupees")} = {formatInr(absolute)} rupees. Never enter the value in Lakhs or Crores directly.
-            </p>
-          )}
-        </div>
+        ) : (
+          <p className="text-[14px] text-ink-muted">Type an amount to see the absolute-rupee value.</p>
+        )}
+        {show && (
+          <p className="text-[13px] text-ink-muted mt-2.5 leading-relaxed">
+            {formatInr(amount)} {SCALE_LABEL[scale].replace("₹ ", "").replace("Absolute ₹", "rupees")} = {formatInr(absolute)} rupees. Never enter the value in Lakhs or Crore
+          </p>
+        )}
       </div>
-    </div>
+    </CalcPanel>
   );
 }
 
@@ -89,9 +58,9 @@ function CheckItem({ n, title, why, fix, source }: {
 }) {
   const [open, setOpen] = useState(n === 1);
   return (
-    <div className="border border-line rounded-xl bg-white overflow-hidden">
+    <div className="rounded-2xl border border-white/80 bg-white/75 shadow-[0_12px_32px_-22px_rgba(12,76,142,0.35)] overflow-hidden">
       <button onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center gap-3 px-4 py-3.5 text-left hover:bg-band transition-colors">
+        className="w-full flex items-center gap-3 px-4 py-3.5 text-left hover:bg-white/80 transition-colors">
         <span className="w-6 h-6 rounded-full bg-brand-50 border border-[#CDE2F6] text-brand-700 text-[12px] font-mono font-semibold flex items-center justify-center flex-shrink-0">
           {n}
         </span>
@@ -135,7 +104,8 @@ export default function XbrlPreflightPage() {
           whoFor="For the consultant preparing the instance document, right before the BSE / NSE upload. Not a full taxonomy validator; it catches the common human errors."
         />
 
-        <div className="anim-up-sm mx-auto w-full px-5 sm:px-8 py-10" style={{ maxWidth: 1120 }}>
+        <section className="calc-stage border-b border-line-soft">
+        <div className="anim-up-sm mx-auto w-full px-5 sm:px-8 py-12" style={{ maxWidth: 1120 }}>
           <div className="grid lg:grid-cols-[minmax(0,400px)_1fr] gap-8 lg:gap-10 items-start">
             {/* Converter, sticky on desktop */}
             <div className="lg:sticky lg:top-24">
@@ -144,7 +114,7 @@ export default function XbrlPreflightPage() {
 
             {/* Checklist */}
             <div>
-              <h2 className="font-display font-bold text-[1.4rem] text-ink mb-1.5">The 7 checks before you upload</h2>
+              <h2 className="font-editorial text-[1.6rem] text-ink mb-1.5">The 7 checks before you upload</h2>
               <p className="text-[14px] text-ink-muted leading-relaxed mb-4 max-w-[640px]">
                 Clear each of these before generating the instance document. They are the mistakes that most often trip the validation, ordered by how frequently they appear.
               </p>
@@ -154,7 +124,7 @@ export default function XbrlPreflightPage() {
                 ))}
               </div>
 
-              <div className="rounded-xl border border-line bg-band px-4 py-4 mt-6">
+              <div className="glass-soft rounded-2xl px-4 py-4 mt-6">
                 <p className="text-[13px] text-ink-muted leading-relaxed">
                   {preflight._meta.note}
                 </p>
@@ -176,6 +146,7 @@ export default function XbrlPreflightPage() {
             </div>
           </div>
         </div>
+        </section>
 
         <ToolLearn
           title="What XBRL is, and why the exchange cares"

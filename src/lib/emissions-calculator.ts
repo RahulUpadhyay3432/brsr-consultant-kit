@@ -48,8 +48,8 @@ function fugitive(id: string) {
   return factorsData.scope1_fugitive.find(f => f.id === id)!;
 }
 
-// Fuel qty → CalcInputs key mapping (ordered for display)
-const FUEL_MAP: Array<{ id: string; key: keyof CalcInputs }> = [
+// Fuel qty → CalcInputs key mapping (ordered for display; the UI renders fields from it)
+export const FUEL_MAP: Array<{ id: string; key: keyof CalcInputs }> = [
   { id: "diesel",      key: "diesel_l"      },
   { id: "petrol",      key: "petrol_l"      },
   { id: "cng",         key: "gas_m3"        },
@@ -60,7 +60,7 @@ const FUEL_MAP: Array<{ id: string; key: keyof CalcInputs }> = [
 
 // Fugitive refrigerant → CalcInputs key mapping. Scope 1, but no calorific value,
 // so these are excluded from the energy calculation (calcEnergy uses FUEL_MAP only).
-const FUGITIVE_MAP: Array<{ id: string; key: keyof CalcInputs }> = [
+export const FUGITIVE_MAP: Array<{ id: string; key: keyof CalcInputs }> = [
   { id: "r134a", key: "refrigerant_r134a_kg" },
   { id: "r410a", key: "refrigerant_r410a_kg" },
   { id: "r32",   key: "refrigerant_r32_kg"   },
@@ -103,6 +103,8 @@ export interface GhgResult {
   total_tco2e: number;
   intensity_per_crore: number | null; // tCO2e per INR crore
   scope1_breakdown: Array<{ label: string; tco2e: number }>;
+  scope1_fuel_tco2e: number;      // stationary + mobile combustion
+  scope1_fugitive_tco2e: number;  // refrigerant / SF₆ leakage
 }
 
 export function calcGhg(inp: CalcInputs): GhgResult {
@@ -114,6 +116,8 @@ export function calcGhg(inp: CalcInputs): GhgResult {
     .map(({ id, key }) => ({ label: fugitive(id).label, tco2e: n(inp[key]) * fugitive(id).co2e_per_unit / 1000 }))
     .filter(f => f.tco2e > 0);
   const scope1_breakdown = [...fuelBreakdown, ...fugitiveBreakdown];
+  const scope1_fuel_tco2e = fuelBreakdown.reduce((s, f) => s + f.tco2e, 0);
+  const scope1_fugitive_tco2e = fugitiveBreakdown.reduce((s, f) => s + f.tco2e, 0);
   const scope1_tco2e = scope1_breakdown.reduce((s, f) => s + f.tco2e, 0);
 
   const scope2_tco2e = n(inp.grid_kwh) * factorsData.scope2_grid.factor_kg_co2_per_kwh / 1000;
@@ -122,7 +126,7 @@ export function calcGhg(inp: CalcInputs): GhgResult {
   const t = n(inp.turnover_crore);
   const intensity_per_crore = t > 0 ? total_tco2e / t : null;
 
-  return { scope1_tco2e, scope2_tco2e, total_tco2e, intensity_per_crore, scope1_breakdown };
+  return { scope1_tco2e, scope2_tco2e, total_tco2e, intensity_per_crore, scope1_breakdown, scope1_fuel_tco2e, scope1_fugitive_tco2e };
 }
 
 export interface WaterResult {

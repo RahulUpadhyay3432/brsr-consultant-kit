@@ -256,7 +256,20 @@ conditional on `aria-expanded`. The consent banner is dismissed via the product'
 the report's inner tabs or the 4 embedded calculators (the report shell uses different navigation
 at phone width).
 
-### In flight: Lovable design exploration
+### In flight: Lovable design exploration — calculators DONE 2026-10-21
+
+**Shipped 2026-10-21: the calculators carry Lovable's "Frost Editorial" depth.** Source export:
+`~/Downloads/eco-shine-tracker.zip` (same project as `Visual Review Hub.zip`). Taken: the depth
+treatment (tinted stage + translucent white-rimmed panels on a long brand-tinted shadow), Fraunces
+headings, and its calculator UX (sticky "Disclosure figure" result column, unit inside the field,
+factor printed under each field, decimal-keypad text inputs, a full factor log, sentence-case
+labels, pill tabs, panels titled by GHG category). **Not taken, deliberately:** its palette (depth
+is tinted with our blue/navy), the animated drifting orbs (motion in a work tool + GPU cost on cheap
+phones; our stage is static), the glossy gradient CTA, Inter, shadcn. Applied to `/tools/ghg-calculator`,
+`/tools/scope3-calculator`, `/tools/ppp-intensity`, `/tools/xbrl-preflight` and the calculators
+embedded in the report (P6-E1/E3/E7/L2). **Next: roll the same surfaces out to the rest of the
+product** (the user chose "calculators first, then the rest after review"). Water discharge /
+consumption (P6-E4), which Lovable added, was left out: it changes the persisted `CalcInputs` shape.
 
 The user is using **Lovable** to generate UI/UX design directions, starting with the calculators,
 then possibly a whole-site pass. Workflow: user feeds Lovable screenshots + a prompt, brings the
@@ -269,7 +282,7 @@ cva or tailwind-merge). So Lovable's React/Tailwind output is closer to usable t
 not code" implied: **layout and structure port over; the class vocabulary does not.** What must be
 translated on the way in: generic colors (`bg-slate-900`, `text-gray-500`) to Saaksh tokens
 (`forest`, `ink`/`ink-body`/`ink-muted`, `brand-*`, `ember`, `tint`, `line`); any shadcn component
-to a plain element; the type stack to Hanken + Newsreader via `.font-editorial` with **no mono**;
+to a plain element; the type stack to Hanken + Fraunces via `.font-editorial` with **no mono**;
 and motion to `.anim-up-*` / `.pressable`, which are already reduced-motion safe. Prompts already supplied in-session: a context primer (what the product
 is, who the customer is), a calculator-redesign brief, and a two-step whole-site audit that first
 forces Lovable to prove it can actually load saaksh.co (5 verification questions with known
@@ -288,7 +301,8 @@ answers) before accepting any audit — the confabulation risk is real.
    4 GA4 key events.
 3. **Seed the two empty boards** (`/jobs` gigs, `/directory`) — by hand, asking posters. Do NOT
    scrape the WhatsApp group.
-4. Lovable output → reimplement against Saaksh tokens.
+4. Lovable output → reimplement against Saaksh tokens. **Calculators done 2026-10-21**; the rest of
+   the product is next, reusing `.calc-stage` / `.glass` / `src/components/calc/CalcKit.tsx`.
 5. Send the ECS approach (`docs/ECS-proposal.html`, written since July, still not sent).
 
 ### AI visibility baseline (2026-09-09)
@@ -629,7 +643,8 @@ vercel.json                         # Vercel Cron schedule
 - Background: cream paper `#FAF8F3` with subtle glow (`.bg-grid`), 1.5px evergreen hairline on top
 - Status badges: green (Ready to pull), amber (Needs verification), **ember/orange** (Collect fresh), slate (Not applicable)
 - Framework badges: blue (GRI), violet (TCFD/MSCI), emerald (IFRS), amber (DJSI); the "Last year" upload tag is now brand (was indigo)
-- Fonts (self-hosted in `src/app/fonts/`): **Hanken Grotesk** body + display, **Newsreader** serif for `.font-editorial` big headings. **No monospace typeface** — the product uses zero mono (user found it unprofessional; retired 2026-07-03). The Tailwind `mono` token in `tailwind.config.ts` is deliberately repointed to the Hanken sans stack, so the ~200 legacy `font-mono` class usages (eyebrows/labels/code chips/numbers) all render Hanken; the IBM Plex Mono webfont + `--font-plex-mono` loader were removed. Don't reintroduce a mono font or `var(--font-plex-mono)`. For code/data chips use tinted-pill styling + `tabular-nums`, not a mono family.
+- Fonts (self-hosted in `src/app/fonts/`): **Hanken Grotesk** body + display, **Fraunces** (variable, opsz 9–144 / wght 400–600, `--font-fraunces`, since 2026-10-21) serif for `.font-editorial` headings, calculator panel titles and big result figures. Fraunces turns chunky above 500, so `.font-editorial.font-semibold/.font-bold` are capped at 500 in globals.css and blog heading styles use 500. **Newsreader** now survives only as the blog's long-form body reading face (`SERIF` in `blog-content.tsx` / `blog/[slug]`). Add fonts via `scripts/fetch-fonts.mjs` (TLS bypass), never `next/font/google`. **No monospace typeface** — the product uses zero mono (user found it unprofessional; retired 2026-07-03). The Tailwind `mono` token in `tailwind.config.ts` is deliberately repointed to the Hanken sans stack, so the ~200 legacy `font-mono` class usages (eyebrows/labels/code chips/numbers) all render Hanken; the IBM Plex Mono webfont + `--font-plex-mono` loader were removed. Don't reintroduce a mono font or `var(--font-plex-mono)`. For code/data chips use tinted-pill styling + `tabular-nums`, not a mono family.
+- **Frost surfaces** (globals.css, 2026-10-21): `.calc-stage` (static tinted field: radial gradients, no blur filters, no animation — glass needs something behind it), `.glass` (58% white + backdrop blur, white rim, `0 24px 60px -28px` brand-800 shadow + inset top highlight; opaque fallback without backdrop-filter; flattened in print), `.glass-soft`, `.glass-sheen` (specular top light as a background layer, under the label), `.field-glass` (input shell with the unit inside). Calculator building blocks live in `src/components/calc/CalcKit.tsx` (`CalcPanel`, `NumberField` — text + `inputMode="decimal"`, sanitised, so no mouse-wheel changes or `e` —, `ResultList`/`ResultRow`, `Citation`, `FactorLog`, `SegmentedTabs`). `EmissionsCalculator` / `Scope3Calculator` take `layout="page" | "embedded"`: page = sticky result column (the page supplies the stage), embedded = stacked inside its own rounded stage well.
 - **Motion system** (`cubic-bezier(0.2,0,0,1)`, 160/280/420ms): `.anim-up-sm`, `.anim-up-md`, `.anim-up-hero`, `.anim-card`
 - **Micro-interactions**: `.pressable`, `.chip-spring`, `.check-path`. All respect `prefers-reduced-motion`.
 - Tab icons are inline SVGs (no emoji)

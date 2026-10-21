@@ -1,7 +1,7 @@
 // One-time: download the design's Google Fonts as local woff2 files so the app can
 // self-host them (this machine can't use next/font/google at build time — SSL).
 // Run once:  $env:NODE_TLS_REJECT_UNAUTHORIZED="0"; node scripts/fetch-fonts.mjs
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync, mkdirSync, existsSync } from "fs";
 
 const OUT = "c:/Users/msi79/brsr-consultant-kit/src/app/fonts";
 mkdirSync(OUT, { recursive: true });
@@ -18,10 +18,14 @@ const JOBS = [
   ["Hanken Grotesk", "wght@500", "HankenGrotesk-500.woff2"],
   ["Hanken Grotesk", "wght@600", "HankenGrotesk-600.woff2"],
   ["Hanken Grotesk", "wght@700", "HankenGrotesk-700.woff2"],
+  // Display serif for headings + big figures (replaced Newsreader in headings; Newsreader
+  // stays only for long-form blog body text). One variable file: opsz 9-144, wght 400-600.
+  ["Fraunces", "opsz,wght@9..144,400..600", "Fraunces-var.woff2"],
 ];
 
 let ok = 0;
 for (const [fam, q, file] of JOBS) {
+  if (existsSync(`${OUT}/${file}`)) { console.log("exists", file); ok++; continue; }
   const cssUrl = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(fam)}:${q}&display=swap`;
   try {
     const css = await (await fetch(cssUrl, { headers: { "User-Agent": UA } })).text();

@@ -41,7 +41,7 @@ function PostFaq({ slug }: { slug: string }) {
 // Reading serif for long-form body, Newsreader (loaded app-wide), Georgia fallback.
 const SERIF: React.CSSProperties = { fontFamily: "var(--font-newsreader), Georgia, 'Times New Roman', serif" };
 // Display serif for editorial headings.
-const SERIF_DISPLAY: React.CSSProperties = { fontFamily: "var(--font-newsreader), Georgia, serif" };
+const SERIF_DISPLAY: React.CSSProperties = { fontFamily: "var(--font-fraunces), Georgia, serif" };
 
 function slugId(text: React.ReactNode): string {
   if (typeof text !== "string") return "";
@@ -59,7 +59,7 @@ function H2({ children }: { children: React.ReactNode }) {
       id={id}
       data-toc="true"
       className="text-[#0F172A] leading-tight tracking-[-0.012em] scroll-mt-28"
-      style={{ ...SERIF_DISPLAY, fontWeight: 600, fontSize: "1.7rem", marginTop: "3.25rem", marginBottom: "1rem" }}
+      style={{ ...SERIF_DISPLAY, fontWeight: 500, fontSize: "1.7rem", marginTop: "3.25rem", marginBottom: "1rem" }}
     >
       {children}
     </h2>
@@ -70,7 +70,7 @@ function H3({ children }: { children: React.ReactNode }) {
   return (
     <h3
       className="text-[#0F172A] leading-snug"
-      style={{ ...SERIF_DISPLAY, fontWeight: 600, fontSize: "1.28rem", marginTop: "2rem", marginBottom: "0.6rem" }}
+      style={{ ...SERIF_DISPLAY, fontWeight: 500, fontSize: "1.28rem", marginTop: "2rem", marginBottom: "0.6rem" }}
     >
       {children}
     </h3>

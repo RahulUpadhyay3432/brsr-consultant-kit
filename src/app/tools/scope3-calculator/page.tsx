@@ -7,6 +7,7 @@ import { ToolFaq } from "@/components/tools/ToolFaq";
 import { TOOL_FAQS } from "@/data/tool-faqs";
 import { ToolHero } from "@/components/tools/ToolHero";
 import Scope3Calculator from "@/components/checklist/Scope3Calculator";
+import { NumberField } from "@/components/calc/CalcKit";
 import { DEFAULT_SCOPE3_INPUTS, type Scope3Inputs } from "@/lib/scope3-calculator";
 import factors from "@/data/scope3_factors.json";
 
@@ -71,59 +72,42 @@ export default function Scope3CalculatorPage() {
           maxWidth={1120}
         />
 
-        {/* Calculator + explainer rail */}
-        <div className="anim-up-sm mx-auto w-full max-w-[1120px] px-5 sm:px-8 py-12">
-          <div className="grid lg:grid-cols-[minmax(0,1fr)_320px] gap-8 items-start">
-            <div>
-              <div className="mb-6 rounded-xl border border-[#CDE2F6] bg-[#EAF4FE] p-4 max-w-[360px]">
-                <label className="block text-[11px] font-semibold text-brand-700 uppercase tracking-[0.08em] mb-1.5">
-                  Annual turnover <span className="text-ink-faint normal-case tracking-normal font-normal">, optional, for intensity</span>
-                </label>
-                <div className="flex items-center gap-1.5">
-                  <input
-                    type="number" min="0" step="any" value={turnover} placeholder="0"
-                    onChange={(e) => setTurnover(e.target.value)}
-                    className="flex-1 min-w-0 h-10 px-3 text-[14px] font-mono border border-[#CDE2F6] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-brand-200 focus:border-brand-400 transition-[border-color,box-shadow] placeholder:text-ink-faint"
-                  />
-                  <span className="text-[11.5px] text-ink-muted font-mono whitespace-nowrap">₹ crore</span>
-                </div>
-              </div>
-
-              <Scope3Calculator inputs={inputs} turnoverCrore={turnover} onChange={onChange} />
-
-              <p className="text-[12.5px] text-ink-muted leading-relaxed mt-6">
-                A screening estimate. Scope 3 is a voluntary BRSR Leadership indicator, not assurance-grade. For the assured Scope 1 & 2, see the{" "}
-                <Link href="/tools/ghg-calculator" className="text-brand-700 font-medium underline decoration-line hover:decoration-brand-500">GHG calculator</Link>, or run the full{" "}
-                <Link href="/start" className="text-brand-700 font-medium underline decoration-line hover:decoration-brand-500">readiness report</Link>.
-              </p>
-            </div>
-
-            <aside className="lg:sticky lg:top-24 space-y-4">
-              <div className="rounded-2xl border border-line bg-white p-5 shadow-elev-1">
-                <p className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-700 mb-3">Across the value chain</p>
-                <ValueChainRibbon />
-              </div>
-              <div className="rounded-2xl border border-line bg-white p-5 shadow-elev-1">
-                <p className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-700 mb-2.5">Sample factors</p>
-                <ul className="space-y-1.5 text-[12.5px]">
-                  <li className="flex items-baseline justify-between gap-3"><span className="text-ink-body">Air, long-haul</span><span className="font-mono text-ink whitespace-nowrap">0.261/pkm</span></li>
-                  <li className="flex items-baseline justify-between gap-3"><span className="text-ink-body">Rail (national)</span><span className="font-mono text-ink whitespace-nowrap">0.035/pkm</span></li>
-                  <li className="flex items-baseline justify-between gap-3"><span className="text-ink-body">Road freight (HGV)</span><span className="font-mono text-ink whitespace-nowrap">0.121/t·km</span></li>
-                  <li className="flex items-baseline justify-between gap-3"><span className="text-ink-body">To landfill (mixed)</span><span className="font-mono text-ink whitespace-nowrap">520.3/t</span></li>
-                </ul>
-                <p className="text-[11px] text-ink-faint mt-3 leading-snug">DEFRA/DESNZ 2024 v1.1 · kgCO₂e. Air includes radiative forcing; freight is direct + well-to-tank.</p>
-              </div>
-            </aside>
+        {/* Calculator: frost panels on a tinted stage, result sticky on the right */}
+        <section className="calc-stage border-b border-line-soft">
+          <div className="anim-up-sm mx-auto w-full max-w-[1120px] px-5 sm:px-8 py-12">
+            <Scope3Calculator
+              layout="page"
+              inputs={inputs}
+              turnoverCrore={turnover}
+              onChange={onChange}
+              turnoverField={
+                <NumberField label="Turnover, for intensity" unit="₹ crore" value={turnover} onChange={setTurnover}
+                  hint="Optional. Gives Scope 3 per ₹ crore and per rupee of turnover." />
+              }
+            />
+            <p className="text-[12.5px] text-ink-body leading-relaxed mt-6">
+              A screening estimate. Scope 3 is a voluntary BRSR Leadership indicator, not assurance-grade. For the assured Scope 1 &amp; 2, see the{" "}
+              <Link href="/tools/ghg-calculator" className="text-brand-700 font-medium underline decoration-line hover:decoration-brand-500">GHG calculator</Link>, or run the full{" "}
+              <Link href="/start" className="text-brand-700 font-medium underline decoration-line hover:decoration-brand-500">readiness report</Link>.
+            </p>
           </div>
-        </div>
+        </section>
 
         {/* Categories */}
         <section className="bg-band border-y border-line-soft">
           <div className="mx-auto w-full max-w-[1120px] px-5 sm:px-8 py-16">
-            <h2 className="font-editorial font-semibold text-ink text-[1.8rem] sm:text-[2.1rem] leading-tight tracking-[-0.015em]">The 15 categories, and which this screens</h2>
-            <p className="text-[15.5px] text-ink-body leading-relaxed mt-3 max-w-[720px]">
-              The GHG Protocol splits Scope 3 into 15 categories. This tool covers the ones you can compute from physical activity data, the four most consultants can actually get numbers for.
-            </p>
+            <div className="grid lg:grid-cols-[minmax(0,1fr)_320px] gap-8 items-center">
+              <div>
+                <h2 className="font-editorial font-semibold text-ink text-[1.8rem] sm:text-[2.1rem] leading-tight tracking-[-0.015em]">The 15 categories, and which this screens</h2>
+                <p className="text-[15.5px] text-ink-body leading-relaxed mt-3 max-w-[720px]">
+                  The GHG Protocol splits Scope 3 into 15 categories. This tool covers the ones you can compute from physical activity data, the four most consultants can actually get numbers for.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-line bg-white p-5 shadow-elev-1">
+                <p className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-700 mb-3">Across the value chain</p>
+                <ValueChainRibbon />
+              </div>
+            </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
               {COVERED.map((c) => (
                 <div key={c.code} className="rounded-2xl border border-line bg-white p-6 shadow-elev-1">

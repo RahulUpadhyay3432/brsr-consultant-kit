@@ -7,13 +7,14 @@ import { ToolFaq } from "@/components/tools/ToolFaq";
 import { TOOL_FAQS } from "@/data/tool-faqs";
 import { ToolHero } from "@/components/tools/ToolHero";
 import EmissionsCalculator from "@/components/checklist/EmissionsCalculator";
+import { SegmentedTabs } from "@/components/calc/CalcKit";
 import { DEFAULT_CALC_INPUTS, type CalcInputs } from "@/lib/emissions-calculator";
 import factors from "@/data/emission_factors.json";
 
 const MODES = [
-  { id: "ghg" as const, label: "Scope 1 & 2 GHG", hint: "Direct + purchased electricity, tCO₂e" },
-  { id: "energy" as const, label: "Energy", hint: "Total consumption + intensity, GJ" },
-  { id: "water" as const, label: "Water", hint: "Withdrawal + intensity, kL" },
+  { id: "ghg" as const, label: "Scope 1 & 2 GHG" },
+  { id: "energy" as const, label: "Energy" },
+  { id: "water" as const, label: "Water" },
 ];
 
 const SCOPES = [
@@ -78,53 +79,46 @@ export default function GhgCalculatorPage() {
           maxWidth={1120}
         />
 
-        {/* Calculator + explainer rail */}
-        <div className="anim-up-sm mx-auto w-full max-w-[1120px] px-5 sm:px-8 py-12">
-          <div className="grid lg:grid-cols-[minmax(0,1fr)_320px] gap-8 items-start">
-            <div>
-              <div className="flex flex-wrap gap-1.5 mb-6">
-                {MODES.map((m) => (
-                  <button key={m.id} onClick={() => setMode(m.id)}
-                    className={`text-left px-3.5 py-2 rounded-xl border transition-colors ${mode === m.id ? "bg-brand-600 text-white border-brand-600" : "bg-white text-ink-muted border-line hover:border-brand-300"}`}>
-                    <span className="block text-[13.5px] font-semibold">{m.label}</span>
-                    <span className={`block text-[11px] ${mode === m.id ? "text-white/80" : "text-ink-faint"}`}>{m.hint}</span>
-                  </button>
-                ))}
-              </div>
-              <EmissionsCalculator mode={mode} inputs={inputs} onChange={onChange} />
-              <p className="text-[12.5px] text-ink-muted leading-relaxed mt-6">
-                A screening calculation from the figures you enter. For all 108 BRSR fields gap-analysed for your client, run the{" "}
-                <Link href="/start" className="text-brand-700 font-medium underline decoration-line hover:decoration-brand-500">free readiness report</Link>.
-              </p>
+        {/* Calculator: frost panels on a tinted stage, result sticky on the right */}
+        <section className="calc-stage border-b border-line-soft">
+          <div className="anim-up-sm mx-auto w-full max-w-[1120px] px-5 sm:px-8 py-12">
+            <div className="mb-5">
+              <SegmentedTabs ariaLabel="Calculator" options={MODES} value={mode} onChange={setMode} />
             </div>
-
-            <aside className="lg:sticky lg:top-24 space-y-4">
-              <div className="rounded-2xl border border-line bg-white p-5 shadow-elev-1">
-                <p className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-700 mb-3">The three scopes</p>
-                <ScopeDiagram />
-                <p className="text-[11.5px] text-ink-muted leading-snug mt-2">This tool computes Scope 1 & 2. Scope 3 has its own screening tool.</p>
-              </div>
-              <div className="rounded-2xl border border-line bg-white p-5 shadow-elev-1">
-                <p className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-700 mb-2.5">Factors in play</p>
-                <ul className="space-y-1.5 text-[12.5px]">
-                  <li className="flex items-baseline justify-between gap-3"><span className="text-ink-body">Grid electricity</span><span className="font-mono text-ink whitespace-nowrap">{factors.scope2_grid.factor_display}</span></li>
-                  {factors.scope1_fuels.slice(0, 4).map((f) => (
-                    <li key={f.id} className="flex items-baseline justify-between gap-3"><span className="text-ink-body">{f.label}</span><span className="font-mono text-ink whitespace-nowrap">{f.co2e_display}</span></li>
-                  ))}
-                </ul>
-                <p className="text-[11px] text-ink-faint mt-3 leading-snug">{factors.scope2_grid.source_short} · IPCC 2006 Vol. 2. Re-check the grid factor each filing year.</p>
-              </div>
-            </aside>
+            <EmissionsCalculator
+              layout="page"
+              mode={mode}
+              inputs={inputs}
+              onChange={onChange}
+              resultFooter={
+                <p>
+                  Every factor, with its derivation:{" "}
+                  <a href="#factors" className="text-brand-700 font-medium underline decoration-[#AFD2FB] hover:decoration-brand-500">how each factor is derived</a>.
+                </p>
+              }
+            />
+            <p className="text-[12.5px] text-ink-body leading-relaxed mt-6">
+              A screening calculation from the figures you enter. For all 108 BRSR fields gap-analysed for your client, run the{" "}
+              <Link href="/start" className="text-brand-700 font-medium underline decoration-line hover:decoration-brand-500">free readiness report</Link>.
+            </p>
           </div>
-        </div>
+        </section>
 
         {/* What the scopes mean */}
         <section className="bg-band border-y border-line-soft">
           <div className="mx-auto w-full max-w-[1120px] px-5 sm:px-8 py-16">
-            <h2 className="font-editorial font-semibold text-ink text-[1.8rem] sm:text-[2.1rem] leading-tight tracking-[-0.015em]">What Scope 1, 2 and 3 mean</h2>
-            <p className="text-[15.5px] text-ink-body leading-relaxed mt-3 max-w-[720px]">
-              The GHG Protocol splits a company&apos;s emissions into three scopes by where they occur. This tool computes the two that BRSR Core assures, Scope 1 and Scope 2; Scope 3 is a separate screening.
-            </p>
+            <div className="grid lg:grid-cols-[minmax(0,1fr)_320px] gap-8 items-center">
+              <div>
+                <h2 className="font-editorial font-semibold text-ink text-[1.8rem] sm:text-[2.1rem] leading-tight tracking-[-0.015em]">What Scope 1, 2 and 3 mean</h2>
+                <p className="text-[15.5px] text-ink-body leading-relaxed mt-3 max-w-[720px]">
+                  The GHG Protocol splits a company&apos;s emissions into three scopes by where they occur. This tool computes the two that BRSR Core assures, Scope 1 and Scope 2; Scope 3 is a separate screening.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-line bg-white p-5 shadow-elev-1">
+                <p className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-brand-700 mb-3">The three scopes</p>
+                <ScopeDiagram />
+              </div>
+            </div>
             <div className="grid md:grid-cols-3 gap-4 mt-8">
               {SCOPES.map((s) => (
                 <div key={s.tag} className="rounded-2xl border border-line bg-white p-6 shadow-elev-1">
@@ -140,7 +134,7 @@ export default function GhgCalculatorPage() {
         </section>
 
         {/* How each factor is derived */}
-        <section>
+        <section id="factors" className="scroll-mt-24">
           <div className="mx-auto w-full max-w-[1120px] px-5 sm:px-8 py-16">
             <h2 className="font-editorial font-semibold text-ink text-[1.8rem] sm:text-[2.1rem] leading-tight tracking-[-0.015em]">How each factor is derived</h2>
             <p className="text-[15.5px] text-ink-body leading-relaxed mt-3 max-w-[720px]">

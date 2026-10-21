@@ -9,6 +9,8 @@ import { BlogFooter } from "@/components/blog/BlogFooter";
 import { SubscribeForm } from "@/components/SubscribeForm";
 import { jsonLdHtml } from "@/lib/jsonld";
 
+// Fraunces for headings; Newsreader stays for the lede + long-form body (a reading face).
+const SERIF_HEADING: React.CSSProperties = { fontFamily: "var(--font-fraunces), Georgia, serif" };
 const SERIF: React.CSSProperties = { fontFamily: "var(--font-newsreader), Georgia, serif" };
 
 export function generateStaticParams() {
@@ -76,7 +78,7 @@ function RelatedCard({ post }: { post: BlogPost }) {
         </div>
         <h3
           className="text-[#0F172A] leading-[1.25] group-hover:text-[#0B6FD4] transition-colors duration-150"
-          style={{ ...SERIF, fontWeight: 600, fontSize: "1.18rem" }}
+          style={{ ...SERIF_HEADING, fontWeight: 500, fontSize: "1.18rem" }}
         >
           {post.title}
         </h3>
@@ -210,7 +212,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               {/* Title */}
               <h1
                 className="text-[#0F172A] leading-[1.12] tracking-[-0.018em]"
-                style={{ ...SERIF, fontWeight: 600, fontSize: "clamp(1.9rem, 3.1vw, 2.6rem)", textWrap: "balance" }}
+                style={{ ...SERIF_HEADING, fontWeight: 500, fontSize: "clamp(1.9rem, 3.1vw, 2.6rem)", textWrap: "balance" }}
               >
                 {post.title}
               </h1>
@@ -286,7 +288,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             <section className="mt-16 pt-12 border-t border-[#E5E9F0]">
               <h2
                 className="text-[#0F172A] tracking-[-0.01em] mb-6"
-                style={{ ...SERIF, fontWeight: 600, fontSize: "1.5rem" }}
+                style={{ ...SERIF_HEADING, fontWeight: 500, fontSize: "1.5rem" }}
               >
                 More from the blog
               </h2>

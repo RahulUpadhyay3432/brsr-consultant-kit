@@ -6,9 +6,16 @@ import ConsentBanner from "@/components/ConsentBanner";
 import { jsonLdHtml } from "@/lib/jsonld";
 import "./globals.css";
 
-// Self-hosted (no next/font/google on this machine). Newsreader = display serif,
+// Self-hosted (no next/font/google on this machine). Fraunces = display serif for
+// headings + big figures; Newsreader = long-form blog body text only;
 // Hanken Grotesk = body sans (also what `font-mono` now resolves to; the product
 // uses no monospace typeface). Files fetched once by scripts/fetch-fonts.mjs.
+const fraunces = localFont({
+  src: "./fonts/Fraunces-var.woff2",
+  weight: "400 600",
+  variable: "--font-fraunces",
+  display: "swap",
+});
 const newsreader = localFont({
   src: [
     { path: "./fonts/Newsreader-400.woff2", weight: "400", style: "normal" },
@@ -65,7 +72,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${newsreader.variable} ${hanken.variable} text-stone-900`}
+        className={`${fraunces.variable} ${newsreader.variable} ${hanken.variable} text-stone-900`}
       >
         <script
           type="application/ld+json"

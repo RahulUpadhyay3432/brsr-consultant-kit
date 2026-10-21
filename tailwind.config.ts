@@ -59,14 +59,14 @@ const config: Config = {
         "elev-1-hover": "0 2px 4px rgba(15,30,51,0.05), 0 8px 20px rgba(15,30,51,0.07)",
       },
       fontFamily: {
-        // Hanken Grotesk body · Newsreader = editorial serif for big headings.
+        // Hanken Grotesk body · Fraunces = editorial serif for headings + big figures.
         // `mono` intentionally resolves to the sans stack: the product uses no
         // monospace typeface (the `font-mono` class name is kept only to avoid
         // churning ~200 call sites; it renders Hanken like everything else).
         sans: ["var(--font-hanken)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "system-ui", "sans-serif"],
         mono: ["var(--font-hanken)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "system-ui", "sans-serif"],
         display: ["var(--font-hanken)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "system-ui", "sans-serif"],
-        serif: ["var(--font-newsreader)", "Georgia", "Cambria", "Times New Roman", "serif"],
+        serif: ["var(--font-fraunces)", "Georgia", "Cambria", "Times New Roman", "serif"],
       },
     },
   },
