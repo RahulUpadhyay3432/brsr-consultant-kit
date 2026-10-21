@@ -14,9 +14,30 @@ The "100% on-device / no data stored" framing applies to **(1) only**. Collect d
 
 Live: https://brsr-consultant-kit.vercel.app · Repo: https://github.com/RahulUpadhyay3432/brsr-consultant-kit
 
-## Project Status — last updated 2026-10-05
+## Project Status — last updated 2026-10-21
 
-### Current: the collect-once claim is now real for energy, water and people
+### Current: calculators carry the Lovable "depth" look; site titles are Apple-style sans
+
+**`master` = `4e040b7`, LIVE** (Production deployment confirmed via GitHub, 2026-10-21 17:11 UTC).
+208 pages, 200 tests, clean build. Session handoff: **`docs/session-2026-10-21-handoff.md`**.
+
+- **Shipped:** frost depth surfaces (`.calc-stage`, `.glass`, `.field-glass`) plus the Lovable
+  calculator UX (sticky result column, the unit inside the field, the factor under each field, a
+  full factor log, pill tabs) on the 4 calculator pages and the report's embedded calculators. The
+  shared kit is `src/components/calc/CalcKit.tsx`. Details are under "Design System" below.
+- **Fonts:** site titles (`.font-editorial`) are **Hanken semibold, tight tracking**, at the
+  user's explicit request ("make it apple font"). Fraunces only appears inside calculator panels,
+  via `.font-serif-display`. A site-wide Fraunces swap shipped and was rejected the same day.
+  Don't repeat it.
+- **Deploys:** pushing to `master` auto-deploys, but the webhook lagged about 15 minutes.
+  saaksh.co serves a Vercel bot checkpoint to curl and headless browsers, so verify through
+  `gh api .../commits/<sha>/statuses` and `.../deployments` instead.
+  ⚠️ **Open:** confirm that checkpoint isn't blocking Googlebot, Bingbot or the AI crawlers.
+- **Next:** roll the depth surfaces out to the rest of the product (the user chose "calculators
+  first, the rest after review"). Also open: a sticky total bar on phones, and the water
+  discharge field (P6-E4).
+
+### Previously: the collect-once claim is now real for energy, water and people
 
 **`master` = `0d073a2`** (+ `99fc4f9` on `claude/busy-curie-ij42lc`). 208 pages, **200 tests, 23
 files**, clean build. Session handoff: **`docs/session-2026-10-05-handoff.md`**.
